@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Drawing and Video Player</title>
+    <title>Drawing Tool and Video Player</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.5.0/fabric.min.js"></script>
     <style>
         body {
             display: flex;
@@ -12,49 +13,191 @@
             justify-content: center;
             height: 100vh;
             margin: 0;
+            font-family: Arial, sans-serif;
         }
-        #drawing-container, #video-container {
-            width: 80%;
-            margin: 10px 0;
+        canvas {
+            border: 1px solid #000;
+        }
+        .tools {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            z-index: 1000;
+            background-color: #fff;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .tools button {
+            margin: 5px;
+            padding: 5px;
+            cursor: pointer;
+            border: none;
+            background-color: #f0f0f0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-radius: 3px;
+        }
+        .tools button:hover {
+            background-color: #e0e0e0;
+        }
+        .tools button img {
+            width: 20px;
+            height: 20px;
         }
         #video-container {
-            display: flex;
-            justify-content: center;
+            width: 50%;
+            margin-top: 20px;
         }
         video {
             width: 100%;
-            max-width: 800px;
         }
     </style>
 </head>
 <body>
-    <div id="drawing-container"></div>
+    <!-- Drawing Tools -->
+    <div class="tools">
+        <button onclick="drawFreehand()"><img src="icons/freehand.png" alt="Freehand"></button>
+        <button onclick="activateRectangleMode()"><img src="icons/rectangle.png" alt="Rectangle"></button>
+        <button onclick="activateTextMode()"><img src="icons/text.png" alt="Text"></button>
+        <button onclick="activateNoteMode()"><img src="icons/notes.png" alt="Note"></button>
+        <button onclick="useEraser()"><img src="icons/eraser.png" alt="Eraser"></button>
+        <button onclick="undo()"><img src="icons/undo.png" alt="Undo"></button>
+        <button onclick="redo()"><img src="icons/redo.png" alt="Redo"></button>
+    </div>
+
+    <!-- Fabric.js Canvas -->
+    <canvas id="canvas" width="800" height="600"></canvas>
+
+    <!-- Video Player -->
     <div id="video-container">
         <video id="video" controls></video>
     </div>
 
-    <!-- Excalidraw -->
-    <script src="https://unpkg.com/@excalidraw/excalidraw@latest/dist/excalidraw.production.min.js"></script>
-    
     <!-- Shaka Player -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/3.1.0/shaka-player.compiled.js"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Check if Excalidraw is available
-            if (typeof Excalidraw !== 'undefined') {
-                const excalidrawContainer = document.getElementById('drawing-container');
-                const excalidraw = new Excalidraw.ExcalidrawContainer(excalidrawContainer);
-                console.log('Excalidraw initialized successfully!');
-            } else {
-                console.error('Excalidraw is not loaded or defined.');
-            }
+        const canvas = new fabric.Canvas('canvas');
+        const state = [];
+        let mods = 0;
+        let drawingMode = '';
+        let isDrawing = false;
 
-            // Initialize Shaka Player
+        function saveState() {
+            mods += 1;
+            if (mods < state.length) {
+                state.length = mods;
+            }
+            state.push(JSON.stringify(canvas));
+        }
+
+        canvas.on('object:added', saveState);
+        canvas.on('object:removed', saveState);
+        canvas.on('object:modified', saveState);
+
+        function undo() {
+            if (mods > 0) {
+                mods -= 1;
+                canvas.loadFromJSON(state[mods]);
+                canvas.renderAll();
+            }
+        }
+
+        function redo() {
+            if (mods < state.length - 1) {
+                mods += 1;
+                canvas.loadFromJSON(state[mods]);
+                canvas.renderAll();
+            }
+        }
+
+        function drawFreehand() {
+            canvas.isDrawingMode = true;
+            drawingMode = '';
+        }
+
+        function activateRectangleMode() {
+            canvas.isDrawingMode = false;
+            drawingMode = 'rectangle';
+        }
+
+        function activateTextMode() {
+            canvas.isDrawingMode = false;
+            drawingMode = 'text';
+            const text = new fabric.Textbox('Type here', {
+                left: 50,
+                top: 50,
+                fontSize: 20,
+                fontFamily: 'Arial',
+                fill: 'black',
+                width: 200
+            });
+            canvas.add(text).setActiveObject(text);
+        }
+
+        function activateNoteMode() {
+            canvas.isDrawingMode = false;
+            drawingMode = 'note';
+            const note = new fabric.Textbox('Note here', {
+                left: 50,
+                top: 50,
+                fontSize: 14,
+                fontFamily: 'Arial',
+                fill: 'black',
+                backgroundColor: '#ffffcc',
+                width: 200
+            });
+            canvas.add(note).setActiveObject(note);
+        }
+
+        function useEraser() {
+            canvas.isDrawingMode = false;
+            canvas.on('mouse:down', function(event) {
+                if (event.target) {
+                    canvas.remove(event.target);
+                }
+            });
+        }
+
+        canvas.on('mouse:down', function(opt) {
+            if (drawingMode === 'rectangle') {
+                isDrawing = true;
+                const pointer = canvas.getPointer(opt.e);
+                const rect = new fabric.Rect({
+                    left: pointer.x,
+                    top: pointer.y,
+                    width: 0,
+                    height: 0,
+                    fill: 'transparent',
+                    stroke: 'black',
+                    strokeWidth: 2
+                });
+                canvas.add(rect);
+                canvas.setActiveObject(rect);
+
+                canvas.on('mouse:move', function(opt) {
+                    if (!isDrawing) return;
+                    const pointer = canvas.getPointer(opt.e);
+                    const activeObject = canvas.getActiveObject();
+                    activeObject.set({
+                        width: Math.abs(pointer.x - activeObject.left),
+                        height: Math.abs(pointer.y - activeObject.top)
+                    });
+                    activeObject.setCoords();
+                    canvas.renderAll();
+                });
+
+                canvas.on('mouse:up', function() {
+                    isDrawing = false;
+                    canvas.off('mouse:move');
+                });
+            }
+        });
+
+        // Initialize Shaka Player
+        document.addEventListener('DOMContentLoaded', function() {
             const video = document.getElementById('video');
             const player = new shaka.Player(video);
-
-            // Load a sample video (replace with your video link)
             const manifestUri = 'https://storage.googleapis.com/shaka-demo-assets/angel-one/dash.mpd';
 
             player.load(manifestUri).then(function() {
