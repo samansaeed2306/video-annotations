@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drawing and Video Player</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        #drawing-container, #video-container {
+            width: 80%;
+            margin: 10px 0;
+        }
+        #video-container {
+            display: flex;
+            justify-content: center;
+        }
+        video {
+            width: 100%;
+            max-width: 800px;
+        }
+    </style>
+</head>
+<body>
+    <div id="drawing-container"></div>
+    <div id="video-container">
+        <video id="video" controls></video>
+    </div>
+
+    <!-- Excalidraw -->
+    <script src="https://unpkg.com/@excalidraw/excalidraw@latest/dist/excalidraw.production.min.js"></script>
+    
+    <!-- Shaka Player -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/3.1.0/shaka-player.compiled.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if Excalidraw is available
+            if (typeof Excalidraw !== 'undefined') {
+                const excalidrawContainer = document.getElementById('drawing-container');
+                const excalidraw = new Excalidraw.ExcalidrawContainer(excalidrawContainer);
+                console.log('Excalidraw initialized successfully!');
+            } else {
+                console.error('Excalidraw is not loaded or defined.');
+            }
+
+            // Initialize Shaka Player
+            const video = document.getElementById('video');
+            const player = new shaka.Player(video);
+
+            // Load a sample video (replace with your video link)
+            const manifestUri = 'https://storage.googleapis.com/shaka-demo-assets/angel-one/dash.mpd';
+
+            player.load(manifestUri).then(function() {
+                console.log('The video has now been loaded!');
+            }).catch(function(error) {
+                console.error('Error code', error.code, 'object', error);
+            });
+        });
+    </script>
+</body>
+</html>
