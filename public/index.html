@@ -168,8 +168,141 @@
             }
         }
 
-        // Fabric.js Canvas Initialization and Drawing functions (unchanged from previous code)
-        // ...
+        // Fabric.js Canvas Initialization
+        const canvas = new fabric.Canvas('canvas', {
+            selection: false,
+            isDrawingMode: false
+        });
+
+        // Drawing functionality
+        let drawingMode = '';
+        let isDrawing = false;
+
+        function drawFreehand() {
+            canvas.isDrawingMode = true;
+            drawingMode = '';
+        }
+
+        function activateRectangleMode() {
+            canvas.isDrawingMode = false;
+            drawingMode = 'rectangle';
+        }
+
+        function activateTextMode() {
+            canvas.isDrawingMode = false;
+            drawingMode = 'text';
+            const text = new fabric.Textbox('Type here', {
+                left: 50,
+                top: 50,
+                fontSize: 20,
+                fontFamily: 'Arial',
+                fill: 'black',
+                width: 200
+            });
+            canvas.add(text).setActiveObject(text);
+        }
+
+        function activateNoteMode() {
+            canvas.isDrawingMode = false;
+            drawingMode = 'note';
+            const note = new fabric.Textbox('Note here', {
+                left: 50,
+                top: 50,
+                fontSize: 14,
+                fontFamily: 'Arial',
+                fill: 'black',
+                backgroundColor: '#ffffcc',
+                width: 200
+            });
+            canvas.add(note).setActiveObject(note);
+        }
+
+        function useEraser() {
+            canvas.isDrawingMode = false;
+            canvas.on('mouse:down', function(event) {
+                if (event.target) {
+                    canvas.remove(event.target);
+                }
+            });
+        }
+
+        canvas.on('mouse:down', function(opt) {
+            if (drawingMode === 'rectangle') {
+                isDrawing = true;
+                const pointer = canvas.getPointer(opt.e);
+                const rect = new fabric.Rect({
+                    left: pointer.x,
+                    top: pointer.y,
+                    width: 0,
+                    height: 0,
+                    fill: 'transparent',
+                    stroke: 'black',
+                    strokeWidth: 2
+                });
+                canvas.add(rect);
+                canvas.setActiveObject(rect);
+
+                canvas.on('mouse:move', function(opt) {
+                    if (!isDrawing) return;
+                    const pointer = canvas.getPointer(opt.e);
+                    const activeObject = canvas.getActiveObject();
+                    activeObject.set({
+                        width: Math.abs(pointer.x - activeObject.left),
+                        height: Math.abs(pointer.y - activeObject.top)
+                    });
+                    activeObject.setCoords();
+                    canvas.renderAll();
+                });
+
+                canvas.on('mouse:up', function() {
+                    isDrawing = false;
+                    canvas.off('mouse:move');
+                });
+            }
+        });
+
+        // Undo/Redo functionality
+        const state = [];
+        let mods = 0;
+        canvas.on('object:added', saveState);
+        canvas.on('object:removed', saveState);
+        canvas.on('object:modified', saveState);
+
+        function saveState() {
+            mods += 1;
+            if (mods < state.length) {
+                state.length = mods;
+            }
+            state.push(JSON.stringify(canvas));
+        }
+
+        function undo() {
+            if (mods > 0) {
+                mods -= 1;
+                canvas.loadFromJSON(state[mods]);
+                canvas.renderAll();
+            }
+        }
+
+        function redo() {
+            if (mods < state.length - 1) {
+                mods += 1;
+                canvas.loadFromJSON(state[mods]);
+                canvas.renderAll();
+            }
+        }
+
+        // Synchronize canvas size with video size
+        const videoContainer = document.getElementById('video-container');
+        const video = document.getElementById('video');
+        const fabricCanvas = document.getElementById('canvas');
+
+        video.addEventListener('loadedmetadata', () => {
+            fabricCanvas.width = video.clientWidth;
+            fabricCanvas.height = video.clientHeight;
+            canvas.setWidth(video.clientWidth);
+            canvas.setHeight(video.clientHeight);
+        });
     </script>
 </body>
 </html>
