@@ -45,11 +45,62 @@
             height: 20px;
         }
         #video-container {
-            width: 50%;
-            margin-top: 20px;
+            width: 80%; /* Adjust width as needed */
+            max-width: 800px; /* Limit maximum width */
+            text-align: center; /* Center align video container */
+            position: relative;
+            margin: 20px auto; /* Center horizontally with some top margin */
         }
         video {
             width: 100%;
+            display: block; /* Ensure video fills its container */
+        }
+        #canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none; /* Ensure video controls are not obstructed */
+        }
+        .annotations {
+            position: fixed;
+            right: 10px;
+            top: 10px;
+            width: 100px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            height: 80%;
+            overflow-y: auto;
+        }
+        .timeline {
+            position: relative; /* Make timeline relative to its container */
+            width: 53%; /* Fill the width of its container */
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 2px; /* Add some space between video container and timeline */
+            overflow: hidden; /* Hide overflow to prevent extra horizontal scroll */
+        }
+        .timeline .tick {
+            position: absolute;
+            height: 100%;
+            width: 1px;
+            background-color: #999;
+            bottom: 0;
+        }
+        .timeline div {
+            display: inline-block;
+            width: calc(100% / var(--duration)); /* Adjust width dynamically based on video duration */
+            height: 20px;
+            background-color: #ccc;
+            margin: 0;
+            cursor: pointer;
+            position: relative;
+        }
+        .timeline .active {
+            background-color: #f00;
         }
     </style>
 </head>
@@ -66,134 +117,24 @@
     </div>
 
     <!-- Fabric.js Canvas -->
-    <canvas id="canvas" width="800" height="600"></canvas>
-
-    <!-- Video Player -->
     <div id="video-container">
         <video id="video" controls></video>
+        <!-- <canvas id="canvas" width="100px" height="100px"></canvas> -->
     </div>
+
+    <!-- Annotations Sidebar -->
+    <div class="annotations">
+        <h3>Annotations</h3>
+        <ul id="annotations-list"></ul>
+    </div>
+
+    <!-- Timeline -->
+    <div class="timeline" id="timeline"></div>
 
     <!-- Shaka Player -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/3.1.0/shaka-player.compiled.js"></script>
 
     <script>
-        const canvas = new fabric.Canvas('canvas');
-        const state = [];
-        let mods = 0;
-        let drawingMode = '';
-        let isDrawing = false;
-
-        function saveState() {
-            mods += 1;
-            if (mods < state.length) {
-                state.length = mods;
-            }
-            state.push(JSON.stringify(canvas));
-        }
-
-        canvas.on('object:added', saveState);
-        canvas.on('object:removed', saveState);
-        canvas.on('object:modified', saveState);
-
-        function undo() {
-            if (mods > 0) {
-                mods -= 1;
-                canvas.loadFromJSON(state[mods]);
-                canvas.renderAll();
-            }
-        }
-
-        function redo() {
-            if (mods < state.length - 1) {
-                mods += 1;
-                canvas.loadFromJSON(state[mods]);
-                canvas.renderAll();
-            }
-        }
-
-        function drawFreehand() {
-            canvas.isDrawingMode = true;
-            drawingMode = '';
-        }
-
-        function activateRectangleMode() {
-            canvas.isDrawingMode = false;
-            drawingMode = 'rectangle';
-        }
-
-        function activateTextMode() {
-            canvas.isDrawingMode = false;
-            drawingMode = 'text';
-            const text = new fabric.Textbox('Type here', {
-                left: 50,
-                top: 50,
-                fontSize: 20,
-                fontFamily: 'Arial',
-                fill: 'black',
-                width: 200
-            });
-            canvas.add(text).setActiveObject(text);
-        }
-
-        function activateNoteMode() {
-            canvas.isDrawingMode = false;
-            drawingMode = 'note';
-            const note = new fabric.Textbox('Note here', {
-                left: 50,
-                top: 50,
-                fontSize: 14,
-                fontFamily: 'Arial',
-                fill: 'black',
-                backgroundColor: '#ffffcc',
-                width: 200
-            });
-            canvas.add(note).setActiveObject(note);
-        }
-
-        function useEraser() {
-            canvas.isDrawingMode = false;
-            canvas.on('mouse:down', function(event) {
-                if (event.target) {
-                    canvas.remove(event.target);
-                }
-            });
-        }
-
-        canvas.on('mouse:down', function(opt) {
-            if (drawingMode === 'rectangle') {
-                isDrawing = true;
-                const pointer = canvas.getPointer(opt.e);
-                const rect = new fabric.Rect({
-                    left: pointer.x,
-                    top: pointer.y,
-                    width: 0,
-                    height: 0,
-                    fill: 'transparent',
-                    stroke: 'black',
-                    strokeWidth: 2
-                });
-                canvas.add(rect);
-                canvas.setActiveObject(rect);
-
-                canvas.on('mouse:move', function(opt) {
-                    if (!isDrawing) return;
-                    const pointer = canvas.getPointer(opt.e);
-                    const activeObject = canvas.getActiveObject();
-                    activeObject.set({
-                        width: Math.abs(pointer.x - activeObject.left),
-                        height: Math.abs(pointer.y - activeObject.top)
-                    });
-                    activeObject.setCoords();
-                    canvas.renderAll();
-                });
-
-                canvas.on('mouse:up', function() {
-                    isDrawing = false;
-                    canvas.off('mouse:move');
-                });
-            }
-        });
-
         // Initialize Shaka Player
         document.addEventListener('DOMContentLoaded', function() {
             const video = document.getElementById('video');
@@ -202,10 +143,33 @@
 
             player.load(manifestUri).then(function() {
                 console.log('The video has now been loaded!');
+                setupTimeline(video);
             }).catch(function(error) {
                 console.error('Error code', error.code, 'object', error);
             });
         });
+
+        // Setup the timeline UI
+        function setupTimeline(video) {
+            const timeline = document.getElementById('timeline');
+            const duration = Math.floor(video.duration);
+            timeline.style.setProperty('--duration', duration); // Set custom CSS property for dynamic width
+
+            for (let i = 0; i < duration; i++) {
+                const tick = document.createElement('div');
+                tick.classList.add('tick');
+                tick.style.left = `${(i / duration) * 100}%`; // Position tick horizontally
+                tick.dataset.time = i; // Associate the tick with a specific second of the video
+                tick.addEventListener('click', function() {
+                    console.log(`Clicked on tick at ${i} seconds.`);
+                    video.currentTime = i;
+                });
+                timeline.appendChild(tick);
+            }
+        }
+
+        // Fabric.js Canvas Initialization and Drawing functions (unchanged from previous code)
+        // ...
     </script>
 </body>
 </html>
