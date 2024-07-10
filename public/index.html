@@ -15,6 +15,9 @@
             margin: 0;
             font-family: Arial, sans-serif;
         }
+        canvas {
+            border: 1px solid #000;
+        }
         .tools {
             position: fixed;
             top: 10px;
@@ -41,21 +44,22 @@
             width: 20px;
             height: 20px;
         }
-        #canvas-container {
-            position: relative;
+        #video-container {
             width: 80%; /* Adjust width as needed */
             max-width: 800px; /* Limit maximum width */
+            text-align: center; /* Center align video container */
+            position: relative;
             margin: 20px auto; /* Center horizontally with some top margin */
         }
         video {
-            display: block;
             width: 100%;
-            background-color: #000; /* Fallback color for video container */
+            display: block; /* Ensure video fills its container */
         }
-        canvas {
+        #canvas {
             position: absolute;
             top: 0;
             left: 0;
+            pointer-events: none; /* Ensure video controls are not obstructed */
         }
         .annotations {
             position: fixed;
@@ -112,10 +116,10 @@
         <button onclick="redo()"><img src="icons/redo.png" alt="Redo"></button>
     </div>
 
-    <!-- Video Container -->
-    <div id="canvas-container">
+    <!-- Fabric.js Canvas -->
+    <div id="video-container">
         <video id="video" controls></video>
-        <canvas id="canvas"></canvas>
+        <!-- <canvas id="canvas" width="100px" height="100px"></canvas> -->
     </div>
 
     <!-- Annotations Sidebar -->
@@ -164,32 +168,29 @@
             }
         }
 
-        // Drawing functionality with Fabric.js
+        // Fabric.js Canvas Initialization
         const canvas = new fabric.Canvas('canvas', {
             selection: false,
-            backgroundColor: 'transparent'
+            isDrawingMode: false
         });
+
+        // Drawing functionality
+        let drawingMode = '';
+        let isDrawing = false;
 
         function drawFreehand() {
             canvas.isDrawingMode = true;
+            drawingMode = '';
         }
 
         function activateRectangleMode() {
             canvas.isDrawingMode = false;
-            const rect = new fabric.Rect({
-                left: 50,
-                top: 50,
-                width: 100,
-                height: 100,
-                fill: 'transparent',
-                stroke: 'black',
-                strokeWidth: 2
-            });
-            canvas.add(rect);
+            drawingMode = 'rectangle';
         }
 
         function activateTextMode() {
             canvas.isDrawingMode = false;
+            drawingMode = 'text';
             const text = new fabric.Textbox('Type here', {
                 left: 50,
                 top: 50,
@@ -203,6 +204,7 @@
 
         function activateNoteMode() {
             canvas.isDrawingMode = false;
+            drawingMode = 'note';
             const note = new fabric.Textbox('Note here', {
                 left: 50,
                 top: 50,
@@ -223,6 +225,41 @@
                 }
             });
         }
+
+        canvas.on('mouse:down', function(opt) {
+            if (drawingMode === 'rectangle') {
+                isDrawing = true;
+                const pointer = canvas.getPointer(opt.e);
+                const rect = new fabric.Rect({
+                    left: pointer.x,
+                    top: pointer.y,
+                    width: 0,
+                    height: 0,
+                    fill: 'transparent',
+                    stroke: 'black',
+                    strokeWidth: 2
+                });
+                canvas.add(rect);
+                canvas.setActiveObject(rect);
+
+                canvas.on('mouse:move', function(opt) {
+                    if (!isDrawing) return;
+                    const pointer = canvas.getPointer(opt.e);
+                    const activeObject = canvas.getActiveObject();
+                    activeObject.set({
+                        width: Math.abs(pointer.x - activeObject.left),
+                        height: Math.abs(pointer.y - activeObject.top)
+                    });
+                    activeObject.setCoords();
+                    canvas.renderAll();
+                });
+
+                canvas.on('mouse:up', function() {
+                    isDrawing = false;
+                    canvas.off('mouse:move');
+                });
+            }
+        });
 
         // Undo/Redo functionality
         const state = [];
@@ -254,6 +291,18 @@
                 canvas.renderAll();
             }
         }
+
+        // Synchronize canvas size with video size
+        const videoContainer = document.getElementById('video-container');
+        const video = document.getElementById('video');
+        const fabricCanvas = document.getElementById('canvas');
+
+        video.addEventListener('loadedmetadata', () => {
+            fabricCanvas.width = video.clientWidth;
+            fabricCanvas.height = video.clientHeight;
+            canvas.setWidth(video.clientWidth);
+            canvas.setHeight(video.clientHeight);
+        });
     </script>
 </body>
 </html>
