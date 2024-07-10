@@ -1,4 +1,17 @@
 {
+  "name": "video-annotator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "graceful-fs": "^4.2.11",
+    "nodemon": "^3.1.4"
+  },
   "dependencies": {
     "http-server": "^14.1.1"
   }
