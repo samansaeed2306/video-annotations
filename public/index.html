@@ -201,42 +201,70 @@
         }
 
         function handleDrop(event) {
-            console.log('Drop:', event.target.dataset.time);
-            event.preventDefault();
-            const oldTime = event.dataTransfer.getData('text/plain');
-            const newTime = event.target.dataset.time;
-            moveAnnotation(oldTime, newTime);
-        }
+    console.log('Drop:', event.target.dataset.time);
+    event.preventDefault();
+    const oldTime = event.dataTransfer.getData('text/plain');
+    const newTime = event.target.dataset.time;
+    moveAnnotation(oldTime, newTime);
 
-       // Function to move the annotation to the new time
+    // Remove the pencil icon from the old tick
+    const oldTick = document.querySelector(`.tick[data-time='${oldTime}'] .icon`);
+    if (oldTick) {
+        oldTick.style.display = 'none';
+    }
+
+    const annotationIndex = annotations.findIndex(annotation => Math.floor(annotation.time) === parseInt(oldTime));
+    if (annotationIndex !== -1) {
+        annotations.splice(annotationIndex, 1);
+        updateAnnotationsList();
+        updateTimelineIcons();
+    }
+}
+
+
+        
+// Fabric.js Canvas Initialization
+const canvas = new fabric.Canvas('canvas', {
+    selection: false,
+    isDrawingMode: false
+});
+
 function moveAnnotation(oldTime, newTime) {
     console.log('Moving annotation from', oldTime, 'to', newTime);
     oldTime = parseInt(oldTime);
     newTime = parseInt(newTime);
-    
-    // Properly declare and initialize annotationIndex
+
+    // Find the annotation to move
     let annotationIndex = annotations.findIndex(annotation => Math.floor(annotation.time) === oldTime);
-    
     if (annotationIndex !== -1) {
         const annotation = annotations[annotationIndex];
         annotation.time = newTime;
-        annotations.splice(annotationIndex, 1, annotation); // Replace old annotation with updated one
-        
+        annotations.splice(annotationIndex, 1, annotation); // Update annotation time in the array
+
+        // Remove the annotation from the canvas at the old time
+        canvas.forEachObject(obj => {
+            if (obj.time === oldTime) {
+                canvas.remove(obj);
+            }
+        });
+
+        // Load the annotation onto the canvas at the new time
+        annotations.forEach(ann => {
+            if (Math.floor(ann.time) === newTime) {
+                canvas.loadFromJSON(ann.content, () => {
+                    canvas.renderAll();
+                });
+            }
+        });
+
         // Update UI or canvas accordingly
         updateAnnotationsList();
         updateTimelineIcons();
+    }
+}
 
-        // Load the annotation content onto the canvas at the new time
-        canvas.loadFromJSON(annotation.content, () => {
-            canvas.renderAll();
-        });
-    }}
 
-        // Fabric.js Canvas Initialization
-        const canvas = new fabric.Canvas('canvas', {
-            selection: false,
-            isDrawingMode: false
-        });
+
 
         // Set the current drawing color
         function setCurrentDrawingColor() {
@@ -456,21 +484,28 @@ function moveAnnotation(oldTime, newTime) {
             }
         }
 
-        // Function to update all timeline icons based on annotations
         function updateTimelineIcons() {
-            const timeline = document.getElementById('timeline');
-            const ticks = timeline.getElementsByClassName('tick');
-            for (let tick of ticks) {
-                tick.classList.remove('has-drawing');
+        const timeline = document.getElementById('timeline');
+        const ticks = timeline.getElementsByClassName('tick');
+        for (let tick of ticks) {
+            tick.classList.remove('has-drawing');
+            const icon = tick.querySelector('.icon');
+            if (icon) {
+                icon.style.display = 'none';
             }
-            annotations.forEach(annotation => {
-                const time = Math.floor(annotation.time);
-                const tick = timeline.querySelector(`.tick[data-time='${time}']`);
-                if (tick) {
-                    tick.classList.add('has-drawing');
-                }
-            });
         }
+        annotations.forEach(annotation => {
+            const time = Math.floor(annotation.time);
+            const tick = timeline.querySelector(`.tick[data-time='${time}']`);
+            if (tick) {
+                tick.classList.add('has-drawing');
+                const icon = tick.querySelector('.icon');
+                if (icon) {
+                    icon.style.display = 'block';
+                }
+            }
+        });
+    }
     </script>
 </body>
 </html>
