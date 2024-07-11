@@ -15,9 +15,6 @@
             margin: 0;
             font-family: Arial, sans-serif;
         }
-        canvas {
-            border: 1px solid #000;
-        }
         .tools {
             position: fixed;
             top: 10px;
@@ -75,22 +72,15 @@
         }
         .timeline {
             position: relative; /* Make timeline relative to its container */
-            width: 53%; /* Fill the width of its container */
+            width: 80%; /* Fill the width of its container */
             background-color: #fff;
             border: 1px solid #ccc;
             border-radius: 5px;
             padding: 10px;
-            margin-top: 2px; /* Add some space between video container and timeline */
+            margin-top: 20px; /* Add some space between video container and timeline */
             overflow: hidden; /* Hide overflow to prevent extra horizontal scroll */
         }
         .timeline .tick {
-            position: absolute;
-            height: 100%;
-            width: 1px;
-            background-color: #999;
-            bottom: 0;
-        }
-        .timeline div {
             display: inline-block;
             width: calc(100% / var(--duration)); /* Adjust width dynamically based on video duration */
             height: 20px;
@@ -99,8 +89,19 @@
             cursor: pointer;
             position: relative;
         }
-        .timeline .active {
-            background-color: #f00;
+        .timeline .tick .icon {
+            position: absolute;
+            top: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: none;
+        }
+        .timeline .tick.has-drawing .icon {
+            display: block;
+        }
+        .timeline .tick.has-drawing .icon img {
+            width: 16px;
+            height: 16px;
         }
     </style>
 </head>
@@ -119,7 +120,7 @@
     <!-- Fabric.js Canvas -->
     <div id="video-container">
         <video id="video" controls></video>
-        <!-- <canvas id="canvas" width="100px" height="100px"></canvas> -->
+        <canvas id="canvas"></canvas>
     </div>
 
     <!-- Annotations Sidebar -->
@@ -135,6 +136,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/3.1.0/shaka-player.compiled.js"></script>
 
     <script>
+        let annotations = [];
+        let currentColorIndex = 0;
+        const colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF'];
+
         // Initialize Shaka Player
         document.addEventListener('DOMContentLoaded', function() {
             const video = document.getElementById('video');
@@ -158,8 +163,8 @@
             for (let i = 0; i < duration; i++) {
                 const tick = document.createElement('div');
                 tick.classList.add('tick');
-                tick.style.left = `${(i / duration) * 100}%`; // Position tick horizontally
                 tick.dataset.time = i; // Associate the tick with a specific second of the video
+                tick.innerHTML = '<div class="icon"><img src="icons/pencil.png" alt="Pencil"></div>';
                 tick.addEventListener('click', function() {
                     console.log(`Clicked on tick at ${i} seconds.`);
                     video.currentTime = i;
@@ -174,6 +179,14 @@
             isDrawingMode: false
         });
 
+        // Set the current drawing color
+        function setCurrentDrawingColor() {
+            if (canvas.freeDrawingBrush) {
+                canvas.freeDrawingBrush.color = colors[currentColorIndex % colors.length];
+                currentColorIndex++;
+            }
+        }
+
         // Drawing functionality
         let drawingMode = '';
         let isDrawing = false;
@@ -181,11 +194,13 @@
         function drawFreehand() {
             canvas.isDrawingMode = true;
             drawingMode = '';
+            setCurrentDrawingColor(); // Set new color for each new drawing
         }
 
         function activateRectangleMode() {
             canvas.isDrawingMode = false;
             drawingMode = 'rectangle';
+            setCurrentDrawingColor(); // Set new color for each new drawing
         }
 
         function activateTextMode() {
@@ -196,9 +211,10 @@
                 top: 50,
                 fontSize: 20,
                 fontFamily: 'Arial',
-                fill: 'black',
+                fill: colors[currentColorIndex % colors.length],
                 width: 200
             });
+            currentColorIndex++;
             canvas.add(text).setActiveObject(text);
         }
 
@@ -210,10 +226,11 @@
                 top: 50,
                 fontSize: 14,
                 fontFamily: 'Arial',
-                fill: 'black',
+                fill: colors[currentColorIndex % colors.length],
                 backgroundColor: '#ffffcc',
                 width: 200
             });
+            currentColorIndex++;
             canvas.add(note).setActiveObject(note);
         }
 
@@ -236,9 +253,10 @@
                     width: 0,
                     height: 0,
                     fill: 'transparent',
-                    stroke: 'black',
+                    stroke: colors[currentColorIndex % colors.length],
                     strokeWidth: 2
                 });
+                currentColorIndex++;
                 canvas.add(rect);
                 canvas.setActiveObject(rect);
 
@@ -274,6 +292,7 @@
                 state.length = mods;
             }
             state.push(JSON.stringify(canvas));
+            recordAnnotation(video.currentTime);
         }
 
         function undo() {
@@ -303,6 +322,80 @@
             canvas.setWidth(video.clientWidth);
             canvas.setHeight(video.clientHeight);
         });
+
+        // Event listener for video pause
+        video.addEventListener('pause', () => {
+            canvas.isDrawingMode = true; // Enable drawing mode when video is paused
+            fabricCanvas.style.pointerEvents = 'auto'; // Enable pointer events on canvas
+        });
+
+        // Event listener for video play
+        video.addEventListener('play', () => {
+            canvas.isDrawingMode = false; // Disable drawing mode when video is playing
+            fabricCanvas.style.pointerEvents = 'none'; // Disable pointer events on canvas
+        });
+
+        // Event listener for video time update
+        video.addEventListener('timeupdate', () => {
+            showAnnotationsAtCurrentTime(video.currentTime);
+        });
+
+        // Function to record annotation
+        function recordAnnotation(time) {
+            const annotation = {
+                time: time,
+                content: JSON.stringify(canvas.toJSON())
+            };
+            annotations.push(annotation);
+            updateAnnotationsList();
+            updateTimelineIcon(time);
+        }
+
+        // Function to update the annotations list in the sidebar
+        function updateAnnotationsList() {
+            const annotationsList = document.getElementById('annotations-list');
+            annotationsList.innerHTML = '';
+            annotations.forEach((annotation, index) => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `Annotation at ${annotation.time.toFixed(2)}s`;
+                listItem.addEventListener('click', () => {
+                    loadAnnotation(index);
+                });
+                annotationsList.appendChild(listItem);
+            });
+        }
+
+        // Function to load a specific annotation
+        function loadAnnotation(index) {
+            const annotation = annotations[index];
+            video.currentTime = annotation.time;
+            canvas.loadFromJSON(annotation.content, () => {
+                canvas.renderAll();
+            });
+        }
+
+        // Function to show annotations at the current time
+        function showAnnotationsAtCurrentTime(currentTime) {
+            canvas.clear();
+            annotations.forEach(annotation => {
+                if (Math.abs(annotation.time - currentTime) < 0.5) { // Show annotation close to the current time
+                    canvas.loadFromJSON(annotation.content, () => {
+                        canvas.renderAll();
+                    });
+                }
+            });
+        }
+
+        // Function to update the timeline icon at the specific time
+        function updateTimelineIcon(time) {
+            const timeline = document.getElementById('timeline');
+            const ticks = timeline.getElementsByClassName('tick');
+            for (let tick of ticks) {
+                if (parseInt(tick.dataset.time) === Math.floor(time)) {
+                    tick.classList.add('has-drawing');
+                }
+            }
+        }
     </script>
 </body>
 </html>
