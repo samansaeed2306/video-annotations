@@ -154,7 +154,6 @@
             });
         });
 
-        // Setup the timeline UI
         function setupTimeline(video) {
             const timeline = document.getElementById('timeline');
             const duration = Math.floor(video.duration);
@@ -163,15 +162,75 @@
             for (let i = 0; i < duration; i++) {
                 const tick = document.createElement('div');
                 tick.classList.add('tick');
-                tick.dataset.time = i; // Associate the tick with a specific second of the video
-                tick.innerHTML = '<div class="icon"><img src="icons/pencil.png" alt="Pencil"></div>';
+                tick.dataset.time = i; // Set the dataset.time attribute
+
+                // Add pencil icon and setup drag events
+                const icon = document.createElement('div');
+                icon.classList.add('icon');
+                const img = document.createElement('img');
+                img.src = 'icons/pencil.png';
+                img.alt = 'Pencil';
+                icon.appendChild(img);
+                tick.appendChild(icon);
+
                 tick.addEventListener('click', function() {
                     console.log(`Clicked on tick at ${i} seconds.`);
                     video.currentTime = i;
                 });
+
+                // Add drag events to the pencil icon
+                img.addEventListener('dragstart', handleDragStart);
+                tick.addEventListener('dragover', handleDragOver);
+                tick.addEventListener('drop', handleDrop);
+                img.setAttribute('draggable', true);
+
                 timeline.appendChild(tick);
             }
         }
+
+          // Function to handle drag start
+          function handleDragStart(event) {
+            const dragTime = event.target.parentNode.parentNode.dataset.time;
+            console.log('Drag start:', dragTime);
+            event.dataTransfer.setData('text/plain', dragTime);
+        }
+
+        function handleDragOver(event) {
+            console.log('Drag over:', event.target.dataset.time);
+            event.preventDefault();
+        }
+
+        function handleDrop(event) {
+            console.log('Drop:', event.target.dataset.time);
+            event.preventDefault();
+            const oldTime = event.dataTransfer.getData('text/plain');
+            const newTime = event.target.dataset.time;
+            moveAnnotation(oldTime, newTime);
+        }
+
+       // Function to move the annotation to the new time
+function moveAnnotation(oldTime, newTime) {
+    console.log('Moving annotation from', oldTime, 'to', newTime);
+    oldTime = parseInt(oldTime);
+    newTime = parseInt(newTime);
+    
+    // Properly declare and initialize annotationIndex
+    let annotationIndex = annotations.findIndex(annotation => Math.floor(annotation.time) === oldTime);
+    
+    if (annotationIndex !== -1) {
+        const annotation = annotations[annotationIndex];
+        annotation.time = newTime;
+        annotations.splice(annotationIndex, 1, annotation); // Replace old annotation with updated one
+        
+        // Update UI or canvas accordingly
+        updateAnnotationsList();
+        updateTimelineIcons();
+
+        // Load the annotation content onto the canvas at the new time
+        canvas.loadFromJSON(annotation.content, () => {
+            canvas.renderAll();
+        });
+    }}
 
         // Fabric.js Canvas Initialization
         const canvas = new fabric.Canvas('canvas', {
@@ -395,6 +454,22 @@
                     tick.classList.add('has-drawing');
                 }
             }
+        }
+
+        // Function to update all timeline icons based on annotations
+        function updateTimelineIcons() {
+            const timeline = document.getElementById('timeline');
+            const ticks = timeline.getElementsByClassName('tick');
+            for (let tick of ticks) {
+                tick.classList.remove('has-drawing');
+            }
+            annotations.forEach(annotation => {
+                const time = Math.floor(annotation.time);
+                const tick = timeline.querySelector(`.tick[data-time='${time}']`);
+                if (tick) {
+                    tick.classList.add('has-drawing');
+                }
+            });
         }
     </script>
 </body>
