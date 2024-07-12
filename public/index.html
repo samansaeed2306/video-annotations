@@ -6,6 +6,10 @@
     <title>Drawing Tool and Video Player</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.5.0/fabric.min.js"></script>
     <style>
+        h3{
+            color: #ffffff;
+            padding-left: 80px;
+        }
         body {
             display: flex;
             flex-direction: column;
@@ -30,17 +34,16 @@
             margin: 5px;
             padding: 5px;
             cursor: pointer;
-            border: none;
-            background-color: #f0f0f0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            border-radius: 3px;
+            background-color: #d5b211;
+            
         }
         .tools button:hover {
-            background-color: #e0e0e0;
+             background-color: #e0e0e0; 
         }
         .tools button img {
             width: 20px;
             height: 20px;
+            
         }
         #video-container {
             width: 80%; /* Adjust width as needed */
@@ -65,7 +68,7 @@
             right: 10px;
             top: 10px;
             width: 250px;
-            background-color: #c2bcbc;
+            background-color: #0f0e0e;
             border: 1px solid #ccc;
             border-radius: 5px;
             padding: 10px;
@@ -74,6 +77,11 @@
             height: 100%;
             overflow-y: auto;
         }
+
+        .annotations ul li {
+            color: white; /* Set the color of list items to white */
+        }
+        
         .timeline {
             position: relative; /* Make timeline relative to its container */
             width: 80%; /* Fill the width of its container */
