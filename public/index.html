@@ -14,13 +14,14 @@
             height: 100vh;
             margin: 0;
             font-family: Arial, sans-serif;
+            background-color:#485056;
         }
         .tools {
             position: fixed;
             top: 10px;
-            left: 10px;
+            left: 40%;
             z-index: 1000;
-            background-color: #fff;
+            background-color: #d5b211;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
@@ -44,6 +45,7 @@
         #video-container {
             width: 80%; /* Adjust width as needed */
             max-width: 800px; /* Limit maximum width */
+            padding-top: 600px;
             text-align: center; /* Center align video container */
             position: relative;
             margin: 20px auto; /* Center horizontally with some top margin */
@@ -62,12 +64,14 @@
             position: fixed;
             right: 10px;
             top: 10px;
-            width: 100px;
-            background-color: #fff;
+            width: 250px;
+            background-color: #c2bcbc;
             border: 1px solid #ccc;
             border-radius: 5px;
             padding: 10px;
-            height: 80%;
+            text-shadow: #d5b211;
+            padding-right: 35px;
+            height: 100%;
             overflow-y: auto;
         }
         .timeline {
@@ -103,6 +107,15 @@
             width: 16px;
             height: 16px;
         }
+        #pencil-pointer {
+            position: absolute;
+            display: none; /* Initially hide the pointer */
+            width: 20px; /* Adjust width and height as needed */
+            height: 20px;
+            background-image: url('https://w7.pngwing.com/pngs/314/397/png-transparent-location-pointer-pin-google-map-red-thumbnail.png'); /* Path to your pointer image */
+            background-size: cover; /* Ensure the image covers the div */
+            z-index: 999; /* Ensure it's above other elements */
+        }
     </style>
 </head>
 <body>
@@ -132,6 +145,8 @@
 
     <!-- Timeline -->
     <div class="timeline" id="timeline"></div>
+
+    <div id="pencil-pointer"></div>
 
     <!-- Shaka Player -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/3.1.0/shaka-player.compiled.js"></script>
@@ -443,6 +458,24 @@ function moveAnnotation(oldTime, newTime) {
             annotations.push(annotation);
             updateAnnotationsList();
             updateTimelineIcon(time);
+            const timeline = document.getElementById('timeline');
+            const tick = timeline.querySelector(`.tick[data-time='${Math.floor(time)}']`);
+            if (tick) {
+                const icon = tick.querySelector('.icon');
+                if (icon && icon.querySelector('img').alt === 'Pencil') {
+                    const pencilPointer = document.getElementById('pencil-pointer');
+                    pencilPointer.style.display = 'block';
+                    console.log('pointer placed')
+                    pencilPointer.style.top = `${icon.offsetTop - 20}px`; // Adjust top position as needed
+                    pencilPointer.style.left = `${icon.offsetLeft}px`; // Adjust left position as needed
+                }
+            }
+                 // Hide pointer icon after a delay (if needed)
+            setTimeout(() => {
+                const pencilPointer = document.getElementById('pencil-pointer');
+                pencilPointer.style.display = 'none';
+            }, 2000); // Adjust delay (in milliseconds) as needed
+        
         }
 
         // Function to update the annotations list in the sidebar
