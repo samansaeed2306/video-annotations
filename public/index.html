@@ -52,10 +52,12 @@
             text-align: center; /* Center align video container */
             position: relative;
             margin: 20px auto; /* Center horizontally with some top margin */
+    
         }
         video {
             width: 100%;
             display: block; /* Ensure video fills its container */
+            
         }
         #canvas {
             position: absolute;
@@ -69,7 +71,7 @@
             top: 10px;
             width: 250px;
             background-color: #0f0e0e;
-            border: 1px solid #ccc;
+            border: 0.5px solid #ccc;
             border-radius: 5px;
             padding: 10px;
             text-shadow: #d5b211;
@@ -82,6 +84,26 @@
             color: white; /* Set the color of list items to white */
         }
         
+        .annotation-item {
+            background-color: black;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            color: white; /* Text color inside the annotation box */
+        }
+        .annotation-item input {
+            width: calc(100% - 20px); /* Adjust the width of the input box */
+            margin-top: 10px; /* Add some margin to the top */
+        }
+        .annotation-buttons {
+            text-align: right;
+            margin-top: 5px;
+        }
+        .annotation-buttons button {
+            margin-left: 5px;
+        }
+
         .timeline {
             position: relative; /* Make timeline relative to its container */
             width: 80%; /* Fill the width of its container */
@@ -486,19 +508,78 @@ function moveAnnotation(oldTime, newTime) {
         
         }
 
-        // Function to update the annotations list in the sidebar
+        // // Function to update the annotations list in the sidebar
+        // function updateAnnotationsList() {
+        //     const annotationsList = document.getElementById('annotations-list');
+        //     annotationsList.innerHTML = '';
+        //     annotations.forEach((annotation, index) => {
+        //         const listItem = document.createElement('li');
+        //         listItem.textContent = `Annotation at ${annotation.time.toFixed(2)}s`;
+        //         listItem.addEventListener('click', () => {
+        //             loadAnnotation(index);
+        //         });
+        //         annotationsList.appendChild(listItem);
+        //     });
+        // }
         function updateAnnotationsList() {
-            const annotationsList = document.getElementById('annotations-list');
-            annotationsList.innerHTML = '';
-            annotations.forEach((annotation, index) => {
-                const listItem = document.createElement('li');
-                listItem.textContent = `Annotation at ${annotation.time.toFixed(2)}s`;
-                listItem.addEventListener('click', () => {
-                    loadAnnotation(index);
-                });
-                annotationsList.appendChild(listItem);
+        const annotationsList = document.getElementById('annotations-list');
+        annotationsList.innerHTML = '';
+        annotations.forEach((annotation, index) => {
+            const listItem = document.createElement('li');
+            listItem.className = 'annotation-item';
+            listItem.textContent = `Annotation at ${annotation.time.toFixed(2)}s`;
+
+            // Create an input box for comments
+            const commentInput = document.createElement('input');
+            commentInput.type = 'text';
+            commentInput.placeholder = 'Add comment';
+            commentInput.value = annotation.comment || '';
+            commentInput.style.display = 'none'; // Initially hidden
+            commentInput.addEventListener('input', function() {
+                annotations[index].comment = commentInput.value;
             });
-        }
+            const cancelButton = document.createElement('button');
+        cancelButton.textContent = 'Cancel';
+        cancelButton.style.display = 'none'; // Initially hidden
+        cancelButton.addEventListener('click', function() {
+            commentInput.style.display = 'none';
+            cancelButton.style.display = 'none';
+            saveButton.style.display = 'none';
+        });
+
+        const saveButton = document.createElement('button');
+        saveButton.textContent = 'Save';
+        saveButton.style.display = 'none'; // Initially hidden
+        saveButton.addEventListener('click', function() {
+            annotations[index].comment = commentInput.value;
+            commentInput.style.display = 'none';
+            cancelButton.style.display = 'none';
+            saveButton.style.display = 'none';
+        });
+        const buttonsContainer = document.createElement('div');
+        buttonsContainer.className = 'annotation-buttons';
+        buttonsContainer.appendChild(cancelButton);
+        buttonsContainer.appendChild(saveButton);
+
+        listItem.appendChild(commentInput);
+        listItem.appendChild(buttonsContainer);
+        listItem.addEventListener('click', () => {
+            commentInput.style.display = 'block'; // Show the input box when the list item is clicked
+            cancelButton.style.display = 'inline-block'; // Show the cancel button
+            saveButton.style.display = 'inline-block'; // Show the save button
+        });
+
+
+            // listItem.appendChild(commentInput);
+            // listItem.addEventListener('click', () => {
+            //     commentInput.style.display = 'block'; // Show the input box when the list item is clicked
+                
+            // });
+            annotationsList.appendChild(listItem);
+            
+        });
+    }
+      
 
         // Function to load a specific annotation
         function loadAnnotation(index) {
