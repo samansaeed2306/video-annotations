@@ -115,6 +115,7 @@
         <button onclick="useEraser()"><img src="icons/eraser.png" alt="Eraser"></button>
         <button onclick="undo()"><img src="icons/undo.png" alt="Undo"></button>
         <button onclick="redo()"><img src="icons/redo.png" alt="Redo"></button>
+        <button onclick="unpickTool()"><img src="icons/unpick.png" alt="Unpick"></button>
     </div>
 
     <!-- Fabric.js Canvas -->
@@ -328,6 +329,12 @@ function moveAnnotation(oldTime, newTime) {
                     canvas.remove(event.target);
                 }
             });
+        }
+        // Function to unpick tool
+        function unpickTool() {
+            canvas.isDrawingMode = false;
+            canvas.defaultCursor = 'default';
+            canvas.selection = true;
         }
 
         canvas.on('mouse:down', function(opt) {
