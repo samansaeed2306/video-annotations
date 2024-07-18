@@ -524,6 +524,11 @@ function moveAnnotation(oldTime, newTime) {
             pointer.classList.add('pointer');
             pointer.style.left = '50%'; // Center the pointer horizontally
             pointer.style.top = '-20px'; // Position above the pencil icon
+            const colors = ['#FF5733', '#33FF57', '#5733FF', '#FFFF33', '#FF33FF', '#33FFFF'];
+
+    // Randomly select a color from the array
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            pointer.style.backgroundColor = randomColor;
             tick.appendChild(pointer);
         
 
@@ -577,9 +582,10 @@ function moveAnnotation(oldTime, newTime) {
         function updateAnnotationDuration(pencilIconId, duration) {
         // Logic to update the annotation's duration
         console.log(`Updating annotation for ${pencilIconId} to duration: ${duration} seconds`);
-        // Your logic to actually update the annotation's duration can go here
-        // For example, updating a global annotations object or making a server call
-    }
+        const annotation = annotations.find(a => a.id === pencilIconId);
+            if (annotation) {
+                annotation.duration = duration;
+            }}
         // // Function to update the annotations list in the sidebar
         // function updateAnnotationsList() {
         //     const annotationsList = document.getElementById('annotations-list');
