@@ -256,11 +256,17 @@
     const oldTick = document.querySelector(`.tick[data-time='${oldTime}'] .icon`);
     if (oldTick) {
         oldTick.style.display = 'none';
+        removePointerForPencilIcon(oldTick);
     }
 
     const annotationIndex = annotations.findIndex(annotation => Math.floor(annotation.time) === parseInt(oldTime));
     if (annotationIndex !== -1) {
         annotations.splice(annotationIndex, 1);
+        canvas.forEachObject(obj => {
+            if (obj.time === oldTime) {
+                canvas.remove(obj);
+            }
+        });
         updateAnnotationsList();
         updateTimelineIcons();
     }
@@ -553,7 +559,16 @@ function moveAnnotation(oldTime, newTime) {
             }
         });
     }
-
+    function removePointerForPencilIcon(tick) {
+    console.log("Inside remove pointer function")
+    
+    const pointer = tick.querySelector('.pointer');
+    
+    if (pointer && pointer.parentNode === tick) { // Check if pointer exists and is a child of tick
+        tick.removeChild(pointer); // Safely remove the pointer
+        console.log("Removed pointer")
+    }
+}
         function calculateAnnotationDuration(width) {
         const timelineWidth = timeline.offsetWidth;
         return (width / timelineWidth) * video.duration;
@@ -677,10 +692,11 @@ function moveAnnotation(oldTime, newTime) {
         for (let tick of ticks) {
             tick.classList.remove('has-drawing');
             const icon = tick.querySelector('.icon');
-            // var pointerPencil = document.getElementsByClassName('pointer');
+            removePointerForPencilIcon(tick);
             if (icon) {
                 icon.style.display = 'none';
-                // pointerPencil.style.display = 'none';
+                
+                
             }
         }
         annotations.forEach(annotation => {
