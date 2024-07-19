@@ -173,7 +173,7 @@
         let annotations = [];
         let currentColorIndex = 0;
         const colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF'];
-
+        
         // Initialize Shaka Player
         document.addEventListener('DOMContentLoaded', function() {
             const video = document.getElementById('video');
@@ -294,7 +294,14 @@
                 updateTimelineIcons();
             }
         }
-
+        function showAnnotationsAtFrame(frameNumber) {
+            canvas.clear();
+            annotations.forEach(annotation => {
+                if (annotation.frame === frameNumber) {
+                    canvas.loadFromJSON(annotation.content, canvas.renderAll.bind(canvas));
+                }
+            });
+        }
         // Set the current drawing color
         function setCurrentDrawingColor() {
             if (canvas.freeDrawingBrush) {
@@ -415,6 +422,9 @@
             updateAnnotationsList();
             updateTimelineIcons();
         }
+        function framesToSeconds(frames, frameRate) {
+            return frames / frameRate;
+        }
 
         function updateAnnotationsList() {
     const annotationsList = document.getElementById('annotations-list');
@@ -422,7 +432,7 @@
     annotations.forEach((annotation, index) => {
         const listItem = document.createElement('li');
         listItem.className = 'annotation-item';
-        listItem.textContent = `Annotation at ${annotation.frame}`;
+        listItem.textContent = `Annotation at ${Math.floor(framesToSeconds(annotation.frame,30))}s`;
 
         // Create an input box for comments
         const commentInput = document.createElement('input');
@@ -469,6 +479,20 @@
         annotationsList.appendChild(listItem);
     });
 }
+function loadAnnotations(frameNumber) {
+    // Clear the canvas first
+    canvas.clear();
+    
+    // Find the annotation(s) corresponding to the given frame number
+    annotations.forEach(annotation => {
+        if (annotation.frame === frameNumber) {
+            console.log(`Loading annotation: ${annotation.frame}`);
+            canvas.loadFromJSON(annotation.content, canvas.renderAll.bind(canvas));
+        }
+    });
+}
+
+
 
         function deleteAnnotation(frame) {
             annotations = annotations.filter(annotation => annotation.frame !== frame);
