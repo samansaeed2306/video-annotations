@@ -6,7 +6,7 @@
     <title>Drawing Tool and Video Player</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.5.0/fabric.min.js"></script>
     <style>
-        h3{
+        h3 {
             color: #ffffff;
             padding-left: 80px;
         }
@@ -18,14 +18,14 @@
             height: 100vh;
             margin: 0;
             font-family: Arial, sans-serif;
-            background-color:#485056;
+            background-color: #485056;
         }
         .tools {
             position: fixed;
             top: 10px;
             left: 40%;
             z-index: 1000;
-            background-color:#485056;
+            background-color: #485056;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
@@ -35,35 +35,31 @@
             padding: 5px;
             cursor: pointer;
             background-color: #d5b211;
-            
         }
         .tools button:hover {
-             background-color: #e0e0e0; 
+            background-color: #e0e0e0;
         }
         .tools button img {
             width: 20px;
             height: 20px;
-            
         }
         #video-container {
-            width: 80%; /* Adjust width as needed */
-            max-width: 800px; /* Limit maximum width */
+            width: 80%;
+            max-width: 800px;
             padding-top: 600px;
-            text-align: center; /* Center align video container */
+            text-align: center;
             position: relative;
-            margin: 20px auto; /* Center horizontally with some top margin */
-    
+            margin: 20px auto;
         }
         video {
             width: 100%;
-            display: block; /* Ensure video fills its container */
-            
+            display: block;
         }
         #canvas {
             position: absolute;
             top: 0;
             left: 0;
-            pointer-events: none; /* Ensure video controls are not obstructed */
+            pointer-events: none;
         }
         .annotations {
             position: fixed;
@@ -74,27 +70,24 @@
             border: 0.5px solid #ccc;
             border-radius: 5px;
             padding: 10px;
-            text-shadow: #d5b211;
             padding-right: 35px;
             height: 100%;
             overflow-y: auto;
         }
-
         .annotations ul li {
-            color: white; /* Set the color of list items to white */
+            color: white;
         }
-        
         .annotation-item {
             background-color: black;
             border: 1px solid #ccc;
             border-radius: 5px;
             padding: 10px;
             margin-bottom: 10px;
-            color: white; /* Text color inside the annotation box */
+            color: white;
         }
         .annotation-item input {
-            width: calc(100% - 20px); /* Adjust the width of the input box */
-            margin-top: 10px; /* Add some margin to the top */
+            width: calc(100% - 20px);
+            margin-top: 10px;
         }
         .annotation-buttons {
             text-align: right;
@@ -103,20 +96,19 @@
         .annotation-buttons button {
             margin-left: 5px;
         }
-
         .timeline {
-            position: relative; /* Make timeline relative to its container */
-            width: 80%; /* Fill the width of its container */
+            position: relative;
+            width: 80%;
             background-color: #fff;
             border: 1px solid #ccc;
             border-radius: 5px;
             padding: 10px;
-            margin-top: 20px; /* Add some space between video container and timeline */
-            overflow: hidden; /* Hide overflow to prevent extra horizontal scroll */
+            margin-top: 20px;
+            overflow: hidden;
         }
         .timeline .tick {
             display: inline-block;
-            width: calc(100% / var(--duration)); /* Adjust width dynamically based on video duration */
+            width: calc(100% / var(--frames));
             height: 20px;
             background-color: #ccc;
             margin: 0;
@@ -137,11 +129,10 @@
             width: 16px;
             height: 16px;
         }
-       
         .pointer {
             position: absolute;
             height: 20px;
-            width: 1.5px; /* initial width */
+            width: 1.5px;
             background-color: rgb(187, 255, 0);
             cursor: ew-resize;
         }
@@ -175,8 +166,6 @@
     <!-- Timeline -->
     <div class="timeline" id="timeline"></div>
 
-    <!-- <div id="pencil-pointer"></div> -->
-
     <!-- Shaka Player -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/3.1.0/shaka-player.compiled.js"></script>
 
@@ -201,121 +190,110 @@
 
         function setupTimeline(video) {
             const timeline = document.getElementById('timeline');
-            const duration = Math.floor(video.duration);
-            timeline.style.setProperty('--duration', duration); // Set custom CSS property for dynamic width
+            const fps = 30; // Assuming the video has 30 frames per second
+            video.addEventListener('loadedmetadata', function() {
+                const totalFrames = Math.floor(video.duration * fps);
+                timeline.style.setProperty('--frames', totalFrames); // Set custom CSS property for dynamic width
 
-            for (let i = 0; i < duration; i++) {
-                const tick = document.createElement('div');
-                tick.classList.add('tick');
-                tick.dataset.time = i; // Set the dataset.time attribute
+                for (let i = 0; i < totalFrames; i++) {
+                    const tick = document.createElement('div');
+                    tick.classList.add('tick');
+                    tick.dataset.frame = i; // Set the dataset.frame attribute
 
-                // Add pencil icon and setup drag events
-                const icon = document.createElement('div');
-                icon.classList.add('icon');
-                const img = document.createElement('img');
-                img.src = 'icons/pencil.png';
-                img.alt = 'Pencil';
-                icon.appendChild(img);
-                tick.appendChild(icon);
+                    // Add pencil icon and setup drag events
+                    const icon = document.createElement('div');
+                    icon.classList.add('icon');
+                    const img = document.createElement('img');
+                    img.src = 'icons/pencil.png';
+                    img.alt = 'Pencil';
+                    icon.appendChild(img);
+                    tick.appendChild(icon);
 
-                tick.addEventListener('click', function() {
-                    console.log(`Clicked on tick at ${i} seconds.`);
-                    video.currentTime = i;
-                });
+                    tick.addEventListener('click', function() {
+                        console.log(`Clicked on tick at frame ${i}.`);
+                        video.currentTime = i / fps;
+                    });
 
-                // Add drag events to the pencil icon
-                img.addEventListener('dragstart', handleDragStart);
-                tick.addEventListener('dragover', handleDragOver);
-                tick.addEventListener('drop', handleDrop);
-                img.setAttribute('draggable', true);
+                    // Add drag events to the pencil icon
+                    img.addEventListener('dragstart', handleDragStart);
+                    tick.addEventListener('dragover', handleDragOver);
+                    tick.addEventListener('drop', handleDrop);
+                    img.setAttribute('draggable', true);
 
-                timeline.appendChild(tick);
-            }
+                    timeline.appendChild(tick);
+                }
+                updateTimelineIcons();
+            });
         }
 
-          // Function to handle drag start
-          function handleDragStart(event) {
-            const dragTime = event.target.parentNode.parentNode.dataset.time;
-            console.log('Drag start:', dragTime);
-            event.dataTransfer.setData('text/plain', dragTime);
+        // Function to handle drag start
+        function handleDragStart(event) {
+            const dragFrame = event.target.parentNode.parentNode.dataset.frame;
+            console.log('Drag start:', dragFrame);
+            event.dataTransfer.setData('text/plain', dragFrame);
         }
 
         function handleDragOver(event) {
-            console.log('Drag over:', event.target.dataset.time);
+            console.log('Drag over:', event.target.dataset.frame);
             event.preventDefault();
         }
 
         function handleDrop(event) {
-    console.log('Drop:', event.target.dataset.time);
-    event.preventDefault();
-    const oldTime = event.dataTransfer.getData('text/plain');
-    const newTime = event.target.dataset.time;
-    moveAnnotation(oldTime, newTime);
+           
+            
+    // Your existing drop logic here
+            console.log('Drop:', event.target.dataset.frame);
+            event.preventDefault();
+            const oldFrame = event.dataTransfer.getData('text/plain');
+            const newFrame = event.target.dataset.frame;
+            moveAnnotation(oldFrame, newFrame);
 
-    // Remove the pencil icon from the old tick
-    const oldTick = document.querySelector(`.tick[data-time='${oldTime}'] .icon`);
-    if (oldTick) {
-        oldTick.style.display = 'none';
-        removePointerForPencilIcon(oldTick);
-    }
-
-    const annotationIndex = annotations.findIndex(annotation => Math.floor(annotation.time) === parseInt(oldTime));
-    if (annotationIndex !== -1) {
-        annotations.splice(annotationIndex, 1);
-        canvas.forEachObject(obj => {
-            if (obj.time === oldTime) {
-                canvas.remove(obj);
+            // Remove the pencil icon from the old tick
+            const oldTick = document.querySelector(`.tick[data-frame='${oldFrame}'] .icon`);
+            if (oldTick) {
+                oldTick.style.display = 'none';
             }
-        });
-        updateAnnotationsList();
-        updateTimelineIcons();
-    }
-}
+        }
 
-
-        
-// Fabric.js Canvas Initialization
-const canvas = new fabric.Canvas('canvas', {
-    selection: false,
-    isDrawingMode: false
-});
-
-function moveAnnotation(oldTime, newTime) {
-    console.log('Moving annotation from', oldTime, 'to', newTime);
-    oldTime = parseInt(oldTime);
-    newTime = parseInt(newTime);
-
-    // Find the annotation to move
-    let annotationIndex = annotations.findIndex(annotation => Math.floor(annotation.time) === oldTime);
-    if (annotationIndex !== -1) {
-        const annotation = annotations[annotationIndex];
-        annotation.time = newTime;
-        annotations.splice(annotationIndex, 1, annotation); // Update annotation time in the array
-
-        // Remove the annotation from the canvas at the old time
-        canvas.forEachObject(obj => {
-            if (obj.time === oldTime) {
-                canvas.remove(obj);
-            }
+        // Fabric.js Canvas Initialization
+        const canvas = new fabric.Canvas('canvas', {
+            selection: false,
+            isDrawingMode: false
         });
 
-        // Load the annotation onto the canvas at the new time
-        annotations.forEach(ann => {
-            if (Math.floor(ann.time) === newTime) {
-                canvas.loadFromJSON(ann.content, () => {
-                    canvas.renderAll();
+        function moveAnnotation(oldFrame, newFrame) {
+            console.log('Moving annotation from', oldFrame, 'to', newFrame);
+            oldFrame = parseInt(oldFrame);
+            newFrame = parseInt(newFrame);
+
+            // Find the annotation to move
+            let annotationIndex = annotations.findIndex(annotation => Math.floor(annotation.frame) === oldFrame);
+            if (annotationIndex !== -1) {
+                const annotation = annotations[annotationIndex];
+                annotation.frame = newFrame;
+                annotations.splice(annotationIndex, 1, annotation); // Update annotation frame in the array
+
+                // Remove the annotation from the canvas at the old frame
+                canvas.forEachObject(obj => {
+                    if (obj.frame === oldFrame) {
+                        canvas.remove(obj);
+                    }
                 });
+
+                // Load the annotation onto the canvas at the new frame
+                annotations.forEach(ann => {
+                    if (Math.floor(ann.frame) === newFrame) {
+                        canvas.loadFromJSON(ann.content, () => {
+                            canvas.renderAll();
+                        });
+                    }
+                });
+
+                // Update UI or canvas accordingly
+                updateAnnotationsList();
+                updateTimelineIcons();
             }
-        });
-
-        // Update UI or canvas accordingly
-        updateAnnotationsList();
-        updateTimelineIcons();
-    }
-}
-
-
-
+        }
 
         // Set the current drawing color
         function setCurrentDrawingColor() {
@@ -380,7 +358,7 @@ function moveAnnotation(oldTime, newTime) {
                 }
             });
         }
-        // Function to unpick tool
+
         function unpickTool() {
             canvas.isDrawingMode = false;
             canvas.defaultCursor = 'default';
@@ -415,208 +393,48 @@ function moveAnnotation(oldTime, newTime) {
                     activeObject.setCoords();
                     canvas.renderAll();
                 });
-
-                canvas.on('mouse:up', function() {
-                    isDrawing = false;
-                    canvas.off('mouse:move');
-                });
             }
         });
 
-        // Undo/Redo functionality
-        const state = [];
-        let mods = 0;
-        canvas.on('object:added', saveState);
-        canvas.on('object:removed', saveState);
-        canvas.on('object:modified', saveState);
-
-        function saveState() {
-            mods += 1;
-            if (mods < state.length) {
-                state.length = mods;
-            }
-            state.push(JSON.stringify(canvas));
-            recordAnnotation(video.currentTime);
-        }
-
-        function undo() {
-            if (mods > 0) {
-                mods -= 1;
-                canvas.loadFromJSON(state[mods]);
-                canvas.renderAll();
-            }
-        }
-
-        function redo() {
-            if (mods < state.length - 1) {
-                mods += 1;
-                canvas.loadFromJSON(state[mods]);
-                canvas.renderAll();
-            }
-        }
-
-        // Synchronize canvas size with video size
-        const videoContainer = document.getElementById('video-container');
-        const video = document.getElementById('video');
-        const fabricCanvas = document.getElementById('canvas');
-
-        video.addEventListener('loadedmetadata', () => {
-            fabricCanvas.width = video.clientWidth;
-            fabricCanvas.height = video.clientHeight;
-            canvas.setWidth(video.clientWidth);
-            canvas.setHeight(video.clientHeight);
+        canvas.on('mouse:up', function() {
+            isDrawing = false;
+            canvas.off('mouse:move');
+            saveAnnotation();
         });
 
-        // Event listener for video pause
-        video.addEventListener('pause', () => {
-            canvas.isDrawingMode = true; // Enable drawing mode when video is paused
-            fabricCanvas.style.pointerEvents = 'auto'; // Enable pointer events on canvas
-        });
+        function saveAnnotation() {
+            const frame = Math.floor(document.getElementById('video').currentTime * 30); // Assuming 30 fps
+            const content = JSON.stringify(canvas);
 
-        // Event listener for video play
-        video.addEventListener('play', () => {
-            canvas.isDrawingMode = false; // Disable drawing mode when video is playing
-            fabricCanvas.style.pointerEvents = 'none'; // Disable pointer events on canvas
-        });
-
-        // Event listener for video time update
-        video.addEventListener('timeupdate', () => {
-            showAnnotationsAtCurrentTime(video.currentTime);
-        });
-
-        // Function to record annotation
-        function recordAnnotation(time) {
             const annotation = {
-                time: time,
-                content: JSON.stringify(canvas.toJSON())
+                frame: frame,
+                content: content
             };
+
             annotations.push(annotation);
             updateAnnotationsList();
-            updateTimelineIcon(time);
-            const timeline = document.getElementById('timeline');
-            const ticks = document.querySelectorAll('.timeline .tick');
-            const annotationTime = Math.floor(video.currentTime);
-            ticks.forEach(tick => {
-                if (parseInt(tick.dataset.time) === annotationTime) {
-                    tick.classList.add('has-drawing');
-                    createPointerForPencilIcon(tick);
-                }
-            });
-            }
-            //     if (icon && icon.querySelector('img').alt === 'Pencil') {
-            //         const pencilPointer = document.getElementById('pencil-pointer');
-            //         pencilPointer.style.display = 'block';
-            //         console.log('pointer placed')
-            //         pencilPointer.style.top = `${icon.offsetTop - 20}px`; // Adjust top position as needed
-            //         pencilPointer.style.left = `${icon.offsetLeft}px`; // Adjust left position as needed
-                    
-            //     }
-            // }
-                 // Hide pointer icon after a delay (if needed)
-            // setTimeout(() => {
-            //     const pencilPointer = document.getElementById('pencil-pointer');
-            //     pencilPointer.style.display = 'none';
-            // }, 2000); // Adjust delay (in milliseconds) as needed
-        
-        
-            function createPointerForPencilIcon(tick) {
-            const pointer = document.createElement('div');
-            pointer.classList.add('pointer');
-            pointer.style.left = '50%'; // Center the pointer horizontally
-            pointer.style.top = '-20px'; // Position above the pencil icon
-            const colors = ['#FF5733', '#33FF57', '#5733FF', '#FFFF33', '#FF33FF', '#33FFFF'];
+            updateTimelineIcons();
+        }
 
-    // Randomly select a color from the array
-            const randomColor = colors[Math.floor(Math.random() * colors.length)];
-            pointer.style.backgroundColor = randomColor;
-            tick.appendChild(pointer);
-        
-
-        // Add dragging logic to resize the pointer
-        let isDragging = false;
-        let startX;
-        let startWidth;
-
-        pointer.addEventListener('mousedown', (e) => {
-            isDragging = true;
-            startX = e.pageX;
-            startWidth = pointer.offsetWidth;
-            pointer.style.cursor = 'ew-resize'; // Change cursor to double arrow
-        });
-
-        document.addEventListener('mousemove', (e) => {
-            if (isDragging) {
-                let newWidth = startWidth + (e.pageX - startX);
-                if (newWidth > 0) {
-                    pointer.style.width = newWidth + 'px';
-
-                    // Calculate and update annotation duration
-                    let annotationDuration = calculateAnnotationDuration(newWidth);
-                    updateAnnotationDuration(tick.id, annotationDuration);
-                }
-            }
-        });
-
-        document.addEventListener('mouseup', () => {
-            if (isDragging) {
-                isDragging = false;
-                pointer.style.cursor = 'ew-resize'; // Keep cursor as double arrow
-            }
-        });
-    }
-    function removePointerForPencilIcon(tick) {
-    console.log("Inside remove pointer function")
-    
-    const pointer = tick.querySelector('.pointer');
-    
-    if (pointer && pointer.parentNode === tick) { // Check if pointer exists and is a child of tick
-        tick.removeChild(pointer); // Safely remove the pointer
-        console.log("Removed pointer")
-    }
-}
-        function calculateAnnotationDuration(width) {
-        const timelineWidth = timeline.offsetWidth;
-        return (width / timelineWidth) * video.duration;
-    }
-
-        function updateAnnotationDuration(pencilIconId, duration) {
-        // Logic to update the annotation's duration
-        console.log(`Updating annotation for ${pencilIconId} to duration: ${duration} seconds`);
-        const annotation = annotations.find(a => a.id === pencilIconId);
-            if (annotation) {
-                annotation.duration = duration;
-            }}
-        // // Function to update the annotations list in the sidebar
-        // function updateAnnotationsList() {
-        //     const annotationsList = document.getElementById('annotations-list');
-        //     annotationsList.innerHTML = '';
-        //     annotations.forEach((annotation, index) => {
-        //         const listItem = document.createElement('li');
-        //         listItem.textContent = `Annotation at ${annotation.time.toFixed(2)}s`;
-        //         listItem.addEventListener('click', () => {
-        //             loadAnnotation(index);
-        //         });
-        //         annotationsList.appendChild(listItem);
-        //     });
-        // }
         function updateAnnotationsList() {
-        const annotationsList = document.getElementById('annotations-list');
-        annotationsList.innerHTML = '';
-        annotations.forEach((annotation, index) => {
-            const listItem = document.createElement('li');
-            listItem.className = 'annotation-item';
-            listItem.textContent = `Annotation at ${annotation.time.toFixed(2)}s`;
+    const annotationsList = document.getElementById('annotations-list');
+    annotationsList.innerHTML = '';
+    annotations.forEach((annotation, index) => {
+        const listItem = document.createElement('li');
+        listItem.className = 'annotation-item';
+        listItem.textContent = `Annotation at ${annotation.frame}`;
 
-            // Create an input box for comments
-            const commentInput = document.createElement('input');
-            commentInput.type = 'text';
-            commentInput.placeholder = 'Add comment';
-            commentInput.value = annotation.comment || '';
-            commentInput.style.display = 'none'; // Initially hidden
-            commentInput.addEventListener('input', function() {
-                annotations[index].comment = commentInput.value;
-            });
-            const cancelButton = document.createElement('button');
+        // Create an input box for comments
+        const commentInput = document.createElement('input');
+        commentInput.type = 'text';
+        commentInput.placeholder = 'Add comment';
+        commentInput.value = annotation.comment || '';
+        commentInput.style.display = 'none'; // Initially hidden
+        commentInput.addEventListener('input', function() {
+            annotations[index].comment = commentInput.value;
+        });
+
+        const cancelButton = document.createElement('button');
         cancelButton.textContent = 'Cancel';
         cancelButton.style.display = 'none'; // Initially hidden
         cancelButton.addEventListener('click', function() {
@@ -634,6 +452,7 @@ function moveAnnotation(oldTime, newTime) {
             cancelButton.style.display = 'none';
             saveButton.style.display = 'none';
         });
+
         const buttonsContainer = document.createElement('div');
         buttonsContainer.className = 'annotation-buttons';
         buttonsContainer.appendChild(cancelButton);
@@ -647,77 +466,44 @@ function moveAnnotation(oldTime, newTime) {
             saveButton.style.display = 'inline-block'; // Show the save button
         });
 
+        annotationsList.appendChild(listItem);
+    });
+}
 
-            // listItem.appendChild(commentInput);
-            // listItem.addEventListener('click', () => {
-            //     commentInput.style.display = 'block'; // Show the input box when the list item is clicked
-                
-            // });
-            annotationsList.appendChild(listItem);
-            
-        });
-    }
-      
+        function deleteAnnotation(frame) {
+            annotations = annotations.filter(annotation => annotation.frame !== frame);
+            canvas.forEachObject(obj => {
+                if (obj.frame === frame) {
+                    canvas.remove(obj);
+                }
+            });
+            updateAnnotationsList();
+            updateTimelineIcons();
+        }
 
-        // Function to load a specific annotation
-        function loadAnnotation(index) {
-            const annotation = annotations[index];
-            video.currentTime = annotation.time;
-            canvas.loadFromJSON(annotation.content, () => {
-                canvas.renderAll();
+        function updateTimelineIcons() {
+            const ticks = document.querySelectorAll('.tick');
+            ticks.forEach(tick => {
+                const frame = parseInt(tick.dataset.frame);
+                const hasDrawing = annotations.some(annotation => Math.floor(annotation.frame) === frame);
+                if (hasDrawing) {
+                    tick.classList.add('has-drawing');
+                } else {
+                    tick.classList.remove('has-drawing');
+                }
             });
         }
 
-        // Function to show annotations at the current time
-        function showAnnotationsAtCurrentTime(currentTime) {
-            canvas.clear();
+        document.getElementById('video').addEventListener('timeupdate', function() {
+            const currentFrame = Math.floor(this.currentTime * 30); // Assuming 30 fps
             annotations.forEach(annotation => {
-                if (Math.abs(annotation.time - currentTime) < 0.5) { // Show annotation close to the current time
+                if (Math.floor(annotation.frame) === currentFrame) {
                     canvas.loadFromJSON(annotation.content, () => {
                         canvas.renderAll();
                     });
                 }
             });
-        }
-
-        // Function to update the timeline icon at the specific time
-        function updateTimelineIcon(time) {
-            const timeline = document.getElementById('timeline');
-            const ticks = timeline.getElementsByClassName('tick');
-            for (let tick of ticks) {
-                if (parseInt(tick.dataset.time) === Math.floor(time)) {
-                    tick.classList.add('has-drawing');
-                    // createPointerForPencilIcon(icon);
-                }
-            }
-        }
-
-        function updateTimelineIcons() {
-        const timeline = document.getElementById('timeline');
-        const ticks = timeline.getElementsByClassName('tick');
-        for (let tick of ticks) {
-            tick.classList.remove('has-drawing');
-            const icon = tick.querySelector('.icon');
-            removePointerForPencilIcon(tick);
-            if (icon) {
-                icon.style.display = 'none';
-                
-                
-            }
-        }
-        annotations.forEach(annotation => {
-            const time = Math.floor(annotation.time);
-            const tick = timeline.querySelector(`.tick[data-time='${time}']`);
-            if (tick) {
-                tick.classList.add('has-drawing');
-                const icon = tick.querySelector('.icon');
-                if (icon) {
-                    icon.style.display = 'block';
-                    createPointerForPencilIcon(icon);
-                }
-            }
         });
-    }
     </script>
 </body>
 </html>
