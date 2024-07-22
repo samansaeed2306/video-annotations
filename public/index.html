@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Drawing Tool and Video Player</title>
+    <title>Video Annotator</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.5.0/fabric.min.js"></script>
     <style>
         h3{
@@ -520,6 +520,9 @@ function moveAnnotation(oldTime, newTime) {
         
         
             function createPointerForPencilIcon(tick) {
+                if (tick.querySelector('.pointer')) {
+                    return; // Exit the function if a pointer already exists
+                }
             const pointer = document.createElement('div');
             pointer.classList.add('pointer');
             pointer.style.left = '50%'; // Center the pointer horizontally
@@ -600,6 +603,7 @@ function moveAnnotation(oldTime, newTime) {
         //     });
         // }
         function updateAnnotationsList() {
+        annotations = Array.from(new Set(annotations.map(a => a.time))).map(time => annotations.find(a => a.time === time));
         const annotationsList = document.getElementById('annotations-list');
         annotationsList.innerHTML = '';
         annotations.forEach((annotation, index) => {
