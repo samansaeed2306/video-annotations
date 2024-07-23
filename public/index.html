@@ -339,6 +339,16 @@ function moveAnnotation(oldTime, newTime) {
             canvas.isDrawingMode = false;
             drawingMode = 'rectangle';
             setCurrentDrawingColor(); // Set new color for each new drawing
+            const rect = new fabric.Rect({
+                    left: 50,
+                    top: 50,
+                    width: 60,
+                    height: 60,
+                    fill: 'transparent',
+                    stroke: colors[currentColorIndex % colors.length],
+                    strokeWidth: 2
+                });
+                canvas.add(rect).setActiveObject(rect);
         }
 
         function activateTextMode() {
@@ -387,41 +397,43 @@ function moveAnnotation(oldTime, newTime) {
             canvas.selection = true;
         }
 
-        canvas.on('mouse:down', function(opt) {
-            if (drawingMode === 'rectangle') {
-                isDrawing = true;
-                const pointer = canvas.getPointer(opt.e);
-                const rect = new fabric.Rect({
-                    left: pointer.x,
-                    top: pointer.y,
-                    width: 0,
-                    height: 0,
-                    fill: 'transparent',
-                    stroke: colors[currentColorIndex % colors.length],
-                    strokeWidth: 2
-                });
-                currentColorIndex++;
-                canvas.add(rect);
-                canvas.setActiveObject(rect);
+        // canvas.on('mouse:down', function(opt) {
+        //     if (drawingMode === 'rectangle') {
+        //         isDrawing = true;
+        //         const pointer = canvas.getPointer(opt.e);
+        //         const rect = new fabric.Rect({
+        //             left: pointer.x,
+        //             top: pointer.y,
+        //             width: 0,
+        //             height: 0,
+        //             fill: 'transparent',
+        //             stroke: colors[currentColorIndex % colors.length],
+        //             strokeWidth: 2
+        //         });
+        //         currentColorIndex++;
+        //         canvas.add(rect);
+        //         canvas.setActiveObject(rect);
 
-                canvas.on('mouse:move', function(opt) {
-                    if (!isDrawing) return;
-                    const pointer = canvas.getPointer(opt.e);
-                    const activeObject = canvas.getActiveObject();
-                    activeObject.set({
-                        width: Math.abs(pointer.x - activeObject.left),
-                        height: Math.abs(pointer.y - activeObject.top)
-                    });
-                    activeObject.setCoords();
-                    canvas.renderAll();
-                });
+        //         canvas.on('mouse:move', function(opt) {
+        //             if (!isDrawing) return;
+        //             const pointer = canvas.getPointer(opt.e);
+        //             const activeObject = canvas.getActiveObject();
+        //             activeObject.set({
+        //                 width: Math.abs(pointer.x - activeObject.left),
+        //                 height: Math.abs(pointer.y - activeObject.top)
+        //             });
+        //             canvas.add(rect);
+        //             canvas.setActiveObject(rect);
+        //             //activeObject.setCoords();
+        //             canvas.renderAll();
+        //         });
 
-                canvas.on('mouse:up', function() {
-                    isDrawing = false;
-                    canvas.off('mouse:move');
-                });
-            }
-        });
+        //         canvas.on('mouse:up', function() {
+        //             isDrawing = false;
+        //             canvas.off('mouse:move');
+        //         });
+        //     }
+        // });
 
         // Undo/Redo functionality
         const state = [];
@@ -595,13 +607,18 @@ function moveAnnotation(oldTime, newTime) {
         annotation.endTime = video.currentTime + duration;
         const annotationData = JSON.parse(annotation.content);
         let interval=1;
-            for (let time = annotation.startTime; time <= annotation.endTime; time += interval) {
+            for (let time = annotation.startTime; time <= annotation.endTime; time += 0.01) {
                 // if (Math.abs(time - video.currentTime) < interval / 2) { // Adjust the condition as needed
-                    console.log(`Displaying annotation.content: ${annotation.content}`);
-                    console.log(`Displaying annotationData: ${annotationData}` )
-                    canvas.loadFromJSON(annotation.content, () => {
-                        canvas.renderAll();
-                    });
+
+                showAnnotations(time);
+                    // console.log(`Displaying annotation.content: ${annotation.content}`);
+                    // console.log(`Displaying annotationData: ${annotationData}` )
+                    // canvas.loadFromJSON(annotation.content, () => {
+                    //     canvas.renderAll();
+                    // });
+
+
+
                // }
                 
             }
@@ -742,7 +759,18 @@ function moveAnnotation(oldTime, newTime) {
                 canvas.renderAll();
             });
         }
-
+                // Function to show annotations at the current time
+        function showAnnotations(currentTime) {
+            console.log('I am inside showAnnotations function')
+            canvas.clear();
+            annotations.forEach(annotation => {
+                    if(annotation.time <= annotation.endTime){
+                    canvas.loadFromJSON(annotation.content, () => {
+                        canvas.renderAll();
+                    });}
+                }
+            );
+        }
         // Function to show annotations at the current time
         function showAnnotationsAtCurrentTime(currentTime) {
             canvas.clear();
