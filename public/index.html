@@ -582,13 +582,82 @@ function moveAnnotation(oldTime, newTime) {
         return (width / timelineWidth) * video.duration;
     }
 
-        function updateAnnotationDuration(pencilIconId, duration) {
-        // Logic to update the annotation's duration
-        console.log(`Updating annotation for ${pencilIconId} to duration: ${duration} seconds`);
-        const annotation = annotations.find(a => a.id === pencilIconId);
-            if (annotation) {
-                annotation.duration = duration;
-            }}
+    function updateAnnotationDuration(pencilIconId, duration) {
+    // Logic to update the annotation's duration
+    console.log(`Updating annotation for ${pencilIconId} to duration: ${duration} seconds`);
+    
+    const annotation = annotations.find(a => a.time === video.currentTime);
+    console.log(`start time: ${video.currentTime}`);
+    if (annotation) {
+        annotation.duration = duration;
+        console.log(`Real duration set: ${annotation.duration} `)
+        annotation.startTime=video.currentTime;
+        annotation.endTime = video.currentTime + duration;
+        const annotationData = JSON.parse(annotation.content);
+        let interval=1;
+            for (let time = annotation.startTime; time <= annotation.endTime; time += interval) {
+                // if (Math.abs(time - video.currentTime) < interval / 2) { // Adjust the condition as needed
+                    console.log(`Displaying annotation.content: ${annotation.content}`);
+                    console.log(`Displaying annotationData: ${annotationData}` )
+                    canvas.loadFromJSON(annotation.content, () => {
+                        canvas.renderAll();
+                    });
+               // }
+                
+            }
+        // Ensure previous event listeners are removed to avoid multiple handlers
+        // video.removeEventListener('timeupdate', handleTimeUpdate);
+        // video.addEventListener('timeupdate', handleTimeUpdate);
+    }
+    }
+    function handleTimeUpdate() {
+        const currentTime = video.currentTime;
+        const canvas = document.getElementById('canvas');
+        if (canvas) {
+            const ctx = canvas.getContext('2d');
+            // ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+            const annotation = annotations.find(a => a.time <= currentTime);
+            
+        if (annotation) {
+            console.log(`Found annotation`);}
+            
+            // Parse the annotation content
+            
+
+            if (currentTime >= annotation.startTime && currentTime <= annotation.endTime) {
+                // Display the annotation on the canvas
+                console.log(`Displaying annotation: ${annotation.startTime}`);
+                // const annotationData = JSON.parse(annotation.content);
+                
+            //let start = Math.max(annotation.startTime, startTime);
+            //let end = Math.min(annotation.endTime, endTime);
+
+            
+            // let interval=1;
+            // for (let time = annotation.startTime; time <= annotation.endTime; time += interval) {
+            //     // if (Math.abs(time - video.currentTime) < interval / 2) { // Adjust the condition as needed
+            //         console.log(`Displaying annotation.content: ${annotation.content}`);
+            //         console.log(`Displaying annotationData: ${annotationData}` )
+            //         canvas.loadFromJSON(annotation.content, () => {
+            //             canvas.renderAll();
+            //         });
+            //    // }
+                
+            // }
+
+            // Update the canvas rendering
+            //canvas.renderAll();
+        
+            } else {
+                // Remove the annotation from the canvas
+                console.log(`Removing annotation: ${annotation.id}`);
+                // Canvas is already cleared, no further action needed
+            }
+        } else {
+            console.error('Canvas element not found');
+        }
+    }
+
         // // Function to update the annotations list in the sidebar
         // function updateAnnotationsList() {
         //     const annotationsList = document.getElementById('annotations-list');
@@ -601,7 +670,9 @@ function moveAnnotation(oldTime, newTime) {
         //         });
         //         annotationsList.appendChild(listItem);
         //     });
+
         // }
+        
         function updateAnnotationsList() {
         annotations = Array.from(new Set(annotations.map(a => a.time))).map(time => annotations.find(a => a.time === time));
         const annotationsList = document.getElementById('annotations-list');
