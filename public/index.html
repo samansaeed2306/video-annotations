@@ -146,6 +146,9 @@
             background-color: rgb(187, 255, 0);
             cursor: ew-resize;
         }
+        #play-pause-button {
+            margin-left: 20px;
+}
     </style>
 </head>
 <body>
@@ -159,6 +162,7 @@
         <button onclick="undo()"><img src="icons/undo.png" alt="Undo"></button>
         <button onclick="redo()"><img src="icons/redo.png" alt="Redo"></button>
         <button onclick="unpickTool()"><img src="icons/unpick.png" alt="Unpick"></button>
+        <button id="play-pause-button">Play</button>
     </div>
 
     <!-- Fabric.js Canvas -->
@@ -174,7 +178,13 @@
     </div>
 
     <!-- Timeline -->
-    <div class="timeline" id="timeline"></div>
+     
+    <div class="timeline" id="timeline">
+        
+    </div>
+   
+
+    
 
     <!-- <div id="pencil-pointer"></div> -->
 
@@ -219,20 +229,24 @@
                 icon.appendChild(img);
                 tick.appendChild(icon);
 
-                tick.addEventListener('click', function() {
-                    console.log(`Clicked on tick at ${i} seconds.`);
-                    video.currentTime = i;
-                });
+               
 
                 // Add drag events to the pencil icon
                 img.addEventListener('dragstart', handleDragStart);
                 tick.addEventListener('dragover', handleDragOver);
                 tick.addEventListener('drop', handleDrop);
                 img.setAttribute('draggable', true);
-
+               
                 timeline.appendChild(tick);
+
+                //const tick = document.getElementsByClassName('tick');
+                tick.addEventListener('click', function() {
+                    console.log(`Clicked on tick at ${i} seconds.`);
+                    video.currentTime = i;
+                });
             }
         }
+        
 
           // Function to handle drag start
           function handleDragStart(event) {
@@ -280,9 +294,20 @@ const canvas = new fabric.Canvas('canvas', {
     selection: false,
     isDrawingMode: false
 });
-
+const playPauseButton = document.getElementById('play-pause-button');
+// Handle play/pause button click
+playPauseButton.addEventListener('click', () => {
+        if (video.paused) {
+            video.play();
+            playPauseButton.textContent = 'Pause';
+        } else {
+            video.pause();
+            playPauseButton.textContent = 'Play';
+        }
+    });
 function moveAnnotation(oldTime, newTime) {
     console.log('Moving annotation from', oldTime, 'to', newTime);
+    video.currentTime=newTime;
     oldTime = parseInt(oldTime);
     newTime = parseInt(newTime);
 
@@ -513,10 +538,12 @@ function moveAnnotation(oldTime, newTime) {
 
         // Function to record annotation
         function recordAnnotation(time) {
+            if (video.paused) {
             const annotation = {
                 time: time,
                 content: JSON.stringify(canvas.toJSON())
             };
+           
             annotations.push(annotation);
             console.log('Inside record annotation')
             updateAnnotationsList();
@@ -527,9 +554,16 @@ function moveAnnotation(oldTime, newTime) {
             ticks.forEach(tick => {
                 if (parseInt(tick.dataset.time) === annotationTime) {
                     tick.classList.add('has-drawing');
+                    const icon = tick.querySelector('.icon');
+                    if(icon){
+                        icon.style.display='block';
                     createPointerForPencilIcon(tick);
+                    }
                 }
-            });
+            });}
+            else {
+            console.log('Video is playing, not adding annotation');
+        }
             }
             //     if (icon && icon.querySelector('img').alt === 'Pencil') {
             //         const pencilPointer = document.getElementById('pencil-pointer');
@@ -855,6 +889,7 @@ function moveAnnotation(oldTime, newTime) {
                 const icon = tick.querySelector('.icon');
                 if (icon) {
                     icon.style.display = 'block';
+                    console.log('Inside updateTimelineIcons function for creating pencil icon')
                     createPointerForPencilIcon(icon);
                 }
             }
