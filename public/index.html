@@ -46,24 +46,25 @@
             
         }
         #video-container {
-            width: 80%; /* Adjust width as needed */
-            max-width: 800px; /* Limit maximum width */
-            padding-top: 600px;
-            text-align: center; /* Center align video container */
+            margin: 0 auto;
             position: relative;
-            margin: 20px auto; /* Center horizontally with some top margin */
     
         }
         video {
             width: 100%;
-            display: block; /* Ensure video fills its container */
-            
-        }
-        #canvas {
+            height: auto;
             position: absolute;
             top: 0;
             left: 0;
-            pointer-events: none; /* Ensure video controls are not obstructed */
+            
+        }
+        #canvas {
+            width: 100%;
+            height: auto;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 10;
         }
         .annotations {
             position: fixed;
