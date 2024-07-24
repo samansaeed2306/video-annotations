@@ -162,7 +162,7 @@
         <button onclick="undo()"><img src="icons/undo.png" alt="Undo"></button>
         <button onclick="redo()"><img src="icons/redo.png" alt="Redo"></button>
         <button onclick="unpickTool()"><img src="icons/unpick.png" alt="Unpick"></button>
-        <button id="play-pause-button">Play</button>
+        <button id="play-pause-button"><img src="icons/play.jpg" alt="Play"></button>
     </div>
 
     <!-- Fabric.js Canvas -->
@@ -295,14 +295,17 @@ const canvas = new fabric.Canvas('canvas', {
     isDrawingMode: false
 });
 const playPauseButton = document.getElementById('play-pause-button');
+const playPauseImage = playPauseButton.querySelector('img');
 // Handle play/pause button click
 playPauseButton.addEventListener('click', () => {
         if (video.paused) {
             video.play();
-            playPauseButton.textContent = 'Pause';
+            playPauseImage.src = 'icons/pause.png';
+            playPauseImage.alt = 'Pause';
         } else {
             video.pause();
-            playPauseButton.textContent = 'Play';
+            playPauseImage.src = 'icons/play.jpg';
+            playPauseImage.alt = 'Play';
         }
     });
 function moveAnnotation(oldTime, newTime) {
