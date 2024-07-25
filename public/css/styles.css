@@ -38,8 +38,11 @@ body {
     
 }
 #video-container {
-    margin: 0 auto;
+    margin-bottom: 150PX;
+    margin: 100PX;
+   
     position: relative;
+    height: 250px;
 
 }
 video {
@@ -99,7 +102,8 @@ video {
 
 .timeline {
     position: relative; /* Make timeline relative to its container */
-    width: 80%; /* Fill the width of its container */
+    bottom:0;
+    width: 75%; /* Fill the width of its container */
     background-color: #fff;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -107,6 +111,9 @@ video {
     margin-top: 20px; /* Add some space between video container and timeline */
     overflow: hidden; /* Hide overflow to prevent extra horizontal scroll */
     height: 200px;
+    left: -10%;
+    margin: 5px;
+    
     
 }
 .timeline .tick {
