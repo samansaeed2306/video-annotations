@@ -26,7 +26,7 @@ body {
     margin: 5px;
     padding: 5px;
     cursor: pointer;
-    background-color: #d5b211;
+    background-color: #d5b111;
     
 }
 .tools button:hover {
@@ -62,7 +62,7 @@ video {
     position: fixed;
     right: 10px;
     top: 10px;
-    width: 250px;
+    width: 245px;
     background-color: #0f0e0e;
     border: 0.5px solid #ccc;
     border-radius: 5px;
@@ -106,11 +106,13 @@ video {
     padding: 10px;
     margin-top: 20px; /* Add some space between video container and timeline */
     overflow: hidden; /* Hide overflow to prevent extra horizontal scroll */
+    height: 200px;
+    
 }
 .timeline .tick {
     display: inline-block;
     width: calc(100% / var(--duration)); /* Adjust width dynamically based on video duration */
-    height: 20px;
+    height: 4px;
     background-color: #ccc;
     margin: 0;
     cursor: pointer;
@@ -138,6 +140,77 @@ video {
     background-color: rgb(187, 255, 0);
     cursor: ew-resize;
 }
-#play-pause-button {
+/* #play-pause-button {
     margin-left: 20px;
+} */
+
+/* General button container styling */
+.buttons-container {
+    display: flex;
+    justify-content: space-between; /* Space between left, center, and right sections */
+    align-items: center; /* Vertically center the items */
+    padding: 15px;
+    background: #343a40;
+    background: var(--controls-background);
+    width: 75%; /* Set width to 80% of the page */
+    position: relative;
+    left: -10%; /* Adjust this value to move further left, e.g., -10% moves it 10% to the left */
+    margin-left: 10px; /* Remove any default margin */
+}
+
+/* Ensure that button-with-menu stays on the left */
+.button-with-menu {
+    flex: 1; /* Allows it to take up as much space as needed */
+    display: flex;
+    align-items: center; /* Vertically center content if needed */
+}
+
+/* Center-align the video buttons */
+.video-buttons {
+    display: flex;
+    gap: 10px; /* Space between buttons */
+    flex: 1; /* Allows it to take up available space in the center */
+    justify-content: center; /* Center-aligns the buttons */
+}
+
+/* Volume button and slider container */
+.volume-button-container {
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Space between volume button and slider */
+    flex: 1; /* Allows it to take up as much space as needed */
+    justify-content: flex-end; /* Aligns items to the right */
+}
+
+/* Volume slider styling */
+.volume-slider {
+    width: 80px; /* Adjust the width as needed */
+}
+
+/* Button styling for settings and other features */
+.video-setting-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+.video-buttons-container {
+    display: flex; /* Arrange children in a horizontal row */
+    gap: 10px; /* Space between icons */
+    align-items: center; /* Center icons vertically */
+}
+/* Icon styling */
+.icon {
+    fill: var(--icon-color); /* Use CSS variable for icon color */
+    width: 22px; /* Adjust the size if needed */
+    height: 22px; 
+}
+video-buttons-container .video-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    /* Add padding or margins if needed for spacing */
+}
+/* Active menu option styling */
+.menu-popup-option-active {
+    font-weight: bold;
 }
