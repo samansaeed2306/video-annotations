@@ -154,7 +154,8 @@
 <body>
     <!-- Drawing Tools -->
     <div class="tools">
-        <button onclick="drawFreehand()"><img src="icons/freehand.png" alt="Freehand"></button>
+        <!-- <button onclick="drawFreehand()"><img src="icons/freehand.png" alt="Freehand"></button> -->
+        <button onclick="activateCircleMode()"><img src="icons/circle.png" alt="Circle"></button>
         <button onclick="activateRectangleMode()"><img src="icons/rectangle.png" alt="Rectangle"></button>
         <button onclick="activateTextMode()"><img src="icons/text.png" alt="Text"></button>
         <button onclick="activateNoteMode()"><img src="icons/notes.png" alt="Note"></button>
@@ -363,7 +364,21 @@ function moveAnnotation(oldTime, newTime) {
             drawingMode = '';
             setCurrentDrawingColor(); // Set new color for each new drawing
         }
+        function activateCircleMode() {
+            canvas.isDrawingMode = false;
+            drawingMode = 'circle';
+            setCurrentDrawingColor(); // Set new color for each new drawing
 
+            const circle = new fabric.Circle({
+                left: 100,
+                top: 70,
+                radius: 30,
+                fill: 'transparent',
+                stroke: colors[currentColorIndex % colors.length],
+                strokeWidth: 2
+            });
+            canvas.add(circle).setActiveObject(circle);
+        }
         function activateRectangleMode() {
             canvas.isDrawingMode = false;
             drawingMode = 'rectangle';
