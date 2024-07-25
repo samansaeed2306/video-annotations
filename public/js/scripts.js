@@ -115,6 +115,22 @@ if (video.paused) {
     playPauseImage.alt = 'Play';
 }
 });
+
+document.getElementById('play-pause-button').addEventListener('click', function() {
+    const playIcon = document.getElementById('play-icon');
+    const pauseIcon = document.getElementById('pause-icon');
+    
+    // Toggle icon visibility
+    if (playIcon.style.display === 'none') {
+        playIcon.style.display = 'block';
+        pauseIcon.style.display = 'none';
+    } else {
+        playIcon.style.display = 'none';
+        pauseIcon.style.display = 'block';
+    }
+});
+
+
 function moveAnnotation(oldTime, newTime) {
 console.log('Moving annotation from', oldTime, 'to', newTime);
 video.currentTime=newTime;
