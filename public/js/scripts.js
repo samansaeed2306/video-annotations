@@ -220,7 +220,7 @@ const ctx = canvas2.getContext('2d');
 //let drawing = false;
 
 // Event listeners for drawing
-canvas.on('mousedown', (event) => {
+canvas2.on('mousedown', (event) => {
 
     isDrawing = true;
     if(drawingMode=='freehand'){
