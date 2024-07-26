@@ -77,8 +77,7 @@ video {
 }
 
 .annotations ul li {
-    color: white; /* Set the color of list items to white */
-}
+    color: white;}
 
 .annotation-item {
     background-color: black;
@@ -86,11 +85,11 @@ video {
     border-radius: 5px;
     padding: 10px;
     margin-bottom: 10px;
-    color: white; /* Text color inside the annotation box */
+    color: white;
 }
 .annotation-item input {
-    width: calc(100% - 20px); /* Adjust the width of the input box */
-    margin-top: 10px; /* Add some margin to the top */
+    width: calc(100% - 20px);
+    margin-top: 10px;
 }
 .annotation-buttons {
     text-align: right;
@@ -101,17 +100,17 @@ video {
 }
 
 .timeline {
-    position: relative; /* Make timeline relative to its container */
+    position: relative;
     bottom:0;
-    width: 75%; /* Fill the width of its container */
+    width: 75%; 
     background-color: #343a40;
     
     
-    /* border: 1px solid #ccc; */
+
     border-radius: 5px;
     padding: 10px;
-    margin-top: 20px; /* Add some space between video container and timeline */
-    overflow: hidden; /* Hide overflow to prevent extra horizontal scroll */
+    margin-top: 20px;
+    overflow: hidden;
     height: 200px;
     left: -10%;
     margin: 5px;
@@ -120,7 +119,7 @@ video {
 }
 .timeline .tick {
     display: inline-block;
-    width: calc(100% / var(--duration)); /* Adjust width dynamically based on video duration */
+    width: calc(100% / var(--duration)); 
     height: 4px;
     background-color: #5a5c5d;
     margin: 0;
@@ -145,7 +144,7 @@ video {
 .pointer {
     position: absolute;
     height: 20px;
-    width: 1.5px; /* initial width */
+    width: 1.5px; 
     background-color: rgb(187, 255, 0);
     cursor: ew-resize;
 }
@@ -153,74 +152,74 @@ video {
     margin-left: 20px;
 } */
 
-/* General button container styling */
+
 .buttons-container {
     display: flex;
-    justify-content: space-between; /* Space between left, center, and right sections */
-    align-items: center; /* Vertically center the items */
+    justify-content: space-between; 
+    align-items: center;
     padding: 15px;
     background: #343a40;
     background: var(--controls-background);
-    width: 75%; /* Set width to 80% of the page */
+    width: 75%; 
     position: relative;
-    left: -10%; /* Adjust this value to move further left, e.g., -10% moves it 10% to the left */
-    margin-left: 10px; /* Remove any default margin */
+    left: -10%; 
+    margin-left: 10px; 
 }
 
-/* Ensure that button-with-menu stays on the left */
+
 .button-with-menu {
-    flex: 1; /* Allows it to take up as much space as needed */
+    flex: 1; 
     display: flex;
-    align-items: center; /* Vertically center content if needed */
+    align-items: center; 
 }
 
-/* Center-align the video buttons */
+
 .video-buttons {
     display: flex;
-    gap: 10px; /* Space between buttons */
-    flex: 1; /* Allows it to take up available space in the center */
-    justify-content: center; /* Center-aligns the buttons */
+    gap: 10px; 
+    flex: 1; 
+    justify-content: center; 
 }
 
-/* Volume button and slider container */
+
 .volume-button-container {
     display: flex;
     align-items: center;
-    gap: 5px; /* Space between volume button and slider */
-    flex: 1; /* Allows it to take up as much space as needed */
-    justify-content: flex-end; /* Aligns items to the right */
+    gap: 5px; 
+    flex: 1; 
+    justify-content: flex-end; 
 }
 
-/* Volume slider styling */
+
 .volume-slider {
-    width: 80px; /* Adjust the width as needed */
+    width: 80px; 
     color: blue;
 }
 
-/* Button styling for settings and other features */
+
 .video-setting-button {
     background: none;
     border: none;
     cursor: pointer;
 }
 .video-buttons-container {
-    display: flex; /* Arrange children in a horizontal row */
-    gap: 10px; /* Space between icons */
-    align-items: center; /* Center icons vertically */
+    display: flex; 
+    gap: 10px; 
+    align-items: center; 
 }
-/* Icon styling */
+
 .icon {
-    fill: var(--icon-color); /* Use CSS variable for icon color */
-    width: 22px; /* Adjust the size if needed */
+    fill: var(--icon-color); 
+    width: 22px;
     height: 22px; 
 }
 video-buttons-container .video-button {
     background: none;
     border: none;
     cursor: pointer;
-    /* Add padding or margins if needed for spacing */
+    
 }
-/* Active menu option styling */
+
 .menu-popup-option-active {
     font-weight: bold;
 }
