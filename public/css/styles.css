@@ -1,0 +1,225 @@
+h3{
+    color: #ffffff;
+    padding-left: 80px;
+}
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color:#485056;
+}
+.tools {
+    position: fixed;
+    top: 10px;
+    left: 38%;
+    z-index: 1000;
+    background-color:#485056;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.tools button {
+    margin: 5px;
+    padding: 5px;
+    cursor: pointer;
+    background-color: #d5b111;
+    
+}
+.tools button:hover {
+     background-color: #e0e0e0; 
+}
+.tools button img {
+    width: 20px;
+    height: 20px;
+    
+}
+#video-container {
+    margin-bottom: 150PX;
+    margin: 100PX;
+   
+    position: relative;
+    height: 250px;
+
+}
+video {
+    width: 100%;
+    height: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    
+}
+#canvas {
+    width: 100%;
+    height: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+}
+.annotations {
+    position: fixed;
+    right: 10px;
+    top: 10px;
+    width: 245px;
+    background-color: #0f0e0e;
+    /* border: 0.5px solid #ccc; */
+    border-radius: 5px;
+    padding: 10px;
+    text-shadow: #d5b211;
+    padding-right: 35px;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.annotations ul li {
+    color: white;}
+
+.annotation-item {
+    background-color: black;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    color: white;
+}
+.annotation-item input {
+    width: calc(100% - 20px);
+    margin-top: 10px;
+}
+.annotation-buttons {
+    text-align: right;
+    margin-top: 5px;
+}
+.annotation-buttons button {
+    margin-left: 5px;
+}
+
+.timeline {
+    position: relative;
+    bottom:0;
+    width: 75%; 
+    background-color: #343a40;
+    
+    
+
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 20px;
+    overflow: hidden;
+    height: 200px;
+    left: -10%;
+    margin: 5px;
+    
+    
+}
+.timeline .tick {
+    display: inline-block;
+    width: calc(100% / var(--duration)); 
+    height: 4px;
+    background-color: #5a5c5d;
+    margin: 0;
+    cursor: pointer;
+    position: relative;
+}
+.timeline .tick .icon {
+    position: absolute;
+    top: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: none;
+}
+.timeline .tick.has-drawing .icon {
+    display: block;
+}
+.timeline .tick.has-drawing .icon img {
+    width: 16px;
+    height: 16px;
+}
+
+.pointer {
+    position: absolute;
+    height: 20px;
+    width: 1.5px; 
+    background-color: rgb(187, 255, 0);
+    cursor: ew-resize;
+}
+/* #play-pause-button {
+    margin-left: 20px;
+} */
+
+
+.buttons-container {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    padding: 15px;
+    background: #343a40;
+    background: var(--controls-background);
+    width: 75%; 
+    position: relative;
+    left: -10%; 
+    margin-left: 10px; 
+}
+
+
+.button-with-menu {
+    flex: 1; 
+    display: flex;
+    align-items: center; 
+}
+
+
+.video-buttons {
+    display: flex;
+    gap: 10px; 
+    flex: 1; 
+    justify-content: center; 
+}
+
+
+.volume-button-container {
+    display: flex;
+    align-items: center;
+    gap: 5px; 
+    flex: 1; 
+    justify-content: flex-end; 
+}
+
+
+.volume-slider {
+    width: 80px; 
+    color: blue;
+}
+
+
+.video-setting-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+.video-buttons-container {
+    display: flex; 
+    gap: 10px; 
+    align-items: center; 
+}
+
+.icon {
+    fill: var(--icon-color); 
+    width: 22px;
+    height: 22px; 
+}
+video-buttons-container .video-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    
+}
+
+.menu-popup-option-active {
+    font-weight: bold;
+}
