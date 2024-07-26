@@ -115,6 +115,25 @@ if (video.paused) {
     playPauseImage.alt = 'Play';
 }
 });
+document.addEventListener('DOMContentLoaded', function() {
+    const video = document.getElementById('video');
+    const currentTimeInput = document.querySelector('.current-time-input');
+    const totalTimeSpan = document.querySelector('.formatted-timeframe span:nth-child(2) span:first-child');
+
+    function formatTime(seconds) {
+        const minutes = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+    }
+
+    video.addEventListener('timeupdate', function() {
+        currentTimeInput.value = formatTime(video.currentTime);
+    });
+
+    video.addEventListener('loadedmetadata', function() {
+        totalTimeSpan.textContent = ` / ${formatTime(video.duration)}`;
+    });
+});
 
 document.getElementById('play-pause-button').addEventListener('click', function() {
     const playIcon = document.getElementById('play-icon');
