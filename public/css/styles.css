@@ -30,7 +30,7 @@ body {
     
 }
 .tools button:hover {
-     background-color: #e0e0e0; 
+     background-color: #928d8d; 
 }
 .tools button img {
     width: 20px;
@@ -51,6 +51,9 @@ video {
     position: absolute;
     top: 0;
     left: 0;
+    z-index: 1;
+    pointer-events: none;
+
     
 }
 #canvas {
@@ -60,6 +63,7 @@ video {
     top: 0;
     left: 0;
     z-index: 10;
+    pointer-events: auto;
 }
 .annotations {
     position: fixed;

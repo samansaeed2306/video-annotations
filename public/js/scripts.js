@@ -201,10 +201,66 @@ let drawingMode = '';
 let isDrawing = false;
 
 function drawFreehand() {
+    console.log('Inside Drawing free hand')
     canvas.isDrawingMode = true;
-    drawingMode = '';
+    drawingMode = 'freehand';
     setCurrentDrawingColor(); // Set new color for each new drawing
 }
+
+// Ensure the canvas size matches the video size
+//const video = document.getElementById('video');
+const canvas2 = document.getElementById('canvas');
+const ctx = canvas2.getContext('2d');
+
+// Set canvas size to match video size
+// canvas.width = video.clientWidth;
+// canvas.height = video.clientHeight;
+
+// Variables for drawing
+//let drawing = false;
+
+// Event listeners for drawing
+canvas.on('mousedown', (event) => {
+
+    isDrawing = true;
+    if(drawingMode=='freehand'){
+        draw(event);
+
+    }
+});
+
+canvas2.addEventListener('mousemove', (event) => {
+    if  (isDrawing){
+        draw(event);
+    }
+});
+
+canvas2.addEventListener('mouseup', () => {
+    isDrawing = false;
+    ctx.beginPath(); // Start a new path for the next drawing
+});
+
+canvas2.addEventListener('mouseout', () => {
+    isDrawing = false;
+    ctx.beginPath(); // Start a new path for the next drawing
+});
+
+function draw(event) {
+    const rect = canvas2.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
+    ctx.lineWidth = 2;
+    ctx.lineCap = 'round';
+    ctx.strokeStyle = 'red';
+
+    ctx.lineTo(x, y);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+}
+
+
 function activateCircleMode() {
     canvas.isDrawingMode = false;
     drawingMode = 'circle';
@@ -322,7 +378,7 @@ function unpickTool() {
 //             });
 //             // canvas.add(rect);
 //             // canvas.setActiveObject(rect);
-//             //activeObject.setCoords();
+//             activeObject.setCoords();
 //             canvas.renderAll();
 //         });
 
@@ -330,6 +386,42 @@ function unpickTool() {
 //             isDrawing = false;
 //             canvas.off('mouse:move');
 //         });
+//     }
+
+//     else if (drawingMode === '') {
+        
+// canvas.on('mousedown', (e) => {
+//     console.log('Inside mouse down');
+//     isDrawing = true;
+//     ctx.beginPath();
+//     ctx.moveTo(e.offsetX, e.offsetY);
+// });
+
+// canvas.on('mousemove', (e) => {
+//     console.log('Inside mouse move');
+
+//     if (isDrawing) {
+//         console.log('Inside mouse down if');
+
+//         ctx.lineTo(e.offsetX, e.offsetY);
+//         ctx.stroke();
+//     }
+// });
+
+// canvas.on('mouseup', () => {
+//     console.log('Inside mouse up');
+
+//     isDrawing = false;
+//     ctx.closePath();
+// });
+
+// canvas.on('mouseleave', () => {
+//     console.log('Inside mouse leave');
+
+//     isDrawing = false;
+//     ctx.closePath();
+// });
+
 //     }
 // });
 
