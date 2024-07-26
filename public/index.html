@@ -3,154 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Drawing Tool and Video Player</title>
+    <title>Video Annotator</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+    <link rel="manifest" href="images/site.webmanifest">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.5.0/fabric.min.js"></script>
-    <style>
-        h3{
-            color: #ffffff;
-            padding-left: 80px;
-        }
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color:#485056;
-        }
-        .tools {
-            position: fixed;
-            top: 10px;
-            left: 40%;
-            z-index: 1000;
-            background-color:#485056;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .tools button {
-            margin: 5px;
-            padding: 5px;
-            cursor: pointer;
-            background-color: #d5b211;
-            
-        }
-        .tools button:hover {
-             background-color: #e0e0e0; 
-        }
-        .tools button img {
-            width: 20px;
-            height: 20px;
-            
-        }
-        #video-container {
-            width: 80%; /* Adjust width as needed */
-            max-width: 800px; /* Limit maximum width */
-            padding-top: 600px;
-            text-align: center; /* Center align video container */
-            position: relative;
-            margin: 20px auto; /* Center horizontally with some top margin */
-    
-        }
-        video {
-            width: 100%;
-            display: block; /* Ensure video fills its container */
-            
-        }
-        #canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            pointer-events: none; /* Ensure video controls are not obstructed */
-        }
-        .annotations {
-            position: fixed;
-            right: 10px;
-            top: 10px;
-            width: 250px;
-            background-color: #0f0e0e;
-            border: 0.5px solid #ccc;
-            border-radius: 5px;
-            padding: 10px;
-            text-shadow: #d5b211;
-            padding-right: 35px;
-            height: 100%;
-            overflow-y: auto;
-        }
+ 
+     <!-- Shaka Player -->
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/3.1.0/shaka-player.compiled.js"></script>
+     
 
-        .annotations ul li {
-            color: white; /* Set the color of list items to white */
-        }
-        
-        .annotation-item {
-            background-color: black;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            padding: 10px;
-            margin-bottom: 10px;
-            color: white; /* Text color inside the annotation box */
-        }
-        .annotation-item input {
-            width: calc(100% - 20px); /* Adjust the width of the input box */
-            margin-top: 10px; /* Add some margin to the top */
-        }
-        .annotation-buttons {
-            text-align: right;
-            margin-top: 5px;
-        }
-        .annotation-buttons button {
-            margin-left: 5px;
-        }
+     <link rel="stylesheet" href="css/styles.css">
+     
 
-        .timeline {
-            position: relative; /* Make timeline relative to its container */
-            width: 80%; /* Fill the width of its container */
-            background-color: #fff;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            padding: 10px;
-            margin-top: 20px; /* Add some space between video container and timeline */
-            overflow: hidden; /* Hide overflow to prevent extra horizontal scroll */
-        }
-        .timeline .tick {
-            display: inline-block;
-            width: calc(100% / var(--duration)); /* Adjust width dynamically based on video duration */
-            height: 20px;
-            background-color: #ccc;
-            margin: 0;
-            cursor: pointer;
-            position: relative;
-        }
-        .timeline .tick .icon {
-            position: absolute;
-            top: -5px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: none;
-        }
-        .timeline .tick.has-drawing .icon {
-            display: block;
-        }
-        .timeline .tick.has-drawing .icon img {
-            width: 16px;
-            height: 16px;
-        }
-       
-        .pointer {
-            position: absolute;
-            height: 20px;
-            width: 1.5px; /* initial width */
-            background-color: rgb(187, 255, 0);
-            cursor: ew-resize;
-        }
-    </style>
 </head>
 <body>
     <!-- Drawing Tools -->
     <div class="tools">
-        <button onclick="drawFreehand()"><img src="icons/freehand.png" alt="Freehand"></button>
+        <!-- <button onclick="drawFreehand()"><img src="icons/freehand.png" alt="Freehand"></button> -->
+        <button onclick="activateCircleMode()"><img src="icons/circle.png" alt="Circle"></button>
         <button onclick="activateRectangleMode()"><img src="icons/rectangle.png" alt="Rectangle"></button>
         <button onclick="activateTextMode()"><img src="icons/text.png" alt="Text"></button>
         <button onclick="activateNoteMode()"><img src="icons/notes.png" alt="Note"></button>
@@ -158,6 +30,7 @@
         <button onclick="undo()"><img src="icons/undo.png" alt="Undo"></button>
         <button onclick="redo()"><img src="icons/redo.png" alt="Redo"></button>
         <button onclick="unpickTool()"><img src="icons/unpick.png" alt="Unpick"></button>
+        <!-- <button id="play-pause-button"><img src="icons/play.jpg" alt="Play"></button> -->
     </div>
 
     <!-- Fabric.js Canvas -->
@@ -172,552 +45,120 @@
         <ul id="annotations-list"></ul>
     </div>
 
-    <!-- Timeline -->
-    <div class="timeline" id="timeline"></div>
+    <div class="buttons-container">
+        <div class="video-buttons">
+            <div class="button-with-menu">
+                <span class="formatted-timeframe">
+                    <span>
+                        <input type="text" class="current-time-input" value="0:01">
+                    </span>
+                    <span>
+                        <span>&nbsp;/&nbsp;1:00</span>
+                        <span class="formatted-timeframe-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#868E96" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </span>
+                    </span>
+                </span>
+                <ul hidden="" class="menu-popup-container">
+                    <li class="menu-popup-option-active">Standard</li>
+                    <li class="menu-popup-option">Frames</li>
+                </ul>
+            </div>
+        </div>
+        <div class="video-buttons center">
+            <button class="video-button" title="Previous frame">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
+                    <path d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"></path>
+                </svg>
+            </button>
+            <button class="video-button" title="Play video" id="play-pause-button">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
+                    <path d="M0 0h24v24H0z" fill="none"></path>
+                    <path id="play-icon" d="M8 5v14l11-7z"></path>
+                    <path id="pause-icon" d="M6 6h2v12H6zm3.5 0h2v12h-2z" style="display: none;"></path>
+                </svg>
+            </button>
+            <button class="video-button" title="Next frame">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
+                    <path d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"></path>
+                </svg>
+            </button>
+        </div>
+        <div class="video-buttons">
+            <div class="volume-button-container">
+                <button class="volume-button">
+                    <svg class="volume_black_20px-18px_svg__icon" width="20" height="18" data-state="visible" xmlns="http://www.w3.org/2000/svg" alt="Mute Volume">
+                        <path d="M15.6 3.3c-.4-.4-1-.4-1.4 0-.4.4-.4 1 0 1.4C15.4 5.9 16 7.4 16 9c0 1.6-.6 3.1-1.8 4.3-.4.4-.4 1 0 1.4.2.2.5.3.7.3.3 0 .5-.1.7-.3C17.1 13.2 18 11.2 18 9s-.9-4.2-2.4-5.7z"></path>
+                        <path d="M11.282 5.282a.909.909 0 000 1.316c.735.735.995 1.458.995 2.402 0 .936-.425 1.917-.995 2.487a.909.909 0 000 1.316c.145.145.636.262 1.018.156a.725.725 0 00.298-.156C13.773 11.733 14.13 10.16 14.13 9c0-.17-.002-.34-.011-.51-.053-.992-.319-2.005-1.522-3.208a.909.909 0 00-1.316 0zm-7.496.726H.714C.286 6.008 0 6.31 0 6.76v4.512c0 .452.286.752.714.752h3.072l4.071 3.858c.5.3 1.143 0 1.143-.602V2.752c0-.601-.643-.977-1.143-.601L3.786 6.008z"></path>
+                    </svg>
+                </button>
+                <input class="volume-slider" type="range" min="0" max="100" value="50">
+            </div>
+            <div>
+                <div class="video-buttons-container">
+                    <button class="video-button video-setting-button">
+                        <svg id="loop" class="icon" viewBox="0 0 19 15" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M14.75 2.5H11V4H14V10.75H2V4H5.75V6.25L9.5 3.25L5.75 0.25V2.5H1.25C0.83525 2.5 0.5 2.83525 0.5 3.25V11.5C0.5 11.9148 0.83525 12.25 1.25 12.25H14.75C15.1648 12.25 15.5 11.9148 15.5 11.5V3.25C15.5 2.83525 15.1648 2.5 14.75 2.5Z" fill="var(--icon-color)"></path>
+                        </svg>
+                    </button>
+                    <div class="button-with-menu video-setting-button">
+                        <button class="video-setting-button video-setting-button-with-text">1x</button>
+                        <ul hidden="" class="menu-popup-container">
+                            <li data="0.25" class="menu-popup-option">0.25x</li>
+                            <li data="0.5" class="menu-popup-option">0.5x</li>
+                            <li data="0.75" class="menu-popup-option">0.75x</li>
+                            <li data="1" class="menu-popup-option-active">1x</li>
+                            <li data="1.25" class="menu-popup-option">1.25x</li>
+                            <li data="1.5" class="menu-popup-option">1.5x</li>
+                            <li data="1.75" class="menu-popup-option">1.75x</li>
+                            <li data="2" class="menu-popup-option">2x</li>
+                        </ul>
+                    </div>
+                    <div class="button-with-menu">
+                        <button class="video-setting-button">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" alt="Show aspect ratio guide" class="icon">
+                                <path d="M18 12H17.5C17.2239 12 17 12.2239 17 12.5V15H14.5C14.2239 15 14 15.2239 14 15.5V16C14 16.2761 14.2239 16.5 14.5 16.5H18C18.2761 16.5 18.5 16.2761 18.5 16V12.5C18.5 12.2239 18.2761 12 18 12Z" fill="var(--icon-color)"></path>
+                                <path d="M6 12H6.5C6.7761 12 7 11.7761 7 11.5V9H9.5C9.7761 9 10 8.7761 10 8.5V8C10 7.7239 9.7761 7.5 9.5 7.5H6C5.7239 7.5 5.5 7.7239 5.5 8V11.5C5.5 11.7761 5.7239 12 6 12Z" fill="var(--icon-color)"></path>
+                                <path d="M20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4ZM20 18.01H4V5.99H20V18.01Z" fill="var(--icon-color)"></path>
+                            </svg>
+                        </button>
+                        <ul hidden="" class="menu-popup-container">
+                            <li class="menu-popup-option">2.35</li>
+                            <li class="menu-popup-option">1.85</li>
+                            <li class="menu-popup-option">16:9</li>
+                            <li class="menu-popup-option">4:3</li>
+                            <li class="menu-popup-option">1:1</li>
+                            <li value="Off" class="menu-popup-option-active">Off</li>
+                        </ul>
+                    </div>
+                    <input id="subtitleFileInput" type="file" hidden="" accept=".srt,.vtt" value="">
+                    <button class="video-button video-setting-button">
+                        <svg id="subtitle" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" class="icon">
+                            <path d="M6 10v4c0 1.103.897 2 2 2h3v-2H8v-4h3V8H8C6.897 8 6 8.897 6 10zM13 10v4c0 1.103.897 2 2 2h3v-2h-3v-4h3V8h-3C13.897 8 13 8.897 13 10z" fill="var(--icon-color)"></path>
+                            <path d="M20,4H4C2.897,4,2,4.897,2,6v12c0,1.103,0.897,2,2,2h16c1.103,0,2-0.897,2-2V6C22,4.897,21.103,4,20,4z M4,18V6h16 l0.002,12H4z" fill="var(--icon-color)"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Timeline --> 
+    <div class="timeline" id="timeline">
+        
+    </div>
+   
+
+    
 
     <!-- <div id="pencil-pointer"></div> -->
 
-    <!-- Shaka Player -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/3.1.0/shaka-player.compiled.js"></script>
-
-    <script>
-        let annotations = [];
-        let currentColorIndex = 0;
-        const colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF'];
-
-        // Initialize Shaka Player
-        document.addEventListener('DOMContentLoaded', function() {
-            const video = document.getElementById('video');
-            const player = new shaka.Player(video);
-            const manifestUri = 'https://storage.googleapis.com/shaka-demo-assets/angel-one/dash.mpd';
-
-            player.load(manifestUri).then(function() {
-                console.log('The video has now been loaded!');
-                setupTimeline(video);
-            }).catch(function(error) {
-                console.error('Error code', error.code, 'object', error);
-            });
-        });
-
-        function setupTimeline(video) {
-            const timeline = document.getElementById('timeline');
-            const duration = Math.floor(video.duration);
-            timeline.style.setProperty('--duration', duration); // Set custom CSS property for dynamic width
-
-            for (let i = 0; i < duration; i++) {
-                const tick = document.createElement('div');
-                tick.classList.add('tick');
-                tick.dataset.time = i; // Set the dataset.time attribute
-
-                // Add pencil icon and setup drag events
-                const icon = document.createElement('div');
-                icon.classList.add('icon');
-                const img = document.createElement('img');
-                img.src = 'icons/pencil.png';
-                img.alt = 'Pencil';
-                icon.appendChild(img);
-                tick.appendChild(icon);
-
-                tick.addEventListener('click', function() {
-                    console.log(`Clicked on tick at ${i} seconds.`);
-                    video.currentTime = i;
-                });
-
-                // Add drag events to the pencil icon
-                img.addEventListener('dragstart', handleDragStart);
-                tick.addEventListener('dragover', handleDragOver);
-                tick.addEventListener('drop', handleDrop);
-                img.setAttribute('draggable', true);
-
-                timeline.appendChild(tick);
-            }
-        }
-
-          // Function to handle drag start
-          function handleDragStart(event) {
-            const dragTime = event.target.parentNode.parentNode.dataset.time;
-            console.log('Drag start:', dragTime);
-            event.dataTransfer.setData('text/plain', dragTime);
-        }
-
-        function handleDragOver(event) {
-            console.log('Drag over:', event.target.dataset.time);
-            event.preventDefault();
-        }
-
-        function handleDrop(event) {
-    console.log('Drop:', event.target.dataset.time);
-    event.preventDefault();
-    const oldTime = event.dataTransfer.getData('text/plain');
-    const newTime = event.target.dataset.time;
-    moveAnnotation(oldTime, newTime);
-
-    // Remove the pencil icon from the old tick
-    const oldTick = document.querySelector(`.tick[data-time='${oldTime}'] .icon`);
-    if (oldTick) {
-        oldTick.style.display = 'none';
-        removePointerForPencilIcon(oldTick);
-    }
-
-    const annotationIndex = annotations.findIndex(annotation => Math.floor(annotation.time) === parseInt(oldTime));
-    if (annotationIndex !== -1) {
-        annotations.splice(annotationIndex, 1);
-        canvas.forEachObject(obj => {
-            if (obj.time === oldTime) {
-                canvas.remove(obj);
-            }
-        });
-        updateAnnotationsList();
-        updateTimelineIcons();
-    }
-}
+    <script src="js/scripts.js"></script>
 
 
-        
-// Fabric.js Canvas Initialization
-const canvas = new fabric.Canvas('canvas', {
-    selection: false,
-    isDrawingMode: false
-});
-
-function moveAnnotation(oldTime, newTime) {
-    console.log('Moving annotation from', oldTime, 'to', newTime);
-    oldTime = parseInt(oldTime);
-    newTime = parseInt(newTime);
-
-    // Find the annotation to move
-    let annotationIndex = annotations.findIndex(annotation => Math.floor(annotation.time) === oldTime);
-    if (annotationIndex !== -1) {
-        const annotation = annotations[annotationIndex];
-        annotation.time = newTime;
-        annotations.splice(annotationIndex, 1, annotation); // Update annotation time in the array
-
-        // Remove the annotation from the canvas at the old time
-        canvas.forEachObject(obj => {
-            if (obj.time === oldTime) {
-                canvas.remove(obj);
-            }
-        });
-
-        // Load the annotation onto the canvas at the new time
-        annotations.forEach(ann => {
-            if (Math.floor(ann.time) === newTime) {
-                canvas.loadFromJSON(ann.content, () => {
-                    canvas.renderAll();
-                });
-            }
-        });
-
-        // Update UI or canvas accordingly
-        updateAnnotationsList();
-        updateTimelineIcons();
-    }
-}
-
-
-
-
-        // Set the current drawing color
-        function setCurrentDrawingColor() {
-            if (canvas.freeDrawingBrush) {
-                canvas.freeDrawingBrush.color = colors[currentColorIndex % colors.length];
-                currentColorIndex++;
-            }
-        }
-
-        // Drawing functionality
-        let drawingMode = '';
-        let isDrawing = false;
-
-        function drawFreehand() {
-            canvas.isDrawingMode = true;
-            drawingMode = '';
-            setCurrentDrawingColor(); // Set new color for each new drawing
-        }
-
-        function activateRectangleMode() {
-            canvas.isDrawingMode = false;
-            drawingMode = 'rectangle';
-            setCurrentDrawingColor(); // Set new color for each new drawing
-        }
-
-        function activateTextMode() {
-            canvas.isDrawingMode = false;
-            drawingMode = 'text';
-            const text = new fabric.Textbox('Type here', {
-                left: 50,
-                top: 50,
-                fontSize: 20,
-                fontFamily: 'Arial',
-                fill: colors[currentColorIndex % colors.length],
-                width: 200
-            });
-            currentColorIndex++;
-            canvas.add(text).setActiveObject(text);
-        }
-
-        function activateNoteMode() {
-            canvas.isDrawingMode = false;
-            drawingMode = 'note';
-            const note = new fabric.Textbox('Note here', {
-                left: 50,
-                top: 50,
-                fontSize: 14,
-                fontFamily: 'Arial',
-                fill: colors[currentColorIndex % colors.length],
-                backgroundColor: '#ffffcc',
-                width: 200
-            });
-            currentColorIndex++;
-            canvas.add(note).setActiveObject(note);
-        }
-
-        function useEraser() {
-            canvas.isDrawingMode = false;
-            canvas.on('mouse:down', function(event) {
-                if (event.target) {
-                    canvas.remove(event.target);
-                }
-            });
-        }
-        // Function to unpick tool
-        function unpickTool() {
-            canvas.isDrawingMode = false;
-            canvas.defaultCursor = 'default';
-            canvas.selection = true;
-        }
-
-        canvas.on('mouse:down', function(opt) {
-            if (drawingMode === 'rectangle') {
-                isDrawing = true;
-                const pointer = canvas.getPointer(opt.e);
-                const rect = new fabric.Rect({
-                    left: pointer.x,
-                    top: pointer.y,
-                    width: 0,
-                    height: 0,
-                    fill: 'transparent',
-                    stroke: colors[currentColorIndex % colors.length],
-                    strokeWidth: 2
-                });
-                currentColorIndex++;
-                canvas.add(rect);
-                canvas.setActiveObject(rect);
-
-                canvas.on('mouse:move', function(opt) {
-                    if (!isDrawing) return;
-                    const pointer = canvas.getPointer(opt.e);
-                    const activeObject = canvas.getActiveObject();
-                    activeObject.set({
-                        width: Math.abs(pointer.x - activeObject.left),
-                        height: Math.abs(pointer.y - activeObject.top)
-                    });
-                    activeObject.setCoords();
-                    canvas.renderAll();
-                });
-
-                canvas.on('mouse:up', function() {
-                    isDrawing = false;
-                    canvas.off('mouse:move');
-                });
-            }
-        });
-
-        // Undo/Redo functionality
-        const state = [];
-        let mods = 0;
-        canvas.on('object:added', saveState);
-        canvas.on('object:removed', saveState);
-        canvas.on('object:modified', saveState);
-
-        function saveState() {
-            mods += 1;
-            if (mods < state.length) {
-                state.length = mods;
-            }
-            state.push(JSON.stringify(canvas));
-            recordAnnotation(video.currentTime);
-        }
-
-        function undo() {
-            if (mods > 0) {
-                mods -= 1;
-                canvas.loadFromJSON(state[mods]);
-                canvas.renderAll();
-            }
-        }
-
-        function redo() {
-            if (mods < state.length - 1) {
-                mods += 1;
-                canvas.loadFromJSON(state[mods]);
-                canvas.renderAll();
-            }
-        }
-
-        // Synchronize canvas size with video size
-        const videoContainer = document.getElementById('video-container');
-        const video = document.getElementById('video');
-        const fabricCanvas = document.getElementById('canvas');
-
-        video.addEventListener('loadedmetadata', () => {
-            fabricCanvas.width = video.clientWidth;
-            fabricCanvas.height = video.clientHeight;
-            canvas.setWidth(video.clientWidth);
-            canvas.setHeight(video.clientHeight);
-        });
-
-        // Event listener for video pause
-        video.addEventListener('pause', () => {
-            canvas.isDrawingMode = true; // Enable drawing mode when video is paused
-            fabricCanvas.style.pointerEvents = 'auto'; // Enable pointer events on canvas
-        });
-
-        // Event listener for video play
-        video.addEventListener('play', () => {
-            canvas.isDrawingMode = false; // Disable drawing mode when video is playing
-            fabricCanvas.style.pointerEvents = 'none'; // Disable pointer events on canvas
-        });
-
-        // Event listener for video time update
-        video.addEventListener('timeupdate', () => {
-            showAnnotationsAtCurrentTime(video.currentTime);
-        });
-
-        // Function to record annotation
-        function recordAnnotation(time) {
-            const annotation = {
-                time: time,
-                content: JSON.stringify(canvas.toJSON())
-            };
-            annotations.push(annotation);
-            updateAnnotationsList();
-            updateTimelineIcon(time);
-            const timeline = document.getElementById('timeline');
-            const ticks = document.querySelectorAll('.timeline .tick');
-            const annotationTime = Math.floor(video.currentTime);
-            ticks.forEach(tick => {
-                if (parseInt(tick.dataset.time) === annotationTime) {
-                    tick.classList.add('has-drawing');
-                    createPointerForPencilIcon(tick);
-                }
-            });
-            }
-            //     if (icon && icon.querySelector('img').alt === 'Pencil') {
-            //         const pencilPointer = document.getElementById('pencil-pointer');
-            //         pencilPointer.style.display = 'block';
-            //         console.log('pointer placed')
-            //         pencilPointer.style.top = `${icon.offsetTop - 20}px`; // Adjust top position as needed
-            //         pencilPointer.style.left = `${icon.offsetLeft}px`; // Adjust left position as needed
-                    
-            //     }
-            // }
-                 // Hide pointer icon after a delay (if needed)
-            // setTimeout(() => {
-            //     const pencilPointer = document.getElementById('pencil-pointer');
-            //     pencilPointer.style.display = 'none';
-            // }, 2000); // Adjust delay (in milliseconds) as needed
-        
-        
-            function createPointerForPencilIcon(tick) {
-            const pointer = document.createElement('div');
-            pointer.classList.add('pointer');
-            pointer.style.left = '50%'; // Center the pointer horizontally
-            pointer.style.top = '-20px'; // Position above the pencil icon
-            const colors = ['#FF5733', '#33FF57', '#5733FF', '#FFFF33', '#FF33FF', '#33FFFF'];
-
-    // Randomly select a color from the array
-            const randomColor = colors[Math.floor(Math.random() * colors.length)];
-            pointer.style.backgroundColor = randomColor;
-            tick.appendChild(pointer);
-        
-
-        // Add dragging logic to resize the pointer
-        let isDragging = false;
-        let startX;
-        let startWidth;
-
-        pointer.addEventListener('mousedown', (e) => {
-            isDragging = true;
-            startX = e.pageX;
-            startWidth = pointer.offsetWidth;
-            pointer.style.cursor = 'ew-resize'; // Change cursor to double arrow
-        });
-
-        document.addEventListener('mousemove', (e) => {
-            if (isDragging) {
-                let newWidth = startWidth + (e.pageX - startX);
-                if (newWidth > 0) {
-                    pointer.style.width = newWidth + 'px';
-
-                    // Calculate and update annotation duration
-                    let annotationDuration = calculateAnnotationDuration(newWidth);
-                    updateAnnotationDuration(tick.id, annotationDuration);
-                }
-            }
-        });
-
-        document.addEventListener('mouseup', () => {
-            if (isDragging) {
-                isDragging = false;
-                pointer.style.cursor = 'ew-resize'; // Keep cursor as double arrow
-            }
-        });
-    }
-    function removePointerForPencilIcon(tick) {
-    console.log("Inside remove pointer function")
-    
-    const pointer = tick.querySelector('.pointer');
-    
-    if (pointer && pointer.parentNode === tick) { // Check if pointer exists and is a child of tick
-        tick.removeChild(pointer); // Safely remove the pointer
-        console.log("Removed pointer")
-    }
-}
-        function calculateAnnotationDuration(width) {
-        const timelineWidth = timeline.offsetWidth;
-        return (width / timelineWidth) * video.duration;
-    }
-
-        function updateAnnotationDuration(pencilIconId, duration) {
-        // Logic to update the annotation's duration
-        console.log(`Updating annotation for ${pencilIconId} to duration: ${duration} seconds`);
-        const annotation = annotations.find(a => a.id === pencilIconId);
-            if (annotation) {
-                annotation.duration = duration;
-            }}
-        // // Function to update the annotations list in the sidebar
-        // function updateAnnotationsList() {
-        //     const annotationsList = document.getElementById('annotations-list');
-        //     annotationsList.innerHTML = '';
-        //     annotations.forEach((annotation, index) => {
-        //         const listItem = document.createElement('li');
-        //         listItem.textContent = `Annotation at ${annotation.time.toFixed(2)}s`;
-        //         listItem.addEventListener('click', () => {
-        //             loadAnnotation(index);
-        //         });
-        //         annotationsList.appendChild(listItem);
-        //     });
-        // }
-        function updateAnnotationsList() {
-        const annotationsList = document.getElementById('annotations-list');
-        annotationsList.innerHTML = '';
-        annotations.forEach((annotation, index) => {
-            const listItem = document.createElement('li');
-            listItem.className = 'annotation-item';
-            listItem.textContent = `Annotation at ${annotation.time.toFixed(2)}s`;
-
-            // Create an input box for comments
-            const commentInput = document.createElement('input');
-            commentInput.type = 'text';
-            commentInput.placeholder = 'Add comment';
-            commentInput.value = annotation.comment || '';
-            commentInput.style.display = 'none'; // Initially hidden
-            commentInput.addEventListener('input', function() {
-                annotations[index].comment = commentInput.value;
-            });
-            const cancelButton = document.createElement('button');
-        cancelButton.textContent = 'Cancel';
-        cancelButton.style.display = 'none'; // Initially hidden
-        cancelButton.addEventListener('click', function() {
-            commentInput.style.display = 'none';
-            cancelButton.style.display = 'none';
-            saveButton.style.display = 'none';
-        });
-
-        const saveButton = document.createElement('button');
-        saveButton.textContent = 'Save';
-        saveButton.style.display = 'none'; // Initially hidden
-        saveButton.addEventListener('click', function() {
-            annotations[index].comment = commentInput.value;
-            commentInput.style.display = 'none';
-            cancelButton.style.display = 'none';
-            saveButton.style.display = 'none';
-        });
-        const buttonsContainer = document.createElement('div');
-        buttonsContainer.className = 'annotation-buttons';
-        buttonsContainer.appendChild(cancelButton);
-        buttonsContainer.appendChild(saveButton);
-
-        listItem.appendChild(commentInput);
-        listItem.appendChild(buttonsContainer);
-        listItem.addEventListener('click', () => {
-            commentInput.style.display = 'block'; // Show the input box when the list item is clicked
-            cancelButton.style.display = 'inline-block'; // Show the cancel button
-            saveButton.style.display = 'inline-block'; // Show the save button
-        });
-
-
-            // listItem.appendChild(commentInput);
-            // listItem.addEventListener('click', () => {
-            //     commentInput.style.display = 'block'; // Show the input box when the list item is clicked
-                
-            // });
-            annotationsList.appendChild(listItem);
-            
-        });
-    }
-      
-
-        // Function to load a specific annotation
-        function loadAnnotation(index) {
-            const annotation = annotations[index];
-            video.currentTime = annotation.time;
-            canvas.loadFromJSON(annotation.content, () => {
-                canvas.renderAll();
-            });
-        }
-
-        // Function to show annotations at the current time
-        function showAnnotationsAtCurrentTime(currentTime) {
-            canvas.clear();
-            annotations.forEach(annotation => {
-                if (Math.abs(annotation.time - currentTime) < 0.5) { // Show annotation close to the current time
-                    canvas.loadFromJSON(annotation.content, () => {
-                        canvas.renderAll();
-                    });
-                }
-            });
-        }
-
-        // Function to update the timeline icon at the specific time
-        function updateTimelineIcon(time) {
-            const timeline = document.getElementById('timeline');
-            const ticks = timeline.getElementsByClassName('tick');
-            for (let tick of ticks) {
-                if (parseInt(tick.dataset.time) === Math.floor(time)) {
-                    tick.classList.add('has-drawing');
-                    // createPointerForPencilIcon(icon);
-                }
-            }
-        }
-
-        function updateTimelineIcons() {
-        const timeline = document.getElementById('timeline');
-        const ticks = timeline.getElementsByClassName('tick');
-        for (let tick of ticks) {
-            tick.classList.remove('has-drawing');
-            const icon = tick.querySelector('.icon');
-            removePointerForPencilIcon(tick);
-            if (icon) {
-                icon.style.display = 'none';
-                
-                
-            }
-        }
-        annotations.forEach(annotation => {
-            const time = Math.floor(annotation.time);
-            const tick = timeline.querySelector(`.tick[data-time='${time}']`);
-            if (tick) {
-                tick.classList.add('has-drawing');
-                const icon = tick.querySelector('.icon');
-                if (icon) {
-                    icon.style.display = 'block';
-                    createPointerForPencilIcon(icon);
-                }
-            }
-        });
-    }
-    </script>
+   
 </body>
 </html>
