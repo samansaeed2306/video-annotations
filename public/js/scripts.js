@@ -107,13 +107,15 @@ const playPauseImage = playPauseButton.querySelector('img');
 
 playPauseButton.addEventListener('click', () => {
 if (video.paused) {
+    console.log('inside pause condition')
     video.play();
-    playPauseImage.src = 'icons/pause.png';
-    playPauseImage.alt = 'Pause';
+   // playPauseImage.src = 'icons/pause.png';
+    //playPauseImage.alt = 'Pause';
 } else {
+    console.log('inside play condition')
     video.pause();
-    playPauseImage.src = 'icons/play.jpg';
-    playPauseImage.alt = 'Play';
+   // playPauseImage.src = 'icons/play.jpg';
+   // playPauseImage.alt = 'Play';
 }
 });
 document.addEventListener('DOMContentLoaded', function() {
@@ -141,13 +143,16 @@ document.getElementById('play-pause-button').addEventListener('click', function(
     const pauseIcon = document.getElementById('pause-icon');
     
 
+
     if (playIcon.style.display === 'none') {
         playIcon.style.display = 'block';
         pauseIcon.style.display = 'none';
     } else {
         playIcon.style.display = 'none';
         pauseIcon.style.display = 'block';
+        
     }
+
 });
 
 
@@ -401,7 +406,7 @@ video.addEventListener('timeupdate', () => {
 
 
 function recordAnnotation(time) {
-    if(video.pause){
+    if(video.paused){
     const existingAnnotationIndex = annotations.findIndex(annotation => Math.floor(annotation.time) === Math.floor(time));
     const annotation = {
         time: time,
