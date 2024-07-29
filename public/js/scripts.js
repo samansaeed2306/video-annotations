@@ -107,13 +107,15 @@ const playPauseImage = playPauseButton.querySelector('img');
 
 playPauseButton.addEventListener('click', () => {
 if (video.paused) {
+    console.log('inside pause condition')
     video.play();
-    playPauseImage.src = 'icons/pause.png';
-    playPauseImage.alt = 'Pause';
+   // playPauseImage.src = 'icons/pause.png';
+    //playPauseImage.alt = 'Pause';
 } else {
+    console.log('inside play condition')
     video.pause();
-    playPauseImage.src = 'icons/play.jpg';
-    playPauseImage.alt = 'Play';
+   // playPauseImage.src = 'icons/play.jpg';
+   // playPauseImage.alt = 'Play';
 }
 });
 document.addEventListener('DOMContentLoaded', function() {
@@ -141,13 +143,16 @@ document.getElementById('play-pause-button').addEventListener('click', function(
     const pauseIcon = document.getElementById('pause-icon');
     
 
+
     if (playIcon.style.display === 'none') {
         playIcon.style.display = 'block';
         pauseIcon.style.display = 'none';
     } else {
         playIcon.style.display = 'none';
         pauseIcon.style.display = 'block';
+        
     }
+
 });
 
 
@@ -206,6 +211,8 @@ function drawFreehand() {
     drawingMode = '';
     setCurrentDrawingColor(); 
 }
+
+  
 function activateCircleMode() {
     canvas.isDrawingMode = false;
     drawingMode = 'circle';
@@ -317,14 +324,15 @@ function unpickTool() {
 //             if (!isDrawing) return;
 //             const pointer = canvas.getPointer(opt.e);
 //             const activeObject = canvas.getActiveObject();
-//             activeObject.set({
-//                 width: Math.abs(pointer.x - activeObject.left),
-//                 height: Math.abs(pointer.y - activeObject.top)
+// //             activeObject.set({
+// //                 width: Math.abs(pointer.x - activeObject.left),
+// //                 height: Math.abs(pointer.y - activeObject.top)
 //             });
-//             // canvas.add(rect);
-//             // canvas.setActiveObject(rect);
-//             //activeObject.setCoords();
+//             canvas.add(rect);
+//             canvas.setActiveObject(rect);
+//             activeObject.setCoords();
 //             canvas.renderAll();
+//             saveState();
 //         });
 
 //         canvas.on('mouse:up', function() {
@@ -337,9 +345,9 @@ function unpickTool() {
 
 const state = [];
 let mods = 0;
-canvas.on('object:added', saveState);
-canvas.on('object:removed', saveState);
-canvas.on('object:modified', saveState);
+canvas.on('object:added', ()=>{saveState(); recordAnnotation(video.currentTime)});
+canvas.on('object:removed', ()=>{saveState(); recordAnnotation(video.currentTime)});
+canvas.on('object:modified', ()=>{saveState(); recordAnnotation(video.currentTime)});
 
 function saveState() {
     mods += 1;
@@ -348,7 +356,7 @@ function saveState() {
     }
     state.push(JSON.stringify(canvas));
     console.log('I am inside savestate')
-    recordAnnotation(video.currentTime);
+    //recordAnnotation(video.currentTime);
 }
 
 function undo() {
@@ -398,14 +406,20 @@ video.addEventListener('timeupdate', () => {
 
 
 function recordAnnotation(time) {
-    if (video.paused) {
+    if(video.paused){
+    const existingAnnotationIndex = annotations.findIndex(annotation => Math.floor(annotation.time) === Math.floor(time));
     const annotation = {
         time: time,
         content: JSON.stringify(canvas.toJSON())
     };
-   
-    annotations.push(annotation);
-    console.log('Inside record annotation')
+
+    if (existingAnnotationIndex !== -1) {
+        annotations[existingAnnotationIndex] = annotation;
+    } else {
+        annotations.push(annotation);
+    }
+
+    console.log('Annotation recorded');
     updateAnnotationsList();
     updateTimelineIcon(time);
     const timeline = document.getElementById('timeline');
@@ -654,10 +668,39 @@ saveButton.addEventListener('click', function() {
     cancelButton.style.display = 'none';
     saveButton.style.display = 'none';
 });
+
+//const deleteButton = document.createElement('button');
+            const deleteIcon = document.createElement('img');
+            deleteIcon.src = 'icons/delete2.png'; // Path to your delete icon
+            deleteIcon.alt = 'Delete';
+            deleteIcon.style.width = '14px'; // Set the width as needed
+            deleteIcon.style.height = '14px'; // Set the height as needed
+            deleteIcon.style.backgroundColor="black";
+            deleteIcon.style.marginLeft= '2px'
+           
+           //deleteButton.appendChild(deleteIcon);
+
+            deleteIcon.addEventListener('click', function() {
+                // Remove annotation from the list
+                annotations.splice(index, 1);
+                // Remove pencil icon and pointer from the timeline
+                const tick = document.querySelector(`.tick[data-time="${annotation.time}"]`);
+                if (tick) {
+                    tick.classList.remove('has-drawing');
+                    const icon = tick.querySelector('.icon');
+                    if (icon) {
+                        icon.remove();
+                        removePointerForPencilIcon(tick)
+                    }
+                }
+                // Update the annotations list
+                updateAnnotationsList();
+            });
 const buttonsContainer = document.createElement('div');
 buttonsContainer.className = 'annotation-buttons';
 buttonsContainer.appendChild(cancelButton);
 buttonsContainer.appendChild(saveButton);
+buttonsContainer.appendChild(deleteIcon);
 
 listItem.appendChild(commentInput);
 listItem.appendChild(buttonsContainer);
@@ -665,6 +708,8 @@ listItem.addEventListener('click', () => {
     commentInput.style.display = 'block'; 
     cancelButton.style.display = 'inline-block'; 
     saveButton.style.display = 'inline-block'; 
+    deleteIcon.style.display = 'inline-block';
+
 });
 
 
