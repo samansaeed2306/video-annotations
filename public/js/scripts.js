@@ -206,6 +206,8 @@ function drawFreehand() {
     drawingMode = '';
     setCurrentDrawingColor(); 
 }
+
+  
 function activateCircleMode() {
     canvas.isDrawingMode = false;
     drawingMode = 'circle';
@@ -654,10 +656,39 @@ saveButton.addEventListener('click', function() {
     cancelButton.style.display = 'none';
     saveButton.style.display = 'none';
 });
+
+//const deleteButton = document.createElement('button');
+            const deleteIcon = document.createElement('img');
+            deleteIcon.src = 'icons/delete2.png'; // Path to your delete icon
+            deleteIcon.alt = 'Delete';
+            deleteIcon.style.width = '14px'; // Set the width as needed
+            deleteIcon.style.height = '14px'; // Set the height as needed
+            deleteIcon.style.backgroundColor="black";
+            deleteIcon.style.marginLeft= '2px'
+           
+           //deleteButton.appendChild(deleteIcon);
+
+            deleteIcon.addEventListener('click', function() {
+                // Remove annotation from the list
+                annotations.splice(index, 1);
+                // Remove pencil icon and pointer from the timeline
+                const tick = document.querySelector(`.tick[data-time="${annotation.time}"]`);
+                if (tick) {
+                    tick.classList.remove('has-drawing');
+                    const icon = tick.querySelector('.icon');
+                    if (icon) {
+                        icon.remove();
+                        removePointerForPencilIcon(tick)
+                    }
+                }
+                // Update the annotations list
+                updateAnnotationsList();
+            });
 const buttonsContainer = document.createElement('div');
 buttonsContainer.className = 'annotation-buttons';
 buttonsContainer.appendChild(cancelButton);
 buttonsContainer.appendChild(saveButton);
+buttonsContainer.appendChild(deleteIcon);
 
 listItem.appendChild(commentInput);
 listItem.appendChild(buttonsContainer);
@@ -665,6 +696,8 @@ listItem.addEventListener('click', () => {
     commentInput.style.display = 'block'; 
     cancelButton.style.display = 'inline-block'; 
     saveButton.style.display = 'inline-block'; 
+    deleteIcon.style.display = 'inline-block';
+
 });
 
 
