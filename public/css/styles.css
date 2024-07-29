@@ -51,6 +51,7 @@ video {
     position: absolute;
     top: 0;
     left: 0;
+    pointer-events: none;
     
 }
 #canvas {
@@ -59,7 +60,10 @@ video {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 10;
+    z-index: 2;
+    /* background-color: rgba(0,0,0,0.5); */
+    pointer-events: none;
+    /* cursor: pointer;  */
 }
 .annotations {
     position: fixed;
@@ -94,9 +98,11 @@ video {
 .annotation-buttons {
     text-align: right;
     margin-top: 5px;
+    gap: 3px;
 }
 .annotation-buttons button {
     margin-left: 5px;
+
 }
 
 .timeline {
@@ -223,3 +229,36 @@ video-buttons-container .video-button {
 .menu-popup-option-active {
     font-weight: bold;
 }
+
+#myIcon {
+    color: rgb(106, 0, 255);
+  }
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 100%;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+  
+  .dropdown-content button {
+    background-color: #f1f1f1;
+    border: none;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+    width: 100%;
+  }
+  
+  .dropdown-content button:hover {
+    background-color: #ddd;
+  }
+  
+  .show {
+    display: none;
+  }
