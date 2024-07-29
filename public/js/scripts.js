@@ -319,14 +319,15 @@ function unpickTool() {
 //             if (!isDrawing) return;
 //             const pointer = canvas.getPointer(opt.e);
 //             const activeObject = canvas.getActiveObject();
-//             activeObject.set({
-//                 width: Math.abs(pointer.x - activeObject.left),
-//                 height: Math.abs(pointer.y - activeObject.top)
+// //             activeObject.set({
+// //                 width: Math.abs(pointer.x - activeObject.left),
+// //                 height: Math.abs(pointer.y - activeObject.top)
 //             });
-//             // canvas.add(rect);
-//             // canvas.setActiveObject(rect);
-//             //activeObject.setCoords();
+//             canvas.add(rect);
+//             canvas.setActiveObject(rect);
+//             activeObject.setCoords();
 //             canvas.renderAll();
+//             saveState();
 //         });
 
 //         canvas.on('mouse:up', function() {
@@ -339,9 +340,9 @@ function unpickTool() {
 
 const state = [];
 let mods = 0;
-canvas.on('object:added', saveState);
-canvas.on('object:removed', saveState);
-canvas.on('object:modified', saveState);
+canvas.on('object:added', ()=>{saveState(); recordAnnotation(video.currentTime)});
+canvas.on('object:removed', ()=>{saveState(); recordAnnotation(video.currentTime)});
+canvas.on('object:modified', ()=>{saveState(); recordAnnotation(video.currentTime)});
 
 function saveState() {
     mods += 1;
@@ -350,7 +351,7 @@ function saveState() {
     }
     state.push(JSON.stringify(canvas));
     console.log('I am inside savestate')
-    recordAnnotation(video.currentTime);
+    //recordAnnotation(video.currentTime);
 }
 
 function undo() {
@@ -400,14 +401,20 @@ video.addEventListener('timeupdate', () => {
 
 
 function recordAnnotation(time) {
-    if (video.paused) {
+    if(video.pause){
+    const existingAnnotationIndex = annotations.findIndex(annotation => Math.floor(annotation.time) === Math.floor(time));
     const annotation = {
         time: time,
         content: JSON.stringify(canvas.toJSON())
     };
-   
-    annotations.push(annotation);
-    console.log('Inside record annotation')
+
+    if (existingAnnotationIndex !== -1) {
+        annotations[existingAnnotationIndex] = annotation;
+    } else {
+        annotations.push(annotation);
+    }
+
+    console.log('Annotation recorded');
     updateAnnotationsList();
     updateTimelineIcon(time);
     const timeline = document.getElementById('timeline');
