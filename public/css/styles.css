@@ -15,7 +15,7 @@ body {
 .tools {
     position: fixed;
     top: 10px;
-    left: 38%;
+    left: 32%;
     z-index: 1000;
     background-color:#485056;
     padding: 10px;
