@@ -43,14 +43,76 @@ function setupTimeline(video) {
         tick.addEventListener('dragover', handleDragOver);
         tick.addEventListener('drop', handleDrop);
         img.setAttribute('draggable', true);
-       
+    
         timeline.appendChild(tick);
+    }
+    for (let i = 0; i < duration; i++) {
+        const tick2 = document.createElement('div');
+        tick2.classList.add('tick2');
+        tick2.dataset.time = i; 
 
-        //const tick = document.getElementsByClassName('tick');
-        tick.addEventListener('click', function() {
+        tick2.addEventListener('click', function() {
             console.log(`Clicked on tick at ${i} seconds.`);
             video.currentTime = i;
         });
+
+        
+          // Create the waveform container and append it to tick2
+          const waveformContainer = document.createElement('div');
+          waveformContainer.classList.add('waveform-container');
+  
+          const waveform = document.createElement('div');
+          waveform.classList.add('waveform');
+          waveform.style.cursor = 'default';
+  
+          const wave = document.createElement('wave');
+          wave.style.display = 'block';
+          wave.style.position = 'relative';
+          wave.style.userSelect = 'none';
+          wave.style.height = '150px';
+          wave.style.overflow = 'auto hidden';
+          const progressWave = document.createElement('wave');
+        progressWave.id = 'progress-wave';
+        progressWave.style.position = 'absolute';
+        progressWave.style.zIndex = '3';
+        progressWave.style.left = '0px';
+        progressWave.style.top = '0px';
+        progressWave.style.bottom = '0px';
+        progressWave.style.overflow = 'hidden';
+        progressWave.style.width = '242.4px';
+        progressWave.style.display = 'block';
+        progressWave.style.boxSizing = 'border-box';
+        progressWave.style.borderRight = '1px solid rgb(170, 190, 209)';
+        progressWave.style.pointerEvents = 'none';
+        const canvas1 = document.createElement('canvas4');
+        canvas1.width = 635;
+        canvas1.height = 187;
+        canvas1.style.position = 'absolute';
+        canvas1.style.left = '0px';
+        canvas1.style.top = '0px';
+        canvas1.style.bottom = '0px';
+        canvas1.style.height = '100%';
+        canvas1.style.width = '508px';
+
+        progressWave.appendChild(canvas1);
+        wave.appendChild(progressWave);
+        const canvas2 = document.createElement('canvas4');
+        canvas2.width = 635;
+        canvas2.height = 187;
+        canvas2.style.position = 'absolute';
+        canvas2.style.zIndex = '2';
+        canvas2.style.left = '0px';
+        canvas2.style.top = '0px';
+        canvas2.style.bottom = '0px';
+        canvas2.style.height = '100%';
+        canvas2.style.pointerEvents = 'none';
+        canvas2.style.width = '508px';
+
+        wave.appendChild(canvas2);
+        waveform.appendChild(wave);
+        waveformContainer.appendChild(waveform);
+        tick2.appendChild(waveformContainer);
+        timeline.appendChild(tick2);
     }
 }
 
@@ -302,7 +364,79 @@ function unpickTool() {
     canvas.defaultCursor = 'default';
     canvas.selection = true;
 }
+function activatePolylineMode() {
+    drawingMode = 'polyline';
+    canvas.isDrawingMode = false; // Disable freehand drawing mode
+    polylinePoints = [];
+    canvas.upperCanvasEl.classList.add('canvas-plus-cursor');
+}
 
+function activateLineMode() {
+    drawingMode = 'line';
+    canvas.isDrawingMode = false; // Disable freehand drawing mode
+    canvas.upperCanvasEl.classList.add('canvas-plus-cursor');
+}
+
+canvas.on('mouse:down', function(options) {
+    const pointer = canvas.getPointer(options.e);
+    if (drawingMode === 'line') {
+        isDrawing = true;
+       
+        const points = [pointer.x, pointer.y, pointer.x, pointer.y];
+        currentShape = new fabric.Line(points, {
+            strokeWidth: 2,
+            fill: 'red',
+            stroke: 'red',
+            originX: 'center',
+            originY: 'center'
+        });
+        canvas.add(currentShape);
+    }else if (drawingMode === 'polyline') {
+        polylinePoints.push({ x: pointer.x, y: pointer.y });
+        if (polylinePoints.length > 1) {
+            const line = new fabric.Line([
+                polylinePoints[polylinePoints.length - 2].x,
+                polylinePoints[polylinePoints.length - 2].y,
+                polylinePoints[polylinePoints.length - 1].x,
+                polylinePoints[polylinePoints.length - 1].y
+            ], {
+                stroke: colors[currentColorIndex % colors.length],
+                strokeWidth: 2
+            });
+            canvas.add(line);
+            if (polylinePoints.length > 2) {
+                const angle = calculateAngle(
+                    polylinePoints[polylinePoints.length - 3],
+                    polylinePoints[polylinePoints.length - 2],
+                    polylinePoints[polylinePoints.length - 1]
+                );
+                const angleText = new fabric.Text(`${angle.toFixed(1)}°`, {
+                    left: polylinePoints[polylinePoints.length - 2].x,
+                    top: polylinePoints[polylinePoints.length - 2].y,
+                    fontSize: 14,
+                    fill: colors[currentColorIndex % colors.length]
+                });
+                canvas.add(angleText);
+            }
+        }}});
+
+canvas.on('mouse:move', function(options) {
+    if (isDrawing && currentShape  && drawingMode === 'line') {
+        const pointer = canvas.getPointer(options.e);
+        currentShape.set({
+            x2: pointer.x,
+            y2: pointer.y
+        });
+        canvas.renderAll();
+    }
+});
+
+canvas.on('mouse:up', function() {
+    if (drawingMode === 'line') {
+    isDrawing = false;
+    currentShape = null;
+    }
+});
 // canvas.on('mouse:down', function(opt) {
 //     if (drawingMode === 'rectangle') {
 //         isDrawing = true;
@@ -341,6 +475,14 @@ function unpickTool() {
 //         });
 //     }
 // });
+function calculateAngle(p1, p2, p3) {
+    const dx1 = p2.x - p1.x;
+    const dy1 = p2.y - p1.y;
+    const dx2 = p3.x - p2.x;
+    const dy2 = p3.y - p2.y;
+    const angle = Math.atan2(dy2, dx2) - Math.atan2(dy1, dx1);
+    return Math.abs((angle * 180) / Math.PI); // Convert radians to degrees
+}
 
 
 const state = [];
