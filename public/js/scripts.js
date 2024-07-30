@@ -302,7 +302,79 @@ function unpickTool() {
     canvas.defaultCursor = 'default';
     canvas.selection = true;
 }
+function activatePolylineMode() {
+    drawingMode = 'polyline';
+    canvas.isDrawingMode = false; // Disable freehand drawing mode
+    polylinePoints = [];
+    canvas.upperCanvasEl.classList.add('canvas-plus-cursor');
+}
 
+function activateLineMode() {
+    drawingMode = 'line';
+    canvas.isDrawingMode = false; // Disable freehand drawing mode
+    canvas.upperCanvasEl.classList.add('canvas-plus-cursor');
+}
+
+canvas.on('mouse:down', function(options) {
+    const pointer = canvas.getPointer(options.e);
+    if (drawingMode === 'line') {
+        isDrawing = true;
+       
+        const points = [pointer.x, pointer.y, pointer.x, pointer.y];
+        currentShape = new fabric.Line(points, {
+            strokeWidth: 2,
+            fill: 'red',
+            stroke: 'red',
+            originX: 'center',
+            originY: 'center'
+        });
+        canvas.add(currentShape);
+    }else if (drawingMode === 'polyline') {
+        polylinePoints.push({ x: pointer.x, y: pointer.y });
+        if (polylinePoints.length > 1) {
+            const line = new fabric.Line([
+                polylinePoints[polylinePoints.length - 2].x,
+                polylinePoints[polylinePoints.length - 2].y,
+                polylinePoints[polylinePoints.length - 1].x,
+                polylinePoints[polylinePoints.length - 1].y
+            ], {
+                stroke: colors[currentColorIndex % colors.length],
+                strokeWidth: 2
+            });
+            canvas.add(line);
+            if (polylinePoints.length > 2) {
+                const angle = calculateAngle(
+                    polylinePoints[polylinePoints.length - 3],
+                    polylinePoints[polylinePoints.length - 2],
+                    polylinePoints[polylinePoints.length - 1]
+                );
+                const angleText = new fabric.Text(`${angle.toFixed(1)}°`, {
+                    left: polylinePoints[polylinePoints.length - 2].x,
+                    top: polylinePoints[polylinePoints.length - 2].y,
+                    fontSize: 14,
+                    fill: colors[currentColorIndex % colors.length]
+                });
+                canvas.add(angleText);
+            }
+        }}});
+
+canvas.on('mouse:move', function(options) {
+    if (isDrawing && currentShape  && drawingMode === 'line') {
+        const pointer = canvas.getPointer(options.e);
+        currentShape.set({
+            x2: pointer.x,
+            y2: pointer.y
+        });
+        canvas.renderAll();
+    }
+});
+
+canvas.on('mouse:up', function() {
+    if (drawingMode === 'line') {
+    isDrawing = false;
+    currentShape = null;
+    }
+});
 // canvas.on('mouse:down', function(opt) {
 //     if (drawingMode === 'rectangle') {
 //         isDrawing = true;
@@ -341,6 +413,14 @@ function unpickTool() {
 //         });
 //     }
 // });
+function calculateAngle(p1, p2, p3) {
+    const dx1 = p2.x - p1.x;
+    const dy1 = p2.y - p1.y;
+    const dx2 = p3.x - p2.x;
+    const dy2 = p3.y - p2.y;
+    const angle = Math.atan2(dy2, dx2) - Math.atan2(dy1, dx1);
+    return Math.abs((angle * 180) / Math.PI); // Convert radians to degrees
+}
 
 
 const state = [];
