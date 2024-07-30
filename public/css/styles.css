@@ -262,3 +262,7 @@ video-buttons-container .video-button {
   .show {
     display: none;
   }
+
+  .canvas-plus-cursor {
+    cursor: crosshair; 
+}
