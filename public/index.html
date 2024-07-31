@@ -46,6 +46,61 @@
     <!-- Annotations Sidebar -->
     <div class="annotations">
         <h3>Annotations</h3>
+        <!-- <div data-element="notesPanelHeader" class="header">
+            <div data-element="notesPanelHeader-inputContainer" class="input-container">
+                <input type="text" placeholder="Search comments" aria-label="Search comments" id="NotesPanel__input">
+            </div>
+            <div data-element="notesPanelHeader-commentsCounter" class="comments-counter">
+                <span class="main-comment">Comments</span> (14)
+            </div>
+            <div data-element="notesPanelHeader-sortRow" class="sort-row">
+                <div class="sort-container" data-element="sortContainer">
+                    <div class="label">Sort:</div>
+                    <div data-element="notesOrderDropdown" class="Dropdown__wrapper">
+                        <button class="Dropdown" style="width: 100px;">
+                            <div class="picked-option">
+                                <div class="picked-option-text">Timecode</div>
+                                <div class="Icon arrow">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12">
+                                        <defs><style>.cls-1{fill:#abb0c4;}</style></defs>
+                                        <title>icon - chevron - down</title>
+                                        <path class="cls-1" d="M9,3.5l-3,3-3-3-1,1,4,4,4-4Z"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </button>
+                        <div class="Dropdown__items hide" role="listbox" aria-label="Sort Order List">
+                            <button data-element="dropdown-item-createdDate" class="Dropdown__item" tabindex="-1">Created Date</button>
+                            <button data-element="dropdown-item-modifiedDate" class="Dropdown__item" tabindex="-1">Modified Date</button>
+                            <button data-element="dropdown-item-status" class="Dropdown__item" tabindex="-1">Status</button>
+                            <button data-element="dropdown-item-author" class="Dropdown__item" tabindex="-1">Author</button>
+                            <button data-element="dropdown-item-type" class="Dropdown__item" tabindex="-1">Type</button>
+                            <button data-element="dropdown-item-color" class="Dropdown__item" tabindex="-1">Color</button>
+                            <button data-element="dropdown-item-Frame" class="Dropdown__item" tabindex="-1">Frame</button>
+                            <button data-element="dropdown-item-Timecode" class="Dropdown__item active" tabindex="-1">Timecode</button>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="buttons-container">
+                    <button class="Button" data-element="multiSelectModeButton" aria-label="Multi Select" type="button">
+                        <div class="Icon">
+                            <svg viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M20.25 4H9.75C8.78487 4 8 4.78487 8 5.75V16.25C8 17.2151 8.78487 18 9.75 18H20.25C21.2151 18 22 17.2151 22 16.25V5.75C22 4.78487 21.2151 4 20.25 4ZM9.75 16.25V5.75H20.25L20.2518 16.25H9.75Z"></path>
+                                <path d="M5.78902 9.46883H4V20.2098C4 21.1971 4.80237 22 5.78902 22H16.5231V20.2098H5.78902V9.46883ZM13.7797 12.6186L12.2357 11.0737L10.9709 12.3394L13.8995 15.2699L19 9.1475L17.6242 8L13.7797 12.6186Z"></path>
+                            </svg>
+                        </div>
+                    </button>
+                    <button class="Button filterAnnotationButton" data-element="filterAnnotationButton" aria-label="Filter" type="button">
+                        <div class="Icon">
+                            <svg viewBox="-3 -6 22 18" fill="#868E96" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M3 4H13V6H3V4ZM0 0H16V2H0V0ZM6 8H10V10H6V8Z"></path>
+                            </svg>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div> -->
         <ul id="annotations-list"></ul>
     </div>
     
@@ -54,7 +109,7 @@
             <div class="button-with-menu">
                 <span class="formatted-timeframe">
                     <span>
-                        <input type="text" class="current-time-input" value="0:01">
+                        <input type="text" class="current-time-input" value="0:01" color="white">
                     </span>
                     <span>
                         <span>&nbsp;/&nbsp;1:00</span>
@@ -79,7 +134,7 @@
                 </svg>
             </button>
             <button class="video-button" title="Play video" id="play-pause-button">
-                <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" background-color="#343a40">
                     <path d="M0 0h24v24H0z" fill="none"></path>
                     <path id="play-icon" d="M8 5v14l11-7z"></path>
                     <path id="pause-icon" d="M6 6h2v12H6zm3.5 0h2v12h-2z" style="display: none;"></path>
@@ -87,7 +142,7 @@
             </button>
             <button class="video-button" title="Next">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
-                    <path d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M0 0h24v24H0z" fill="#343a40"></path>
                     <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"></path>
                 </svg>
             </button>
