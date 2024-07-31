@@ -1003,3 +1003,18 @@ annotations.forEach(annotation => {
 //     }
 // });
 }
+document.addEventListener('DOMContentLoaded', () => {
+    const dropdownButton = document.querySelector('.Dropdown');
+    const dropdownItems = document.querySelector('.Dropdown__items');
+
+    dropdownButton.addEventListener('click', () => {
+        dropdownItems.classList.toggle('hide');
+    });
+
+    document.addEventListener('click', (event) => {
+        if (!dropdownButton.contains(event.target)) {
+            dropdownItems.classList.add('hide');
+        }
+    });
+});
+
