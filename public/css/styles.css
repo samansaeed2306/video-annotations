@@ -14,27 +14,39 @@ body {
 }
 .tools {
     position: fixed;
-    top: 10px;
-    left: 32%;
+    top: 0px;
+    /* left: 32%; */
     z-index: 1000;
-    background-color:#485056;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    background-color:#17181a;
+    padding: 5px;
+    /* border: 1px solid #ccc; */
+    border-radius: 0px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   
 }
 .tools button {
     margin: 5px;
     padding: 5px;
     cursor: pointer;
-    background-color: #d5b111;
+    /* background-color: #d5b111; */
+    
     
 }
 .tools button:hover {
-     background-color: #e0e0e0; 
+    background-color: #485056 ;
 }
+.tools button:clicked {
+    background-color:#1A4971 ;
+}
+
+
 .tools button img {
     width: 20px;
     height: 20px;
+    
     
 }
 #video-container {
@@ -70,21 +82,23 @@ video {
     right: 10px;
     top: 10px;
     width: 245px;
-    background-color: #0f0e0e;
+    background: rgb(48, 54, 60);
     /* border: 0.5px solid #ccc; */
     border-radius: 5px;
+    border-left: 0.5px solid #897f7f;
     padding: 10px;
     text-shadow: #d5b211;
     padding-right: 35px;
     height: 100%;
     overflow-y: auto;
+    z-index: 2;
 }
 
 .annotations ul li {
     color: white;}
 
 .annotation-item {
-    background-color: black;
+    background:#343a40;
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 10px;
@@ -107,26 +121,26 @@ video {
 
 .timeline {
     position: relative;
-    bottom:0;
-    width: 75%; 
+    bottom:0px;
+    width: 78.7%; 
     background-color: #343a40;
     
     
 
     border-radius: 5px;
-    padding: 10px;
-    margin-top: 20px;
+    padding: 15px;
+    margin-top: 0px;
     overflow: hidden;
     height: 200px;
-    left: -10%;
-    margin: 5px;
+    left: -9.8%;
+    margin: 0px;
     
     
 }
 .timeline .tick {
     display: inline-block;
     width: calc(100% / var(--duration)); 
-    height: 2px;
+    height: 4px;
     background-color: #212425;
     margin: 0;
     /* cursor: pointer; */
@@ -175,9 +189,9 @@ video {
     justify-content: space-between; 
     align-items: center;
     padding: 15px;
-    background: #343a40;
-    background: var(--controls-background);
-    width: 75%; 
+    background-color: #343a40;
+    /* background: var(--controls-background); */
+    width: 78.7%;
     position: relative;
     left: -10%; 
     margin-left: 10px; 
@@ -196,6 +210,8 @@ video {
     gap: 10px; 
     flex: 1; 
     justify-content: center; 
+    background-color: #343a40;
+    
 }
 
 
@@ -205,6 +221,8 @@ video {
     gap: 5px; 
     flex: 1; 
     justify-content: flex-end; 
+    background-color: #343a40;
+    
 }
 
 
@@ -215,7 +233,7 @@ video {
 
 
 .video-setting-button {
-    background: none;
+    background-color: #343a40;
     border: none;
     cursor: pointer;
 }
@@ -227,11 +245,12 @@ video {
 
 .icon {
     fill: var(--icon-color); 
+    background-color: #343a40;
     width: 22px;
     height: 22px; 
 }
 video-buttons-container .video-button {
-    background: none;
+    background-color: #343a40;
     border: none;
     cursor: pointer;
     
@@ -327,4 +346,9 @@ canvas4 {
 canvas4:nth-of-type(2) {
     z-index: 2;
     pointer-events: none;
+}
+
+.draggable-pointer {
+    position: absolute;
+    z-index: 2;
 }
