@@ -113,10 +113,63 @@ function setupTimeline(video) {
         waveformContainer.appendChild(waveform);
         tick2.appendChild(waveformContainer);
         timeline.appendChild(tick2);
+
+        tick2.addEventListener('click', function(event) {
+            console.log(`Clicked on tick at ${i} seconds.`);
+            video.currentTime = i;
+
+            const existingPointer = document.querySelector('.draggable-pointer');
+            if (existingPointer) {
+                existingPointer.remove();
+            }
+
+            const pointer = document.createElement('img');
+            pointer.src = 'icons/pointer.png';
+            pointer.alt = 'Pointer';
+            pointer.classList.add('draggable-pointer');
+            pointer.style.position = 'absolute';
+            pointer.style.left = `${event.clientX}px`;
+            pointer.style.top = `${event.clientY}px`;
+            pointer.setAttribute('draggable', true);
+
+            pointer.addEventListener('dragstart', handleDragStart);
+            pointer.addEventListener('dragend', handleDragEnd);
+            tick2.appendChild(pointer);
+        });
+
+        tick2.addEventListener('dragover', handleDragOver);
+        tick2.addEventListener('drop', handleDrop);
+        
+        
     }
 }
+function handleDragStart(event) {
+    event.dataTransfer.setData('text/plain', event.target.dataset.time);
+    event.dataTransfer.effectAllowed = 'move';
+}
 
+function handleDragOver(event) {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = 'move';
+}
 
+function handleDrop(event) {
+    event.preventDefault();
+    const time = event.dataTransfer.getData('text/plain');
+    const pointer = document.querySelector('.draggable-pointer');
+    if (pointer) {
+        event.currentTarget.appendChild(pointer);
+        video.currentTime = parseInt(event.currentTarget.dataset.time, 10);
+    }}
+
+    function handleDragEnd(event) {
+        event.preventDefault();
+        const pointer = document.querySelector('.draggable-pointer');
+        if (pointer) {
+            pointer.style.left = `${event.clientX}px`;
+            pointer.style.top = `${event.clientY}px`;
+        }
+    }
   
   function handleDragStart(event) {
     const dragTime = event.target.parentNode.parentNode.dataset.time;
