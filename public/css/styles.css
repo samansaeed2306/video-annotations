@@ -179,9 +179,10 @@ video {
 .pointer {
     position: absolute;
     height: 20px;
-    width: 1.5px; 
+    width: 2px; 
     background-color: rgb(187, 255, 0);
     cursor: ew-resize;
+    opacity: 0.5;
 }
 /* #play-pause-button {
     margin-left: 20px;
