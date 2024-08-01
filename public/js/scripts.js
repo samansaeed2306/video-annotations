@@ -1,7 +1,7 @@
 
 let annotations = [];
 let currentColorIndex = 0;
-const colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF'];
+const colors = ['#FF5733', '#33FF57', '#5733FF', '#FFFF33', '#FF33FF', '#33FFFF'];
 
 // Initialize Shaka Player
 document.addEventListener('DOMContentLoaded', function() {
@@ -312,9 +312,12 @@ updateTimelineIcons();
 
 function setCurrentDrawingColor() {
     if (canvas.freeDrawingBrush) {
-        canvas.freeDrawingBrush.color = colors[currentColorIndex % colors.length];
         currentColorIndex++;
+        canvas.freeDrawingBrush.color = colors[currentColorIndex % colors.length];
+        
+        console.log('inside free hand drawing condition')
     }
+    console.log('outside free hand drawing condition')
 }
 
 
@@ -325,6 +328,7 @@ function drawFreehand() {
     canvas.isDrawingMode = true;
     drawingMode = '';
     setCurrentDrawingColor(); 
+    //canvas.freeDrawingBrush= colors[currentColorIndex % colors.length]
 }
 
   
@@ -438,8 +442,8 @@ canvas.on('mouse:down', function(options) {
         const points = [pointer.x, pointer.y, pointer.x, pointer.y];
         currentShape = new fabric.Line(points, {
             strokeWidth: 2,
-            fill: 'red',
-            stroke: 'red',
+            fill: colors[currentColorIndex % colors.length],
+            stroke: colors[currentColorIndex % colors.length],
             originX: 'center',
             originY: 'center'
         });
@@ -661,7 +665,7 @@ function recordAnnotation(time) {
     const colors = ['#FF5733', '#33FF57', '#5733FF', '#FFFF33', '#FF33FF', '#33FFFF'];
 
 
-    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+    const randomColor = colors[currentColorIndex % colors.length];
     pointer.style.backgroundColor = randomColor;
     tick.appendChild(pointer);
 
@@ -1003,18 +1007,18 @@ annotations.forEach(annotation => {
 //     }
 // });
 }
-document.addEventListener('DOMContentLoaded', () => {
-    const dropdownButton = document.querySelector('.Dropdown');
-    const dropdownItems = document.querySelector('.Dropdown__items');
+// document.addEventListener('DOMContentLoaded', () => {
+//     const dropdownButton = document.querySelector('.Dropdown');
+//     const dropdownItems = document.querySelector('.Dropdown__items');
 
-    dropdownButton.addEventListener('click', () => {
-        dropdownItems.classList.toggle('hide');
-    });
+//     dropdownButton.addEventListener('click', () => {
+//         dropdownItems.classList.toggle('hide');
+//     });
 
-    document.addEventListener('click', (event) => {
-        if (!dropdownButton.contains(event.target)) {
-            dropdownItems.classList.add('hide');
-        }
-    });
-});
+//     document.addEventListener('click', (event) => {
+//         if (!dropdownButton.contains(event.target)) {
+//             dropdownItems.classList.add('hide');
+//         }
+//     });
+// });
 
