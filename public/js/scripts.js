@@ -870,7 +870,7 @@ saveButton.addEventListener('click', function() {
             deleteIcon.alt = 'Delete';
             deleteIcon.style.width = '14px'; // Set the width as needed
             deleteIcon.style.height = '14px'; // Set the height as needed
-            deleteIcon.style.backgroundColor="black";
+            deleteIcon.style.backgroundColor='none';
             deleteIcon.style.marginLeft= '2px'
            
            //deleteButton.appendChild(deleteIcon);
@@ -933,7 +933,7 @@ function showAnnotations(currentTime) {
     console.log('I am inside showAnnotations function')
     canvas.clear();
     annotations.forEach(annotation => {
-            if(annotation.time <= annotation.endTime){
+            if(annotation.time ==  currentTime){
             canvas.loadFromJSON(annotation.content, () => {
                 canvas.renderAll();
             });}
