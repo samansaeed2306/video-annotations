@@ -238,6 +238,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const currentTimeInput = document.querySelector('.current-time-input');
     const totalTimeSpan = document.querySelector('.formatted-timeframe span:nth-child(2) span:first-child');
 
+   
+    
     function formatTime(seconds) {
         const minutes = Math.floor(seconds / 60);
         const secs = Math.floor(seconds % 60);
@@ -252,6 +254,26 @@ document.addEventListener('DOMContentLoaded', function() {
         totalTimeSpan.textContent = ` / ${formatTime(video.duration)}`;
     });
 });
+
+// document.addEventListener('DOMContentLoaded', () => {
+//     //const canvas = new fabric.Canvas('canvas-id');
+
+//     // Sample annotation object
+//     const annotation = {
+//         time:5,
+//         startTime: 5, // Start time in seconds
+//         endTime: 10, // End time in seconds
+//         content: '{"version":"4.5.0","objects":[{"type":"circle","version":"4.5.0","originX":"left","originY":"top","left":100,"top":70,"width":60,"height":60,"fill":"transparent","stroke":"#33FF57","strokeWidth":2,"strokeDashArray":null,"strokeLineCap":"butt","strokeDashOffset":0,"strokeLineJoin":"miter","strokeUniform":false,"strokeMiterLimit":4,"scaleX":2.43,"scaleY":2.43,"angle":0,"flipX":false,"flipY":false,"opacity":1,"shadow":null,"visible":true,"backgroundColor":"","fillRule":"nonzero","paintFirst":"fill","globalCompositeOperation":"source-over","skewX":0,"skewY":0,"radius":30,"startAngle":0,"endAngle":6.283185307179586}]}' 
+//     };
+//     updateAnnotationsList();
+//     // Call the showAnnotations function with the annotation and a test time
+    
+//         const testtime = 3;
+//         showAnnotations(annotation, testtime);
+
+//     updateAnnotationsList();
+//     });
+
 
 document.getElementById('play-pause-button').addEventListener('click', function() {
     const playIcon = document.getElementById('play-icon');
@@ -305,7 +327,6 @@ updateAnnotationsList();
 updateTimelineIcons();
 }
 }
-
 
 
 
@@ -680,6 +701,11 @@ pointer.addEventListener('mousedown', (e) => {
     startX = e.pageX;
     startWidth = pointer.offsetWidth;
     pointer.style.cursor = 'ew-resize'; 
+
+    const tick = pointer.closest('.tick');
+    if (tick) {
+        annotationStartTime = parseFloat(tick.dataset.time);
+        console.log('Annotation found at:', annotationStartTime);}
 });
 
 document.addEventListener('mousemove', (e) => {
@@ -690,7 +716,12 @@ document.addEventListener('mousemove', (e) => {
 
             
             let annotationDuration = calculateAnnotationDuration(newWidth);
-            updateAnnotationDuration(tick.id, annotationDuration);
+            let annotationEndTime = annotationStartTime + annotationDuration;
+            console.log('Annotation end time:', annotationEndTime);
+            annotation = annotations.find(annotation => annotation.time === annotationStartTime);
+            updateAnnotationDuration(annotationStartTime, annotationEndTime, annotationDuration);
+            displayOnCanvas(annotation, annotationStartTime, annotationEndTime);
+
         }
     }
 });
@@ -717,39 +748,76 @@ const timelineWidth = timeline.offsetWidth;
 return (width / timelineWidth) * video.duration;
 }
 
-function updateAnnotationDuration(pencilIconId, duration) {
+// function updateAnnotationDuration(pencilIconId, duration) {
 
-console.log(`Updating annotation for ${pencilIconId} to duration: ${duration} seconds`);
+// console.log(`Updating annotation for ${pencilIconId} to duration: ${duration} seconds`);
 
-const annotation = annotations.find(a => a.time === video.currentTime);
-console.log(`start time: ${video.currentTime}`);
-if (annotation) {
-annotation.duration = duration;
-console.log(`Real duration set: ${annotation.duration} `)
-annotation.startTime=video.currentTime;
-annotation.endTime = video.currentTime + duration;
-const annotationData = JSON.parse(annotation.content);
-let interval=1;
-    for (let time = annotation.startTime; time <= annotation.endTime; time += 0.01) {
-        // if (Math.abs(time - video.currentTime) < interval / 2) { // Adjust the condition as needed
+// const annotation = annotations.find(a => a.time === video.currentTime);
+// console.log(`start time: ${video.currentTime}`);
+// if (annotation) {
+// annotation.duration = duration;
+// console.log(`Real duration set: ${annotation.duration} `)
+// annotation.startTime=video.currentTime;
+// annotation.endTime = video.currentTime + duration;
+// const annotationData = JSON.parse(annotation.content);
+// let interval=1;
+//     for (let time = annotation.startTime; time <= annotation.endTime; time += 0.01) {
+//         // if (Math.abs(time - video.currentTime) < interval / 2) { // Adjust the condition as needed
 
-        showAnnotations(time);
-            // console.log(`Displaying annotation.content: ${annotation.content}`);
-            // console.log(`Displaying annotationData: ${annotationData}` )
-            // canvas.loadFromJSON(annotation.content, () => {
-            //     canvas.renderAll();
-            // });
+//         showAnnotations(time);
+//             // console.log(`Displaying annotation.content: ${annotation.content}`);
+//             // console.log(`Displaying annotationData: ${annotationData}` )
+//             // canvas.loadFromJSON(annotation.content, () => {
+//             //     canvas.renderAll();
+//             // });
 
 
 
-       // }
+//        // }
         
+//     }
+// // Ensure previous event listeners are removed to avoid multiple handlers
+// // video.removeEventListener('timeupdate', handleTimeUpdate);
+// // video.addEventListener('timeupdate', handleTimeUpdate);
+// }
+// }
+function updateAnnotationDuration(startTime, endTime, duration) {
+    console.log(`Updating annotation from ${startTime} to ${endTime} with duration: ${duration} seconds`);
+
+    // Find the annotation
+    const annotation = annotations.find(a => Math.floor(a.time) === Math.floor(startTime));
+    if (annotation) {
+        annotation.duration = duration;
+        annotation.endTime = endTime;
+        annotation.startTime=startTime;
+        // Ensure the annotation is shown at all instances between start and end time
+        for (let time = startTime; time <= endTime; time += 0.01) {
+           // showAnnotations(annotation,time);
+        }
+
+
+
+        console.log('Updated annotation:', annotation);
+    } else {
+        console.log('Annotation not found for start time:', startTime);
     }
-// Ensure previous event listeners are removed to avoid multiple handlers
-// video.removeEventListener('timeupdate', handleTimeUpdate);
-// video.addEventListener('timeupdate', handleTimeUpdate);
 }
+
+function displayOnCanvas(annotation, startTime, endTime) {
+    video.addEventListener('timeupdate', () => {
+        const currentTime = video.currentTime;
+        if (currentTime >= startTime && currentTime <= endTime) {
+            canvas.clear();
+            canvas.loadFromJSON(annotation.content, () => {
+                canvas.renderAll();
+            });
+        } else {
+            // Clear the canvas if the current time is outside the annotation range
+            canvas.clear();
+        }
+    });
 }
+
 function handleTimeUpdate() {
 const currentTime = video.currentTime;
 const canvas = document.getElementById('canvas');
@@ -933,16 +1001,24 @@ function loadAnnotation(index) {
         canvas.renderAll();
     });
 }
-function showAnnotations(currentTime) {
-    console.log('I am inside showAnnotations function')
+function showAnnotations(annotation,time) {
+    console.log('I am inside showAnnotations function');
     canvas.clear();
-    annotations.forEach(annotation => {
-            if(annotation.time ==  currentTime){
-            canvas.loadFromJSON(annotation.content, () => {
-                canvas.renderAll();
-            });}
-        }
-    );
+
+    // Check if the current time falls within the annotation's duration
+    // if (time >= annotation.startTime && time <= annotation.endTime) {
+        console.log('Start time: ',annotation.startTime);
+        console.log('end time: ',annotation.endTime);
+        // Load the annotation content to the canvas
+        console.log('I am inside showAnnotations function if condition');
+        canvas.loadFromJSON(annotation.content, () => {
+            console.log('Annotation content:', annotation.content);
+
+            console.log('Loading content')
+            canvas.renderAll();
+            console.log('Loaded')
+        });
+    // }
 }
 function showAnnotationsAtCurrentTime(currentTime) {
     canvas.clear();
@@ -1007,6 +1083,15 @@ annotations.forEach(annotation => {
 //     }
 // });
 }
+// const annotation = {
+//     time:5, // End time in seconds
+//     content: '{"version":"4.5.0","objects":[{"type":"circle","version":"4.5.0","originX":"left","originY":"top","left":100,"top":70,"width":60,"height":60,"fill":"transparent","stroke":"#33FF57","strokeWidth":2,"strokeDashArray":null,"strokeLineCap":"butt","strokeDashOffset":0,"strokeLineJoin":"miter","strokeUniform":false,"strokeMiterLimit":4,"scaleX":2.43,"scaleY":2.43,"angle":0,"flipX":false,"flipY":false,"opacity":1,"shadow":null,"visible":true,"backgroundColor":"","fillRule":"nonzero","paintFirst":"fill","globalCompositeOperation":"source-over","skewX":0,"skewY":0,"radius":30,"startAngle":0,"endAngle":6.283185307179586}]}' 
+// };
+// annotations.push(annotation);
+//updateAnnotationsList();
+//updateTimelineIcons();
+// Display the annotation content at time 10 seconds
+//displayOnCanvas(annotation, 5, 10);
 // document.addEventListener('DOMContentLoaded', () => {
 //     const dropdownButton = document.querySelector('.Dropdown');
 //     const dropdownItems = document.querySelector('.Dropdown__items');

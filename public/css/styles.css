@@ -80,7 +80,7 @@ video {
 }
 .annotations {
     position: fixed;
-    right: 10px;
+    right: -3px;
     top: 10px;
     width: 245px;
     background: rgb(48, 54, 60);
@@ -95,13 +95,14 @@ video {
     z-index: 2;
 }
 
-.annotations ul li {
-    color: white;}
+/* /* .annotations ul li {
+    /* color: white;
+    }  */
 
 .annotation-item {
-    background:#343a40;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    background:#484848c4;
+    border: 1px solid #484848c4;
+    border-radius: 0px;
     padding: 10px;
     margin-bottom: 10px;
     color: white;
@@ -128,14 +129,14 @@ video {
     
     
 
-    border-radius: 5px;
+    border-radius: 0px;
     padding: 15px;
     margin-top: 0px;
     overflow: hidden;
     height: 400px;
     left: -9.8%;
     margin: 0px;
-    top:-30px;
+    top:-25px;
     
     
 }
@@ -206,7 +207,7 @@ video {
     position: relative;
     left: -10%; 
     margin-left: 10px; 
-    top:-30px;
+    top:-25px;
 }
 
 
