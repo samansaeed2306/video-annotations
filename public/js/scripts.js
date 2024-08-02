@@ -51,10 +51,21 @@ function setupTimeline(video) {
         tick2.classList.add('tick2');
         tick2.dataset.time = i; 
 
-        tick2.addEventListener('click', function() {
+        // tick2.addEventListener('click', function() {
+        //     console.log(`Clicked on tick at ${i} seconds.`);
+        //     video.currentTime = i;
+        //     event.stopPropagation();
+        // });
+        tick2.addEventListener('click', function(event) {
+            if (tick2.classList.contains('blocked')) {
+                console.log(`Tick at ${i} seconds is blocked.`);
+                event.stopPropagation();
+                return;
+            }
             console.log(`Clicked on tick at ${i} seconds.`);
             video.currentTime = i;
         });
+        
 
         
           // Create the waveform container and append it to tick2
@@ -114,33 +125,42 @@ function setupTimeline(video) {
         tick2.appendChild(waveformContainer);
         timeline.appendChild(tick2);
 
-        tick2.addEventListener('click', function(event) {
-            console.log(`Clicked on tick at ${i} seconds.`);
-            video.currentTime = i;
+        // tick2.addEventListener('click', function(event) {
+        //     console.log(`Clicked on tick at ${i} seconds.`);
+        //     video.currentTime = i;
 
-            const existingPointer = document.querySelector('.draggable-pointer');
-            if (existingPointer) {
-                existingPointer.remove();
-            }
+        //     const existingPointer = document.querySelector('.draggable-pointer');
+        //     if (existingPointer) {
+        //         existingPointer.remove();
+        //     }
 
-            const pointer = document.createElement('img');
-            pointer.src = 'icons/pointer.png';
-            pointer.alt = 'Pointer';
-            pointer.classList.add('draggable-pointer');
-            pointer.style.position = 'absolute';
-            pointer.style.left = `${event.clientX}px`;
-            pointer.style.top = `${event.clientY}px`;
-            pointer.setAttribute('draggable', true);
+        //     const pointer = document.createElement('img');
+        //     pointer.src = 'icons/pointer.png';
+        //     pointer.alt = 'Pointer';
+        //     pointer.classList.add('draggable-pointer');
+        //     pointer.style.position = 'absolute';
+        //     pointer.style.left = `${event.clientX}px`;
+        //     pointer.style.top = `${event.clientY}px`;
+        //     pointer.setAttribute('draggable', true);
 
-            pointer.addEventListener('dragstart', handleDragStart);
-            pointer.addEventListener('dragend', handleDragEnd);
-            tick2.appendChild(pointer);
-        });
+        //     pointer.addEventListener('dragstart', handleDragStart);
+        //     pointer.addEventListener('dragend', handleDragEnd);
+        //     tick2.appendChild(pointer);
+        // });
 
-        tick2.addEventListener('dragover', handleDragOver);
-        tick2.addEventListener('drop', handleDrop);
+        // tick2.addEventListener('dragover', handleDragOver);
+        // tick2.addEventListener('drop', handleDrop);
         
         
+    }
+}
+
+function addClassToTicks(startTime, endTime) {
+    for (let i = startTime; i <= endTime; i++) {
+        const tick2 = document.querySelector(`.tick2[data-time="${i}"]`);
+        if (tick2) {
+            tick2.classList.add('blocked');
+        }
     }
 }
 function handleDragStart(event) {
@@ -719,6 +739,7 @@ document.addEventListener('mousemove', (e) => {
             let annotationEndTime = annotationStartTime + annotationDuration;
             console.log('Annotation end time:', annotationEndTime);
             annotation = annotations.find(annotation => annotation.time === annotationStartTime);
+            addClassToTicks(annotationStartTime,annotationEndTime);
             updateAnnotationDuration(annotationStartTime, annotationEndTime, annotationDuration);
             displayOnCanvas(annotation, annotationStartTime, annotationEndTime);
 
@@ -746,6 +767,10 @@ console.log("Removed pointer")
 function calculateAnnotationDuration(width) {
 const timelineWidth = timeline.offsetWidth;
 return (width / timelineWidth) * video.duration;
+}
+function calculateAnnotationWidth(duration) {
+    const timelineWidth = timeline.offsetWidth;
+    return (duration / video.duration) * timelineWidth;
 }
 
 // function updateAnnotationDuration(pencilIconId, duration) {
@@ -813,7 +838,7 @@ function displayOnCanvas(annotation, startTime, endTime) {
             });
         } else {
             // Clear the canvas if the current time is outside the annotation range
-            canvas.clear();
+           // canvas.clear();
         }
     });
 }
