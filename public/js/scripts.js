@@ -1131,4 +1131,99 @@ annotations.forEach(annotation => {
 //         }
 //     });
 // });
+document.getElementById('microphone-container').addEventListener('click', toggleMicrophone);
+
+let isRecording = false;
+let mediaRecorder;
+let recordedChunks = [];
+let audioStream;
+
+function toggleMicrophone() {
+    if (isRecording) {
+        stopRecording();
+    } else {
+        startRecording();
+    }
+}
+
+async function startRecording() {
+    isRecording = true;
+    recordedChunks = [];
+    document.getElementById('microphone-icon').classList.add('recording');
+    audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    mediaRecorder = new MediaRecorder(audioStream);
+    mediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+            recordedChunks.push(event.data);
+        }
+    };
+    mediaRecorder.onstop = saveRecording;
+
+    mediaRecorder.start();
+    console.log('Recording started');
+}
+
+function stopRecording() {
+    isRecording = false;
+    document.getElementById('microphone-icon').classList.remove('recording');
+    mediaRecorder.stop();
+    
+    audioStream.getTracks().forEach(track => track.stop());
+    console.log('Recording stopped');
+   
+}
+
+function saveRecording() {
+    const blob = new Blob(recordedChunks, { type: 'audio/webm' });
+    const url = URL.createObjectURL(blob);
+
+    const audioElement = document.createElement('audio');
+    audioElement.controls = true;
+    audioElement.src = url;
+    document.body.appendChild(audioElement);
+
+    // Save the recording with the corresponding video duration
+    const startTime = video.currentTime;
+    const endTime = startTime + (blob.size / 1000); // Approximate end time
+
+    const annotation = {
+        startTime: startTime,
+        endTime: endTime,
+        content: url,
+        type: 'audio'
+    };
+    annotations.push(annotation);
+    console.log('Recording saved', annotation);
+    displayAnnotations();
+}
+const timeline = document.getElementById('timeline');
+
+function displayAnnotations() {
+    annotations.forEach(annotation => {
+        if (annotation.type === 'audio') {
+            const startTime = annotation.startTime;
+            const endTime = annotation.endTime;
+            const duration = endTime - startTime;
+            const width = calculateWidthFromDuration(duration);
+
+            const recordingElement = document.createElement('div');
+            recordingElement.classList.add('recording');
+            recordingElement.style.left = `${(startTime / video.duration) * 100}%`;
+            recordingElement.style.width = `${width}px`;
+
+            recordingElement.addEventListener('click', () => {
+                const audio = new Audio(annotation.content);
+                audio.play();
+            });
+
+            timeline.appendChild(recordingElement);
+        }
+    });
+}
+
+function calculateWidthFromDuration(duration) {
+    const timelineWidth = timeline.offsetWidth;
+    return (duration / video.duration) * timelineWidth;
+}
+
 
