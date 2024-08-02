@@ -98,7 +98,7 @@ video {
 /* /* .annotations ul li {
     /* color: white;
     }  */
-
+ 
 .annotation-item {
     background:#484848c4;
     border: 1px solid #484848c4;
@@ -375,4 +375,21 @@ canvas4:nth-of-type(2) {
 .draggable-pointer {
     position: absolute;
     z-index: 2;
+}
+/* .recording {
+    position: absolute;
+    height: 20px;
+    /* background-color: rgba(81, 10, 10, 0.5); 
+} */
+@keyframes recordingAnimation {
+    0%, 100% {
+        fill: rgba(81, 10, 10, 0.5);
+    }
+    50% {
+        fill: white;
+    }
+}
+
+#microphone-icon.recording path {
+    animation: recordingAnimation 1s infinite;
 }
