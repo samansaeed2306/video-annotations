@@ -1092,14 +1092,18 @@ function updateTimelineIcons() {
 const timeline = document.getElementById('timeline');
 const ticks = timeline.getElementsByClassName('tick');
 for (let tick of ticks) {
+    
     tick.classList.remove('has-drawing');
     const icon = tick.querySelector('.icon');
+    const audioElement = tick.querySelector('.audio-element');
     console.log('Inside updateTimelineIcons function')
     removePointerForPencilIcon(tick);
     if (icon) {
         icon.style.display = 'none';
         
         
+    }if (audioElement) {
+        audioElement.remove();
     }
 }
 annotations.forEach(annotation => {
@@ -1115,6 +1119,18 @@ annotations.forEach(annotation => {
                 icon.querySelector('img').src = 'icons/mic.png'; 
                 icon.querySelector('img').alt = 'Mic';
             }
+                const audioElement = document.createElement('audio');
+                audioElement.className = 'audio-element';
+                audioElement.controls = true;
+                audioElement.src = `data:audio/webm;base64,${annotation.content}`;
+                tick.appendChild(audioElement);
+
+                const timelineWidth = timeline.offsetWidth;
+                const startTimePercentage = (annotation.startTime / video.duration) * 100;
+                const durationPercentage = (annotation.endTime - annotation.startTime) / video.duration * 100;
+               // audioElement.style.width = `${durationPercentage}%`;
+                audioElement.style.left = `${startTimePercentage}%`;
+                //audioElement.style.width = `${calculateWidthFromDuration(annotation.endTime - annotation.startTime)}px`;
         }
     }else{
         if (tick) {
@@ -1213,11 +1229,12 @@ async function saveRecording() {
     const blob = new Blob(recordedChunks, { type: 'audio/webm' });
     const url = URL.createObjectURL(blob);
 
-//     const audioElement = document.createElement('audio');
-//     audioElement.className = 'audio-element';
-//     audioElement.controls = true;
-//     audioElement.src = url;
-//   document.body.appendChild(audioElement);
+    const audioElement = document.createElement('audio');
+    audioElement.className = 'audio-element';
+    audioElement.controls = true;
+    audioElement.src = url;
+    //audioElement.style.width='200px';
+  document.body.appendChild(audioElement);
 
     // Save the recording with the corresponding video duration
     const startTime = video.currentTime;
@@ -1249,11 +1266,11 @@ function displayRecordings() {
             const endTime = annotation.endTime;
             const duration = endTime - startTime;
             const width = calculateWidthFromDuration(duration);
-            const audioElements = document.getElementsByClassName('audio-element');
-            Array.from(audioElements).forEach(audio => {
-                audio.style.width=`${calculateWidthFromDuration()}px`;
-                audio.style.backgroundColor='red';  
-            });
+            // const audioElements = document.getElementsByClassName('audio-element');
+            // Array.from(audioElements).forEach(audio => {
+            //     audio.style.width=`${calculateWidthFromDuration()}px`;
+            //     audio.style.backgroundColor='red';  
+            // });
             
 
             const recordingElement = document.createElement('div');
