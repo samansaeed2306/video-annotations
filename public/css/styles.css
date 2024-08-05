@@ -11,6 +11,7 @@ body {
     margin: 0;
     font-family: Arial, sans-serif;
     background-color:#485056;
+    /* background-color: #000; */
 }
 .tools {
     position: fixed;
@@ -161,7 +162,7 @@ video {
     width: calc(100% / var(--duration)); 
     height: 5px;
     background-color: #5a5c5d;
-    margin-top: 70px;
+    margin-top: 10px;
     cursor: pointer;
     position: relative;
 }
@@ -178,6 +179,11 @@ video {
 .timeline .tick.has-drawing .icon img {
     width: 16px;
     height: 16px;
+}
+.timeline .tick.has-audio .icon img {
+    width: 16px;
+    height: 16px;
+    background-color: none;
 }
 
 .pointer {
@@ -376,11 +382,11 @@ canvas4:nth-of-type(2) {
     position: absolute;
     z-index: 2;
 }
-/* .recording {
-    position: absolute;
-    height: 20px;
-    /* background-color: rgba(81, 10, 10, 0.5); 
-} */
+.recording {
+    position: absolute; 
+    /* height: 20px; */
+    /* background-color: rgba(81, 10, 10, 0.5); */
+}
 @keyframes recordingAnimation {
     0%, 100% {
         fill: rgba(81, 10, 10, 0.5);
