@@ -399,3 +399,17 @@ canvas4:nth-of-type(2) {
 #microphone-icon.recording path {
     animation: recordingAnimation 1s infinite;
 }
+.audio-element {
+    position: absolute;
+    bottom: 100%;  
+    /* left: 50%; */
+    transform: translateX(-50%);
+    background-color: #7c3e3e; 
+    border: 1px solid #7c3e3e;  
+    border-radius: 30px;
+    height: 13px;
+    z-index: 1;               
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    color: #333; 
+    padding: 5px;
+}
