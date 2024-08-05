@@ -3,6 +3,11 @@ let annotations = [];
 let currentColorIndex = 0;
 const colors = ['#FF5733', '#33FF57', '#5733FF', '#FFFF33', '#FF33FF', '#33FFFF'];
 
+window.onload = () => {
+    document.cookie.split(";").forEach(cookie => {
+        document.cookie = cookie.trim().split("=")[0] + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+    });
+};
 // Initialize Shaka Player
 document.addEventListener('DOMContentLoaded', function() {
     const video = document.getElementById('video');
@@ -210,7 +215,11 @@ const newTime = event.target.dataset.time;
 moveAnnotation(oldTime, newTime);
 
 
+
 const oldTick = document.querySelector(`.tick[data-time='${oldTime}'] .icon`);
+const icon = oldTick.querySelector('.icon img');
+if(icon.alt == 'Pencil'){
+// if(oldTick.icon.src=='Pencil.png')
 if (oldTick) {
 oldTick.style.display = 'none';
 removePointerForPencilIcon(oldTick);
@@ -223,10 +232,22 @@ canvas.forEachObject(obj => {
     if (obj.time === oldTime) {
         canvas.remove(obj);
     }
-});
+});}
+}else{
+    if (oldTick) {
+        oldTick.style.display = 'none';
+        //removePointerForPencilIcon(oldTick);
+        }
+        
+        const annotationIndex = annotations.findIndex(annotation => Math.floor(annotation.time) === parseInt(oldTime));
+        if (annotationIndex !== -1) {
+        annotations.splice(annotationIndex, 1);
+        
+        }
+}
 updateAnnotationsList();
 updateTimelineIcons();
-}
+
 }
 
 
@@ -242,12 +263,12 @@ const playPauseImage = playPauseButton.querySelector('img');
 
 playPauseButton.addEventListener('click', () => {
 if (video.paused) {
-    console.log('inside pause condition')
+    console.log('inside play condition')
     video.play();
    // playPauseImage.src = 'icons/pause.png';
     //playPauseImage.alt = 'Pause';
 } else {
-    console.log('inside play condition')
+    console.log('inside pause condition')
     video.pause();
    // playPauseImage.src = 'icons/play.jpg';
    // playPauseImage.alt = 'Play';
@@ -326,7 +347,7 @@ const annotation = annotations[annotationIndex];
 annotation.time = newTime;
 annotations.splice(annotationIndex, 1, annotation); 
 
-
+if(annotation.type!='audio'){
 canvas.forEachObject(obj => {
     if (obj.time === oldTime) {
         canvas.remove(obj);
@@ -342,7 +363,7 @@ annotations.forEach(ann => {
     }
 });
 
-
+}
 updateAnnotationsList();
 updateTimelineIcons();
 }
@@ -1048,7 +1069,7 @@ function showAnnotations(annotation,time) {
 function showAnnotationsAtCurrentTime(currentTime) {
     canvas.clear();
     annotations.forEach(annotation => {
-        if (Math.abs(annotation.time - currentTime) < 0.5) { 
+        if (Math.abs(annotation.time - currentTime) < 0.5 && annotation.type!='audio') { 
             canvas.loadFromJSON(annotation.content, () => {
                 canvas.renderAll();
             });
@@ -1084,15 +1105,29 @@ for (let tick of ticks) {
 annotations.forEach(annotation => {
     const time = Math.floor(annotation.time);
     const tick = timeline.querySelector(`.tick[data-time='${time}']`);
-    if (tick) {
-        tick.classList.add('has-drawing');
-        const icon = tick.querySelector('.icon');
-        if (icon) {
-            icon.style.display = 'block';
-            console.log('Inside updateTimelineIcons function for creating pencil icon')
-            createPointerForPencilIcon(icon);
+    if(annotation.type=='audio'){
+        console.log('Inside audio condition timeline icons')
+        if (tick) {
+            tick.classList.add('has-audio');
+            const icon = tick.querySelector('.icon');
+            if (icon) {
+                icon.style.display = 'block';
+                icon.querySelector('img').src = 'icons/mic.png'; 
+                icon.querySelector('img').alt = 'Mic';
+            }
+        }
+    }else{
+        if (tick) {
+            tick.classList.add('has-drawing');
+            const icon = tick.querySelector('.icon');
+            if (icon) {
+                icon.style.display = 'block';
+                console.log('Inside updateTimelineIcons function for creating pencil icon')
+                createPointerForPencilIcon(icon);
+            }
         }
     }
+    
 });
 
 //     const ticks2 = document.querySelectorAll('.timeline .tick');
@@ -1172,51 +1207,70 @@ function stopRecording() {
     console.log('Recording stopped');
    
 }
+const timeline = document.getElementById('timeline');
 
-function saveRecording() {
+async function saveRecording() {
     const blob = new Blob(recordedChunks, { type: 'audio/webm' });
     const url = URL.createObjectURL(blob);
 
-    const audioElement = document.createElement('audio');
-    audioElement.controls = true;
-    audioElement.src = url;
-    document.body.appendChild(audioElement);
+//     const audioElement = document.createElement('audio');
+//     audioElement.className = 'audio-element';
+//     audioElement.controls = true;
+//     audioElement.src = url;
+//   document.body.appendChild(audioElement);
 
     // Save the recording with the corresponding video duration
     const startTime = video.currentTime;
-    const endTime = startTime + (blob.size / 1000); // Approximate end time
-
+    console.log(blob.size);
+    const duration = (blob.size + 786.05)/17402.05;
+    console.log('Duration of recording: ',duration);
+    const endTime = startTime + duration; 
+    const base64String = await convertBlobToBase64(blob);
     const annotation = {
+        time: startTime,
         startTime: startTime,
         endTime: endTime,
-        content: url,
+        content: base64String,
         type: 'audio'
     };
     annotations.push(annotation);
+     updateAnnotationsList();
+     updateTimelineIcons();
     console.log('Recording saved', annotation);
-    displayAnnotations();
+    displayRecordings();
 }
-const timeline = document.getElementById('timeline');
 
-function displayAnnotations() {
+
+function displayRecordings() {
     annotations.forEach(annotation => {
-        if (annotation.type === 'audio') {
+        if (Math.abs(annotation.time - video.currentTime) < 0.5 && annotation.type === 'audio') {
+            console.log("Inside display Recordings function's condition !")
             const startTime = annotation.startTime;
             const endTime = annotation.endTime;
             const duration = endTime - startTime;
             const width = calculateWidthFromDuration(duration);
+            const audioElements = document.getElementsByClassName('audio-element');
+            Array.from(audioElements).forEach(audio => {
+                audio.style.width=`${calculateWidthFromDuration()}px`;
+                audio.style.backgroundColor='red';  
+            });
+            
 
             const recordingElement = document.createElement('div');
             recordingElement.classList.add('recording');
             recordingElement.style.left = `${(startTime / video.duration) * 100}%`;
             recordingElement.style.width = `${width}px`;
-
+            recordingElement.style.height='20px';
+            //recordingElement.src=url;
+            recordingElement.style.backgroundColor='red';
             recordingElement.addEventListener('click', () => {
                 const audio = new Audio(annotation.content);
+                audio.currentTime=startTime;
+                // audio.style.backgroundColor='red';
                 audio.play();
             });
 
-            timeline.appendChild(recordingElement);
+           timeline.appendChild(recordingElement);
         }
     });
 }
@@ -1225,5 +1279,24 @@ function calculateWidthFromDuration(duration) {
     const timelineWidth = timeline.offsetWidth;
     return (duration / video.duration) * timelineWidth;
 }
-
-
+function convertBlobToBase64(blob) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            resolve(reader.result.split(',')[1]);
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+    });
+}
+// video.addEventListener('timeupdate', () => {
+//     annotations.forEach(annotation => {
+//         if (annotation.type === 'audio') {
+//             if (video.currentTime >= annotation.startTime && video.currentTime <= annotation.endTime) {
+//                 const audio = new Audio(annotation.content);
+//                 audio.currentTime = annotation.startTime;
+//                 audio.play();
+//             }
+//         }
+//     });
+// });
