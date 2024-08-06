@@ -17,7 +17,23 @@ export async function createAnnotationDocument(annotation) {
   return collection.insertOne(annotation);
 }
 
-
+export async function getAllAnnotations() {
+    const db = await connectToDb();
+    const collection = db.collection('annotations');
+    return await collection.find().toArray();
+  }
+  
+  export async function getAnnotationById(id) {
+    const db = await connectToDb();
+    const collection = db.collection('annotations');
+    
+    // Validate the ID format
+    if (!ObjectId.isValid(id)) {
+      throw new Error('Invalid ID format');
+    }
+  
+    return await collection.findOne({ _id: new ObjectId(id) });
+  }
 
 
 
