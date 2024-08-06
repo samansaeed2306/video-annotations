@@ -37,3 +37,34 @@ export async function updateAnnotation(req, res) {
   }
 
 
+  export async function getAnnotationById(req, res) {
+    try {
+      const { id } = req.params;
+  
+      // Validate the ID format
+      if (!ObjectId.isValid(id)) {
+        return res.status(400).json({ error: 'Invalid ID format' });
+      }
+  
+      const annotation = await model.getAnnotationById(id);
+      
+      if (!annotation) {
+        return res.status(404).json({ error: 'Annotation not found' });
+      }
+  
+      res.status(200).json(annotation);
+    } catch (error) {
+      console.error('Error in getAnnotationById:', error);
+      res.status(500).json({ error: 'Failed to retrieve annotation' });
+    }
+  }
+
+  export async function getAllAnnotations(req, res) {
+    try {
+      const annotations = await model.getAllAnnotations();
+      res.status(200).json(annotations);
+    } catch (error) {
+      console.error('Error in getAllAnnotations:', error);
+      res.status(500).json({ error: 'Failed to retrieve annotations' });
+    }
+  }
