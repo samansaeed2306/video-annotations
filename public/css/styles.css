@@ -412,4 +412,5 @@ canvas4:nth-of-type(2) {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     color: #333; 
     padding: 5px;
+    margin-bottom: 4px;
 }
