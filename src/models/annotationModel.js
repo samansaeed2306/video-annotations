@@ -1,4 +1,15 @@
 import { connectToDb } from '../db/connect.js';
+import { ObjectId } from 'mongodb';
+
+export async function updateAnnotation(id, updatedAnnotation) {
+    const db = await connectToDb();
+    const collection = db.collection('annotations');
+  
+    return await collection.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: updatedAnnotation }
+    );
+  }
 
 export async function createAnnotationDocument(annotation) {
   const db = await connectToDb();
