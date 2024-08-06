@@ -35,6 +35,18 @@ export async function getAllAnnotations() {
     return await collection.findOne({ _id: new ObjectId(id) });
   }
 
+  export async function deleteAnnotation(id) {
+    const db = await connectToDb();
+    const collection = db.collection('annotations');
+  
+    // Validate the ID format
+    if (!ObjectId.isValid(id)) {
+      throw new Error('Invalid ID format');
+    }
+  
+    return await collection.deleteOne({ _id: new ObjectId(id) });
+  }
+
 
 
 
