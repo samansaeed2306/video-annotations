@@ -6,7 +6,6 @@
     "start:frontend": "http-server public -p 3000"
   },
   "dependencies": {
-    "express": "^4.17.1",
     "http-server": "^14.0.0"
   }
 }

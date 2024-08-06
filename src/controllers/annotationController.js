@@ -4,8 +4,11 @@ import { ObjectId } from 'mongodb';
 export async function addAnnotation(req, res) {
   try {
     const annotation = req.body;
-    await model.createAnnotationDocument(annotation);
-    res.status(201).json({ message: 'Annotation created successfully!' });
+    const createdAnnotation = await model.createAnnotationDocument(annotation);
+    res.status(201).json({
+      message: 'Annotation created successfully!',
+      annotation: createdAnnotation
+    });
   } catch (error) {
     res.status(500).json({ error: 'Failed to create annotation' });
   }
