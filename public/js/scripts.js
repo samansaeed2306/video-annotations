@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     player.load(manifestUri).then(function() {
         console.log('The video has now been loaded!');
-        setupVideoPlayer(video);
+        //setupVideoPlayer(video);
         setupTimeline(video);
     }).catch(function(error) {
         console.error('Error code', error.code, 'object', error);
@@ -1257,12 +1257,12 @@ async function saveRecording() {
     console.log('Recording saved', annotation);
     displayRecordings();
      // Store audio context for playback synchronization
-     audioContexts.push({
-        audio: audioElement,
-        startTime: annotation.startTime,
-        endTime: annotation.endTime,
-        isPlaying: false
-    });
+    //  audioContexts.push({
+    //     audio: audioElement,
+    //     startTime: annotation.startTime,
+    //     endTime: annotation.endTime,
+    //     isPlaying: false
+    // });
 }
 
 
@@ -1299,25 +1299,25 @@ function displayRecordings() {
         }
     });
 }
-function setupVideoPlayer(video) {
-    video.addEventListener('timeupdate', () => {
-        const currentTime = video.currentTime;
+// function setupVideoPlayer(video) {
+//     video.addEventListener('timeupdate', () => {
+//         const currentTime = video.currentTime;
 
-        audioContexts.forEach(context => {
-            if (currentTime >= context.startTime && currentTime <= context.endTime) {
-                if (!context.isPlaying) {
-                    context.audio.play();
-                    context.isPlaying = true;
-                }
-            } else {
-                if (context.isPlaying) {
-                    context.audio.pause();
-                    context.isPlaying = false;
-                }
-            }
-        });
-    });
-}
+//         audioContexts.forEach(context => {
+//             if (currentTime >= context.startTime && currentTime <= context.endTime) {
+//                 if (!context.isPlaying) {
+//                     context.audio.play();
+//                     context.isPlaying = true;
+//                 }
+//             } else {
+//                 if (context.isPlaying) {
+//                     context.audio.pause();
+//                     context.isPlaying = false;
+//                 }
+//             }
+//         });
+//     });
+// }
 function calculateWidthFromDuration(duration) {
     const timelineWidth = timeline.offsetWidth;
     return (duration / video.duration) * timelineWidth;
