@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     player.load(manifestUri).then(function() {
         console.log('The video has now been loaded!');
+        setupVideoPlayer(video);
         setupTimeline(video);
     }).catch(function(error) {
         console.error('Error code', error.code, 'object', error);
@@ -1126,7 +1127,7 @@ annotations.forEach(annotation => {
                 tick.appendChild(audioElement);
 
                 const timelineWidth = timeline.offsetWidth;
-                const startTimePercentage = (annotation.startTime / video.duration) * 100;
+                const startTimePercentage = (annotation.startTime/ video.duration)* 100;
                 const durationPercentage = (annotation.endTime - annotation.startTime) / video.duration * 100;
                // audioElement.style.width = `${durationPercentage}%`;
                 audioElement.style.left = `${startTimePercentage}%`;
@@ -1255,6 +1256,13 @@ async function saveRecording() {
      updateTimelineIcons();
     console.log('Recording saved', annotation);
     displayRecordings();
+     // Store audio context for playback synchronization
+     audioContexts.push({
+        audio: audioElement,
+        startTime: annotation.startTime,
+        endTime: annotation.endTime,
+        isPlaying: false
+    });
 }
 
 
@@ -1291,7 +1299,25 @@ function displayRecordings() {
         }
     });
 }
+function setupVideoPlayer(video) {
+    video.addEventListener('timeupdate', () => {
+        const currentTime = video.currentTime;
 
+        audioContexts.forEach(context => {
+            if (currentTime >= context.startTime && currentTime <= context.endTime) {
+                if (!context.isPlaying) {
+                    context.audio.play();
+                    context.isPlaying = true;
+                }
+            } else {
+                if (context.isPlaying) {
+                    context.audio.pause();
+                    context.isPlaying = false;
+                }
+            }
+        });
+    });
+}
 function calculateWidthFromDuration(duration) {
     const timelineWidth = timeline.offsetWidth;
     return (duration / video.duration) * timelineWidth;
