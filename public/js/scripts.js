@@ -1,3 +1,4 @@
+//import { saveAnnotation, updateAnnotation } from './api.js';
 
 let annotations = [];
 let currentColorIndex = 0;
@@ -246,6 +247,7 @@ canvas.forEachObject(obj => {
         
         }
 }
+
 updateAnnotationsList();
 updateTimelineIcons();
 
@@ -367,7 +369,10 @@ annotations.forEach(ann => {
 }
 updateAnnotationsList();
 updateTimelineIcons();
+
+//updateAnnotation(annotation);
 }
+
 }
 
 
@@ -670,6 +675,7 @@ video.addEventListener('timeupdate', () => {
 function recordAnnotation(time) {
     if(video.paused){
     const existingAnnotationIndex = annotations.findIndex(annotation => Math.floor(annotation.time) === Math.floor(time));
+    const existingAnnotation = annotations.find(annotation => Math.floor(annotation.time) === Math.floor(time));
     const annotation = {
         time: time,
         content: JSON.stringify(canvas.toJSON())
@@ -677,8 +683,14 @@ function recordAnnotation(time) {
 
     if (existingAnnotationIndex !== -1) {
         annotations[existingAnnotationIndex] = annotation;
+       // Object.assign(existingAnnotation, annotation);
+        updateAnnotation(existingAnnotation);
     } else {
         annotations.push(annotation);
+        saveAnnotation(annotation);
+        annotations.forEach(annotation => {
+            console.log('annotations id got:',annotation.id);
+        })
     }
 
     console.log('Annotation recorded');
@@ -982,7 +994,7 @@ saveButton.addEventListener('click', function() {
     cancelButton.style.display = 'none';
     saveButton.style.display = 'none';
 });
-
+//updateAnnotation(annotations[index]);
 //const deleteButton = document.createElement('button');
             const deleteIcon = document.createElement('img');
             deleteIcon.src = 'icons/delete2.png'; // Path to your delete icon
@@ -1033,6 +1045,7 @@ listItem.addEventListener('click', () => {
         
     // });
     annotationsList.appendChild(listItem);
+    // updateAnnotation(annotation);
     }else {
     console.log('Skipping empty annotation:', annotation);
 }});
