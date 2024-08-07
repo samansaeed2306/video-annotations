@@ -47,6 +47,13 @@ export async function getAllAnnotations() {
     return await collection.deleteOne({ _id: new ObjectId(id) });
   }
 
+  export async function deleteAllAnnotations() {
+    const db = await connectToDb();
+    const collection = db.collection('annotations');
+
+    return await collection.deleteMany({});
+}
+
 
 
 
