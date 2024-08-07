@@ -8,5 +8,5 @@ router.put('/updateannotation/:id', controller.updateAnnotation);
 router.get('/getallAnnotations', controller.getAllAnnotations);
 router.get('/getAnnotation/:id', controller.getAnnotationById);
 router.delete('/deleteAnnotation/:id', controller.deleteAnnotation);
-
+router.delete('/deleteallAnnotations', controller.deleteAllAnnotations);
 export default router;

@@ -414,3 +414,105 @@ canvas4:nth-of-type(2) {
     padding: 5px;
     margin-bottom: 4px;
 }
+.save-btn {
+    position: absolute;
+    top: 10px; /* Adjust as needed */
+    right: 0px; /* Adjust as needed */
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.save-btn svg {
+    fill: #ffffff; /* Original color */
+}
+
+.save-btn.active svg {
+    fill: #FFD700; /* Yellow color when active */
+}
+
+#save-button:hover {
+    background-color: transparent; /* ensure no grey background on hover */
+}
+.save-label {
+    margin-left: 10px; /* space between icon and text */
+    color: white; /* text color */
+    font-size: 16px; /* adjust font size as needed */
+    position: absolute;
+    top: 23px; /* Adjust as needed */
+    right: 76px; /* Adjust as needed */
+    background: none;
+}
+/* Styles for the blur effect */
+.blur {
+    filter: blur(5px);
+    pointer-events: none; /* Prevent interactions while blurred */
+}
+/* Styles for the blur effect */
+.blur {
+    filter: blur(5px);
+    pointer-events: none; /* Prevent interactions while blurred */
+}
+
+/* Styles for the message overlay */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure overlay is on top */
+    visibility: hidden; /* Initially hidden */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.overlay.active {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Ensure the content in the overlay is not blurred */
+.overlay-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    position: relative; /* Ensure this is positioned on top of the blur */
+    z-index: 1001;
+}
+
+.overlay-content svg {
+    width: 48px; /* Adjust size as needed */
+    height: 48px; /* Adjust size as needed */
+    fill: #00ff2a; /* Yellow color */
+}
+
+.overlay-content p {
+    margin-top: 10px;
+    color: #333;
+    font-size: 18px;
+}
+
+.overlay-content > * {
+    position: relative;
+ }
+/*  
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    /* filter: blur(5px);
+    /* z-index: 999; /* Ensure it's below the overlay */
+    /* visibility: hidden; Initially hidden
+    opacity: 0;
+    transition: opacity 0.3s ease;  */
+/* }  */
