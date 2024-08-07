@@ -2,7 +2,9 @@ import * as model from '../models/annotationModel.js';
 import { ObjectId } from 'mongodb';
 
 export async function addAnnotation(req, res) {
+  
   try {
+   
     const annotation = req.body;
     const createdAnnotation = await model.createAnnotationDocument(annotation);
     res.status(201).json({
@@ -94,3 +96,23 @@ export async function updateAnnotation(req, res) {
       res.status(500).json({ error: 'Failed to delete annotation' });
     }
   }
+
+  export async function deleteAllAnnotations(req, res) {
+    try {
+        // Fetch all annotations to check if any exist
+        const annotations = await model.getAllAnnotations();
+
+        if (annotations.length === 0) {
+            // If no annotations exist, simply return a 200 response with a message
+            return res.status(200).json({ message: 'No annotations to delete' });
+        }
+
+        // Delete all annotations
+        const result = await model.deleteAllAnnotations();
+
+        res.status(200).json({ message: 'All annotations deleted successfully!' });
+    } catch (error) {
+        console.error('Error in deleteAllAnnotations:', error);
+        res.status(500).json({ error: 'Failed to delete annotations' });
+    }
+}

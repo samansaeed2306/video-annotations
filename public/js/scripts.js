@@ -684,13 +684,13 @@ function recordAnnotation(time) {
     if (existingAnnotationIndex !== -1) {
         annotations[existingAnnotationIndex] = annotation;
        // Object.assign(existingAnnotation, annotation);
-        updateAnnotation(existingAnnotation);
+        // updateAnnotation(existingAnnotation);
     } else {
         annotations.push(annotation);
-        saveAnnotation(annotation);
-        annotations.forEach(annotation => {
-            console.log('annotations id got:',annotation.id);
-        })
+        // saveAnnotation(annotation);
+        // annotations.forEach(annotation => {
+        //     console.log('annotations id got:',annotation.id);
+        // })
     }
 
     console.log('Annotation recorded');
@@ -993,6 +993,8 @@ saveButton.addEventListener('click', function() {
     commentInput.style.display = 'none';
     cancelButton.style.display = 'none';
     saveButton.style.display = 'none';
+    buttonsContainer.style.display='none';
+    listItem.removeChild(buttonsContainer);
 });
 //updateAnnotation(annotations[index]);
 //const deleteButton = document.createElement('button');
@@ -1002,7 +1004,7 @@ saveButton.addEventListener('click', function() {
             deleteIcon.style.width = '14px'; // Set the width as needed
             deleteIcon.style.height = '14px'; // Set the height as needed
             deleteIcon.style.backgroundColor='none';
-            deleteIcon.style.marginLeft= '2px'
+            deleteIcon.style.marginLeft= '10px'
            
            //deleteButton.appendChild(deleteIcon);
 
@@ -1024,14 +1026,17 @@ saveButton.addEventListener('click', function() {
             });
 const buttonsContainer = document.createElement('div');
 buttonsContainer.className = 'annotation-buttons';
+buttonsContainer.appendChild(commentInput);
 buttonsContainer.appendChild(cancelButton);
 buttonsContainer.appendChild(saveButton);
-buttonsContainer.appendChild(deleteIcon);
+//buttonsContainer.appendChild(deleteIcon);
 
-listItem.appendChild(commentInput);
+listItem.appendChild(deleteIcon);
 listItem.appendChild(buttonsContainer);
 listItem.addEventListener('click', () => {
     commentInput.style.display = 'block'; 
+    cancelButton.style.marginTop = '5px'; 
+    saveButton.style.marginTop = '5px'; 
     cancelButton.style.display = 'inline-block'; 
     saveButton.style.display = 'inline-block'; 
     deleteIcon.style.display = 'inline-block';
@@ -1356,3 +1361,77 @@ function convertBlobToBase64(blob) {
 //         }
 //     });
 // });
+// const activateFirstTime=false;
+// document.getElementById('save-button').addEventListener('click', function() {
+    
+//     // Apply blur effect to the body
+//    // document.body.style.filter = 'blur(5px)';
+//    if(document.getElementsByClassName('save-btn').svg.style.fill == '#ffffff' && !activateFirstTime ) {
+//     this.classList.toggle('active');
+//     activateFirstTime=true;
+// }
+    
+   
+//     if (this.classList.contains('active')) {
+//         annotations.forEach(annotation => {
+//             saveAnnotation(annotation);
+//         });
+     
+//         const overlay = document.getElementById('overlay');
+//         overlay.classList.add('active');
+    
+//         setTimeout(() => {
+//             document.body.classList.remove('blur');
+//             overlay.classList.remove('active');
+//             //document.body.style.filter = 'none';
+//         }, 1500);
+//     }else{
+//         return;
+//     }
+
+// });
+let activateFirstTime = false;
+
+document.getElementById('save-button').addEventListener('click', function() {
+    const svgElement = this.querySelector('svg'); // Select the SVG element inside the button
+
+    // Toggle the active class
+    this.classList.toggle('active');
+
+    if (this.classList.contains('active')) {
+        // If active, set the SVG fill color to yellow
+        svgElement.style.fill = '#FFFF00';
+
+        // Apply blur effect to the body
+       // document.body.classList.add('blur');
+       
+        // Call saveAnnotation() for each annotation
+        annotations.forEach(annotation => {
+            saveAnnotation(annotation);
+        });
+
+        // Show overlay
+        const overlay = document.getElementById('overlay');
+        overlay.classList.add('active');
+
+        // Remove blur and overlay after 1.5 seconds
+        setTimeout(() => {
+          //  document.body.classList.remove('blur');
+            overlay.classList.remove('active');
+        }, 1500);
+
+        activateFirstTime = true;
+    } else {
+        // If not active, reset the SVG fill color to white
+        svgElement.style.fill = '#FFFFFF';
+        deleteAllAnnotations();
+        // Remove blur effect from the body
+       // document.body.classList.remove('blur');
+
+        // Hide overlay immediately
+        const overlay = document.getElementById('overlay');
+        overlay.classList.remove('active');
+
+        activateFirstTime = false;
+    }
+});

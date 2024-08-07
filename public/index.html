@@ -33,16 +33,32 @@
         <button onclick="undo()"><img src="icons/undo.png" alt="Undo"></button>
         <button onclick="redo()"><img src="icons/redo.png" alt="Redo"></button>
         <button onclick="unpickTool()"><img src="icons/unpick.png" alt="Unpick"></button>
-        
+        <div class="save-container">
         <!-- <button id="play-pause-button"><img src="icons/play.jpg" alt="Play"></button> -->
+        <button id="save-button" class="save-btn" title="Save to db">
+            <svg id="save-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="98px" height="25px"> <!-- Increased width and height -->
+                <path d="M7 2v19l5-5.5L17 21V2z" />
+            </svg>
+        </button>
+        <span class="save-label">Annotations</span>
     </div>
+</div>
 
     <!-- Fabric.js Canvas -->
     <div id="video-container">
         <video id="video" controls></video>
         <canvas id="canvas"></canvas>
     </div>
-
+    <div id="overlay" class="overlay">
+        <div class="overlay-content">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="48" height="48">
+                <circle cx="12" cy="12" r="10" stroke="green" stroke-width="2" fill="green"/>
+                <path d="M16 10.5l-4 4-2.5-2.5" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            
+            <p>Annotations saved to DB</p>
+        </div>
+    </div>
     <!-- Annotations Sidebar -->
     <div class="annotations">
         <h3>Annotations</h3>
