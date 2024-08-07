@@ -268,6 +268,7 @@ playPauseButton.addEventListener('click', () => {
 if (video.paused) {
     console.log('inside play condition')
     video.play();
+    //playAudioAnnotationIfExists(video.currentTime);
    // playPauseImage.src = 'icons/pause.png';
     //playPauseImage.alt = 'Pause';
 } else {
@@ -277,6 +278,7 @@ if (video.paused) {
    // playPauseImage.alt = 'Play';
 }
 });
+
 document.addEventListener('DOMContentLoaded', function() {
     const video = document.getElementById('video');
     const currentTimeInput = document.querySelector('.current-time-input');
@@ -318,7 +320,11 @@ document.addEventListener('DOMContentLoaded', function() {
 //     updateAnnotationsList();
 //     });
 
-
+// video.addEventListener('timeupdate', () => {
+//     if (!video.paused) { // Check if the video is playing
+//         playAudioAnnotationIfExists(video.currentTime);
+//     }
+// });
 document.getElementById('play-pause-button').addEventListener('click', function() {
     const playIcon = document.getElementById('play-icon');
     const pauseIcon = document.getElementById('pause-icon');
@@ -374,10 +380,56 @@ updateTimelineIcons();
 }
 
 }
+function convertBase64ToBlob(base64String, mimeType) {
+    const byteCharacters = atob(base64String);
+    const byteArrays = [];
+
+    for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+        const slice = byteCharacters.slice(offset, offset + 512);
+        const byteNumbers = new Array(slice.length);
+        for (let i = 0; i < slice.length; i++) {
+            byteNumbers[i] = slice.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        byteArrays.push(byteArray);
+    }
+
+    return new Blob(byteArrays, { type: mimeType });
+}
 
 
 
 
+
+function playAudioAnnotationIfExists(currentTime) {
+    annotations.forEach(annotation => {
+        if (Math.floor(annotation.time) === Math.floor(currentTime) && annotation.type=='audio') {
+            console.log('Found an audio source');
+            const mimeType = "audio/webm";
+            // const base64String = annotation.content.split(',')[1];
+            const blob = convertBase64ToBlob(annotation.content, mimeType);
+            let url = URL.createObjectURL(blob);
+            const existingAudioElements = document.querySelectorAll('audio');
+            let audioElement = Array.from(existingAudioElements).find(audio => audio.src === url);
+
+            if (!audioElement) {
+                // Create a new audio element if not found
+                audioElement = document.createElement('audio');
+                audioElement.className = 'audio-element';
+                audioElement.controls = true;
+                audioElement.src = url;
+                document.body.appendChild(audioElement);
+            }
+
+            // Play the audio element
+            audioElement.play();
+
+          
+            
+            // audio.play();
+        }
+    });
+}
 function setCurrentDrawingColor() {
     if (canvas.freeDrawingBrush) {
         currentColorIndex++;
@@ -669,6 +721,9 @@ video.addEventListener('play', () => {
 
 video.addEventListener('timeupdate', () => {
     showAnnotationsAtCurrentTime(video.currentTime);
+    if (!video.paused) { // Check if the video is playing
+        playAudioAnnotationIfExists(video.currentTime);
+    }
 });
 
 
@@ -1306,12 +1361,12 @@ function displayRecordings() {
             recordingElement.style.height='20px';
             //recordingElement.src=url;
             recordingElement.style.backgroundColor='red';
-            recordingElement.addEventListener('click', () => {
-                const audio = new Audio(annotation.content);
-                audio.currentTime=startTime;
-                // audio.style.backgroundColor='red';
-                audio.play();
-            });
+            // recordingElement.addEventListener('click', () => {
+            //     const audio = new Audio(annotation.content);
+            //     audio.currentTime=startTime;
+            //     // audio.style.backgroundColor='red';
+            //     audio.play();
+            // });
 
            timeline.appendChild(recordingElement);
         }
