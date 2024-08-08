@@ -278,7 +278,11 @@ if (video.paused) {
    // playPauseImage.alt = 'Play';
 }
 });
-
+function formatTime(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+}
 document.addEventListener('DOMContentLoaded', function() {
     const video = document.getElementById('video');
     const currentTimeInput = document.querySelector('.current-time-input');
@@ -286,11 +290,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
    
     
-    function formatTime(seconds) {
-        const minutes = Math.floor(seconds / 60);
-        const secs = Math.floor(seconds % 60);
-        return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
-    }
+    
 
     video.addEventListener('timeupdate', function() {
         currentTimeInput.value = formatTime(video.currentTime);
@@ -1026,7 +1026,7 @@ annotations.forEach((annotation, index) => {
     console.log('Appending annotation to list:', annotation);
     const listItem = document.createElement('li');
     listItem.className = 'annotation-item';
-    listItem.textContent = `Annotation at ${annotation.time.toFixed(2)}s`;
+    listItem.textContent = `Annotation at ${formatTime(annotation.time)}`;
 
     
     const commentInput = document.createElement('input');
