@@ -402,32 +402,38 @@ function convertBase64ToBlob(base64String, mimeType) {
 
 
 function playAudioAnnotationIfExists(currentTime) {
+
+
     annotations.forEach(annotation => {
-        if (Math.floor(annotation.time) === Math.floor(currentTime) && annotation.type=='audio') {
-            console.log('Found an audio source');
+        if (Math.abs(annotation.time - currentTime) <= 0.15 && annotation.type=='audio') {
+            console.log('Found an audio annotation');
+            console.log('Annotation time: ',annotation.time);
             const mimeType = "audio/webm";
             // const base64String = annotation.content.split(',')[1];
             const blob = convertBase64ToBlob(annotation.content, mimeType);
-            let url = URL.createObjectURL(blob);
+            var url = URL.createObjectURL(blob);
             const existingAudioElements = document.querySelectorAll('audio');
-            let audioElement = Array.from(existingAudioElements).find(audio => audio.src === url);
+            var audioElement = Array.from(existingAudioElements).find(audio => audio.src === url);
 
             if (!audioElement) {
                 // Create a new audio element if not found
+
+                console.log('I am inside condition where audio element is being created');
                 audioElement = document.createElement('audio');
                 audioElement.className = 'audio-element';
                 audioElement.controls = true;
                 audioElement.src = url;
                 document.body.appendChild(audioElement);
             }
-
+    
             // Play the audio element
             audioElement.play();
-
-          
             
             // audio.play();
         }
+        
+        
+
     });
 }
 function setCurrentDrawingColor() {
