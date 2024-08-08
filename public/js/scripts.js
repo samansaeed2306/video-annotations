@@ -1044,6 +1044,8 @@ cancelButton.addEventListener('click', function() {
     commentInput.style.display = 'none';
     cancelButton.style.display = 'none';
     saveButton.style.display = 'none';
+    buttonsContainer.style.display='none';
+    listItem.removeChild(buttonsContainer);
 });
 
 const saveButton = document.createElement('button');
