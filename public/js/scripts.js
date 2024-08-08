@@ -1074,16 +1074,38 @@ saveButton.addEventListener('click', function() {
                 annotations.splice(index, 1);
                 // Remove pencil icon and pointer from the timeline
                 const tick = document.querySelector(`.tick[data-time="${annotation.time}"]`);
+                const tick3= document.querySelector(`.tick[data-time="${annotation.time}"] .has-audio`);
+                if(tick3){
+                    tick3.classList.remove('has-audio');
+                    const icon = tick3.querySelector('.icon');
+                    const audioElement = tick3.querySelector('.audio-element');
+                    
+                    if (icon) {
+                        icon.remove();
+                       
+                    }
+                    if(audioElement){
+                        audioElement.remove();
+                    }
+                    
+                    
+                }
                 if (tick) {
                     tick.classList.remove('has-drawing');
+                    
                     const icon = tick.querySelector('.icon');
+                    
                     if (icon) {
                         icon.remove();
                         removePointerForPencilIcon(tick)
                     }
+                    
+                
+                
                 }
                 // Update the annotations list
                 updateAnnotationsList();
+                updateTimelineIcons();
             });
 const buttonsContainer = document.createElement('div');
 buttonsContainer.className = 'annotation-buttons';
