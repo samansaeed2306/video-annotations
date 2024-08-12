@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const video = document.getElementById('video');
     const player = new shaka.Player(video);
     const manifestUri = 'https://storage.googleapis.com/shaka-demo-assets/angel-one/dash.mpd';
-
+    // const manifestUri = 'https://samplelib.com/lib/preview/mp4/sample-5s.mp4';
     player.load(manifestUri).then(function() {
         console.log('The video has now been loaded!');
         //setupVideoPlayer(video);
@@ -1547,41 +1547,46 @@ document.getElementById('save-button').addEventListener('click', function() {
 //       console.error('Error loading script:', error);
 //     });
 //   }
-async function captureFrames(video, canvas, annotations) {
-    const frames = [];
-    let currentTime;
+// async function captureFrames(video, canvas, annotations) {
+//     const frames = [];
+//     let currentTime;
 
-    // Sort annotations by time to process them sequentially
-    annotations.sort((a, b) => a.time - b.time);
+//     // Sort annotations by time to process them sequentially
+//     annotations.sort((a, b) => a.time - b.time);
 
-    for (let annotation of annotations) {
-        currentTime = annotation.time;
-        video.currentTime = currentTime;
-        await new Promise(resolve => video.onseeked = resolve);
+//     for (let annotation of annotations) {
+//         currentTime = annotation.time;
+//         video.currentTime = currentTime;
+//         await new Promise(resolve => video.onseeked = resolve);
 
-        // Draw annotations on canvas
-        canvas.clear();
-        canvas.loadFromJSON(annotation.content, canvas.renderAll.bind(canvas));
+//         // Draw annotations on canvas
+//         canvas.clear();
+//         canvas.loadFromJSON(annotation.content, canvas.renderAll.bind(canvas));
 
-        // Capture the frame
-        const frame = await html2canvas(canvas.getElement(), {
-            logging: false,
-            useCORS: true
-        });
-        frames.push({ time: currentTime, frame });
-    }
+//         // Capture the frame
+//         const frame = await html2canvas(canvas.getElement(), {
+//             logging: false,
+//             useCORS: true
+//         });
+//         frames.push({ time: currentTime, frame });
+//     }
 
-    return frames;
-}
+//     return frames;
+// }
 
-function displayFrames(frames) {
-    const container = document.getElementById('frame-container');
-    for (let i = 0; i < Math.min(frames.length, 5); i++) {
-        const img = document.createElement('img');
-        img.src = frames[i].frame.toDataURL();
-        container.appendChild(img);
-    }
-}
+
+
+// function displayFrames(frames) {
+//     const container = document.getElementById('frame-container');
+//     for (let i = 0; i < Math.min(frames.length, 5); i++) {
+//         const img = document.createElement('img');
+//         img.src = frames[i].frame.toDataURL();
+//         container.appendChild(img);
+//     }
+// }
+
+
+
 
 // async function convertFramesToVideo(frames, video) {
 //     const videoOutput = new Whammy.Video(30); // 30 FPS
@@ -1659,7 +1664,7 @@ function downloadVideo(blob) {
     const a = document.createElement('a');
     a.style.display = 'none';
     a.href = url;
-    a.download = 'annotated-video.mp4';
+    a.download = 'annotated-video.webm';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -1682,6 +1687,7 @@ async function exportAnnotatedVideo(video, canvas, annotations) {
         const frames = await captureFrames(video, canvas, annotations);
         displayFrames(frames);  // Display the captured frames
         const videoBlob = await convertFramesToVideo(frames, video);
+        console.log('Blob size:', videoBlob.size, 'bytes');
         downloadVideo(videoBlob);
         // await convertWebMtoMP4(videoBlob);
     } catch (error) {
@@ -1690,18 +1696,18 @@ async function exportAnnotatedVideo(video, canvas, annotations) {
 }
 
 
-document.getElementById('export-button').addEventListener('click', async () => {
-   try{
-    const video = document.getElementById('video');
+// document.getElementById('export-button').addEventListener('click', async () => {
+//    try{
+//     const video = document.getElementById('video');
     
-    // const annotations = // Load your annotations list here;
-    await exportAnnotatedVideo(video, canvas, annotations);
-    console.log('Video export complete!');
-   }
-   catch(error){
-    console.error('Error exporting video:', error);
-   }
-});
+//     // const annotations = // Load your annotations list here;
+//     await exportAnnotatedVideo(video, canvas, annotations);
+//     console.log('Video export complete!');
+//    }
+//    catch(error){
+//     console.error('Error exporting video:', error);
+//    }
+// });
 
 
 // async function captureFrames(video, canvas, annotations) {
@@ -1801,3 +1807,109 @@ document.getElementById('export-button').addEventListener('click', async () => {
 //         console.error('Error exporting video:', error);
 //     }
 // });
+
+// async function captureScreenshot(video, canvas, timestamp) {
+//     return new Promise((resolve, reject) => {
+//         // Create an offscreen canvas for capturing video frames
+//         const videoCanvas = document.createElement('canvas');
+//         const videoContext = videoCanvas.getContext('2d');
+
+//         // Set videoCanvas size to video size
+//         videoCanvas.width = video.videoWidth;
+//         videoCanvas.height = video.videoHeight;
+
+//         // Seek to the specified time
+//         video.currentTime = timestamp;
+        
+//         // Wait for the video to seek to the correct time
+//         video.onseeked = async () => {
+//             // Draw the video frame onto the videoCanvas
+//             videoContext.drawImage(video, 0, 0, videoCanvas.width, videoCanvas.height);
+
+//             // Draw annotations on canvas
+//             canvas.clear();
+//             canvas.renderAll();
+
+//             // Draw the annotations from the fabric.js canvas onto the videoCanvas
+//             const canvasElement = canvas.getElement();
+//             videoContext.drawImage(canvasElement, 0, 0, videoCanvas.width, videoCanvas.height);
+
+//             // Capture the frame from the videoCanvas
+//             videoCanvas.toBlob((blob) => {
+//                 if (blob) {
+//                     resolve(URL.createObjectURL(blob)); // Return the URL of the captured image
+//                 } else {
+//                     reject('Failed to capture the screenshot.');
+//                 }
+//             }, 'image/png');
+//         };
+
+//         // Handle errors
+//         video.onerror = () => {
+//             reject('Error occurred while seeking the video.');
+//         };
+//     });
+// }
+async function captureScreenshot(video, canvas, timestamp) {
+    return new Promise((resolve, reject) => {
+        // Create an offscreen canvas for capturing video frames
+        const videoCanvas = document.createElement('canvas');
+        const videoContext = videoCanvas.getContext('2d');
+
+        // Set videoCanvas size to video size
+        videoCanvas.width = video.videoWidth;
+        videoCanvas.height = video.videoHeight;
+
+        // Seek to the specified time
+        video.currentTime = timestamp;
+
+        // Wait for the video to seek to the correct time
+        video.onseeked = async () => {
+            // Draw the video frame onto the videoCanvas
+            videoContext.drawImage(video, 0, 0, videoCanvas.width, videoCanvas.height);
+
+            // Find the annotation for the current timestamp
+            const annotation = annotations.find(a => a.time === timestamp);
+
+            if (annotation) {
+                // Draw annotations on canvas
+                canvas.clear();
+                canvas.loadFromJSON(annotation.content, canvas.renderAll.bind(canvas));
+                
+                // Draw the annotations from the fabric.js canvas onto the videoCanvas
+                const canvasElement = canvas.getElement();
+                videoContext.drawImage(canvasElement, 0, 0, videoCanvas.width, videoCanvas.height);
+            }
+
+            // Capture the frame from the videoCanvas
+            videoCanvas.toBlob((blob) => {
+                if (blob) {
+                    resolve(URL.createObjectURL(blob)); // Return the URL of the captured image
+                } else {
+                    reject('Failed to capture the screenshot.');
+                }
+            }, 'image/png');
+        };
+
+        // Handle errors
+        video.onerror = () => {
+            reject('Error occurred while seeking the video.');
+        };
+    });
+}
+
+
+document.getElementById('export-button').addEventListener('click',  () => {
+captureScreenshot(video, canvas, 10) // Capture at 10 seconds
+    .then((screenshotUrl) => {
+        // Create an image element to display the screenshot
+        const img = document.createElement('img');
+        img.src = screenshotUrl;
+        document.body.appendChild(img);
+    })
+    .catch((error) => {
+        console.error(error);
+    });
+});
+
+
