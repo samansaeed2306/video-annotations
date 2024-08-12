@@ -1,5 +1,8 @@
 //import { saveAnnotation, updateAnnotation } from './api.js';
 
+// import WebMWriter from 'webm-writer';
+
+
 let annotations = [];
 let currentColorIndex = 0;
 const colors = ['#FF5733', '#33FF57', '#5733FF', '#FFFF33', '#FF33FF', '#33FFFF'];
@@ -8,7 +11,11 @@ window.onload = () => {
     document.cookie.split(";").forEach(cookie => {
         document.cookie = cookie.trim().split("=")[0] + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
     });
+    // Call the function to load the script
+ // loadWebMWriterScript();
+    
 };
+
 // Initialize Shaka Player
 document.addEventListener('DOMContentLoaded', function() {
     const video = document.getElementById('video');
@@ -1520,3 +1527,277 @@ document.getElementById('save-button').addEventListener('click', function() {
         activateFirstTime = false;
     }
 });
+  
+//   function loadWebMWriterScript() {
+//     fetch("https://unpkg.com/webm-writer@1.0.0/dist/webm-writer.min.js", {
+//       method: "GET",
+//       mode: "cors",
+//       headers: {
+//         "Accept": "*/*"
+//       }
+//     })
+//     .then(response => response.text())
+//     .then(scriptText => {
+//       // Create a new script element
+//       const script = document.createElement('script');
+//       script.text = scriptText;
+//       document.head.appendChild(script);
+//     })
+//     .catch(error => {
+//       console.error('Error loading script:', error);
+//     });
+//   }
+async function captureFrames(video, canvas, annotations) {
+    const frames = [];
+    let currentTime;
+
+    // Sort annotations by time to process them sequentially
+    annotations.sort((a, b) => a.time - b.time);
+
+    for (let annotation of annotations) {
+        currentTime = annotation.time;
+        video.currentTime = currentTime;
+        await new Promise(resolve => video.onseeked = resolve);
+
+        // Draw annotations on canvas
+        canvas.clear();
+        canvas.loadFromJSON(annotation.content, canvas.renderAll.bind(canvas));
+
+        // Capture the frame
+        const frame = await html2canvas(canvas.getElement(), {
+            logging: false,
+            useCORS: true
+        });
+        frames.push({ time: currentTime, frame });
+    }
+
+    return frames;
+}
+
+function displayFrames(frames) {
+    const container = document.getElementById('frame-container');
+    for (let i = 0; i < Math.min(frames.length, 5); i++) {
+        const img = document.createElement('img');
+        img.src = frames[i].frame.toDataURL();
+        container.appendChild(img);
+    }
+}
+
+// async function convertFramesToVideo(frames, video) {
+//     const videoOutput = new Whammy.Video(30); // 30 FPS
+
+//     let frameIndex = 0;
+//     let currentFrameTime = 0;
+
+//     const tempCanvas = document.createElement('canvas');
+//     const ctx = tempCanvas.getContext('2d');
+//     tempCanvas.width = video.videoWidth;
+//     tempCanvas.height = video.videoHeight;
+
+//     while (currentFrameTime <= video.duration) {
+//         if (frameIndex < frames.length && frames[frameIndex].time <= currentFrameTime) {
+//             // Add the annotated frame
+//             videoOutput.add(frames[frameIndex].frame, 1000 / 30);
+//             frameIndex++;
+//         } else {
+//             // Capture the original frame from the video
+//             video.currentTime = currentFrameTime;
+//             await new Promise(resolve => video.onseeked = resolve);
+
+//             // Draw the current video frame onto the temporary canvas
+//             ctx.drawImage(video, 0, 0, tempCanvas.width, tempCanvas.height);
+            
+//             // Add the canvas frame to the video output
+//             videoOutput.add(tempCanvas);
+//         }
+//         currentFrameTime += 1 / 30;
+//     }
+
+//     return videoOutput.compile();
+// }
+async function convertFramesToVideo(frames, video) {
+    const videoOutput = new Whammy.Video(30); // 30 FPS
+
+    let frameIndex = 0;
+    let currentFrameTime = 0;
+
+    const tempCanvas = document.createElement('canvas');
+    const ctx = tempCanvas.getContext('2d');
+    tempCanvas.width = video.videoWidth;
+    tempCanvas.height = video.videoHeight;
+
+    while (currentFrameTime <= video.duration) {
+        if (frameIndex < frames.length && frames[frameIndex].time == currentFrameTime) {
+            // Add the annotated frame without duration
+            videoOutput.add(frames[frameIndex].frame);
+            frameIndex++;
+        } else {
+            // Capture the original frame from the video
+            video.currentTime = currentFrameTime;
+            await new Promise(resolve => video.onseeked = resolve);
+
+            // Draw the current video frame onto the temporary canvas
+            ctx.drawImage(video, 0, 0, tempCanvas.width, tempCanvas.height);
+            
+            // Add the canvas frame to the video output without duration
+            videoOutput.add(tempCanvas);
+        }
+        currentFrameTime += 1 / 30; // Move to the next frame time
+    }
+
+    return videoOutput.compile();
+}
+
+
+function downloadVideo(blob) {
+    if (!(blob instanceof Blob)) {
+        console.error("Expected a Blob, but got:", blob);
+        return;
+    }
+    
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.style.display = 'none';
+    a.href = url;
+    a.download = 'annotated-video.mp4';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
+// import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg';
+
+// async function convertWebMtoMP4(webMBlob) {
+//     const ffmpeg = createFFmpeg({ log: true });
+//     await ffmpeg.load();
+    
+//     ffmpeg.FS('writeFile', 'input.webm', await fetchFile(webMBlob));
+//     await ffmpeg.run('-i', 'input.webm', 'output.mp4');
+//     const data = ffmpeg.FS('readFile', 'output.mp4');
+
+//     const mp4Blob = new Blob([data.buffer], { type: 'video/mp4' });
+//     downloadVideo(mp4Blob);
+// }
+async function exportAnnotatedVideo(video, canvas, annotations) {
+    try {
+        const frames = await captureFrames(video, canvas, annotations);
+        displayFrames(frames);  // Display the captured frames
+        const videoBlob = await convertFramesToVideo(frames, video);
+        downloadVideo(videoBlob);
+        // await convertWebMtoMP4(videoBlob);
+    } catch (error) {
+        console.error('Error exporting video:', error);
+    }
+}
+
+
+document.getElementById('export-button').addEventListener('click', async () => {
+   try{
+    const video = document.getElementById('video');
+    
+    // const annotations = // Load your annotations list here;
+    await exportAnnotatedVideo(video, canvas, annotations);
+    console.log('Video export complete!');
+   }
+   catch(error){
+    console.error('Error exporting video:', error);
+   }
+});
+
+
+// async function captureFrames(video, canvas, annotations) {
+//     const frames = [];
+//     let currentTime;
+
+//     // Sort annotations by time to process them sequentially
+//     annotations.sort((a, b) => a.time - b.time);
+
+//     for (let annotation of annotations) {
+//         currentTime = annotation.time;
+//         video.currentTime = currentTime;
+//         await new Promise(resolve => video.onseeked = resolve);
+
+//         // Draw annotations on canvas
+//         canvas.clear();
+//         canvas.loadFromJSON(annotation.content, canvas.renderAll.bind(canvas));
+
+//         // Capture the frame
+//         const frame = await html2canvas(canvas.getElement(), {
+//             logging: false,
+//             useCORS: true
+//         });
+//         frames.push({ time: currentTime, frame });
+//     }
+
+//     return frames;
+// }
+
+// function displayFrames(frames) {
+//     const container = document.getElementById('frame-container');
+//     for (let i = 0; i < Math.min(frames.length, 5); i++) {
+//         const img = document.createElement('img');
+//         img.src = frames[i].toDataURL();
+//         container.appendChild(img);
+//     }
+// }
+// async function convertFramesToVideo(frames, video, canvas) {
+//     const videoOutput = new Whammy.Video(30); // 30 FPS
+
+//     let frameIndex = 0;
+//     let currentFrameTime = 0;
+    
+//     const tempCanvas = document.createElement('canvas');
+//     const ctx = tempCanvas.getContext('2d');
+//     tempCanvas.width = video.videoWidth;
+//     tempCanvas.height = video.videoHeight;
+
+//     while (currentFrameTime <= video.duration) {
+//         if (frameIndex < frames.length && frames[frameIndex].time <= currentFrameTime) {
+//             // Add the annotated frame
+//             videoOutput.add(frames[frameIndex].frame, 1000 / 30);
+//             frameIndex++;
+//         } else {
+//             // Capture the original frame from the video
+//             video.currentTime = currentFrameTime;
+//             await new Promise(resolve => video.onseeked = resolve);
+
+//             // Draw the current video frame onto the temporary canvas
+//             ctx.drawImage(video, 0, 0, tempCanvas.width, tempCanvas.height);
+            
+//             // Add the canvas frame to the video output
+//             videoOutput.add(tempCanvas, 1000 / 30);
+//         }
+//         currentFrameTime += 1 / 30;
+//     }
+
+//     return videoOutput.compile();
+// }
+
+
+// function downloadVideo(blob) {
+//     const url = URL.createObjectURL(blob);
+//     const a = document.createElement('a');
+//     a.style.display = 'none';
+//     a.href = url;
+//     a.download = 'annotated-video.webm';
+//     document.body.appendChild(a);
+//     a.click();
+//     document.body.removeChild(a);
+// }
+// async function exportAnnotatedVideo(video, canvas, annotations) {
+//     const frames = await captureFrames(video, canvas, annotations);
+//     displayFrames(frames.map(f => f.frame));  // Display the captured frames
+//     const videoBlob = convertFramesToVideo(frames, video);
+//     downloadVideo(videoBlob);
+// }
+
+// document.getElementById('export-button').addEventListener('click', async () => {
+//     try {
+//         const video = document.getElementById('video');
+        
+//         // const annotations = // Load your annotations list here;
+//         await exportAnnotatedVideo(video, canvas, annotations);
+//         console.log('Video export complete!');
+//     } catch (error) {
+//         console.error('Error exporting video:', error);
+//     }
+// });
