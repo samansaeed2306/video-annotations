@@ -8,11 +8,21 @@
     <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
     <link rel="manifest" href="images/site.webmanifest">
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.5.0/fabric.min.js"></script>
- 
+    
      <!-- Shaka Player -->
      <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/3.1.0/shaka-player.compiled.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+     <!-- <script src="https://cdn.rawgit.com/antimatter15/whammy/8acfa3e6/whammy.js"></script> -->
      
+     <!-- <script src="https://cdn.jsdelivr.net/npm/whammy@0.0.1/testing/whammy.min.js"></script> -->
+     <script>
+        var global = window;
+    </script>
+     <script src="https://cdn.jsdelivr.net/npm/whammy@0.0.1/whammy.js"></script>
+     <!-- <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.10.0/dist/ffmpeg.min.js"></script> -->
+
 
      <link rel="stylesheet" href="css/styles.css">
      
@@ -42,6 +52,7 @@
         </button>
         <span class="save-label">Annotations</span>
     </div>
+    <button id="export-button">Export Annotated Video</button>
 </div>
 
     <!-- Fabric.js Canvas -->
@@ -59,6 +70,8 @@
             <p>Annotations saved to DB</p>
         </div>
     </div>
+   
+
     <!-- Annotations Sidebar -->
     <div class="annotations">
         <h3>Annotations</h3>
@@ -119,7 +132,9 @@
         </div> -->
         <ul id="annotations-list"></ul>
     </div>
-    
+    <div id="frame-container" background-color="transparent">
+
+    </div>
     <div class="buttons-container">
         <div class="video-buttons">
             <div class="button-with-menu">
@@ -237,11 +252,14 @@
     
 
     <!-- <div id="pencil-pointer"></div> -->
+ 
 
     <script src="js/api.js"></script>
+    <!-- <script crossorigin='anonymous' src="https://unpkg.com/webm-writer@latest/dist/webm-writer.min.js"></script>
+    <script src="js/webm-writer.min.js"></script> -->
     <script src="js/scripts.js"></script>
 
-
+   
    
 </body>
 </html>

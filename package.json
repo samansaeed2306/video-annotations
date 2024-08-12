@@ -6,6 +6,7 @@
     "start:frontend": "http-server public -p 3000"
   },
   "dependencies": {
-    "http-server": "^14.0.0"
+    "http-server": "^14.0.0",
+    "webm-writer": "^1.0.0"
   }
 }
