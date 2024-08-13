@@ -2,6 +2,7 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import annotationRoutes from './routes/annotationRoutes.js';
+import videoRoutes from './routes/videoRoutes.js';
 import { connectToDb } from './db/connect.js';
 import cors from 'cors'; 
 const __filename = fileURLToPath(import.meta.url);
@@ -18,8 +19,8 @@ app.use(express.static(path.join(__dirname, '../public')));
 connectToDb();
 
 // API routes
-app.use('/api', annotationRoutes);
-
+// app.use('/api', annotationRoutes);
+app.use('/', videoRoutes);
 // Handle 404 for unknown routes
 app.use((req, res, next) => {
   res.status(404).send('Not Found');
