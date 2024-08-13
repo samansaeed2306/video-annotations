@@ -1972,7 +1972,9 @@ async function captureScreenshot(video, canvas, timestamp, annotations) {
             // Capture the frame from the videoCanvas
             videoCanvas.toBlob((blob) => {
                 if (blob) {
-                    imageData.push(blob);
+                    const base64String = convertBlobToBase64(blob);
+                    console.log('Base64 String:',base64String);
+                    imageData.push(base64String);
                     console.log('Number of images:', imageData.length);
                     const screenshotUrl = URL.createObjectURL(blob);
                     

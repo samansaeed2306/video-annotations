@@ -116,3 +116,4 @@ export async function updateAnnotation(req, res) {
         res.status(500).json({ error: 'Failed to delete annotations' });
     }
 }
+
