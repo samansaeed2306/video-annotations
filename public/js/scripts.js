@@ -1850,8 +1850,95 @@ async function exportAnnotatedVideo(video, canvas, annotations) {
 //         };
 //     });
 // }
-async function captureScreenshot(video, canvas, timestamp) {
+
+// const container = document.createElement('div');
+// container.id = 'screenshot-container';
+// document.body.appendChild(container);
+// async function captureScreenshot(video, canvas, timestamp) {
+//     return new Promise((resolve, reject) => {
+//         // Create an offscreen canvas for capturing video frames
+//         const videoCanvas = document.createElement('canvas');
+//         const videoContext = videoCanvas.getContext('2d');
+
+//         // Set videoCanvas size to video size
+//         videoCanvas.width = video.videoWidth;
+//         videoCanvas.height = video.videoHeight;
+
+//         // Seek to the specified time
+//         video.currentTime = timestamp;
+
+//         // Wait for the video to seek to the correct time
+//         video.onseeked = async () => {
+//             // Draw the video frame onto the videoCanvas
+//             videoContext.drawImage(video, 0, 0, videoCanvas.width, videoCanvas.height);
+
+//             // Find the annotation for the current timestamp
+//             const annotation = annotations.find(a => a.time === timestamp);
+
+//             if (annotation) {
+//                 // Draw annotations on canvas
+//                 canvas.clear();
+//                 canvas.loadFromJSON(annotation.content, canvas.renderAll.bind(canvas));
+                
+//                 // Draw the annotations from the fabric.js canvas onto the videoCanvas
+//                 const canvasElement = canvas.getElement();
+//                 videoContext.drawImage(canvasElement, 0, 0, videoCanvas.width, videoCanvas.height);
+//             }
+
+//             // Capture the frame from the videoCanvas
+//             videoCanvas.toBlob((blob) => {
+//                 if (blob) {
+//                     resolve(URL.createObjectURL(blob)); // Return the URL of the captured image
+//                 } else {
+//                     reject('Failed to capture the screenshot.');
+//                 }
+//             }, 'image/png');
+
+         
+//         };
+        
+//         // Handle errors
+//         video.onerror = () => {
+//             reject('Error occurred while seeking the video.');
+//         };
+//     });
+// }
+
+
+// document.getElementById('export-button').addEventListener('click',  () => {
+// captureScreenshot(video, canvas, 17)// Capture at 10 seconds
+//     .then((screenshotUrl) => {
+//         // Create an image element to display the screenshot
+//         const img = document.createElement('img');
+//         img.src = screenshotUrl;
+//         img.style.width='100px';
+//         img.style.height='100px';
+//         img.style.left='-20%';
+//         document.body.appendChild(img);
+//     })
+//     .catch((error) => {
+//         console.error(error);
+//     });
+
+
+    // captureScreenshot(video, canvas, 30) // Capture at 10 seconds
+    // .then((screenshotUrl) => {
+    //     // Create an image element to display the screenshot
+        
+    // })
+    // .catch((error) => {
+    //     console.error(error);
+  //  });
+// });
+
+// Create a container element for the screenshots
+const container = document.createElement('div');
+container.id = 'screenshot-container';
+document.body.appendChild(container);
+const imageData = [];
+async function captureScreenshot(video, canvas, timestamp, annotations) {
     return new Promise((resolve, reject) => {
+        
         // Create an offscreen canvas for capturing video frames
         const videoCanvas = document.createElement('canvas');
         const videoContext = videoCanvas.getContext('2d');
@@ -1859,19 +1946,20 @@ async function captureScreenshot(video, canvas, timestamp) {
         // Set videoCanvas size to video size
         videoCanvas.width = video.videoWidth;
         videoCanvas.height = video.videoHeight;
-
+        console.log('Timestamp',timestamp);
         // Seek to the specified time
-        video.currentTime = timestamp;
+         video.currentTime = timestamp;
 
         // Wait for the video to seek to the correct time
-        video.onseeked = async () => {
+        // video.onseeked = async () => {
             // Draw the video frame onto the videoCanvas
             videoContext.drawImage(video, 0, 0, videoCanvas.width, videoCanvas.height);
-
+            for (const annotation of annotations) {
             // Find the annotation for the current timestamp
-            const annotation = annotations.find(a => a.time === timestamp);
-
-            if (annotation) {
+            // const annotation = annotations.find(a => a.time === timestamp);
+            
+            if (annotation.time==timestamp) {
+                console.log('Annotation time',annotation.time);
                 // Draw annotations on canvas
                 canvas.clear();
                 canvas.loadFromJSON(annotation.content, canvas.renderAll.bind(canvas));
@@ -1879,37 +1967,75 @@ async function captureScreenshot(video, canvas, timestamp) {
                 // Draw the annotations from the fabric.js canvas onto the videoCanvas
                 const canvasElement = canvas.getElement();
                 videoContext.drawImage(canvasElement, 0, 0, videoCanvas.width, videoCanvas.height);
-            }
+            
 
             // Capture the frame from the videoCanvas
             videoCanvas.toBlob((blob) => {
                 if (blob) {
-                    resolve(URL.createObjectURL(blob)); // Return the URL of the captured image
+                    imageData.push(blob);
+                    console.log('Number of images:', imageData.length);
+                    const screenshotUrl = URL.createObjectURL(blob);
+                    
+                    // Create an image element to display the screenshot
+                    const img = document.createElement('img');
+                    img.src = screenshotUrl;
+                    img.style.width = '100px';
+                    img.style.height = '100px';
+                    img.style.margin = '5px'; // Add some spacing between images
+
+                    // Append the image to the container
+                    container.appendChild(img);
+                    console.log('Added image')
+                    resolve(screenshotUrl); // Return the URL of the captured image
+
                 } else {
                     reject('Failed to capture the screenshot.');
                 }
             }, 'image/png');
-        };
+        }
+        else{
 
+        }
+       // }
+    };
+    
+        
         // Handle errors
         video.onerror = () => {
             reject('Error occurred while seeking the video.');
         };
+       
     });
+   
 }
 
+// Example usage with button click
+document.getElementById('export-button').addEventListener('click', async () => {
+    // Clear the container before adding new images
+    container.innerHTML = '';
+    
+    // Define the timestamps at which you want to capture screenshots
+    const timestamps = [10, 20, 30]; // Example timestamps (in seconds)
+    
+    // Array to hold the promises for each screenshot
+    const screenshotPromises = timestamps.map(timestamp => 
+      
+        captureScreenshot(video, canvas, timestamp, annotations),
+       // console.log('timestamp:',timestamp),
+    );
 
-document.getElementById('export-button').addEventListener('click',  () => {
-captureScreenshot(video, canvas, 10) // Capture at 10 seconds
-    .then((screenshotUrl) => {
-        // Create an image element to display the screenshot
-        const img = document.createElement('img');
-        img.src = screenshotUrl;
-        document.body.appendChild(img);
-    })
-    .catch((error) => {
-        console.error(error);
-    });
+    try {
+        // Wait for all screenshots to be captured
+        await Promise.all(screenshotPromises);
+        container.childNodes.forEach((child, index) => {
+            console.log(`Child ${index + 1}:`, child);
+        });
+        console.log('Number of images calling:', imageData.length);
+        
+        console.log('Screenshots captured and displayed.');
+    } catch (error) {
+        console.error('Error capturing screenshots:', error);
+    }
+
+   
 });
-
-
