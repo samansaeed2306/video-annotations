@@ -10,7 +10,7 @@ body {
     height: 100vh;
     margin: 0;
     font-family: Arial, sans-serif;
-    background-color:#485056;
+    background-color:#252c31;
     /* background-color: #000; */
 }
 .tools {
@@ -104,8 +104,8 @@ video {
     }  */
  
 .annotation-item {
-    background:#484848c4;
-    border: 1px solid #484848c4;
+    background:#252c31;
+    border: 1px solid #252c31;
     border-radius: 0px;
     padding: 10px;
     margin-bottom: 10px;
@@ -527,7 +527,7 @@ body::before {
 
 
 /* Media queries for mobile responsiveness */
-@media (max-width: 768px) {
+@media (max-width: 414px) {
      /* Adjust for smaller screens */
      body {
         display: flex;
