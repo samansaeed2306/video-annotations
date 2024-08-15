@@ -74,3 +74,84 @@ video, #canvas {
 .annotations {
     display: none;
 }
+
+
+
+
+/* Media queries for mobile responsiveness */
+@media (max-width: 414px) {
+    /* Remove body styles to focus on video and canvas */
+    body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden; /* Prevent scrollbars */
+    }
+
+    #video-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh; /* Full viewport height */
+        margin: 0;
+        padding: 0;
+        z-index: 1; /* Place behind floating elements */
+    }
+
+    video, #canvas {
+        width: 100%;
+        height: 100vh; /* Full viewport height */
+        margin: 0;
+        padding: 0;
+        object-fit: cover; /* Ensure the video covers the entire area */
+    }
+
+    .tools {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 30px; /* Sidebar width */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: #17181a;
+        z-index: 1000; /* Float above video and canvas */
+        padding-top: 10px;
+    }
+
+    .tools button {
+        margin: 0;
+        padding: 5px;
+        width: 100%;
+        text-align: center;
+    }
+
+    .tools button img {
+        width: 20px; /* Reduced icon size */
+        height: 20px; /* Reduced icon size */
+    }
+
+    .timeline {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 60px;
+        background-color: #343a40;
+        z-index: 1000; /* Float above video and canvas */
+        display: none;
+    }
+
+    .buttons-container {
+        position: absolute;
+        bottom: 60px; /* Ensure it does not overlap with the timeline */
+        width: 100%;
+        z-index: 1000; /* Float above video and canvas */
+        /* display: none; */
+        opacity: 0.5;
+    }
+
+    .annotations {
+        display: none;
+    }
+}
