@@ -1293,7 +1293,7 @@ annotations.forEach(annotation => {
 //         }
 //     });
 // });
-document.getElementById('microphone-container').addEventListener('click', toggleMicrophone);
+document.getElementById('microphone-icon').addEventListener('click', toggleMicrophone);
 
 let isRecording = false;
 let mediaRecorder;

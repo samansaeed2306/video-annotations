@@ -16,7 +16,7 @@ body {
 .tools {
     position: fixed;
     top: 0px;
-    /* left: 32%; */
+    /* left: -60px; */
     z-index: 1000;
     background-color:#17181a;
     padding: 5px;
@@ -32,6 +32,8 @@ body {
     margin: 5px;
     padding: 5px;
     cursor: pointer;
+    transform: translateX(-65px);
+    /* left: -60px; */
     /* background-color: #d5b111; */
     
     
@@ -138,7 +140,7 @@ video {
     height: 400px;
     left: -9.8%;
     margin: 0px;
-    top:-25px;
+    top:-2px;
     
     
 }
@@ -163,7 +165,7 @@ video {
     width: calc(100% / var(--duration)); 
     height: 5px;
     background-color: #5a5c5d;
-    margin-top: 10px;
+    margin-top: 50px;
     cursor: pointer;
     position: relative;
 }
@@ -214,7 +216,7 @@ video {
     position: relative;
     left: -10%; 
     margin-left: 10px; 
-    top:-25px;
+    top:-2px;
 }
 
 
@@ -384,21 +386,25 @@ canvas4:nth-of-type(2) {
     z-index: 2;
 }
 .recording {
-    position: absolute; 
-    /* height: 20px; */
-    /* background-color: rgba(81, 10, 10, 0.5); */
+    /* position: absolute;  */
+  
+    background-color: rgba(81, 10, 10, 0.5);
 }
-@keyframes recordingAnimation {
+/* @keyframes recordingAnimation {
     0%, 100% {
         fill: rgba(81, 10, 10, 0.5);
     }
     50% {
         fill: white;
     }
-}
+} */
 
 #microphone-icon.recording path {
     animation: recordingAnimation 1s infinite;
+    /* height: 24px;
+    width: 24px; */
+    /* position: absolute; */
+  
 }
 .audio-element {
     position: absolute;
@@ -414,11 +420,12 @@ canvas4:nth-of-type(2) {
     color: #333; 
     padding: 5px;
     margin-bottom: 4px;
+    opacity: 0.8;
 }
 .save-btn {
     position: absolute;
     top: 10px; /* Adjust as needed */
-    right: 0px; /* Adjust as needed */
+    right: -90px; /* Adjust as needed */
     background: none;
     border: none;
     cursor: pointer;
