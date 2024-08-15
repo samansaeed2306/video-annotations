@@ -10,13 +10,13 @@ body {
     height: 100vh;
     margin: 0;
     font-family: Arial, sans-serif;
-    background-color:#485056;
+    background-color:#252c31;
     /* background-color: #000; */
 }
 .tools {
     position: fixed;
     top: 0px;
-    /* left: 32%; */
+    /* left: -60px; */
     z-index: 1000;
     background-color:#17181a;
     padding: 5px;
@@ -32,7 +32,9 @@ body {
     margin: 5px;
     padding: 5px;
     cursor: pointer;
-    /* background-color: #d5b111; */
+    transform: translateX(-65px);
+    /* left: -60px; */
+    background-color: #17181a;
     
     
 }
@@ -77,6 +79,7 @@ video {
     z-index: 2;
     /* background-color: rgba(0,0,0,0.5); */
     pointer-events: none;
+    background-color: none;
     /* cursor: pointer;  */
 }
 .annotations {
@@ -101,8 +104,8 @@ video {
     }  */
  
 .annotation-item {
-    background:#484848c4;
-    border: 1px solid #484848c4;
+    background:#252c31;
+    border: 1px solid #252c31;
     border-radius: 0px;
     padding: 10px;
     margin-bottom: 10px;
@@ -137,7 +140,7 @@ video {
     height: 400px;
     left: -9.8%;
     margin: 0px;
-    top:-25px;
+    top:-2px;
     
     
 }
@@ -162,7 +165,7 @@ video {
     width: calc(100% / var(--duration)); 
     height: 5px;
     background-color: #5a5c5d;
-    margin-top: 10px;
+    margin-top: 50px;
     cursor: pointer;
     position: relative;
 }
@@ -213,7 +216,7 @@ video {
     position: relative;
     left: -10%; 
     margin-left: 10px; 
-    top:-25px;
+    top:-2px;
 }
 
 
@@ -383,21 +386,25 @@ canvas4:nth-of-type(2) {
     z-index: 2;
 }
 .recording {
-    position: absolute; 
-    /* height: 20px; */
-    /* background-color: rgba(81, 10, 10, 0.5); */
+    /* position: absolute;  */
+  
+    background-color: rgba(81, 10, 10, 0.5);
 }
-@keyframes recordingAnimation {
+/* @keyframes recordingAnimation {
     0%, 100% {
         fill: rgba(81, 10, 10, 0.5);
     }
     50% {
         fill: white;
     }
-}
+} */
 
 #microphone-icon.recording path {
     animation: recordingAnimation 1s infinite;
+    /* height: 24px;
+    width: 24px; */
+    /* position: absolute; */
+  
 }
 .audio-element {
     position: absolute;
@@ -413,11 +420,12 @@ canvas4:nth-of-type(2) {
     color: #333; 
     padding: 5px;
     margin-bottom: 4px;
+    opacity: 0.8;
 }
 .save-btn {
     position: absolute;
     top: 10px; /* Adjust as needed */
-    right: 0px; /* Adjust as needed */
+    right: -90px; /* Adjust as needed */
     background: none;
     border: none;
     cursor: pointer;
@@ -516,3 +524,207 @@ body::before {
     opacity: 0;
     transition: opacity 0.3s ease;  */
 /* }  */
+
+
+/* Media queries for mobile responsiveness */
+@media  (max-width: 414px) and (min-width: 270px){
+    /* Remove body styles to focus on video and canvas */
+    body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden; /* Prevent scrollbars */
+    }
+
+    #video-container {
+        position: fixed; /* Fixed to cover the entire viewport */
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh; /* Full viewport height */
+        margin: 0;
+        padding: 0;
+        z-index: 1; /* Place behind floating elements */
+    }
+
+    video, #canvas {
+        width: 100%;
+        height: 100vh; /* Full viewport height */
+        margin: 0;
+        padding: 0;
+        object-fit: cover; /* Ensure the video covers the entire area */
+    }
+    video {
+        width: 100%;
+        height: 100vh;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        pointer-events: none;
+        object-fit: cover;
+        margin: 0;
+        padding: 0;
+        
+    }
+    #canvas {
+        width: 100%;
+        height: 100vh;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 2;
+        /* background-color: rgba(0,0,0,0.5); */
+        pointer-events: none;
+        background-color: none;
+        object-fit: cover;
+        margin: 0;
+        padding: 0;
+        cursor: pointer; 
+    }
+    .tools {
+        opacity: 0.7;
+        position: absolute;
+        top: 50px;
+        left: 0;
+        height: 80%;
+        width: 50px; /* Sidebar width */
+        display: flex;
+        flex-direction: column;
+        /* align-items: right;  */
+        background-color: #393b3e;
+        z-index: 1000; /* Float above video and canvas */
+        padding: 0px;
+        border-radius: 25px;
+        /* display:none; */
+    }
+
+    .tools button {
+        margin:2px;
+        padding: 0px;
+        width: 25px;
+        margin-left: 125px;
+        text-align: center;
+
+        
+    }
+
+    /* .tools button img {
+        width: 20px; /* Reduced icon size */
+        /* height: 20px; Reduced icon size */
+        
+    /* /* } 
+     #freehand{
+        background-color: #b03e2a;
+     }  */
+
+
+    
+    .video-buttons {
+        position: absolute;
+        bottom: -460px; /* Position 20px from the bottom of the screen */
+        left: 60%;
+        transform: translateX(-50%); /* Center horizontally */
+        z-index: 1000; /* Float above video and canvas */
+        display: flex;
+        justify-content: center;
+        background-color: transparent;/* Slightly transparent background */
+        padding: 5px;
+        border-radius: 5px;
+    }
+
+    .video-buttons .video-button {
+        margin: 0 5px;
+    }
+
+    .video-buttons svg {
+        fill: #ffffff; /* White color for icons */
+    }
+
+    .volume-button-container{
+        display: none;
+    }
+
+    .video-buttons-container{
+        display:none;
+    }
+
+    .button-with-menu{
+        display:none;
+    }
+    .annotations {
+        display: none;
+    }
+    .save-container{
+        position: relative;
+    }
+    .save-btn {
+        position: fixed; /* Changed to fixed to stay relative to viewport */
+        top: 10px; /* Distance from the top of the viewport */
+        right: -10px; /* Distance from the right edge of the viewport */
+        background: none;
+        border: none;
+        cursor: pointer;
+        z-index: 1001; /* Ensure it's above other elements */
+    }
+
+    .save-btn svg {
+        fill: #ffffff; /* Original color */
+    }
+
+    .save-btn.active svg {
+        fill: #FFD700; /* Yellow color when active */
+    }
+
+    #save-button:hover {
+        background-color: transparent; /* Ensure no grey background on hover */
+    }
+
+    wave{
+        display: none;
+    }
+    
+.waveform-container {
+    display: none;
+}
+
+.waveform {
+    display: none;
+    
+   
+}
+
+
+
+#progress-wave {
+    display: none;
+}
+
+.timeline .tick2 {
+    display: inline-block;
+    width: calc(100% / var(--duration)); 
+    height: 5px;
+    background-color: #ffffff;
+    cursor: pointer;
+    position: relative;
+    z-index: 7;
+    margin: 0;  /* Removes margin */
+    padding: 0; /* Removes padding */
+    bottom: -370px;
+    right: -25px;
+}
+/* .timeline {
+    width: 100%;
+    display: flex;
+    justify-content: center; /* Centers the ticks horizontally */
+    /* position: absolute;
+    bottom: 0;
+  
+} */ */
+
+.timeline .tick {
+   display: none;
+}
+
+
+
+}
