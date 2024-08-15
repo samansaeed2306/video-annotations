@@ -19,8 +19,8 @@ app.use(express.static(path.join(__dirname, '../public')));
 connectToDb();
 
 // API routes
-// app.use('/api', annotationRoutes);
-app.use('/', videoRoutes);
+app.use('/api', annotationRoutes);
+// app.use('/', videoRoutes);
 // Handle 404 for unknown routes
 app.use((req, res, next) => {
   res.status(404).send('Not Found');
