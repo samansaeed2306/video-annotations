@@ -285,11 +285,50 @@ if (video.paused) {
    // playPauseImage.alt = 'Play';
 }
 });
+
+
+
 function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
     return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
 }
+
+function view() {
+   
+    const buttons = document.querySelectorAll('button');
+    buttons.forEach(button => {
+        button.disabled = true;
+    });
+
+    const playIcon = document.getElementById('play-icon');
+    const pauseIcon = document.getElementById('pause-icon');
+    
+    video.currentTime=0;
+    video.play();
+    playIcon.style.display = 'none';
+    pauseIcon.style.display = 'block';
+
+    if(video.currentTime==video.duration){
+       
+            playIcon.style.display = 'block';
+            pauseIcon.style.display = 'none';
+      
+    }
+    // if (playIcon.style.display === 'none') {
+    //     video.pause();
+    //     playIcon.style.display = 'block';
+
+    //     pauseIcon.style.display = 'none';
+    // } else {
+    //     video.play();
+    //     playIcon.style.display = 'none';
+    //     pauseIcon.style.display = 'block';
+        
+    // }
+
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     const video = document.getElementById('video');
     const currentTimeInput = document.querySelector('.current-time-input');
