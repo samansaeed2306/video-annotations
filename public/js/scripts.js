@@ -1033,7 +1033,23 @@ annotations.forEach((annotation, index) => {
     console.log('Appending annotation to list:', annotation);
     const listItem = document.createElement('li');
     listItem.className = 'annotation-item';
-    listItem.textContent = `Annotation at ${formatTime(annotation.time)}`;
+    
+
+   
+    if(annotation.type!= 'audio'){
+        const parsedContent = JSON.parse(annotation.content);
+        const annotationType = parsedContent.objects[0].type;
+        console.log(annotationType);
+    if(annotationType=='rect'){
+        listItem.textContent = `rectangle ${formatTime(annotation.time)}`;
+    }
+  
+    else {
+        listItem.textContent = `${annotationType} ${formatTime(annotation.time)}`;
+    }
+}else{
+    listItem.textContent = `${annotation.type} ${formatTime(annotation.time)}`;
+}
 
     
     const commentInput = document.createElement('input');
