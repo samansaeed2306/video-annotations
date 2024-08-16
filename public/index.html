@@ -32,13 +32,22 @@
    
     <!-- Drawing Tools -->
     <div class="tools">  
+        <div class="view-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#abb0c4" onclick="view()">
+                <title>view mode</title>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M21.9 11.6901C20.3261 7.60737 16.3752 4.93752 12 5.0001C10.415 4.99097 8.84757 5.33246 7.41 6.0001C6.78258 6.26237 6.18844 6.59804 5.64 7.0001C4.05034 8.20733 2.82524 9.83041 2.1 11.6901L2 12.0001L2.1 12.3101C3.67394 16.3928 7.62483 19.0627 12 19.0001C13.585 19.0092 15.1524 18.6677 16.59 18.0001C17.2155 17.734 17.8092 17.3986 18.36 17.0001C19.9387 15.8071 21.1626 14.2064 21.9 12.3701L22 12.0001L21.9 11.6901ZM19.9 12.0001L19.82 12.2301C19.2128 13.5784 18.2348 14.7264 17 15.5401C16.5632 15.8365 16.0975 16.0878 15.61 16.2901C14.4656 16.7638 13.2385 17.0051 12 17.0001C11.7126 16.9993 11.4255 16.9826 11.14 16.9501C10.91 16.9501 10.69 16.9501 10.47 16.8701C7.71648 16.5161 5.34333 14.7599 4.2 12.2301L4.12 12.0001L4.2 11.7801C4.79973 10.4304 5.77081 9.27895 7 8.4601C7.43439 8.15981 7.90053 7.9083 8.39 7.7101C9.00014 7.4567 9.63779 7.27547 10.29 7.1701H10.59L11.08 7.1101C11.38 7.1101 11.69 7.1101 12.01 7.1101C12.343 7.08943 12.677 7.08943 13.01 7.1101C13.1913 7.12229 13.3716 7.14567 13.55 7.1801H13.9C14.16 7.23343 14.41 7.29343 14.65 7.3601C16.9294 7.98472 18.8107 9.59465 19.78 11.7501L19.86 11.9601L19.9 12.0001Z" fill="#abb0c4"></path>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M15.7198 10.6603C15.5372 10.8684 15.2765 10.9915 14.9998 11.0003C14.5297 10.9749 14.141 10.6252 14.0663 10.1603C13.9917 9.69554 14.2513 9.2416 14.6898 9.07031C14.1567 8.56845 13.496 8.22255 12.7798 8.07031C12.5229 8.02045 12.2615 7.997 11.9998 8.00031C11.7781 8.00274 11.5571 8.02618 11.3398 8.07031L10.9998 8.16031C10.9347 8.1743 10.8711 8.19439 10.8098 8.22031C10.5203 8.31266 10.242 8.43675 9.9798 8.59031C8.4829 9.40978 7.67075 11.0887 7.95745 12.771C8.24415 14.4532 9.56656 15.7684 11.2504 16.0458C12.9342 16.3231 14.6086 15.5017 15.4198 14.0003C15.5736 13.7418 15.6977 13.4667 15.7898 13.1803C15.8144 13.1151 15.8344 13.0483 15.8498 12.9803C15.8789 12.875 15.9023 12.7682 15.9198 12.6603C15.9673 12.4433 15.9941 12.2223 15.9998 12.0003C15.9973 11.7687 15.9739 11.5377 15.9298 11.3103C15.8766 11.0886 15.8064 10.8713 15.7198 10.6603Z" fill="#abb0c4"></path>
+            </svg>
+        </div>
+        
+        <!-- onclick="view()" -->
         <!-- <button id="freehand" onclick="drawFreehand()"><img src="icons/freehand.png" alt="Freehand"> </button> -->
         <button id="freehand" onclick="drawFreehand()">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                 <defs>
                     <style>.cls-1{fill:#d81d1d;}</style>
                 </defs>
-                <title>icon - tool - pen - highlight</title>
+                <title>freehand</title>
                 <path fill="default" class="cls-1" d="M19.9658 6.91017H19.92L16.2992 3.25267C16.1376 3.0909 15.9183 3 15.6896 3C15.4609 3 15.2416 3.0909 15.08 3.25267L7.82917 10.4118C7.68847 10.5239 7.59386 10.6837 7.56334 10.861L6.56417 15.2518L4.8225 17.4427H7.6275L8.73667 16.3335L12.2567 15.5452C12.4386 15.5144 12.6023 15.4162 12.715 15.2702L19.92 8.12934C20.2428 7.7936 20.2625 7.2692 19.9658 6.91017V6.91017ZM11.9083 13.5377L9.54334 11.1727L15.7583 5.0585L18.1233 7.4235L11.9083 13.5377Z"></path>
                 <path class="cls-1" d="M18.4167 17.2685C18.744 18.2557 18.9773 19.2716 19.1133 20.3027C18.2719 19.3853 17.15 18.7728 15.9233 18.561C14.8314 18.4146 13.7204 18.5244 12.6783 18.8818C11.4047 19.3332 10.1589 19.8597 8.9475 20.4585C7.81125 21.1097 6.50296 21.3975 5.19833 21.2835C4.80235 21.1839 4.45663 20.9426 4.22666 20.6052C4.14173 20.4738 4.07395 20.3321 4.025 20.1835C4.01028 20.0885 3.98252 19.9959 3.9425 19.9085C3.80542 19.4227 3.84105 18.9043 4.04333 18.4418C4.15136 18.1403 4.32695 17.8675 4.55667 17.6443L4.905 19.4135C4.79615 19.4335 4.71381 19.5233 4.70333 19.6335C4.70333 19.8993 5.79417 19.7527 6.67417 19.4227C7.31069 19.1708 7.92412 18.8641 8.5075 18.506C9.77851 17.691 11.1416 17.0294 12.5683 16.5352C13.7125 16.1519 14.9299 16.0389 16.125 16.2052C16.6842 16.3049 17.2193 16.5102 17.7017 16.8102C17.8758 16.8927 18.4167 17.2685 18.4167 17.2685Z"></path>
             </svg>
@@ -47,6 +56,7 @@
         <!-- <button onclick="activateCircleMode()"><img src="icons/circle.png" alt="Circle"></button> -->
         <button onclick="activateCircleMode()">
             <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="enable-background:new 0 0 24 24;" xml:space="preserve">
+                <title>circle</title>
                 <path fill="#c2e115" d="M12,2.8c-5.1,0-9.2,4.1-9.2,9.2s4.1,9.2,9.2,9.2s9.2-4.1,9.2-9.2C21.2,6.9,17.1,2.8,12,2.8z M12,18.8 
                     c-3.8,0-6.9-3.1-6.9-6.9c0-3.8,3.1-6.9,6.9-6.9c3.8,0,6.9,3.1,6.9,6.9c0,0,0,0,0,0C18.9,15.8,15.8,18.9,12,18.8L12,18.8z">
                 </path>
@@ -55,12 +65,15 @@
                 </path>
             </svg>
         </button>
+
+        
         
         
         
         <!-- <button onclick="activateRectangleMode()"><img src="icons/rectangle.png" alt="Rectangle"></button> -->
         <button onclick="activateRectangleMode()">
             <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="enable-background:new 0 0 24 24;" xml:space="preserve">
+                <title>rectangle</title>
                 <path fill="#0f79e3" d="M19.3,3.8H4.7c-1,0-1.8,0.8-1.8,1.8v12.8c0,1,0.8,1.8,1.8,1.8h14.7c1,0,1.8-0.8,1.8-1.8V5.6 
                     C21.2,4.6,20.3,3.7,19.3,3.8z M5.1,18V6h13.8v12H5.1z">
                 </path>
@@ -72,7 +85,7 @@
         <!-- <button onclick="activateLineMode()"><img src="icons/line.png" alt="Line"></button>  -->
         <button onclick="activateLineMode()">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="purple">
-                <title>icon - tool - shape - line</title>
+                <title>line</title>
                 <rect x="3" y="10.75" width="20" height="2.5" rx="0.6" transform="translate(-4.97 12) rotate(-45)"></rect>
             </svg>
         </button>
@@ -80,7 +93,7 @@
         <!-- <button onclick="activatePolylineMode()"><img src="icons/polyline.png" alt="Polyline"></button>  -->
         <button onclick="activatePolylineMode()">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="pink">
-                <title>icon - tool - shape - polyline</title>
+                <title>polyline</title>
                 <path d="M22.89,7.06l-.64-.64a.8.8,0,0,0-1.13,0l-6.77,6.77L10.23,9.07A1.66,1.66,0,0,0,9,8.58a1.69,1.69,0,0,0-1.2.49L1.11,15.8a.83.83,0,0,0-.23.57.79.79,0,0,0,.23.57l.64.64a.81.81,0,0,0,1.13,0L9,11.42l4.12,4.12a1.69,1.69,0,0,0,2.39,0L22.89,8.2a.83.83,0,0,0,.23-.57A.79.79,0,0,0,22.89,7.06Z"></path>
             </svg>
         </button>
@@ -88,21 +101,33 @@
         <!-- <button onclick="activateTextMode()"><img src="icons/text.png" alt="Text"></button> -->
         <button onclick="activateTextMode()">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="lavender">
-                <title>icon - tool - text - free text</title>
+                <title>text</title>
                 <path d="M19.39,4.77V7.64A.43.43,0,0,1,19,8h-.82a.41.41,0,0,1-.4-.41V6.51H13.34V18h1.54a.41.41,0,0,1,.41.41v.81a.41.41,0,0,1-.41.41H9.14a.41.41,0,0,1-.41-.41v-.81A.41.41,0,0,1,9.14,18h1.54V6.51H6.27V7.64A.41.41,0,0,1,5.86,8H5A.43.43,0,0,1,4.6,7.6V4.77A.41.41,0,0,1,5,4.36H19A.39.39,0,0,1,19.39,4.77Z"></path>
             </svg>
         </button>
+
+        <button onclick="activateImage()" aria-label="Activate Image Mode">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill= "#abb0c4" >
+                <defs>
+                    <style></style>
+                </defs>
+                <title>image</title>
+                <path class="cls-10" d="M19.89,2H4.33A2.23,2.23,0,0,0,2.11,4.22V19.78A2.23,2.23,0,0,0,4.33,22H19.89a2.22,2.22,0,0,0,2.22-2.22V4.22A2.22,2.22,0,0,0,19.89,2ZM4.33,19.78V4.22H19.89V19.78Z"></path>
+                <polygon class="cls-10" points="13.94 8.13 18.78 15.87 11.52 15.87 9.1 15.87 5.45 15.87 8.48 11.43 10.26 14.02 13.94 8.13"></polygon>
+            </svg>
+        </button>
+        
         
         <!-- <button onclick="activateNoteMode()"><img src="icons/notes.png" alt="Note"></button> -->
         <button onclick="activateNoteMode()">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="orange">
-                <title>icon - tool - comment - line</title>
+                <title>note</title>
                 <path d="M20,2.46H4a2,2,0,0,0-2,2v10a2,2,0,0,0,2,2H7v5.08l6.35-5.08H20a2,2,0,0,0,2-2v-10A2,2,0,0,0,20,2.46Zm0,12H12.65L9,17.38V14.46H4v-10H20Z"></path>
                 <path d="M18,8.46H6v-2H18Zm-2.5,4H6v-2h9.5Z"></path>
             </svg>
         </button>
 
-        <button id="microphone-icon"><img src="icons/microphone.png" alt="microphone"></button>s
+        <button id="microphone-icon"><img src="icons/microphone.png" alt="microphone" title="microphone"></button>
         <!-- <button id="microphone-icon">
             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="24" height="24" viewBox="0 0 256 256" xml:space="preserve" fill="#55D636">
                 <path d="M 45 0 c -8.481 0 -15.382 6.9 -15.382 15.382 v 29.044 c 0 8.482 6.9 15.382 15.382 15.382 s 15.382 -6.9 15.382 -15.382 V 15.382 C 60.382 6.9 53.481 0 45 0 z" />
@@ -111,26 +136,26 @@
         </button> -->
         
         <!-- <button onclick="useEraser()"><img src="icons/eraser.png" alt="Eraser"></button> -->
-        <button onclick="useEraser()">
+        <button id="eraser" onclick="useEraser()">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="#abb0c4">
-                <title>icon - operation - eraser</title>
+                <title>eraser</title>
                 <path d="M12.93,3.1,7.78,8.25,2.62,13.5a2.18,2.18,0,0,0,0,3.05L7.3,21.22a1.07,1.07,0,0,0,.76.32H20.68a.4.4,0,0,0,.4-.4V19.77a.4.4,0,0,0-.4-.4H13.53l7.84-7.84a2.17,2.17,0,0,0,0-3.06L16,3.1A2.17,2.17,0,0,0,12.93,3.1ZM8.51,19.37,4.17,15,9.32,9.78l.8-.81,5.37,5.37-4.94,4.94-.08.09h-2Z"></path>
             </svg>
         </button>
         
         <!-- <button onclick="undo()"><img src="icons/undo.png" alt="Undo"></button>  -->
-        <button onclick="undo()">
+        <button id="undo" onclick="undo()">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="#abb0c4">
-                <title>icon - operation - undo</title>
+                <title>undo</title>
                 <path d="M8.25,10.12h7.39a3.82,3.82,0,0,1,3.78,3,3.76,3.76,0,0,1-3.67,4.53H12.6a.6.6,0,0,0-.6.61v1.3a.6.6,0,0,0,.6.6h2.93A6.41,6.41,0,0,0,22,14.7a6.26,6.26,0,0,0-6.2-7.08H8.25V4.71a.4.4,0,0,0-.65-.32L2.39,8.56a.41.41,0,0,0,0,.63L7.6,13.36A.4.4,0,0,0,8.25,13Z"></path>
             </svg>
         </button>
         
         <!-- <button onclick="redo()"><img src="icons/redo.png" alt="Redo"></button> -->
 
-        <button onclick="redo()">
+        <button id="redo" onclick="redo()">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="grey">
-                <title>icon - operation - redo</title>
+                <title>redo</title>
                 <path d="M8.47,20.13H11.4a.6.6,0,0,0,.6-.6v-1.3a.6.6,0,0,0-.6-.6h-3a3.82,3.82,0,0,1-3.78-3,3.76,3.76,0,0,1,3.67-4.54h7.5V13a.4.4,0,0,0,.65.32l5.21-4.17a.41.41,0,0,0,0-.63L16.4,4.39a.4.4,0,0,0-.65.32V7.62H8.25a6.26,6.26,0,0,0-6.2,7.08A6.41,6.41,0,0,0,8.47,20.13Z"></path>
             </svg>
         </button>
@@ -152,7 +177,7 @@
         </button>
         
         
-    </div>
+    </div> 
     
 </div>
 
@@ -172,6 +197,7 @@
         </div>
     </div>
    
+    <input type="file" id="imageInput" style="display:none;" accept="image/*" onchange="handleImageUpload(event)">
 
     <!-- Annotations Sidebar -->
     <div class="annotations">
@@ -274,7 +300,7 @@
             </button>
             <button class="video-button" title="Next">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
-                    <path d="M0 0h24v24H0z" fill="#343a40"></path>
+                    <path d="M0 0h24v24H0z" fill="none"></path>
                     <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"></path>
                 </svg>
             </button>
