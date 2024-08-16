@@ -55,6 +55,8 @@
                 </path>
             </svg>
         </button>
+
+        
         
         
         
@@ -92,6 +94,18 @@
                 <path d="M19.39,4.77V7.64A.43.43,0,0,1,19,8h-.82a.41.41,0,0,1-.4-.41V6.51H13.34V18h1.54a.41.41,0,0,1,.41.41v.81a.41.41,0,0,1-.41.41H9.14a.41.41,0,0,1-.41-.41v-.81A.41.41,0,0,1,9.14,18h1.54V6.51H6.27V7.64A.41.41,0,0,1,5.86,8H5A.43.43,0,0,1,4.6,7.6V4.77A.41.41,0,0,1,5,4.36H19A.39.39,0,0,1,19.39,4.77Z"></path>
             </svg>
         </button>
+
+        <button onclick="activateImage()" aria-label="Activate Image Mode">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill= "#abb0c4" >
+                <defs>
+                    <style></style>
+                </defs>
+                <title>icon - tool - image - line</title>
+                <path class="cls-10" d="M19.89,2H4.33A2.23,2.23,0,0,0,2.11,4.22V19.78A2.23,2.23,0,0,0,4.33,22H19.89a2.22,2.22,0,0,0,2.22-2.22V4.22A2.22,2.22,0,0,0,19.89,2ZM4.33,19.78V4.22H19.89V19.78Z"></path>
+                <polygon class="cls-10" points="13.94 8.13 18.78 15.87 11.52 15.87 9.1 15.87 5.45 15.87 8.48 11.43 10.26 14.02 13.94 8.13"></polygon>
+            </svg>
+        </button>
+        
         
         <!-- <button onclick="activateNoteMode()"><img src="icons/notes.png" alt="Note"></button> -->
         <button onclick="activateNoteMode()">
@@ -172,6 +186,7 @@
         </div>
     </div>
    
+    <input type="file" id="imageInput" style="display:none;" accept="image/*" onchange="handleImageUpload(event)">
 
     <!-- Annotations Sidebar -->
     <div class="annotations">
