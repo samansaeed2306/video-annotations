@@ -567,6 +567,41 @@ function activateLineMode() {
     canvas.upperCanvasEl.classList.add('canvas-plus-cursor');
 }
 
+function activateImage() {
+    document.getElementById('imageInput').click();
+}
+
+function handleImageUpload(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const dataURL = e.target.result;
+
+            // Create a Fabric.js image object
+            fabric.Image.fromURL(dataURL, function(img) {
+                // Set default properties for the image
+                img.set({
+                    left: 50,
+                    top: 50,
+                    scaleX: 1,
+                    scaleY: 1,
+                    selectable: true,
+                    hasControls: true,
+                    hasBorders: true,
+                });
+
+                // Add the image to the canvas
+                canvas.add(img);
+                canvas.centerObject(img);
+                canvas.renderAll();
+            });
+        };
+
+        // Read the image file as a data URL
+        reader.readAsDataURL(file);
+    }
+}
 canvas.on('mouse:down', function(options) {
     const pointer = canvas.getPointer(options.e);
     if (drawingMode === 'line') {
