@@ -285,11 +285,38 @@ if (video.paused) {
    // playPauseImage.alt = 'Play';
 }
 });
+
+
+
 function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
     return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
 }
+
+function view() {
+   
+    const buttons = document.querySelectorAll('button');
+    buttons.forEach(button => {
+        button.disabled = true;
+    });
+
+    const playIcon = document.getElementById('play-icon');
+    const pauseIcon = document.getElementById('pause-icon');
+    
+    video.currentTime=0;
+    video.play();
+    playIcon.style.display = 'none';
+    pauseIcon.style.display = 'block';
+
+    video.onended = function() {
+        playIcon.style.display = 'block';
+        pauseIcon.style.display = 'none';
+    };
+   
+
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     const video = document.getElementById('video');
     const currentTimeInput = document.querySelector('.current-time-input');
@@ -346,6 +373,10 @@ document.getElementById('play-pause-button').addEventListener('click', function(
         pauseIcon.style.display = 'block';
         
     }
+    video.onended = function() {
+        playIcon.style.display = 'block';
+        pauseIcon.style.display = 'none';
+    };
 
 });
 
@@ -567,6 +598,41 @@ function activateLineMode() {
     canvas.upperCanvasEl.classList.add('canvas-plus-cursor');
 }
 
+function activateImage() {
+    document.getElementById('imageInput').click();
+}
+
+function handleImageUpload(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const dataURL = e.target.result;
+
+            // Create a Fabric.js image object
+            fabric.Image.fromURL(dataURL, function(img) {
+                // Set default properties for the image
+                img.set({
+                    left: 50,
+                    top: 50,
+                    scaleX: 1,
+                    scaleY: 1,
+                    selectable: true,
+                    hasControls: true,
+                    hasBorders: true,
+                });
+
+                // Add the image to the canvas
+                canvas.add(img);
+                canvas.centerObject(img);
+                canvas.renderAll();
+            });
+        };
+
+        // Read the image file as a data URL
+        reader.readAsDataURL(file);
+    }
+}
 canvas.on('mouse:down', function(options) {
     const pointer = canvas.getPointer(options.e);
     if (drawingMode === 'line') {
@@ -1033,7 +1099,23 @@ annotations.forEach((annotation, index) => {
     console.log('Appending annotation to list:', annotation);
     const listItem = document.createElement('li');
     listItem.className = 'annotation-item';
-    listItem.textContent = `Annotation at ${formatTime(annotation.time)}`;
+    
+
+   
+    if(annotation.type!= 'audio'){
+        const parsedContent = JSON.parse(annotation.content);
+        const annotationType = parsedContent.objects[0].type;
+        console.log(annotationType);
+    if(annotationType=='rect'){
+        listItem.textContent = `rectangle ${formatTime(annotation.time)}`;
+    }
+  
+    else {
+        listItem.textContent = `${annotationType} ${formatTime(annotation.time)}`;
+    }
+}else{
+    listItem.textContent = `${annotation.type} ${formatTime(annotation.time)}`;
+}
 
     
     const commentInput = document.createElement('input');
@@ -2011,33 +2093,33 @@ async function captureScreenshot(video, canvas, timestamp, annotations) {
    
 }
 
-// Example usage with button click
-document.getElementById('export-button').addEventListener('click', async () => {
-    // Clear the container before adding new images
-    container.innerHTML = '';
+// To be included in export feature (uncomment)
+// document.getElementById('export-button').addEventListener('click', async () => {
+//     // Clear the container before adding new images
+//     container.innerHTML = '';
     
-    // Define the timestamps at which you want to capture screenshots
-    const timestamps = [10, 20, 30]; // Example timestamps (in seconds)
+//     // Define the timestamps at which you want to capture screenshots
+//     const timestamps = [10, 20, 30]; // Example timestamps (in seconds)
     
-    // Array to hold the promises for each screenshot
-    const screenshotPromises = timestamps.map(timestamp => 
+//     // Array to hold the promises for each screenshot
+//     const screenshotPromises = timestamps.map(timestamp => 
       
-        captureScreenshot(video, canvas, timestamp, annotations),
-       // console.log('timestamp:',timestamp),
-    );
+//         captureScreenshot(video, canvas, timestamp, annotations),
+//        // console.log('timestamp:',timestamp),
+//     );
 
-    try {
-        // Wait for all screenshots to be captured
-        await Promise.all(screenshotPromises);
-        container.childNodes.forEach((child, index) => {
-            console.log(`Child ${index + 1}:`, child);
-        });
-        console.log('Number of images calling:', imageData.length);
+//     try {
+//         // Wait for all screenshots to be captured
+//         await Promise.all(screenshotPromises);
+//         container.childNodes.forEach((child, index) => {
+//             console.log(`Child ${index + 1}:`, child);
+//         });
+//         console.log('Number of images calling:', imageData.length);
         
-        console.log('Screenshots captured and displayed.');
-    } catch (error) {
-        console.error('Error capturing screenshots:', error);
-    }
+//         console.log('Screenshots captured and displayed.');
+//     } catch (error) {
+//         console.error('Error capturing screenshots:', error);
+//     }
 
    
-});
+// });
