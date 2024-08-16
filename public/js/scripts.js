@@ -2011,33 +2011,33 @@ async function captureScreenshot(video, canvas, timestamp, annotations) {
    
 }
 
-// Example usage with button click
-document.getElementById('export-button').addEventListener('click', async () => {
-    // Clear the container before adding new images
-    container.innerHTML = '';
+// To be included in export feature (uncomment)
+// document.getElementById('export-button').addEventListener('click', async () => {
+//     // Clear the container before adding new images
+//     container.innerHTML = '';
     
-    // Define the timestamps at which you want to capture screenshots
-    const timestamps = [10, 20, 30]; // Example timestamps (in seconds)
+//     // Define the timestamps at which you want to capture screenshots
+//     const timestamps = [10, 20, 30]; // Example timestamps (in seconds)
     
-    // Array to hold the promises for each screenshot
-    const screenshotPromises = timestamps.map(timestamp => 
+//     // Array to hold the promises for each screenshot
+//     const screenshotPromises = timestamps.map(timestamp => 
       
-        captureScreenshot(video, canvas, timestamp, annotations),
-       // console.log('timestamp:',timestamp),
-    );
+//         captureScreenshot(video, canvas, timestamp, annotations),
+//        // console.log('timestamp:',timestamp),
+//     );
 
-    try {
-        // Wait for all screenshots to be captured
-        await Promise.all(screenshotPromises);
-        container.childNodes.forEach((child, index) => {
-            console.log(`Child ${index + 1}:`, child);
-        });
-        console.log('Number of images calling:', imageData.length);
+//     try {
+//         // Wait for all screenshots to be captured
+//         await Promise.all(screenshotPromises);
+//         container.childNodes.forEach((child, index) => {
+//             console.log(`Child ${index + 1}:`, child);
+//         });
+//         console.log('Number of images calling:', imageData.length);
         
-        console.log('Screenshots captured and displayed.');
-    } catch (error) {
-        console.error('Error capturing screenshots:', error);
-    }
+//         console.log('Screenshots captured and displayed.');
+//     } catch (error) {
+//         console.error('Error capturing screenshots:', error);
+//     }
 
    
-});
+// });
