@@ -582,19 +582,22 @@ body::before {
         cursor: pointer; 
     }
     .tools {
-        opacity: 0.7;
+        opacity: 0.8;
         position: absolute;
-        top: 50px;
+        top: 65px;
         left: 0;
-        height: 80%;
-        width: 50px; /* Sidebar width */
+        height: 60%;
+        width: 25px; /* Sidebar width */
         display: flex;
         flex-direction: column;
         /* align-items: right;  */
         background-color: #393b3e;
         z-index: 1000; /* Float above video and canvas */
-        padding: 0px;
+        padding-top: 12px;
         border-radius: 25px;
+        padding-left: 10px;
+        margin-left: 12px;
+        font-size: 0;
         /* display:none; */
     }
 
@@ -604,6 +607,8 @@ body::before {
         width: 25px;
         margin-left: 125px;
         text-align: center;
+        background-color: transparent;
+        
 
         
     }
@@ -621,7 +626,7 @@ body::before {
     
     .video-buttons {
         position: absolute;
-        bottom: -460px; /* Position 20px from the bottom of the screen */
+        bottom: -440px; /* Position 20px from the bottom of the screen */
         left: 60%;
         transform: translateX(-50%); /* Center horizontally */
         z-index: 1000; /* Float above video and canvas */
@@ -633,7 +638,9 @@ body::before {
     }
 
     .video-buttons .video-button {
-        margin: 0 5px;
+        margin: 0 13px;
+        margin-bottom: 14px;
+        background-color: transparent;
     }
 
     .video-buttons svg {
@@ -656,12 +663,15 @@ body::before {
     }
     .save-container{
         position: relative;
+        background: transparent;
+        background-color: transparent;
     }
     .save-btn {
         position: fixed; /* Changed to fixed to stay relative to viewport */
         top: 10px; /* Distance from the top of the viewport */
-        right: -10px; /* Distance from the right edge of the viewport */
-        background: none;
+        right: -15px; /* Distance from the right edge of the viewport */
+        background: transparent;
+        background-color: transparent;
         border: none;
         cursor: pointer;
         z-index: 1001; /* Ensure it's above other elements */
@@ -698,6 +708,20 @@ body::before {
 #progress-wave {
     display: none;
 }
+.timeline {
+    position: relative;
+    bottom: 0px;
+    width: 100%;
+    background-color: #343a40;
+    border-radius: 0px;
+    padding: 0px;
+    margin-top: 0px;
+    overflow: hidden;
+    height: 400px;
+    left: -5.8%;
+    margin: 0px;
+    top: -2px;
+}
 
 .timeline .tick2 {
     display: inline-block;
@@ -709,22 +733,23 @@ body::before {
     z-index: 7;
     margin: 0;  /* Removes margin */
     padding: 0; /* Removes padding */
-    bottom: -370px;
+    bottom: -365px;
     right: -25px;
 }
-/* .timeline {
-    width: 100%;
-    display: flex;
-    justify-content: center; /* Centers the ticks horizontally */
-    /* position: absolute;
-    bottom: 0;
-  
-} */ */
+
 
 .timeline .tick {
    display: none;
 }
 
+#undo, #redo, #eraser{
+    display: none;
+}
 
+
+.tools svg, /* Exclude SVGs or icons from being hidden */
+.tools button {
+    font-size: initial;
+}
 
 }
