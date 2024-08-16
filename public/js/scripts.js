@@ -373,6 +373,10 @@ document.getElementById('play-pause-button').addEventListener('click', function(
         pauseIcon.style.display = 'block';
         
     }
+    video.onended = function() {
+        playIcon.style.display = 'block';
+        pauseIcon.style.display = 'none';
+    };
 
 });
 
