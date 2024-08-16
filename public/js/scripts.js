@@ -309,23 +309,11 @@ function view() {
     playIcon.style.display = 'none';
     pauseIcon.style.display = 'block';
 
-    if(video.currentTime==video.duration){
-       
-            playIcon.style.display = 'block';
-            pauseIcon.style.display = 'none';
-      
-    }
-    // if (playIcon.style.display === 'none') {
-    //     video.pause();
-    //     playIcon.style.display = 'block';
-
-    //     pauseIcon.style.display = 'none';
-    // } else {
-    //     video.play();
-    //     playIcon.style.display = 'none';
-    //     pauseIcon.style.display = 'block';
-        
-    // }
+    video.onended = function() {
+        playIcon.style.display = 'block';
+        pauseIcon.style.display = 'none';
+    };
+   
 
 }
 
