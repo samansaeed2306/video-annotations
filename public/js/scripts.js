@@ -2216,12 +2216,50 @@ startBtn.addEventListener('click', async () => {
 });
 
        
-        const captureArea = document.getElementById('video-container');
-        let isZoomedIn = false;
+const captureArea = document.getElementById('video-container');
 
-        captureArea.addEventListener('dblclick', () => {
-            isZoomedIn = !isZoomedIn;
-            video.style.transform = isZoomedIn ? 'scale(1.5)' : 'scale(1)';
-            
-        });
+
+let isZoomedIn = false;
+const zoomScale = 1.2;
+
+
+    videoContainer.addEventListener('dblclick', () => {
+    isZoomedIn = !isZoomedIn;
+    
+    if (isZoomedIn) {
+        video.style.transform = `scale(${zoomScale})`;
+        console.log(`Video Transform scale(${video.style.transform})`)
+        console.log(`Video Position scale(${video.style.position})`)
+        // Adjust canvas dimensions to match zoomed video
+        const videoWidth = video.clientWidth * zoomScale;
+        const videoHeight = video.clientHeight * zoomScale;
+        fabricCanvas.width = videoWidth;
+        fabricCanvas.height = videoHeight;
+        fabricCanvas.top='-80px';
+        canvas.setWidth(videoWidth);
+        canvas.setHeight(videoHeight);
+        //canvas.style.transform = video.style.transform;
+        const offsetX = (videoWidth - video.clientWidth)/2;
+        const offsetY = (videoHeight - video.clientHeight) / 2;
+
+        // Use CSS to position the canvas
+        canvas.wrapperEl.style.position = 'absolute';
+        canvas.wrapperEl.style.left = `${-offsetX}px`;
+        canvas.wrapperEl.style.top = `${-offsetY}px`;
+        
+        canvas.calcOffset(); // Update the offset calculations
+        document.getElementsByClassName('buttons-container')[0].style.marginTop = '250px';
+    } else {
+        video.style.transform = 'scale(1)';
+        fabricCanvas.width = video.clientWidth;
+        fabricCanvas.height = video.clientHeight;
+        
+        canvas.setWidth(video.clientWidth);
+        canvas.setHeight(video.clientHeight);
+        fabricCanvas.wrapperEl.style.position = 'static';
+        fabricCanvas.wrapperEl.style.left = '0';
+        fabricCanvas.wrapperEl.style.top = '0';
+    }
+});
+
 
