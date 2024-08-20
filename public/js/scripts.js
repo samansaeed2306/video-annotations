@@ -133,6 +133,10 @@ function setupTimeline(video) {
         document.addEventListener('mousemove', movePointer);
         document.addEventListener('mouseup', stopDragging);
     });
+
+    video.addEventListener('ended', () => {
+        pointer2.style.left = `calc(100% - 29.5px)`; 
+    });
 }
 
 
