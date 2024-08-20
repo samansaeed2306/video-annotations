@@ -2215,3 +2215,13 @@ startBtn.addEventListener('click', async () => {
     }
 });
 
+       
+        const captureArea = document.getElementById('video-container');
+        let isZoomedIn = false;
+
+        captureArea.addEventListener('dblclick', () => {
+            isZoomedIn = !isZoomedIn;
+            video.style.transform = isZoomedIn ? 'scale(1.5)' : 'scale(1)';
+            
+        });
+
