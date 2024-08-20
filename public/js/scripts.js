@@ -94,8 +94,8 @@ function setupTimeline(video) {
 
     timeline.appendChild(pointer2);
 
-    // Update pointer position based on video time
-    video.addEventListener('timeupdate', () => {
+    // Update pointer position and tick colors based on video time
+    function updatePointerAndTicks() {
         const percentage = (video.currentTime / duration) * 100;
         pointer2.style.left = `calc(${percentage}% - 6.5px)`; // Center pointer over tick
         
@@ -108,11 +108,14 @@ function setupTimeline(video) {
                 tick2.style.backgroundColor = 'white'; // Uncolored portion
             }
         });
-    });
+    }
+
+    video.addEventListener('timeupdate', updatePointerAndTicks);
 
     // Handle dragging of the pointer
     pointer2.addEventListener('mousedown', (e) => {
         e.preventDefault();
+
         const movePointer = (e) => {
             const rect = timeline.getBoundingClientRect();
             const x = e.clientX - rect.left;
@@ -124,6 +127,7 @@ function setupTimeline(video) {
         const stopDragging = () => {
             document.removeEventListener('mousemove', movePointer);
             document.removeEventListener('mouseup', stopDragging);
+            updatePointerAndTicks(); // Ensure final update after dragging
         };
 
         document.addEventListener('mousemove', movePointer);
