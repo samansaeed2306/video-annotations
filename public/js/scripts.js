@@ -2154,3 +2154,47 @@ async function captureScreenshot(video, canvas, timestamp, annotations) {
 
    
 // });
+
+const startBtn = document.getElementById('start-recording');
+const stopBtn = document.getElementById('stop-recording');
+
+let mediaRecorder2;
+let chunks = [];
+
+startBtn.addEventListener('click', async () => {
+    try {
+        // Request screen capture
+        const stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+
+        mediaRecorder2 = new MediaRecorder(stream);
+
+        mediaRecorder2.ondataavailable = event => {
+            if (event.data.size > 0) {
+                chunks.push(event.data);
+            }
+        };
+
+        mediaRecorder2.onstop = () => {
+            const blob = new Blob(chunks, { type: 'video/webm' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'screen-recording.webm';
+            a.click();
+            chunks = [];
+        };
+
+        mediaRecorder2.start();
+
+        console.log('Screen recording started');
+    } catch (error) {
+        console.error('Error starting screen recording:', error);
+    }
+});
+
+stopBtn.addEventListener('click', () => {
+    if (mediaRecorder2) {
+        mediaRecorder2.stop();
+        console.log('Screen recording stopped');
+    }
+});
