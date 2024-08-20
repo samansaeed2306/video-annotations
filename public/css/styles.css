@@ -57,8 +57,13 @@ body {
     cursor: pointer;
     width: 40px;
     height: 40px;
-  
+    position: absolute;
+    right: 0;
+    top: 12px; /* You can adjust this to position it vertically */
+    margin-right: 100px; /* Optional: Adjust the margin as needed */  
 }
+
+
 #video-container {
     margin-bottom: 0px;
     margin: 100PX 0px;
