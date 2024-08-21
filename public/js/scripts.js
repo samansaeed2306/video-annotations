@@ -2256,9 +2256,13 @@ const zoomScale = 1.2;
         
         canvas.setWidth(video.clientWidth);
         canvas.setHeight(video.clientHeight);
-        fabricCanvas.wrapperEl.style.position = 'static';
-        fabricCanvas.wrapperEl.style.left = '0';
-        fabricCanvas.wrapperEl.style.top = '0';
+        // fabricCanvas.wrapperEl.style.position = 'static';
+        // fabricCanvas.wrapperEl.style.left = '0';
+        // fabricCanvas.wrapperEl.style.top = '0';
+        canvas.wrapperEl.style.position = 'absolute';
+        canvas.wrapperEl.style.top= '0.5px';
+        canvas.wrapperEl.style.left= '3px';
+        canvas.calcOffset(); 
     }
 });
 
