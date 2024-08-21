@@ -2154,18 +2154,33 @@ async function captureScreenshot(video, canvas, timestamp, annotations) {
 
    
 // });
+
 const startBtn = document.getElementById('screen-recording');
 
 let mediaRecorder2;
 let chunks = [];
+const displayMediaOptions = {
+    video: {
+      displaySurface: "browser",
+    },
+    audio: {
+      suppressLocalAudioPlayback: false,
+    },
+    preferCurrentTab: true,
+    selfBrowserSurface: "include",
+    systemAudio: "include",
+    surfaceSwitching: "include",
+    monitorTypeSurfaces: "include",
+  };
+  
 
 startBtn.addEventListener('click', async () => {
     try {
         const icon = startBtn;
 
         if (icon.classList.contains('start-recording')) {
-            // Start recording
-            const stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+            
+            const stream = await navigator.mediaDevices.getDisplayMedia(displayMediaOptions);
 
             mediaRecorder2 = new MediaRecorder(stream);
 
