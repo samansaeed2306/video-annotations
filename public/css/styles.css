@@ -52,6 +52,18 @@ body {
     
     
 }
+
+#screen-recording{
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    right: 0;
+    top: 12px; /* You can adjust this to position it vertically */
+    margin-right: 100px; /* Optional: Adjust the margin as needed */  
+}
+
+
 #video-container {
     margin-bottom: 0px;
     margin: 100PX 0px;
@@ -70,6 +82,21 @@ video {
     pointer-events: none;
     
 }
+
+#zoom-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    background-image: url('https://png.pngtree.com/element_our/20190531/ourmid/pngtree-zoom-in-icon-image_1287460.jpg');
+    background-size: cover;
+    display: none;
+    cursor: pointer;
+}
+/* #video-container:hover #zoom-icon {
+    display: block;
+} */
 #canvas {
     width: 100%;
     height: auto;
@@ -164,7 +191,7 @@ video {
     display: inline-block;
     width: calc(100% / var(--duration)); 
     height: 5px;
-    background-color: #5a5c5d;
+    background-color:white;
     margin-top: 50px;
     cursor: pointer;
     position: relative;
@@ -197,6 +224,17 @@ video {
     cursor: ew-resize;
     opacity: 0.5;
 }
+
+.pointer2 {
+    position: absolute;
+     top: 88px;
+     margin-left: 10px;
+    /* transform: translateX(-10%);  */ 
+    left: 0px; /* Start at the leftmost position */
+    transform: translateX(0%);
+    cursor: pointer;
+    z-index: 10;
+}
 /* #play-pause-button {
     margin-left: 20px;
 } */
@@ -217,6 +255,8 @@ video {
     left: -10%; 
     margin-left: 10px; 
     top:-2px;
+    /* margin-top: 100px; */
+    /* opacity: 0.2; */
 }
 
 
