@@ -30,48 +30,47 @@ document.addEventListener('DOMContentLoaded', function() {
         console.error('Error code', error.code, 'object', error);
     });
 });
+
 function setupTimeline(video) {
     const timeline = document.getElementById('timeline');
     const duration = Math.floor(video.duration);
-    timeline.style.setProperty('--duration', duration);
+    timeline.style.setProperty('--duration', duration); 
 
     for (let i = 0; i < duration; i++) {
-                const tick = document.createElement('div');
-                tick.classList.add('tick');
-                tick.dataset.time = i; 
-        
-                
-                const icon = document.createElement('div');
-                icon.classList.add('icon');
-                const img = document.createElement('img');
-                img.src = 'icons/pencil.png';
-                img.alt = 'Pencil';
-                icon.appendChild(img);
-                tick.appendChild(icon);
-        
-               
-        
-                
-                img.addEventListener('dragstart', handleDragStart);
-                tick.addEventListener('dragover', handleDragOver);
-                tick.addEventListener('drop', handleDrop);
-                img.setAttribute('draggable', true);
-            
-                timeline.appendChild(tick);
-            }
-    // Create the timeline ticks
-    for (let i = 0; i < duration; i++) {
-        // const tick = document.createElement('div');
-        // tick.classList.add('tick');
-        // tick.dataset.time = i;
-        // timeline.appendChild(tick);
+        const tick = document.createElement('div');
+        tick.classList.add('tick');
+        tick.dataset.time = i; 
 
+        
+        const icon = document.createElement('div');
+        icon.classList.add('icon');
+        const img = document.createElement('img');
+        img.src = 'icons/pencil.png';
+        img.alt = 'Pencil';
+        icon.appendChild(img);
+        tick.appendChild(icon);
+
+       
+
+        
+        img.addEventListener('dragstart', handleDragStart);
+        tick.addEventListener('dragover', handleDragOver);
+        tick.addEventListener('drop', handleDrop);
+        img.setAttribute('draggable', true);
+    
+        timeline.appendChild(tick);
+    }
+    for (let i = 0; i < duration; i++) {
         const tick2 = document.createElement('div');
         tick2.classList.add('tick2');
-        tick2.dataset.time = i;
-        timeline.appendChild(tick2);
+        tick2.dataset.time = i; 
 
-        tick2.addEventListener('click', function (event) {
+        // tick2.addEventListener('click', function() {
+        //     console.log(`Clicked on tick at ${i} seconds.`);
+        //     video.currentTime = i;
+        //     event.stopPropagation();
+        // });
+        tick2.addEventListener('click', function(event) {
             if (tick2.classList.contains('blocked')) {
                 console.log(`Tick at ${i} seconds is blocked.`);
                 event.stopPropagation();
@@ -80,125 +79,95 @@ function setupTimeline(video) {
             console.log(`Clicked on tick at ${i} seconds.`);
             video.currentTime = i;
         });
-    }
-
-    // Create the pointer (draggable SVG icon)
-    const pointer2 = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    pointer2.setAttribute('width', '13');
-    pointer2.setAttribute('height', '21');
-    pointer2.setAttribute('fill', 'none');
-    pointer2.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-    pointer2.setAttribute('alt', 'draggable icon for progress bar');
-    pointer2.classList.add('pointer2');
-    pointer2.innerHTML = '<path d="M13 14.726C13 18.19 10.09 21 6.5 21S0 18.19 0 14.726C0 8.812 4.345 8 6.5 0 8 7.725 13 8.5 13 14.726z" fill="#CED0D1"></path><circle cx="6.5" cy="14.5" r="2.5" fill="#31373D"></circle>';
-
-    timeline.appendChild(pointer2);
-
-    // Update pointer position and tick colors based on video time
-    function updatePointerAndTicks() {
-        const percentage = (video.currentTime / duration) * 100;
-        pointer2.style.left = `calc(${percentage}% - 6.5px)`; // Center pointer over tick
         
-        // Update tick2 colors
-        const ticks2 = document.querySelectorAll('.tick2');
-        ticks2.forEach((tick2, index) => {
-            if (index <= Math.floor(video.currentTime)) {
-                tick2.style.backgroundColor = 'red'; // Colored portion
-            } else {
-                tick2.style.backgroundColor = 'white'; // Uncolored portion
-            }
-        });
+
+        
+          // Create the waveform container and append it to tick2
+          const waveformContainer = document.createElement('div');
+          waveformContainer.classList.add('waveform-container');
+  
+          const waveform = document.createElement('div');
+          waveform.classList.add('waveform');
+          waveform.style.cursor = 'default';
+  
+          const wave = document.createElement('wave');
+          wave.style.display = 'block';
+          wave.style.position = 'relative';
+          wave.style.userSelect = 'none';
+          wave.style.height = '150px';
+          wave.style.overflow = 'auto hidden';
+          const progressWave = document.createElement('wave');
+        progressWave.id = 'progress-wave';
+        progressWave.style.position = 'absolute';
+        progressWave.style.zIndex = '3';
+        progressWave.style.left = '0px';
+        progressWave.style.top = '0px';
+        progressWave.style.bottom = '0px';
+        progressWave.style.overflow = 'hidden';
+        progressWave.style.width = '242.4px';
+        progressWave.style.display = 'block';
+        progressWave.style.boxSizing = 'border-box';
+        progressWave.style.borderRight = '1px solid rgb(170, 190, 209)';
+        progressWave.style.pointerEvents = 'none';
+        const canvas1 = document.createElement('canvas4');
+        canvas1.width = 635;
+        canvas1.height = 187;
+        canvas1.style.position = 'absolute';
+        canvas1.style.left = '0px';
+        canvas1.style.top = '0px';
+        canvas1.style.bottom = '0px';
+        canvas1.style.height = '100%';
+        canvas1.style.width = '508px';
+
+        progressWave.appendChild(canvas1);
+        wave.appendChild(progressWave);
+        const canvas2 = document.createElement('canvas4');
+        canvas2.width = 635;
+        canvas2.height = 187;
+        canvas2.style.position = 'absolute';
+        canvas2.style.zIndex = '2';
+        canvas2.style.left = '0px';
+        canvas2.style.top = '0px';
+        canvas2.style.bottom = '0px';
+        canvas2.style.height = '100%';
+        canvas2.style.pointerEvents = 'none';
+        canvas2.style.width = '508px';
+
+        wave.appendChild(canvas2);
+        waveform.appendChild(wave);
+        waveformContainer.appendChild(waveform);
+        tick2.appendChild(waveformContainer);
+        timeline.appendChild(tick2);
+
+        // tick2.addEventListener('click', function(event) {
+        //     console.log(`Clicked on tick at ${i} seconds.`);
+        //     video.currentTime = i;
+
+        //     const existingPointer = document.querySelector('.draggable-pointer');
+        //     if (existingPointer) {
+        //         existingPointer.remove();
+        //     }
+
+        //     const pointer = document.createElement('img');
+        //     pointer.src = 'icons/pointer.png';
+        //     pointer.alt = 'Pointer';
+        //     pointer.classList.add('draggable-pointer');
+        //     pointer.style.position = 'absolute';
+        //     pointer.style.left = `${event.clientX}px`;
+        //     pointer.style.top = `${event.clientY}px`;
+        //     pointer.setAttribute('draggable', true);
+
+        //     pointer.addEventListener('dragstart', handleDragStart);
+        //     pointer.addEventListener('dragend', handleDragEnd);
+        //     tick2.appendChild(pointer);
+        // });
+
+        // tick2.addEventListener('dragover', handleDragOver);
+        // tick2.addEventListener('drop', handleDrop);
+        
+        
     }
-
-    video.addEventListener('timeupdate', updatePointerAndTicks);
-
-    // Handle dragging of the pointer
-    pointer2.addEventListener('mousedown', (e) => {
-        e.preventDefault();
-
-        const movePointer = (e) => {
-            const rect = timeline.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const percentage = (x / rect.width) * 100;
-            const newTime = (percentage / 100) * duration;
-            video.currentTime = Math.min(Math.max(newTime, 0), duration); // Constrain within bounds
-        };
-
-        const stopDragging = () => {
-            document.removeEventListener('mousemove', movePointer);
-            document.removeEventListener('mouseup', stopDragging);
-            updatePointerAndTicks(); // Ensure final update after dragging
-        };
-
-        document.addEventListener('mousemove', movePointer);
-        document.addEventListener('mouseup', stopDragging);
-    });
-
-    video.addEventListener('ended', () => {
-        pointer2.style.left = `calc(100% - 29.5px)`; 
-    });
 }
-
-
-// function setupTimeline(video) {
-//     const timeline = document.getElementById('timeline');
-//     const duration = Math.floor(video.duration);
-//     timeline.style.setProperty('--duration', duration); 
-
-//     for (let i = 0; i < duration; i++) {
-//         const tick = document.createElement('div');
-//         tick.classList.add('tick');
-//         tick.dataset.time = i; 
-
-        
-//         const icon = document.createElement('div');
-//         icon.classList.add('icon');
-//         const img = document.createElement('img');
-//         img.src = 'icons/pencil.png';
-//         img.alt = 'Pencil';
-//         icon.appendChild(img);
-//         tick.appendChild(icon);
-
-       
-
-        
-//         img.addEventListener('dragstart', handleDragStart);
-//         tick.addEventListener('dragover', handleDragOver);
-//         tick.addEventListener('drop', handleDrop);
-//         img.setAttribute('draggable', true);
-    
-//         timeline.appendChild(tick);
-//     }
-//     for (let i = 0; i < duration; i++) {
-//         const tick2 = document.createElement('div');
-//         tick2.classList.add('tick2');
-//         tick2.dataset.time = i; 
-
-//         // tick2.addEventListener('click', function() {
-//         //     console.log(`Clicked on tick at ${i} seconds.`);
-//         //     video.currentTime = i;
-//         //     event.stopPropagation();
-//         // });
-//         tick2.addEventListener('click', function(event) {
-//             if (tick2.classList.contains('blocked')) {
-//                 console.log(`Tick at ${i} seconds is blocked.`);
-//                 event.stopPropagation();
-//                 return;
-//             }
-//             console.log(`Clicked on tick at ${i} seconds.`);
-//             video.currentTime = i;
-//         });
-        
-
-        
-       
-//         timeline.appendChild(tick2);
-
-      
-        
-        
-//     }
-// }
 
 function addClassToTicks(startTime, endTime) {
     for (let i = startTime; i <= endTime; i++) {
@@ -326,7 +295,78 @@ function formatTime(seconds) {
 }
 
 function view() {
-   
+    const newAnnotations = [
+        // {
+        //     time: 12,
+        //     startTime: 12,
+        //     endTime: 15.398855307277017,
+        //     content: 'GkXfo59ChoEBQveBAULygQRC84EIQoKEd2VibUKHgQRChYECGF…J0TEToKQ+F7jwgkRhaxkMU8oe0QncJnc1SWP5oSUU3yc2K/c=',
+        //     type: 'audio'
+        // },
+        // {
+        //     time: 39,
+        //     startTime: 39,
+        //     endTime: 42.45430854410831,
+        //     content: 'GkXfo59ChoEBQveBAULygQRC84EIQoKEd2VibUKHgQRChYECGF…oi89iaSvZ+e/dkew2fFs7u1AgvfeENsGIezHt3y1pjyXyQA==',
+        //     type: 'audio'
+        // },
+        {
+            time: 26,
+            content: '{"version":"4.5.0","objects":[{"type":"circle","version":"4.5.0","left":100,"top":100,"radius":30,"startAngle":0,"endAngle":6.283185307179586}]}'
+        },
+        {
+            time: 51,
+            content: '{"version":"4.5.0","objects":[{"type":"circle","version":"4.5.0","left":200,"top":200,"radius":30,"startAngle":0,"endAngle":6.283185307179586}]}'
+        },
+        {
+            time: 2,
+            content: '{"version":"4.5.0","objects":[{"type":"path","version":"4.5.0","path":[["M",100,100],["L",200,100],["L",200,200],["L",100,200],["Z"]]}]}'
+        },
+        {
+            time: 22,
+            content: '{"version":"4.5.0","objects":[{"type":"rect","version":"4.5.0","left":50,"top":50,"width":100,"height":100,"fill":"red"}]}',
+            duration: 1.398834304746045,
+            endTime: 23.398834304746046,
+            startTime: 22
+        }
+    ];
+    
+
+    // Add all new annotations to the existing annotations array
+    annotations.push(...newAnnotations);
+
+    // Update annotations list and timeline icons
+    updateAnnotationsList();
+    updateTimelineIcons();
+    
+    const videoCanvas = document.getElementById('canvas'); // Replace 'video' with your actual video canvas ID
+    const videoContext = videoCanvas.getContext('2d');
+
+    // Function to update canvas with annotations
+    function updateCanvas(timestamp) {
+        canvas.clear();
+        
+        // Find and draw annotations for the current timestamp
+        const annotation = annotations.find(a => a.time === timestamp);
+        if (annotation) {
+            console.log('Annotation time', annotation.time);
+            try {
+                canvas.loadFromJSON(annotation.content, canvas.renderAll.bind(canvas));
+            } catch (error) {
+                console.error('Error loading annotation JSON:', error);
+            }
+            
+            // Draw the annotations from the Fabric.js canvas onto the video canvas
+            const canvasElement = canvas.getElement();
+            videoContext.drawImage(canvasElement, 0, 0, videoCanvas.width, videoCanvas.height);
+        }
+    }
+
+    // Update canvas when video time updates
+    video.ontimeupdate = function() {
+        updateCanvas(Math.floor(video.currentTime));
+    };
+
     const buttons = document.querySelectorAll('button');
     buttons.forEach(button => {
         button.disabled = true;
@@ -1478,7 +1518,7 @@ async function saveRecording() {
      updateAnnotationsList();
      updateTimelineIcons();
     console.log('Recording saved', annotation);
-   // displayRecordings();
+    displayRecordings();
      // Store audio context for playback synchronization
     //  audioContexts.push({
     //     audio: audioElement,
@@ -2154,131 +2194,3 @@ async function captureScreenshot(video, canvas, timestamp, annotations) {
 
    
 // });
-
-const startBtn = document.getElementById('screen-recording');
-
-let mediaRecorder2;
-let chunks = [];
-const displayMediaOptions = {
-    video: {
-      displaySurface: "browser",
-    },
-    audio: {
-      suppressLocalAudioPlayback: false,
-    },
-    preferCurrentTab: true,
-    selfBrowserSurface: "include",
-    systemAudio: "include",
-    surfaceSwitching: "include",
-    monitorTypeSurfaces: "include",
-  };
-  
-
-startBtn.addEventListener('click', async () => {
-    try {
-        const icon = startBtn;
-
-        if (icon.classList.contains('start-recording')) {
-            
-            const stream = await navigator.mediaDevices.getDisplayMedia(displayMediaOptions);
-
-            mediaRecorder2 = new MediaRecorder(stream);
-
-            mediaRecorder2.ondataavailable = event => {
-                if (event.data.size > 0) {
-                    chunks.push(event.data);
-                }
-            };
-
-            mediaRecorder2.onstop = () => {
-                const blob = new Blob(chunks, { type: 'video/webm' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'screen-recording.webm';
-                a.click();
-                chunks = [];
-            };
-
-            mediaRecorder2.start();
-            console.log('Screen recording started');
-
-            // Change the class to stop-recording
-            icon.classList.remove('start-recording');
-            icon.classList.add('stop-recording');
-            // Change the image to stop recording icon
-            icon.src = 'icons/stop-record.png';
-            icon.alt = 'Stop Recording';
-            icon.title='Stop Recording'
-        } else if (icon.classList.contains('stop-recording')) {
-            // Stop recording
-            if (mediaRecorder2) {
-                mediaRecorder2.stop();
-                console.log('Screen recording stopped');
-
-                // Change the class back to start-recording
-                icon.classList.remove('stop-recording');
-                icon.classList.add('start-recording');
-                // Change the image back to start recording icon
-                icon.src = 'icons/screenrecorder.png';
-                icon.alt = 'Start Recording';
-                icon.title='Record Screen'
-            }
-        }
-    } catch (error) {
-        console.error('Error during recording:', error);
-    }
-});
-
-       
-const captureArea = document.getElementById('video-container');
-
-
-let isZoomedIn = false;
-const zoomScale = 1.2;
-
-
-    videoContainer.addEventListener('dblclick', () => {
-    isZoomedIn = !isZoomedIn;
-    
-    if (isZoomedIn) {
-        video.style.transform = `scale(${zoomScale})`;
-        console.log(`Video Transform scale(${video.style.transform})`)
-        console.log(`Video Position scale(${video.style.position})`)
-        // Adjust canvas dimensions to match zoomed video
-        const videoWidth = video.clientWidth * zoomScale;
-        const videoHeight = video.clientHeight * zoomScale;
-        fabricCanvas.width = videoWidth;
-        fabricCanvas.height = videoHeight;
-        fabricCanvas.top='-80px';
-        canvas.setWidth(videoWidth);
-        canvas.setHeight(videoHeight);
-        //canvas.style.transform = video.style.transform;
-        const offsetX = (videoWidth - video.clientWidth)/2;
-        const offsetY = (videoHeight - video.clientHeight) / 2;
-
-        // Use CSS to position the canvas
-        canvas.wrapperEl.style.position = 'absolute';
-        canvas.wrapperEl.style.left = `${-offsetX}px`;
-        canvas.wrapperEl.style.top = `${-offsetY}px`;
-        
-        canvas.calcOffset(); // Update the offset calculations
-        document.getElementsByClassName('buttons-container')[0].style.marginTop = '250px';
-    } else {
-        video.style.transform = 'scale(1)';
-        fabricCanvas.width = video.clientWidth;
-        fabricCanvas.height = video.clientHeight;
-        
-        canvas.setWidth(video.clientWidth);
-        canvas.setHeight(video.clientHeight);
-        // fabricCanvas.wrapperEl.style.position = 'static';
-        // fabricCanvas.wrapperEl.style.left = '0';
-        // fabricCanvas.wrapperEl.style.top = '0';
-        canvas.wrapperEl.style.position = 'absolute';
-        canvas.wrapperEl.style.top= '0.5px';
-        canvas.wrapperEl.style.left= '3px';
-        canvas.calcOffset(); 
-    }
-});
-
-
