@@ -2263,7 +2263,7 @@ const zoomScale = 1.2;
         canvas.wrapperEl.style.top = `${-offsetY}px`;
         
         canvas.calcOffset(); // Update the offset calculations
-        document.getElementsByClassName('buttons-container')[0].style.marginTop = '250px';
+       // document.getElementsByClassName('buttons-container')[0].style.marginTop = '250px';
     } else {
         video.style.transform = 'scale(1)';
         fabricCanvas.width = video.clientWidth;
