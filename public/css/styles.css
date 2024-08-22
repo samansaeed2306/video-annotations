@@ -67,6 +67,9 @@ body {
     display: flex;
     justify-content: flex-start; 
     align-items: flex-start;  
+   
+    position: relative;
+
   }
 
 #video-container {
@@ -87,7 +90,15 @@ video {
     pointer-events: none;
     
 }
-
+#toggle-icon {
+    position: absolute;
+    /* bottom: 10px;  */
+    top:500px;
+    left: 150px; 
+    width: 30px; 
+    height: 30px;
+    cursor: pointer;
+}
 #zoom-icon {
     position: absolute;
     top: 10px;
@@ -114,6 +125,28 @@ video {
     background-color: none;
     /* cursor: pointer;  */
 }
+/* Default (enabled) state */
+#toggle-icon.enabled path:first-child {
+    fill: rgb(87, 103, 201); /* Enabled color */
+}
+
+/* Disabled state */
+#toggle-icon.disabled path:first-child {
+    fill: gray; /* Disabled color */
+}
+#toggle-icon.enabled .movable-path {
+    transform: translateX(0); /* Start at the right (default position) */
+    transition: transform 0.3s ease; /* Smooth transition */
+}
+
+/* Disabled state */
+#toggle-icon.disabled .movable-path {
+    transform: translateX(-40px); /* Move to the left */
+    transition: transform 0.3s ease; /* Smooth transition */
+}
+
+
+
 .annotations {
     position: fixed;
     right: -3px;
