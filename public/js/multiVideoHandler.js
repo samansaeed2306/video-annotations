@@ -17,19 +17,21 @@ function handleVideoUpload(event) {
   const url = URL.createObjectURL(file);
 
   const existingContainer = document.getElementById('video-container');
-  existingContainer.style.left = '-400px';
+  existingContainer.style.left = '-100px';
+  const canvasonSwitch = document.getElementById('toggle-icon');
+  canvasonSwitch.style.display= 'block';
   const containerWrapper = document.getElementById('container-wrapper');
   if (!existingContainer) return;
 
   const buttonsContainer = document.querySelector('.buttons-container');
   const timeline = document.querySelector('.timeline');
 
-  buttonsContainer.style.width = '600px'; // Adjust width as needed
+  buttonsContainer.style.width = '650px'; // Adjust width as needed
   buttonsContainer.style.float = 'left';
   buttonsContainer.style.display = 'inline-block';
   buttonsContainer.style.left='-400px';
 
-  timeline.style.width = '600px'; // Match width of buttons-container
+  timeline.style.width = '650px'; // Match width of buttons-container
   timeline.style.float = 'left';
   timeline.style.display = 'inline-block';
   timeline.style.marginLeft = '0';
@@ -40,80 +42,64 @@ function handleVideoUpload(event) {
 
   const volumeButtonContainer = document.querySelector('.volume-button-container');
   volumeButtonContainer.style.display = 'none';
-
-  // Clone the existing container
-  // const newContainer = existingContainer.cloneNode(true);
-
-  // Assign a new ID to the cloned container and its children
-  // newContainer.id = 'new-video-container';
-  // const newVideo = newContainer.querySelector('video');
-  // const newCanvas = newContainer.querySelector('canvas');
+  const annotationSidebar = document.querySelector('.annotations');
+  annotationSidebar.style.display = 'none';
   
-  // if (newVideo) newVideo.id = 'new-video';
-  // newVideo.src = 'https://storage.googleapis.com/shaka-demo-assets/angel-one/dash.mpd';
-  // newVideo.style.width = 100; // Set the width
-  // newVideo.style.height = 100; // Set the height
 
-  // if (newCanvas) newCanvas.id = 'new-canvas';
-  // // newContainer.style.left = '-100px';
-  // // Append the cloned container to the wrapper
-  // containerWrapper.appendChild(newContainer);
-  // Create a new video container
-  // const newContainer = document.createElement('div');
-  // // newContainer.classList.add('video-container');
+  const newContainer = document.createElement('div');
+  newContainer.style.right = '-200px'
+  newContainer.id = 'video-container2';
+  newContainer.style.width = '500px'; // Set a small width
+  newContainer.style.height = '500px'; // Set a small height
+  newContainer.style.position = 'relative';
+  newContainer.style.float = 'right'; // Align it to the right side
+  newContainer.style.top = '0.5px';
+  // Create a new video element
+  const newVideo = document.createElement('video');
+  newVideo.src = url;
+  // newVideo.controls = true;
+  newVideo.style.width = '100%'; // Match the width of the container
+  newVideo.style.height = '100%'; // Match the height of the container
+  newVideo.id = 'new-video2';
+  
+  // Create a new fabric.js canvas
+  const newCanvas = document.createElement('canvas');
+  newCanvas.id = 'new-canvas2';
+  // newCanvas.width = 500; // Match the width of the container
+  // newCanvas.height = 500; // Match the height of the container
+
+  newContainer.appendChild(newVideo);
+  newContainer.appendChild(newCanvas);
+  containerWrapper.appendChild(newContainer);
+  newVideo.play();
 
   
-  // newContainer.width = 400; // Set the width
-  // newContainer.height = 300; // Set the height
-  
-//   // Create new video element
-//   const newVideo = document.createElement('video');
-//   newVideo.src = url;
-//   newVideo.controls = true;
-//   newVideo.id = 'new-video';
-
-//   newVideo.width = 400; // Set the width
-//   newVideo.height = 300; // Set the height
-
-//   // Create a new fabric.js canvas
-//   const newCanvas = document.createElement('canvas');
-//   newCanvas.id = 'new-canvas';
-
-//   newContainer.appendChild(newVideo);
-//   newContainer.appendChild(newCanvas);
-
-//   // Append new container to the wrapper
-//   const containerWrapper = document.getElementById('container-wrapper');
-//   containerWrapper.appendChild(newContainer);
-
 //   // Initialize Fabric.js on the new canvas
-//   const newFabricCanvas = new fabric.Canvas('new-canvas', {
-//     selection: false,
-//     isDrawingMode: false
-//   });
+  const newFabricCanvas = new fabric.Canvas('new-canvas2', {
+    selection: false,
+    isDrawingMode: false
+  });
 
 //   // Handle annotations for the new video
 //   const newAnnotations = [];
 
-//   newVideo.addEventListener('loadedmetadata', () => {
-//     newCanvas.width = newVideo.clientWidth;
-//     newCanvas.height = newVideo.clientHeight;
-//     newFabricCanvas.setWidth(newVideo.clientWidth);
-//     newFabricCanvas.setHeight(newVideo.clientHeight);
-//   });
+  newVideo.addEventListener('loadedmetadata', () => {
+    newCanvas.width = newVideo.clientWidth;
+    newCanvas.height = newVideo.clientHeight;
+    newFabricCanvas.setWidth(newVideo.clientWidth);
+    newFabricCanvas.setHeight(newVideo.clientHeight);
+  });
 
-//   newVideo.addEventListener('timeupdate', () => {
-//     showAnnotationsAtCurrentTime(newVideo.currentTime, newAnnotations, newFabricCanvas);
-//   });
- }
-
-function showAnnotationsAtCurrentTime(currentTime, annotations, canvas) {
-  // annotations.forEach(annotation => {
-  //   if (Math.floor(annotation.time) === Math.floor(currentTime)) {
-  //     canvas.clear();
-  //     canvas.loadFromJSON(annotation.content, () => {
-  //       canvas.renderAll();
-  //     });
-  //   }
-  // });
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  const icon = document.getElementById('toggle-icon');
+
+  icon.addEventListener('click', () => {
+      icon.classList.toggle('disabled');
+      icon.classList.toggle('enabled');
+      console.log('Toggled state: ', icon.className);
+  });
+});
+
+
