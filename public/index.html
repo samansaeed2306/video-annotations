@@ -166,6 +166,14 @@
             <!-- <svg id="microphone-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                 <path d="M12 14a4 4 0 004-4V5a4 4 0 10-8 0v5a4 4 0 004 4zm1-9v5a1 1 0 11-2 0V5a1 1 0 012 0zm-1 14a5.978 5.978 0 01-4.472-2.002 1 1 0 00-1.56 1.246A7.978 7.978 0 0011 21v2h2v-2a7.978 7.978 0 004.032-2.756 1 1 0 00-1.56-1.246A5.978 5.978 0 0112 19zm8-7h-2a6.98 6.98 0 01-1.223 3.89 1 1 0 001.638 1.148A8.978 8.978 0 0022 12zm-16 0H4a8.978 8.978 0 001.585 5.038 1 1 0 001.638-1.148A6.98 6.98 0 016 12z"/>
             </svg> -->
+        <svg id="upload-svg" class="upload-another-video-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-labelledby="title" aria-describedby="desc" role="img" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <title>Upload another video</title>
+            <desc>For multiple videos</desc>
+            <path d="M31 48V3M16 20L31 3l15 16" stroke-width="6" stroke-miterlimit="10" stroke-linecap="round" stroke="#abb0c4" fill="none" data-name="layer2" stroke-linejoin="round"></path>
+            <path d="M8 46v16h46V46" stroke-width="6" stroke-miterlimit="10" stroke-linecap="round" stroke="#abb0c4" fill="none" data-name="layer1" stroke-linejoin="round"></path>
+            </svg>
+              
+              
         <img id="screen-recording" class="start-recording" src="icons/screenrecorder.png" alt="Start Recording" title="Record Screen">
         <div class="save-container">
         
@@ -183,10 +191,12 @@
 </div>
 
     <!-- Fabric.js Canvas -->
+    <div id="container-wrapper">
     <div id="video-container">
         <video id="video"></video>
         <canvas id="canvas"></canvas>
         <div id="zoom-icon"></div>
+    </div>
     </div>
     <div id="overlay" class="overlay">
         <div class="overlay-content">
@@ -200,6 +210,7 @@
     </div>
    
     <input type="file" id="imageInput" style="display:none;" accept="image/*" onchange="handleImageUpload(event)">
+    <input type="file" id="upload-button" accept="video/*" style="display: none;">
     <!-- <button id="start-recording">Start Recording</button> -->
     <!-- <button id="stop-recording">Stop Recording</button> -->
     <!-- Annotations Sidebar -->
@@ -388,7 +399,7 @@
     <!-- <script crossorigin='anonymous' src="https://unpkg.com/webm-writer@latest/dist/webm-writer.min.js"></script>
     <script src="js/webm-writer.min.js"></script> -->
     <script src="js/scripts.js"></script>
-
+    <script src="js/multiVideoHandler.js"></script>
    
    
 </body>
