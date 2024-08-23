@@ -20,3 +20,53 @@
     background-color: none;
     /* cursor: pointer;  */
 }
+
+/* Container for the new timeline associated with video2 */
+
+#timeline-container2 {
+    position: relative;
+    bottom: 0px;
+    width: 78.7%; 
+    background-color: #343a40;
+    border-radius: 0px;
+    padding: 15px;
+    margin-top: 0px;
+    overflow: hidden;
+    height: 400px;
+    left: -9.8%;
+    margin: 0px;
+    top: -2px;
+    z-index: 5; /* Ensure it's above other elements if needed */
+}
+
+/* Tick marks within the new timeline */
+#timeline-container2 .newvideotick {
+    display: inline-block;
+    width: calc(100% / var(--duration)); 
+    height: 2px;
+    background-color: #212425;
+    margin: 0;
+    position: relative;
+    opacity: 0.6;
+}
+
+/* Highlighted ticks within the new timeline */
+#timeline-container2 .new-tick2 {
+    display: inline-block;
+    width: calc(100% / var(--duration)); 
+    height: 5px;
+    background-color: white;
+    margin-top: 50px;
+    cursor: pointer;
+    position: relative;
+}
+
+/* Pointer for the new timeline */
+#timeline-container2 .new-pointer {
+    position: absolute;
+    height: 20px;
+    width: 2px;
+    background-color: rgb(187, 255, 0);
+    cursor: ew-resize;
+    opacity: 0.5;
+}

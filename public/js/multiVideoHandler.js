@@ -27,6 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
     existingContainer.style.left = '-100px';
     const canvasonSwitch = document.getElementById('toggle-icon');
     canvasonSwitch.style.display = 'block';
+    const canvasonSwitch2 = document.getElementById('toggle-icon2');
+    canvasonSwitch2.style.display = 'block';
     const containerWrapper = document.getElementById('container-wrapper');
     if (!existingContainer) return;
   
@@ -74,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
     newContainer.appendChild(newCanvas);
     containerWrapper.appendChild(newContainer);
     // newVideo.play();
-  
+    // setupTimelineforvideo2();
     // Initialize Fabric.js on the new canvas
     newFabricCanvas = new fabric.Canvas(newCanvas, {
       selection: false,
@@ -88,12 +90,15 @@ document.addEventListener('DOMContentLoaded', () => {
       newFabricCanvas.setHeight(newVideo.clientHeight);
     });
     
-      const icon = document.getElementById('toggle-icon');
+    const icon1 = document.getElementById('toggle-icon');
+    const icon2 = document.getElementById('toggle-icon2');
     
-      icon.addEventListener('click', () => {
-          icon.classList.toggle('disabled');
-          icon.classList.toggle('enabled');
-          const isDisabled = icon.classList.contains('disabled');
+    function toggleIcons(activeIcon, inactiveIcon) {
+        activeIcon.classList.toggle('disabled');
+        activeIcon.classList.toggle('enabled');
+        inactiveIcon.classList.toggle('disabled');
+        inactiveIcon.classList.toggle('enabled');
+          const isDisabled = icon1.classList.contains('disabled');
     
           
           document.getElementById('freehand').onclick = isDisabled ? drawFreehandDisabled : drawFreehand;
@@ -117,9 +122,17 @@ document.addEventListener('DOMContentLoaded', () => {
             microphoneIcon.addEventListener('click', toggleMicrophone); 
         }
 
-          console.log('Toggled state: ', icon.className);
-      });
-      
+          console.log('Toggled state: ', icon1.className);
+    
+    }
+
+    icon1.addEventListener('click', () => {
+      toggleIcons(icon1, icon2);
+  });
+  
+  icon2.addEventListener('click', () => {
+      toggleIcons(icon2, icon1);
+  });
       let drawingMode = '';
       let isDrawing = false;
 
@@ -386,183 +399,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
-  
-// function handleVideoUpload(event) {
-//   const file = event.target.files[0];
-//   if (!file) return;
-
-//   const url = URL.createObjectURL(file);
-
-//   const existingContainer = document.getElementById('video-container');
-//   existingContainer.style.left = '-100px';
-//   const canvasonSwitch = document.getElementById('toggle-icon');
-//   canvasonSwitch.style.display= 'block';
-//   const containerWrapper = document.getElementById('container-wrapper');
-//   if (!existingContainer) return;
-
-//   const buttonsContainer = document.querySelector('.buttons-container');
-//   const timeline = document.querySelector('.timeline');
-
-//   buttonsContainer.style.width = '650px'; // Adjust width as needed
-//   buttonsContainer.style.float = 'left';
-//   buttonsContainer.style.display = 'inline-block';
-//   buttonsContainer.style.left='-400px';
-
-//   timeline.style.width = '650px'; // Match width of buttons-container
-//   timeline.style.float = 'left';
-//   timeline.style.display = 'inline-block';
-//   timeline.style.marginLeft = '0';
-//   timeline.style.left='-395px';
-
-//   const videoButtonContainer = document.querySelector('.video-buttons-container');
-//   videoButtonContainer.style.display = 'none';
-
-//   const volumeButtonContainer = document.querySelector('.volume-button-container');
-//   volumeButtonContainer.style.display = 'none';
-//   const annotationSidebar = document.querySelector('.annotations');
-//   annotationSidebar.style.display = 'none';
-  
-
-//   const newContainer = document.createElement('div');
-//   newContainer.style.right = '-200px'
-//   newContainer.id = 'video-container2';
-//   newContainer.style.width = '500px'; // Set a small width
-//   newContainer.style.height = '500px'; // Set a small height
-//   newContainer.style.position = 'relative';
-//   newContainer.style.float = 'right'; // Align it to the right side
-//   newContainer.style.top = '0.5px';
-//   // Create a new video element
-//   const newVideo = document.createElement('video');
-//   newVideo.src = url;
-//   // newVideo.controls = true;
-//   newVideo.style.width = '100%'; // Match the width of the container
-//   newVideo.style.height = '100%'; // Match the height of the container
-//   newVideo.id = 'new-video2';
-  
-//   // Create a new fabric.js canvas
-//   const newCanvas = document.createElement('canvas');
-//   newCanvas.id = 'new-canvas2';
-//   // newCanvas.width = 500; // Match the width of the container
-//   // newCanvas.height = 500; // Match the height of the container
-
-//   newContainer.appendChild(newVideo);
-//   newContainer.appendChild(newCanvas);
-//   containerWrapper.appendChild(newContainer);
-//   newVideo.play();
-
-  
-// //   // Initialize Fabric.js on the new canvas
-//    newFabricCanvas = new fabric.Canvas('new-canvas2', {
-//     selection: false,
-//     isDrawingMode: false
-//   });
-
-// //   // Handle annotations for the new video
-// //   const newAnnotations = [];
-
-//   newVideo.addEventListener('loadedmetadata', () => {
-//     newCanvas.width = newVideo.clientWidth;
-//     newCanvas.height = newVideo.clientHeight;
-//     newFabricCanvas.setWidth(newVideo.clientWidth);
-//     newFabricCanvas.setHeight(newVideo.clientHeight);
-//   });
-
-//   document.addEventListener('DOMContentLoaded', () => {
-//     const icon = document.getElementById('toggle-icon');
-  
-//     icon.addEventListener('click', () => {
-//         icon.classList.toggle('disabled');
-//         icon.classList.toggle('enabled');
-//         const isDisabled = icon.classList.contains('disabled');
-  
-//         // Update onclick functions based on the icon's state
-//         document.getElementById('freehand').onclick = isDisabled ? drawFreehandDisabled : drawFreehand;
-//         // document.querySelector('.view-icon svg').onclick = isDisabled ? viewDisabled : view;
-  
-//         console.log('Toggled state: ', icon.className);
-//     });
-//     });
-  
-//   function drawFreehandDisabled() {
-//     console.log("Freehand mode is disabled");
-//     newCanvas.isDrawingMode = true;
-//     drawingMode = '';
-//     newCanvas.freeDrawingBrush ='red';
-//   }
-  
-//   newCanvas.on('mouse:down', function(options) {
-//     const pointer = canvas.getPointer(options.e);
-//     if (drawingMode === 'line') {
-//         isDrawing = true;
-       
-//         const points = [pointer.x, pointer.y, pointer.x, pointer.y];
-//         currentShape = new fabric.Line(points, {
-//             strokeWidth: 2,
-//             fill: 'red',
-//             stroke: 'red',
-//             originX: 'center',
-//             originY: 'center'
-//         });
-//         newCanvas.add(currentShape);
-//     }else if (drawingMode === 'polyline') {
-//         polylinePoints.push({ x: pointer.x, y: pointer.y });
-//         if (polylinePoints.length > 1) {
-//             const line = new fabric.Line([
-//                 polylinePoints[polylinePoints.length - 2].x,
-//                 polylinePoints[polylinePoints.length - 2].y,
-//                 polylinePoints[polylinePoints.length - 1].x,
-//                 polylinePoints[polylinePoints.length - 1].y
-//             ], {
-//                 stroke: 'red',
-//                 strokeWidth: 2
-//             });
-//             newCanvas.add(line);
-//             if (polylinePoints.length > 2) {
-//                 const angle = calculateAngle(
-//                     polylinePoints[polylinePoints.length - 3],
-//                     polylinePoints[polylinePoints.length - 2],
-//                     polylinePoints[polylinePoints.length - 1]
-//                 );
-//                 const angleText = new fabric.Text(`${angle.toFixed(1)}°`, {
-//                     left: polylinePoints[polylinePoints.length - 2].x,
-//                     top: polylinePoints[polylinePoints.length - 2].y,
-//                     fontSize: 14,
-//                     fill: 'red'
-//                 });
-//                 newCanvas.add(angleText);
-//             }
-//         }}});
-  
-//         newCanvas.on('mouse:move', function(options) {
-//     if (isDrawing && currentShape  && drawingMode === 'line') {
-//         const pointer = canvas.getPointer(options.e);
-//         currentShape.set({
-//             x2: pointer.x,
-//             y2: pointer.y
-//         });
-//         newCanvas.renderAll();
-//     }
-//   });
-  
-//   newCanvas.on('mouse:up', function() {
-//     if (drawingMode === 'line') {
-//     isDrawing = false;
-//     currentShape = null;
-//     }
-//   });
 
 
-// }
 
-// function setCurrentColor() {
-//   if (newFabricCanvas.freeDrawingBrush) {
-//       currentColorIndex++;
-//       newFabricCanvas.freeDrawingBrush.color = colors[currentColorIndex % colors.length];
-      
-//       console.log('inside free hand drawing condition')
-//   }
-//   console.log('outside free hand drawing condition')
-// }
 function handleImgUpload(event) {
   const file = event.target.files[0];
   if (file) {
@@ -595,6 +434,115 @@ function handleImgUpload(event) {
   }
 }
 
+// function setupTimelineforvideo2() {
+//   const timeline = document.getElementById('timeline-container2');
+//   const videoElement = document.getElementById('new-video2');
+//   const newvideoduration = Math.floor(videoElement.duration);
+//   timeline.style.setProperty('--duration', newvideoduration);
+
+//   for (let i = 0; i < newvideoduration; i++) {
+//               const tick = document.createElement('div');
+//               tick.classList.add('newvideotick');
+//               tick.dataset.time = i; 
+      
+              
+//               const icon = document.createElement('div');
+//               icon.classList.add('newvideoicon');
+//               const img = document.createElement('img');
+//               img.src = 'icons/pencil.png';
+//               img.alt = 'Pencil';
+//               icon.appendChild(img);
+//               tick.appendChild(icon);
+      
+             
+      
+              
+//               img.addEventListener('dragstart', handleDragStart);
+//               tick.addEventListener('dragover', handleDragOver);
+//               tick.addEventListener('drop', handleDrop);
+//               img.setAttribute('draggable', true);
+          
+//               timeline.appendChild(tick);
+//           }
+//   // Create the timeline ticks
+//   for (let i = 0; i < newvideoduration; i++) {
+//       // const tick = document.createElement('div');
+//       // tick.classList.add('tick');
+//       // tick.dataset.time = i;
+//       // timeline.appendChild(tick);
+
+//       const tick2 = document.createElement('div');
+//       tick2.classList.add('newvideotick2');
+//       tick2.dataset.time = i;
+//       timeline.appendChild(tick2);
+
+//       tick2.addEventListener('click', function (event) {
+//           if (tick2.classList.contains('blocked')) {
+//               console.log(`Tick at ${i} seconds is blocked.`);
+//               event.stopPropagation();
+//               return;
+//           }
+//           console.log(`Clicked on tick at ${i} seconds.`);
+//           videoElement.currentTime = i;
+//       });
+//   }
+
+//   // Create the pointer (draggable SVG icon)
+//   const pointer2 = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+//   pointer2.setAttribute('width', '13');
+//   pointer2.setAttribute('height', '21');
+//   pointer2.setAttribute('fill', 'none');
+//   pointer2.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+//   pointer2.setAttribute('alt', 'draggable icon for progress bar');
+//   pointer2.classList.add('pointer2');
+//   pointer2.innerHTML = '<path d="M13 14.726C13 18.19 10.09 21 6.5 21S0 18.19 0 14.726C0 8.812 4.345 8 6.5 0 8 7.725 13 8.5 13 14.726z" fill="#CED0D1"></path><circle cx="6.5" cy="14.5" r="2.5" fill="#31373D"></circle>';
+
+//   timeline.appendChild(pointer2);
+
+//   // Update pointer position and tick colors based on video time
+//   function updatePointerAndTicks() {
+//       const percentage = (videoElement.currentTime / newvideoduration) * 100;
+//       pointer2.style.left = `calc(${percentage}% - 6.5px)`; // Center pointer over tick
+      
+//       // Update tick2 colors
+//       const ticks2 = document.querySelectorAll('.tick2');
+//       ticks2.forEach((tick2, index) => {
+//           if (index <= Math.floor(videoElement.currentTime)) {
+//               tick2.style.backgroundColor = 'red'; // Colored portion
+//           } else {
+//               tick2.style.backgroundColor = 'white'; // Uncolored portion
+//           }
+//       });
+//   }
+
+//   videoElement.addEventListener('timeupdate', updatePointerAndTicks);
+
+//   // Handle dragging of the pointer
+//   pointer2.addEventListener('mousedown', (e) => {
+//       e.preventDefault();
+
+//       const movePointer = (e) => {
+//           const rect = timeline.getBoundingClientRect();
+//           const x = e.clientX - rect.left;
+//           const percentage = (x / rect.width) * 100;
+//           const newTime = (percentage / 100) * newvideoduration;
+//           videoElement.currentTime = Math.min(Math.max(newTime, 0), newvideoduration); // Constrain within bounds
+//       };
+
+//       const stopDragging = () => {
+//           document.removeEventListener('mousemove', movePointer);
+//           document.removeEventListener('mouseup', stopDragging);
+//           updatePointerAndTicks(); // Ensure final update after dragging
+//       };
+
+//       document.addEventListener('mousemove', movePointer);
+//       document.addEventListener('mouseup', stopDragging);
+//   });
+
+//   videoElement.addEventListener('ended', () => {
+//       pointer2.style.left = `calc(100% - 29.5px)`; 
+//   });
+// }
 
  
 
