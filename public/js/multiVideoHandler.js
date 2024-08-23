@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
           document.getElementById('freehand').onclick = isDisabled ? drawFreehandDisabled : drawFreehand;
           document.getElementById('circle').onclick = isDisabled ? activateCircleDisabled : activateCircleMode;
           document.getElementById('rect').onclick = isDisabled ? activateRectangleDisabled : activateRectangleMode;
-          document.getElementById('line').onclick = isDisabled ? drawFreehandDisabled : drawFreehand;
+          document.getElementById('line').onclick = isDisabled ? activateLineDisabled : activateLineMode;
           document.getElementById('freehand').onclick = isDisabled ? drawFreehandDisabled : drawFreehand;
           document.getElementById('freehand').onclick = isDisabled ? drawFreehandDisabled : drawFreehand;
           document.getElementById('freehand').onclick = isDisabled ? drawFreehandDisabled : drawFreehand;
@@ -153,6 +153,11 @@ document.addEventListener('DOMContentLoaded', () => {
           });
           newFabricCanvas.add(rect).setActiveObject(rect);
     }
+    function activateLineDisabled() { 
+      drawingMode = 'line';
+      newFabricCanvas.isDrawingMode = false; 
+      newFabricCanvas.upperCanvasEl.classList.add('canvas-plus-cursor');
+     }
     newFabricCanvas.on('mouse:down', function(options) {
       const pointer = newFabricCanvas.getPointer(options.e);
       if (drawingMode === 'line') {
@@ -161,8 +166,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const points = [pointer.x, pointer.y, pointer.x, pointer.y];
         currentShape = new fabric.Line(points, {
           strokeWidth: 2,
-          fill: 'red',
-          stroke: 'red',
+          fill: shades[ColorIndex % shades.length],
+          stroke: shades[ColorIndex % shades.length],
           originX: 'center',
           originY: 'center'
         });
