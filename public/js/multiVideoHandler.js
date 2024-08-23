@@ -98,8 +98,8 @@ document.addEventListener('DOMContentLoaded', () => {
           
           document.getElementById('freehand').onclick = isDisabled ? drawFreehandDisabled : drawFreehand;
           document.getElementById('circle').onclick = isDisabled ? activateCircleDisabled : activateCircleMode;
-          document.getElementById('freehand').onclick = isDisabled ? drawFreehandDisabled : drawFreehand;
-          document.getElementById('freehand').onclick = isDisabled ? drawFreehandDisabled : drawFreehand;
+          document.getElementById('rect').onclick = isDisabled ? activateRectangleDisabled : activateRectangleMode;
+          document.getElementById('line').onclick = isDisabled ? drawFreehandDisabled : drawFreehand;
           document.getElementById('freehand').onclick = isDisabled ? drawFreehandDisabled : drawFreehand;
           document.getElementById('freehand').onclick = isDisabled ? drawFreehandDisabled : drawFreehand;
           document.getElementById('freehand').onclick = isDisabled ? drawFreehandDisabled : drawFreehand;
@@ -121,11 +121,6 @@ document.addEventListener('DOMContentLoaded', () => {
       newFabricCanvas.isDrawingMode = true;
       drawingMode = '';
       setDrawingColor();
-      // newFabricCanvas.freeDrawingBrush = new fabric.PencilBrush(newFabricCanvas);
-
-    // Configure the brush
-    // newFabricCanvas.freeDrawingBrush.color = "red";
-    // newFabricCanvas.freeDrawingBrush.width = 5;
     }
     function activateCircleDisabled () {
       newFabricCanvas.isDrawingMode = false;
@@ -143,6 +138,21 @@ document.addEventListener('DOMContentLoaded', () => {
       newFabricCanvas.add(circle).setActiveObject(circle);
     }
     
+    function activateRectangleDisabled () {
+      newFabricCanvas.isDrawingMode = false;
+      drawingMode = 'rectangle';
+      setDrawingColor(); 
+      const rect = new fabric.Rect({
+              left: 50,
+              top: 50,
+              width: 60,
+              height: 60,
+              fill: 'transparent',
+              stroke: shades[ColorIndex % shades.length],
+              strokeWidth: 2
+          });
+          newFabricCanvas.add(rect).setActiveObject(rect);
+    }
     newFabricCanvas.on('mouse:down', function(options) {
       const pointer = newFabricCanvas.getPointer(options.e);
       if (drawingMode === 'line') {
