@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
     newContainer.appendChild(newVideo);
     newContainer.appendChild(newCanvas);
     containerWrapper.appendChild(newContainer);
-    newVideo.play();
+    // newVideo.play();
   
     // Initialize Fabric.js on the new canvas
     newFabricCanvas = new fabric.Canvas(newCanvas, {
@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
           document.getElementById('circle').onclick = isDisabled ? activateCircleDisabled : activateCircleMode;
           document.getElementById('rect').onclick = isDisabled ? activateRectangleDisabled : activateRectangleMode;
           document.getElementById('line').onclick = isDisabled ? activateLineDisabled : activateLineMode;
-          document.getElementById('freehand').onclick = isDisabled ? drawFreehandDisabled : drawFreehand;
+          document.getElementById('polyline').onclick = isDisabled ? activatePolylineDisabled : activatePolylineMode;
           document.getElementById('freehand').onclick = isDisabled ? drawFreehandDisabled : drawFreehand;
           document.getElementById('freehand').onclick = isDisabled ? drawFreehandDisabled : drawFreehand;
     
@@ -158,6 +158,13 @@ document.addEventListener('DOMContentLoaded', () => {
       newFabricCanvas.isDrawingMode = false; 
       newFabricCanvas.upperCanvasEl.classList.add('canvas-plus-cursor');
      }
+
+     function activatePolylineDisabled() {
+      drawingMode = 'polyline';
+      newFabricCanvas.isDrawingMode = false; // Disable freehand drawing mode
+      polylinePoints = [];
+      newFabricCanvas.upperCanvasEl.classList.add('canvas-plus-cursor');
+     }
     newFabricCanvas.on('mouse:down', function(options) {
       const pointer = newFabricCanvas.getPointer(options.e);
       if (drawingMode === 'line') {
@@ -181,7 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
             polylinePoints[polylinePoints.length - 1].x,
             polylinePoints[polylinePoints.length - 1].y
           ], {
-            stroke: 'red',
+            stroke: shades[ColorIndex % shades.length],
             strokeWidth: 2
           });
           newFabricCanvas.add(line);
@@ -195,7 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
               left: polylinePoints[polylinePoints.length - 2].x,
               top: polylinePoints[polylinePoints.length - 2].y,
               fontSize: 14,
-              fill: 'red'
+              fill:shades[ColorIndex % shades.length]
             });
             newFabricCanvas.add(angleText);
           }
