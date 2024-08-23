@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
           document.getElementById('rect').onclick = isDisabled ? activateRectangleDisabled : activateRectangleMode;
           document.getElementById('line').onclick = isDisabled ? activateLineDisabled : activateLineMode;
           document.getElementById('polyline').onclick = isDisabled ? activatePolylineDisabled : activatePolylineMode;
-          document.getElementById('freehand').onclick = isDisabled ? drawFreehandDisabled : drawFreehand;
+          document.getElementById('text').onclick = isDisabled ? activateTextDisabled : activateTextMode;
           document.getElementById('freehand').onclick = isDisabled ? drawFreehandDisabled : drawFreehand;
     
           console.log('Toggled state: ', icon.className);
@@ -164,6 +164,21 @@ document.addEventListener('DOMContentLoaded', () => {
       newFabricCanvas.isDrawingMode = false; // Disable freehand drawing mode
       polylinePoints = [];
       newFabricCanvas.upperCanvasEl.classList.add('canvas-plus-cursor');
+     }
+
+     function activateTextDisabled() {
+      newFabricCanvas.isDrawingMode = false;
+    drawingMode = 'text';
+    const text = new fabric.Textbox('Type here', {
+        left: 50,
+        top: 50,
+        fontSize: 20,
+        fontFamily: 'Dancing Script',
+        fill: shades[ColorIndex % shades.length],
+        width: 200
+    });
+    currentColorIndex++;
+    newFabricCanvas.add(text).setActiveObject(text);
      }
     newFabricCanvas.on('mouse:down', function(options) {
       const pointer = newFabricCanvas.getPointer(options.e);
