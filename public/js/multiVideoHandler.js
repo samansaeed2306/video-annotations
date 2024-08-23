@@ -103,7 +103,10 @@ document.addEventListener('DOMContentLoaded', () => {
           document.getElementById('polyline').onclick = isDisabled ? activatePolylineDisabled : activatePolylineMode;
           document.getElementById('text').onclick = isDisabled ? activateTextDisabled : activateTextMode;
           document.getElementById('image').onclick = isDisabled ? activateImageDisabled : activateImage;
-    
+          document.getElementById('note').onclick = isDisabled ?  activateNoteDisabled : activateNoteMode;
+          document.getElementById('image').onclick = isDisabled ? activateImageDisabled : activateImage;
+          document.getElementById('image').onclick = isDisabled ? activateImageDisabled : activateImage;
+          document.getElementById('image').onclick = isDisabled ? activateImageDisabled : activateImage;
           console.log('Toggled state: ', icon.className);
       });
       
@@ -177,14 +180,28 @@ document.addEventListener('DOMContentLoaded', () => {
         fill: shades[ColorIndex % shades.length],
         width: 200
     });
-    currentColorIndex++;
+    ColorIndex++;
     newFabricCanvas.add(text).setActiveObject(text);
      }
      function activateImageDisabled() {
 
       document.getElementById('imageTool').click();
      }
-
+     function activateNoteDisabled() {
+      newFabricCanvas.isDrawingMode = false;
+      drawingMode = 'note';
+      const note = new fabric.Textbox('Note here', {
+        left: 50,
+        top: 50,
+        fontSize: 14,
+        fontFamily: 'Dancing Script',
+        fill: shades[ColorIndex % shades.length],
+        backgroundColor: '#ffffcc',
+        width: 200
+    });
+    ColorIndex++;
+    newFabricCanvas.add(note).setActiveObject(note);
+     }
      
     newFabricCanvas.on('mouse:down', function(options) {
       const pointer = newFabricCanvas.getPointer(options.e);
