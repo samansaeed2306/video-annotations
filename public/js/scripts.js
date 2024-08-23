@@ -2260,7 +2260,11 @@ const zoomScale = 1.2;
         //canvas.style.transform = video.style.transform;
         const offsetX = (videoWidth - video.clientWidth)/2;
         const offsetY = (videoHeight - video.clientHeight) / 2;
-
+        const canvasonSwitch = document.getElementById('toggle-icon');
+        if(canvasonSwitch.style.display == 'block'){
+            canvasonSwitch.style.left= '50px';
+            canvasonSwitch.style.top = '510px';
+        }
         // Use CSS to position the canvas
         canvas.wrapperEl.style.position = 'absolute';
         canvas.wrapperEl.style.left = `${-offsetX}px`;
@@ -2281,6 +2285,12 @@ const zoomScale = 1.2;
         canvas.wrapperEl.style.position = 'absolute';
         canvas.wrapperEl.style.top= '0.5px';
         canvas.wrapperEl.style.left= '3px';
+
+        const canvasonSwitch = document.getElementById('toggle-icon');
+        if(canvasonSwitch.style.display == 'block'){
+            canvasonSwitch.style.left= '150px';
+            canvasonSwitch.style.top = '500px';
+        }
         canvas.calcOffset(); 
     }
 });
