@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
           document.getElementById('line').onclick = isDisabled ? activateLineDisabled : activateLineMode;
           document.getElementById('polyline').onclick = isDisabled ? activatePolylineDisabled : activatePolylineMode;
           document.getElementById('text').onclick = isDisabled ? activateTextDisabled : activateTextMode;
-          document.getElementById('freehand').onclick = isDisabled ? drawFreehandDisabled : drawFreehand;
+          document.getElementById('image').onclick = isDisabled ? activateImageDisabled : activateImage;
     
           console.log('Toggled state: ', icon.className);
       });
@@ -180,6 +180,12 @@ document.addEventListener('DOMContentLoaded', () => {
     currentColorIndex++;
     newFabricCanvas.add(text).setActiveObject(text);
      }
+     function activateImageDisabled() {
+
+      document.getElementById('imageTool').click();
+     }
+
+     
     newFabricCanvas.on('mouse:down', function(options) {
       const pointer = newFabricCanvas.getPointer(options.e);
       if (drawingMode === 'line') {
@@ -420,7 +426,37 @@ document.addEventListener('DOMContentLoaded', () => {
 //   }
 //   console.log('outside free hand drawing condition')
 // }
+function handleImgUpload(event) {
+  const file = event.target.files[0];
+  if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+          const dataURL = e.target.result;
 
+          // Create a Fabric.js image object
+          fabric.Image.fromURL(dataURL, function(img) {
+              // Set default properties for the image
+              img.set({
+                  left: 50,
+                  top: 50,
+                  scaleX: 1,
+                  scaleY: 1,
+                  selectable: true,
+                  hasControls: true,
+                  hasBorders: true,
+              });
+
+              // Add the image to the canvas
+              newFabricCanvas.add(img);
+              newFabricCanvas.centerObject(img);
+              newFabricCanvas.renderAll();
+          });
+      };
+
+      // Read the image file as a data URL
+      reader.readAsDataURL(file);
+  }
+}
 
 
  
