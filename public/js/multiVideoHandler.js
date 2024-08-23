@@ -1,3 +1,8 @@
+let ColorIndex = 0;
+const shades = ['#39FF14', '#FF2079', '#0AFF99', '#FF6EC7', '#ADFF2F', '#FFB3DE'];
+
+
+
 document.addEventListener('DOMContentLoaded', () => {
     const uploadSvg = document.getElementById('upload-svg');
     const uploadButton = document.getElementById('upload-button');
@@ -90,25 +95,52 @@ document.addEventListener('DOMContentLoaded', () => {
           icon.classList.toggle('enabled');
           const isDisabled = icon.classList.contains('disabled');
     
-          // Update onclick functions based on the icon's state
+          
           document.getElementById('freehand').onclick = isDisabled ? drawFreehandDisabled : drawFreehand;
-          // document.querySelector('.view-icon svg').onclick = isDisabled ? viewDisabled : view;
+          document.getElementById('circle').onclick = isDisabled ? activateCircleDisabled : activateCircleMode;
+          document.getElementById('freehand').onclick = isDisabled ? drawFreehandDisabled : drawFreehand;
+          document.getElementById('freehand').onclick = isDisabled ? drawFreehandDisabled : drawFreehand;
+          document.getElementById('freehand').onclick = isDisabled ? drawFreehandDisabled : drawFreehand;
+          document.getElementById('freehand').onclick = isDisabled ? drawFreehandDisabled : drawFreehand;
+          document.getElementById('freehand').onclick = isDisabled ? drawFreehandDisabled : drawFreehand;
     
           console.log('Toggled state: ', icon.className);
       });
       
       let drawingMode = '';
       let isDrawing = false;
-      
+
+    function setDrawingColor() {
+        if (newFabricCanvas.freeDrawingBrush) {
+            ColorIndex++;
+            newFabricCanvas.freeDrawingBrush.color = shades[ColorIndex % shades.length]; 
+        }  
+    }
     function drawFreehandDisabled() {
       console.log("Freehand mode is disabled");
       newFabricCanvas.isDrawingMode = true;
       drawingMode = '';
-      newFabricCanvas.freeDrawingBrush = new fabric.PencilBrush(newFabricCanvas);
+      setDrawingColor();
+      // newFabricCanvas.freeDrawingBrush = new fabric.PencilBrush(newFabricCanvas);
 
     // Configure the brush
-    newFabricCanvas.freeDrawingBrush.color = "red";
-    newFabricCanvas.freeDrawingBrush.width = 5;
+    // newFabricCanvas.freeDrawingBrush.color = "red";
+    // newFabricCanvas.freeDrawingBrush.width = 5;
+    }
+    function activateCircleDisabled () {
+      newFabricCanvas.isDrawingMode = false;
+      drawingMode = 'circle';
+       setDrawingColor(); 
+  
+      const circle = new fabric.Circle({
+          left: 100,
+          top: 70,
+          radius: 30,
+          fill: 'transparent',
+          stroke: shades[ColorIndex % shades.length],
+          strokeWidth: 2
+      });
+      newFabricCanvas.add(circle).setActiveObject(circle);
     }
     
     newFabricCanvas.on('mouse:down', function(options) {
