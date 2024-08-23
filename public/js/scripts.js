@@ -559,6 +559,7 @@ function activateRectangleMode() {
 }
 
 function activateTextMode() {
+    
     canvas.isDrawingMode = false;
     drawingMode = 'text';
     const text = new fabric.Textbox('Type here', {
@@ -590,6 +591,7 @@ function activateNoteMode() {
 }
 
 function useEraser() {
+
     canvas.isDrawingMode = false;
     canvas.on('mouse:down', function(event) {
         if (event.target) {
@@ -603,8 +605,10 @@ function useEraser() {
 
     
     canvas.remove(removedObject);
+    
     // canvas.remove(event.target);
 }
+
 });
 }
 

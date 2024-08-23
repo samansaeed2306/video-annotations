@@ -104,9 +104,19 @@ document.addEventListener('DOMContentLoaded', () => {
           document.getElementById('text').onclick = isDisabled ? activateTextDisabled : activateTextMode;
           document.getElementById('image').onclick = isDisabled ? activateImageDisabled : activateImage;
           document.getElementById('note').onclick = isDisabled ?  activateNoteDisabled : activateNoteMode;
-          document.getElementById('image').onclick = isDisabled ? activateImageDisabled : activateImage;
-          document.getElementById('image').onclick = isDisabled ? activateImageDisabled : activateImage;
-          document.getElementById('image').onclick = isDisabled ? activateImageDisabled : activateImage;
+          document.getElementById('eraser').onclick = isDisabled ? useEraserDisabled : useEraser;
+          document.getElementById('undo').onclick = isDisabled ? undoDisabled : undo;
+          document.getElementById('redo').onclick = isDisabled ? redoDisabled : redo;
+          // document.getElementById('microphone-icon').onclick = isDisabled ? redoDisabled : redo;
+          const microphoneIcon = document.getElementById('microphone-icon');
+          if (isDisabled) {
+            microphoneIcon.removeEventListener('click', toggleMicrophone);
+            microphoneIcon.addEventListener('click', toggleMicrophoneDisabled); 
+        } else {
+            microphoneIcon.removeEventListener('click', toggleMicrophoneDisabled);
+            microphoneIcon.addEventListener('click', toggleMicrophone); 
+        }
+
           console.log('Toggled state: ', icon.className);
       });
       
@@ -203,6 +213,69 @@ document.addEventListener('DOMContentLoaded', () => {
     newFabricCanvas.add(note).setActiveObject(note);
      }
      
+     function useEraserDisabled() { 
+      newFabricCanvas.isDrawingMode = false;
+      newFabricCanvas.on('mouse:down', function(event) {
+        if (event.target) {
+            const removedObject = event.target;
+    
+            // const currentTime = video.currentTime;
+           // removeAnnotation(currentTime); to be added 
+            // updateAnnotationsList();
+            // updateTimelineIcons(); 
+    
+
+    
+            newFabricCanvas.remove(removedObject);
+    // canvas.remove(event.target);
+}
+});
+     }
+
+      let recording = false;
+      let audioRecorder;
+      let recordedchunks = [];
+      let audioStr;
+
+
+     function toggleMicrophoneDisabled(){
+      console.log('Toggle Microphone for new video');
+      
+        if (recording) {
+            stopRecordingnewVideo();
+        } else {
+            startRecordingnewVideo();
+        }
+    }
+    
+
+    async function startRecordingnewVideo() {
+      recording = true;
+      recordedchunks = [];
+      document.getElementById('microphone-icon').classList.add('recording');
+      audioStr = await navigator.mediaDevices.getUserMedia({ audio: true });
+      audioRecorder = new MediaRecorder(audioStr);
+      audioRecorder.ondataavailable = (event) => {
+          if (event.data.size > 0) {
+            recordedchunks.push(event.data);
+          }
+      };
+      audioRecorder.onstop = saveRecording;
+  
+      audioRecorder.start();
+      console.log('Recording started');
+  }
+  
+  function stopRecordingnewVideo() {
+    recording = false;
+      document.getElementById('microphone-icon').classList.remove('recording');
+      audioRecorder.stop();
+      
+      audioStr.getTracks().forEach(track => track.stop());
+      console.log('Recording stopped');
+     
+  }
+     
     newFabricCanvas.on('mouse:down', function(options) {
       const pointer = newFabricCanvas.getPointer(options.e);
       if (drawingMode === 'line') {
@@ -247,6 +320,53 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
     });
+
+    const newstate = [];
+    let newmods = 0;
+    newFabricCanvas.on('object:added', ()=>{console.log('added'); newsaveState(); recordAnnotation2()});
+    newFabricCanvas.on('object:removed', ()=>{newsaveState(); recordAnnotation2()});
+    newFabricCanvas.on('object:modified', ()=>{newsaveState(); recordAnnotation2()});
+    
+    function newsaveState() {
+      newmods += 1;
+        if (newmods < newstate.length) {
+          newstate.length = newmods;
+        }
+        newstate.push(JSON.stringify(newFabricCanvas));
+        console.log('I am inside savestate for new canvas. Currentmod:',newmods)
+        console.log('State array length', newstate.length)
+        //recordAnnotation(video.currentTime);
+    }
+    
+    // function undo() {
+    //     if (mods > 0) {
+    //         mods -= 1;
+    //         canvas.loadFromJSON(state[mods]);
+    //         canvas.renderAll();
+    //     }
+    // }
+    
+    function redoDisabled() {
+        if (newmods < state.length - 1) {
+          newmods += 1;
+          newFabricCanvas.loadFromJSON(newstate[newmods]);
+          newFabricCanvas.renderAll();
+        }
+    }
+    
+    function recordAnnotation2(){
+
+    }
+    function undoDisabled(){
+      if (newmods > 0) {
+        newmods --;
+        newFabricCanvas.loadFromJSON(newstate[newmods], () => {
+            newFabricCanvas.renderAll();
+            console.log('Undo action performed. Current state:', newmods);
+        });
+        console.log('State array length', newstate.length)
+    }
+    }
   
     newFabricCanvas.on('mouse:move', function(options) {
       if (isDrawing && currentShape && drawingMode === 'line') {
