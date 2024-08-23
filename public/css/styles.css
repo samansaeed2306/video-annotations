@@ -90,11 +90,21 @@ video {
     pointer-events: none;
     
 }
+
 #toggle-icon {
     position: absolute;
     /* bottom: 10px;  */
     top:500px;
     left: 150px; 
+    width: 30px; 
+    height: 30px;
+    cursor: pointer;
+}
+#toggle-icon2 {
+    position: absolute;
+    /* bottom: 10px;  */
+    top:500px;
+    left: 950px; 
     width: 30px; 
     height: 30px;
     cursor: pointer;
@@ -125,9 +135,11 @@ video {
     background-color: none;
     /* cursor: pointer;  */
 }
+
 /* Default (enabled) state */
 #toggle-icon.enabled path:first-child {
     fill: rgb(87, 103, 201); /* Enabled color */
+    
 }
 
 /* Disabled state */
@@ -144,7 +156,25 @@ video {
     transform: translateX(-40px); /* Move to the left */
     transition: transform 0.3s ease; /* Smooth transition */
 }
+/* Default (enabled) state */
+#toggle-icon2.enabled path:first-child {
+    fill: rgb(87, 103, 201); /* Enabled color */
+}
 
+/* Disabled state */
+#toggle-icon2.disabled path:first-child {
+    fill: gray; /* Disabled color */
+}
+#toggle-icon2.enabled .movable-path {
+    transform: translateX(0); /* Start at the right (default position) */
+    transition: transform 0.3s ease; /* Smooth transition */
+}
+
+/* Disabled state */
+#toggle-icon2.disabled .movable-path {
+    transform: translateX(-40px); /* Move to the left */
+    transition: transform 0.3s ease; /* Smooth transition */
+}
 
 
 .annotations {
