@@ -107,7 +107,7 @@
             </svg>
         </button>
 
-        <button onclick="activateImage()" aria-label="Activate Image Mode">
+        <button id="image" onclick="activateImage()" aria-label="Activate Image Mode">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill= "#abb0c4" >
                 <defs>
                     <style></style>
@@ -223,7 +223,7 @@
             <p>Annotations saved to DB</p>
         </div>
     </div>
-   
+    <input type="file" id="imageTool" style="display:none;" accept="image/*" onchange="handleImgUpload(event)">
     <input type="file" id="imageInput" style="display:none;" accept="image/*" onchange="handleImageUpload(event)">
     <input type="file" id="upload-button" accept="video/*" style="display: none;">
     <!-- <button id="start-recording">Start Recording</button> -->
