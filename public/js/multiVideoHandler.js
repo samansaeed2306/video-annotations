@@ -162,7 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="button-with-menu">
                 <span class="formatted-timeframe">
                     <span>
-                        <input type="text" class="current-time-input" value="0:01" color="white">
+                        <input type="text" id="new-video-time" class="current-time-input" value="0:01" color="white">
                     </span>
                     <span>
                         <span>&nbsp;/&nbsp;1:00</span>
@@ -189,8 +189,8 @@ document.addEventListener('DOMContentLoaded', () => {
             <button class="video-button" title="Play video" id="new-play-pause-button">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" background-color="#343a40">
                     <path d="M0 0h24v24H0z" fill="none"></path>
-                    <path id="play-icon" d="M8 5v14l11-7z"></path>
-                    <path id="pause-icon" d="M6 6h2v12H6zm3.5 0h2v12h-2z" style="display: none;"></path>
+                    <path id="new-play-icon" d="M8 5v14l11-7z"></path>
+                    <path id="new-pause-icon" d="M6 6h2v12H6zm3.5 0h2v12h-2z" style="display: none;"></path>
                 </svg>
             </button>
             <button class="video-button" title="Next">
@@ -205,24 +205,66 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Append the new buttons-container to the containerWrapper
     document.getElementById('parentbtncontainer').appendChild(newButtonsContainer);
-//     const newplayPauseButton = document.getElementById('new-play-pause-button');
+    const newplayPauseButton = document.getElementById('new-play-pause-button');
 // const newplayPauseImage = playPauseButton.querySelector('img');
 
-// newplayPauseButton.addEventListener('click', () => {
-// if (newVideo.paused) {
-//     console.log('inside play condition')
-//     newVideo.play();
-//     //playAudioAnnotationIfExists(video.currentTime);
-//    // playPauseImage.src = 'icons/pause.png';
-//     //playPauseImage.alt = 'Pause';
-// } else {
-//     console.log('inside pause condition')
-//     newVideo.pause();
-//    // playPauseImage.src = 'icons/play.jpg';
-//    // playPauseImage.alt = 'Play';
-// }
-// });
+newplayPauseButton.addEventListener('click', () => {
+  const playIcon = document.getElementById('new-play-icon');
+  const pauseIcon = document.getElementById('new-pause-icon');
+  
+
+
+  if (playIcon.style.display === 'none') {
+      playIcon.style.display = 'block';
+      pauseIcon.style.display = 'none';
+  } else {
+      playIcon.style.display = 'none';
+      pauseIcon.style.display = 'block';
+      
+  }
+  video.onended = function() {
+      playIcon.style.display = 'block';
+      pauseIcon.style.display = 'none';
+  };
+if (newVideo.paused) {
+    console.log('inside play condition')
+    newVideo.play();
+    //playAudioAnnotationIfExists(video.currentTime);
+   // playPauseImage.src = 'icons/pause.png';
+    //playPauseImage.alt = 'Pause';
+} else {
+    console.log('inside pause condition')
+    newVideo.pause();
+   // playPauseImage.src = 'icons/play.jpg';
+   // playPauseImage.alt = 'Play';
+}
+});
    
+
+  // const video2 = document.getElementById('new-video2');
+  // const currentTimeInput2 = document.getElementById('new-video-time');
+  // // const totalTimeSpan = document.querySelector('.formatted-timeframe span:nth-child(2) span:first-child');
+
+ 
+  
+  
+
+  // video2.addEventListener('timeupdate', function() {
+  //     currentTimeInput2.value = newformatTime(video.currentTime);
+  //     console.log('timeupdated');
+  // });
+
+  // video.addEventListener('loadedmetadata', function() {
+  //     totalTimeSpan.textContent = ` / ${newformatTime(video.duration)}`;
+  // });
+
+
+function newformatTime(seconds) {
+  const minutes = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+  return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+}
+
 
       let drawingMode = '';
       let isDrawing = false;
