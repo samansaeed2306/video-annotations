@@ -31,7 +31,9 @@ document.addEventListener('DOMContentLoaded', () => {
     canvasonSwitch2.style.display = 'block';
     const containerWrapper = document.getElementById('container-wrapper');
     if (!existingContainer) return;
-  
+    
+    existingContainer.style.backgroundColor = 'black';
+    
     const buttonsContainer = document.querySelector('.buttons-container');
     const timeline = document.querySelector('.timeline');
   
@@ -39,14 +41,14 @@ document.addEventListener('DOMContentLoaded', () => {
     buttonsContainer.style.float = 'left';
     buttonsContainer.style.display = 'inline-block';
     buttonsContainer.style.left = '-400px';
-    buttonsContainer.style.top = '-50px';
+    buttonsContainer.style.top = '-08px';
 
     timeline.style.width = '650px';
     timeline.style.float = 'left';
     timeline.style.display = 'inline-block';
     timeline.style.marginLeft = '0';
     timeline.style.left = '-395px';
-    timeline.style.top = '-50px';
+    timeline.style.top = '-08px';
   
     const videoButtonContainer = document.querySelector('.video-buttons-container');
     videoButtonContainer.style.display = 'none';
@@ -64,11 +66,18 @@ document.addEventListener('DOMContentLoaded', () => {
     newContainer.style.position = 'relative';
     newContainer.style.float = 'right';
     newContainer.style.top = '0.5px';
+    newContainer.style.backgroundColor = 'black';
   
     const newVideo = document.createElement('video');
     newVideo.src = url;
-    newVideo.style.width = '100%';
-    newVideo.style.height = 'auto';
+    newVideo.style.width = '500px';
+    newVideo.style.height = '281px'; // Keep the original aspect ratio
+
+    // Center the video vertically in the container
+    newVideo.style.position = 'absolute';
+    newVideo.style.top = '50%';
+    newVideo.style.left = '0';
+    newVideo.style.transform = 'translateY(-50%)';
     newVideo.id = 'new-video2';
   
     const newCanvas = document.createElement('canvas');
