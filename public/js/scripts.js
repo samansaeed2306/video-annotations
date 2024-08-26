@@ -350,7 +350,7 @@ function view() {
 
 document.addEventListener('DOMContentLoaded', function() {
     const video = document.getElementById('video');
-    const currentTimeInput = document.querySelector('.current-time-input');
+    const currentTimeInput = document.getElementById('ex-current-time-input');
     const totalTimeSpan = document.querySelector('.formatted-timeframe span:nth-child(2) span:first-child');
 
    
