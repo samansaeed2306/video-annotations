@@ -310,7 +310,14 @@ video {
     display: none;
 }
 
-
+#parentbtncontainer {
+    display: flex;
+    justify-content: space-between; /* Adjust this as needed */
+    align-items: center;
+    width: 100%; /* Ensure it takes up the full width of the parent */
+    flex-wrap: wrap; /* Allows the containers to wrap to a new line if necessary */
+    gap: 10px; /* Adjust the spacing between the containers */
+}
 .buttons-container {
     display: flex;
     justify-content: space-between; 
@@ -320,7 +327,7 @@ video {
     /* background: var(--controls-background); */
     width: 78.7%;
     position: relative;
-    left: -10%; 
+    left: -0.5%; 
     margin-left: 10px; 
     top:-2px;
     /* margin-top: 100px; */
