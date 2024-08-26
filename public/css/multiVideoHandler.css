@@ -2,22 +2,25 @@
     width: 100%;
     height: auto;
     position: absolute;
-    top: 0;
+    top: 100px;
     left: 0;
     pointer-events: none;
     
 }
-
+ #video-container2{ 
+    padding-top: 100px;
+}
 #new-canvas2 {
     width: 100%;
     height: auto;
     position: absolute;
-    top: 0;
+    top: 100px;
     left: 0;
     z-index: 2;
     /* background-color: rgba(0,0,0,0.5); */
     pointer-events: none;
     background-color: none;
+    
     /* cursor: pointer;  */
 }
 
