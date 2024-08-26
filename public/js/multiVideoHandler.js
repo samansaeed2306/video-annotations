@@ -39,12 +39,14 @@ document.addEventListener('DOMContentLoaded', () => {
     buttonsContainer.style.float = 'left';
     buttonsContainer.style.display = 'inline-block';
     buttonsContainer.style.left = '-400px';
-  
+    buttonsContainer.style.top = '-50px';
+
     timeline.style.width = '650px';
     timeline.style.float = 'left';
     timeline.style.display = 'inline-block';
     timeline.style.marginLeft = '0';
     timeline.style.left = '-395px';
+    timeline.style.top = '-50px';
   
     const videoButtonContainer = document.querySelector('.video-buttons-container');
     videoButtonContainer.style.display = 'none';
@@ -58,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
     newContainer.style.right = '-200px';
     newContainer.id = 'video-container2';
     newContainer.style.width = '500px';
-    newContainer.style.height = '500px';
+    newContainer.style.height = '400px';
     newContainer.style.position = 'relative';
     newContainer.style.float = 'right';
     newContainer.style.top = '0.5px';
@@ -66,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const newVideo = document.createElement('video');
     newVideo.src = url;
     newVideo.style.width = '100%';
-    newVideo.style.height = '100%';
+    newVideo.style.height = 'auto';
     newVideo.id = 'new-video2';
   
     const newCanvas = document.createElement('canvas');
