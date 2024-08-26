@@ -144,6 +144,86 @@ document.addEventListener('DOMContentLoaded', () => {
   icon2.addEventListener('click', () => {
       toggleIcons(icon2, icon1);
   });
+
+  const newButtonsContainer = document.createElement('div');
+    newButtonsContainer.className = 'buttons-container';
+    newButtonsContainer.style.width = '650px';
+    newButtonsContainer.style.float = 'left';
+    newButtonsContainer.style.display = 'inline-block';
+    newButtonsContainer.style.left = '-07px';
+    newButtonsContainer.style.top = '-08px';
+    newButtonsContainer.id='new-btn-container';
+    document.getElementById('existing-btn-cont').style.left='0.4px';
+    // timeline.style.left='-10%';
+    
+    // Add the same buttons as the original buttons-container
+    newButtonsContainer.innerHTML = `
+        <div class="video-buttons">
+            <div class="button-with-menu">
+                <span class="formatted-timeframe">
+                    <span>
+                        <input type="text" class="current-time-input" value="0:01" color="white">
+                    </span>
+                    <span>
+                        <span>&nbsp;/&nbsp;1:00</span>
+                        <span class="formatted-timeframe-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#868E96" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </span>
+                    </span>
+                </span>
+                <ul hidden="" class="menu-popup-container">
+                    <li class="menu-popup-option-active">Standard</li>
+                    <li class="menu-popup-option">Frames</li>
+                </ul>
+            </div>
+        </div>
+        <div class="video-buttons center">
+            <button class="video-button" title="Previous">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
+                    <path d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"></path>
+                </svg>
+            </button>
+            <button class="video-button" title="Play video" id="new-play-pause-button">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" background-color="#343a40">
+                    <path d="M0 0h24v24H0z" fill="none"></path>
+                    <path id="play-icon" d="M8 5v14l11-7z"></path>
+                    <path id="pause-icon" d="M6 6h2v12H6zm3.5 0h2v12h-2z" style="display: none;"></path>
+                </svg>
+            </button>
+            <button class="video-button" title="Next">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
+                    <path d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"></path>
+                </svg>
+            </button>
+        </div>
+        
+    `;
+    
+    // Append the new buttons-container to the containerWrapper
+    document.getElementById('parentbtncontainer').appendChild(newButtonsContainer);
+//     const newplayPauseButton = document.getElementById('new-play-pause-button');
+// const newplayPauseImage = playPauseButton.querySelector('img');
+
+// newplayPauseButton.addEventListener('click', () => {
+// if (newVideo.paused) {
+//     console.log('inside play condition')
+//     newVideo.play();
+//     //playAudioAnnotationIfExists(video.currentTime);
+//    // playPauseImage.src = 'icons/pause.png';
+//     //playPauseImage.alt = 'Pause';
+// } else {
+//     console.log('inside pause condition')
+//     newVideo.pause();
+//    // playPauseImage.src = 'icons/play.jpg';
+//    // playPauseImage.alt = 'Play';
+// }
+// });
+   
+
       let drawingMode = '';
       let isDrawing = false;
 
@@ -444,6 +524,8 @@ function handleImgUpload(event) {
       reader.readAsDataURL(file);
   }
 }
+
+
 
 // function setupTimelineforvideo2() {
 //   const timeline = document.getElementById('timeline-container2');
