@@ -34,7 +34,7 @@ function setupTimeline(video) {
     const timeline = document.getElementById('timeline');
     const duration = Math.floor(video.duration);
     timeline.style.setProperty('--duration', duration);
-
+    console.log(duration);
     for (let i = 0; i < duration; i++) {
                 const tick = document.createElement('div');
                 tick.classList.add('tick');
