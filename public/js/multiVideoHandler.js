@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
     timeline.style.float = 'left';
     timeline.style.display = 'inline-block';
     timeline.style.marginLeft = '0';
-    timeline.style.left = '-387px';
+    timeline.style.left = '10px';
     timeline.style.top = '-08px';
   
     const videoButtonContainer = document.querySelector('.video-buttons-container');
@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
     newVideo.style.left = '0';
     newVideo.style.transform = 'translateY(-50%)';
     newVideo.id = 'new-video2';
-  
+    // console.log('Video url:',newVideo.url);
     const newCanvas = document.createElement('canvas');
     newCanvas.id = 'new-canvas2';
   
@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
     newContainer.appendChild(newCanvas);
     containerWrapper.appendChild(newContainer);
     // newVideo.play();
-    // setupTimelineforvideo2();
+    setupTimelineforVideo2();
     // Initialize Fabric.js on the new canvas
     newFabricCanvas = new fabric.Canvas(newCanvas, {
       selection: false,
@@ -102,6 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
       newCanvas.height = newVideo.clientHeight;
       newFabricCanvas.setWidth(newVideo.clientWidth);
       newFabricCanvas.setHeight(newVideo.clientHeight);
+      console.log('Video duration after laoding metadata:',newVideo.duration);
     });
     
     const icon1 = document.getElementById('toggle-icon');
@@ -585,9 +586,9 @@ function recordAnnotation2() {
    
 } else {
   newAnnotations.push(annotation);
-  // for (const annotation of newAnnotations) {
-  //   console.log('Annotation:', annotation);
-  // }
+  for (const annotation of newAnnotations) {
+    console.log('Annotation:', annotation);
+  }
     
 }
 console.log('Annotation recorded:', annotation);
@@ -599,115 +600,118 @@ console.log('Annotation recorded:', annotation);
 
 
 
-// function setupTimelineforvideo2() {
-//   const timeline = document.getElementById('timeline-container2');
-//   const videoElement = document.getElementById('new-video2');
-//   const newvideoduration = Math.floor(videoElement.duration);
-//   timeline.style.setProperty('--duration', newvideoduration);
+function setupTimelineforVideo2() {
+  const timelineWrapper = document.getElementById('timeline-wrapper');
 
-//   for (let i = 0; i < newvideoduration; i++) {
-//               const tick = document.createElement('div');
-//               tick.classList.add('newvideotick');
-//               tick.dataset.time = i; 
-      
-              
-//               const icon = document.createElement('div');
-//               icon.classList.add('newvideoicon');
-//               const img = document.createElement('img');
-//               img.src = 'icons/pencil.png';
-//               img.alt = 'Pencil';
-//               icon.appendChild(img);
-//               tick.appendChild(icon);
-      
-             
-      
-              
-//               img.addEventListener('dragstart', handleDragStart);
-//               tick.addEventListener('dragover', handleDragOver);
-//               tick.addEventListener('drop', handleDrop);
-//               img.setAttribute('draggable', true);
-          
-//               timeline.appendChild(tick);
-//           }
-//   // Create the timeline ticks
-//   for (let i = 0; i < newvideoduration; i++) {
-//       // const tick = document.createElement('div');
-//       // tick.classList.add('tick');
-//       // tick.dataset.time = i;
-//       // timeline.appendChild(tick);
+  const timelineContainer = document.createElement('div');
+  timelineContainer.id = 'timeline-container2';
+  timelineContainer.style.width = '650px';
+  timelineContainer.style.right = '-120px';
+  const videoElement = document.getElementById('new-video2');
+  videoElement.addEventListener('loadedmetadata', function() {
+    console.log('Video URL:', videoElement.src);
+    console.log('Video duration:', videoElement.duration);
+    const newVideoDuration = Math.floor(videoElement.duration);
+    timelineContainer.style.setProperty('--duration', newVideoDuration);
+  // console.log('Video url:',videoElement.src);
+  // console.log('Video duration:',videoElement.duration);
+  // const newVideoDuration = Math.floor(videoElement.duration);
+  timelineContainer.style.setProperty('--duration', newVideoDuration);
 
-//       const tick2 = document.createElement('div');
-//       tick2.classList.add('newvideotick2');
-//       tick2.dataset.time = i;
-//       timeline.appendChild(tick2);
+  for (let i = 0; i < newVideoDuration; i++) {
+    const tick = document.createElement('div');
+    tick.classList.add('newvideotick');
+    tick.dataset.time = i;
 
-//       tick2.addEventListener('click', function (event) {
-//           if (tick2.classList.contains('blocked')) {
-//               console.log(`Tick at ${i} seconds is blocked.`);
-//               event.stopPropagation();
-//               return;
-//           }
-//           console.log(`Clicked on tick at ${i} seconds.`);
-//           videoElement.currentTime = i;
-//       });
-//   }
+    const icon = document.createElement('div');
+    icon.classList.add('newvideoicon');
+    const img = document.createElement('img');
+    img.src = 'icons/pencil.png';
+    img.alt = 'Pencil';
+    img.style.display='none';
+    icon.appendChild(img);
+    tick.appendChild(icon);
 
-//   // Create the pointer (draggable SVG icon)
-//   const pointer2 = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-//   pointer2.setAttribute('width', '13');
-//   pointer2.setAttribute('height', '21');
-//   pointer2.setAttribute('fill', 'none');
-//   pointer2.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-//   pointer2.setAttribute('alt', 'draggable icon for progress bar');
-//   pointer2.classList.add('pointer2');
-//   pointer2.innerHTML = '<path d="M13 14.726C13 18.19 10.09 21 6.5 21S0 18.19 0 14.726C0 8.812 4.345 8 6.5 0 8 7.725 13 8.5 13 14.726z" fill="#CED0D1"></path><circle cx="6.5" cy="14.5" r="2.5" fill="#31373D"></circle>';
+    img.addEventListener('dragstart', handleDragStart);
+    tick.addEventListener('dragover', handleDragOver);
+    tick.addEventListener('drop', handleDrop);
+    img.setAttribute('draggable', true);
 
-//   timeline.appendChild(pointer2);
+    timelineContainer.appendChild(tick);
+  }
 
-//   // Update pointer position and tick colors based on video time
-//   function updatePointerAndTicks() {
-//       const percentage = (videoElement.currentTime / newvideoduration) * 100;
-//       pointer2.style.left = `calc(${percentage}% - 6.5px)`; // Center pointer over tick
-      
-//       // Update tick2 colors
-//       const ticks2 = document.querySelectorAll('.tick2');
-//       ticks2.forEach((tick2, index) => {
-//           if (index <= Math.floor(videoElement.currentTime)) {
-//               tick2.style.backgroundColor = 'red'; // Colored portion
-//           } else {
-//               tick2.style.backgroundColor = 'white'; // Uncolored portion
-//           }
-//       });
-//   }
+  for (let i = 0; i < newVideoDuration; i++) {
+    const tick2 = document.createElement('div');
+    tick2.classList.add('newvideotick2');
+    tick2.dataset.time = i;
+    timelineContainer.appendChild(tick2);
 
-//   videoElement.addEventListener('timeupdate', updatePointerAndTicks);
+    tick2.addEventListener('click', function (event) {
+      if (tick2.classList.contains('blocked')) {
+        console.log(`Tick at ${i} seconds is blocked.`);
+        event.stopPropagation();
+        return;
+      }
+      console.log(`Clicked on tick at ${i} seconds.`);
+      videoElement.currentTime = i;
+    });
+  
+  }
 
-//   // Handle dragging of the pointer
-//   pointer2.addEventListener('mousedown', (e) => {
-//       e.preventDefault();
 
-//       const movePointer = (e) => {
-//           const rect = timeline.getBoundingClientRect();
-//           const x = e.clientX - rect.left;
-//           const percentage = (x / rect.width) * 100;
-//           const newTime = (percentage / 100) * newvideoduration;
-//           videoElement.currentTime = Math.min(Math.max(newTime, 0), newvideoduration); // Constrain within bounds
-//       };
+  // const pointer2 = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  // pointer2.setAttribute('width', '13');
+  // pointer2.setAttribute('height', '21');
+  // pointer2.setAttribute('fill', 'none');
+  // pointer2.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+  // pointer2.setAttribute('alt', 'draggable icon for progress bar');
+  // pointer2.classList.add('pointer2');
+  // pointer2.innerHTML = '<path d="M13 14.726C13 18.19 10.09 21 6.5 21S0 18.19 0 14.726C0 8.812 4.345 8 6.5 0 8 7.725 13 8.5 13 14.726z" fill="#CED0D1"></path><circle cx="6.5" cy="14.5" r="2.5" fill="#31373D"></circle>';
+  // timelineContainer.appendChild(pointer2);
 
-//       const stopDragging = () => {
-//           document.removeEventListener('mousemove', movePointer);
-//           document.removeEventListener('mouseup', stopDragging);
-//           updatePointerAndTicks(); // Ensure final update after dragging
-//       };
+  function updatePointerAndTicks() {
+    const percentage = (videoElement.currentTime / newVideoDuration) * 100;
+    // pointer2.style.left = `calc(${percentage}% - 6.5px)`;
 
-//       document.addEventListener('mousemove', movePointer);
-//       document.addEventListener('mouseup', stopDragging);
-//   });
+    const ticks2 = document.querySelectorAll('.newvideotick2');
+    ticks2.forEach((tick2, index) => {
+      if (index <= Math.floor(videoElement.currentTime)) {
+        tick2.style.backgroundColor = 'red';
+      } else {
+        tick2.style.backgroundColor = 'white';
+      }
+    });
+  }
 
-//   videoElement.addEventListener('ended', () => {
-//       pointer2.style.left = `calc(100% - 29.5px)`; 
-//   });
-// }
+  videoElement.addEventListener('timeupdate', updatePointerAndTicks);
+
+  // pointer2.addEventListener('mousedown', (e) => {
+  //   e.preventDefault();
+
+  //   const movePointer = (e) => {
+  //     const rect = timelineContainer.getBoundingClientRect();
+  //     const x = e.clientX - rect.left;
+  //     const percentage = (x / rect.width) * 100;
+  //     const newTime = (percentage / 100) * newVideoDuration;
+  //     videoElement.currentTime = Math.min(Math.max(newTime, 0), newVideoDuration);
+  //   };
+
+  //   const stopDragging = () => {
+  //     document.removeEventListener('mousemove', movePointer);
+  //     document.removeEventListener('mouseup', stopDragging);
+  //     updatePointerAndTicks();
+  //   };
+
+  //   document.addEventListener('mousemove', movePointer);
+  //   document.addEventListener('mouseup', stopDragging);
+  // });
+
+  // videoElement.addEventListener('ended', () => {
+  //   pointer2.style.left = `calc(100% - 29.5px)`;
+  // });
+});
+  timelineWrapper.appendChild(timelineContainer);
+}
 
  
 
