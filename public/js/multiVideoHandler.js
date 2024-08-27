@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
     timeline.style.float = 'left';
     timeline.style.display = 'inline-block';
     timeline.style.marginLeft = '0';
-    timeline.style.left = '-395px';
+    timeline.style.left = '-387px';
     timeline.style.top = '-08px';
   
     const videoButtonContainer = document.querySelector('.video-buttons-container');
