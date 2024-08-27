@@ -115,24 +115,24 @@ document.addEventListener('DOMContentLoaded', () => {
           const isDisabled = icon1.classList.contains('disabled');
     
           
-          document.getElementById('freehand').onclick = isDisabled ? drawFreehandDisabled : drawFreehand;
-          document.getElementById('circle').onclick = isDisabled ? activateCircleDisabled : activateCircleMode;
-          document.getElementById('rect').onclick = isDisabled ? activateRectangleDisabled : activateRectangleMode;
-          document.getElementById('line').onclick = isDisabled ? activateLineDisabled : activateLineMode;
-          document.getElementById('polyline').onclick = isDisabled ? activatePolylineDisabled : activatePolylineMode;
-          document.getElementById('text').onclick = isDisabled ? activateTextDisabled : activateTextMode;
-          document.getElementById('image').onclick = isDisabled ? activateImageDisabled : activateImage;
-          document.getElementById('note').onclick = isDisabled ?  activateNoteDisabled : activateNoteMode;
-          document.getElementById('eraser').onclick = isDisabled ? useEraserDisabled : useEraser;
-          document.getElementById('undo').onclick = isDisabled ? undoDisabled : undo;
-          document.getElementById('redo').onclick = isDisabled ? redoDisabled : redo;
-          // document.getElementById('microphone-icon').onclick = isDisabled ? redoDisabled : redo;
+          document.getElementById('freehand').onclick = isDisabled ? freehandCanvas2 : drawFreehand;
+          document.getElementById('circle').onclick = isDisabled ? CircleModeCanvas2 : activateCircleMode;
+          document.getElementById('rect').onclick = isDisabled ? RectangleModeCanvas2 : activateRectangleMode;
+          document.getElementById('line').onclick = isDisabled ? LineModeCanvas2 : activateLineMode;
+          document.getElementById('polyline').onclick = isDisabled ? PolylineModeCanvas2 : activatePolylineMode;
+          document.getElementById('text').onclick = isDisabled ? TextModeCanvas2 : activateTextMode;
+          document.getElementById('image').onclick = isDisabled ? activateImageCanvas2 : activateImage;
+          document.getElementById('note').onclick = isDisabled ?  NoteModeCanvas2 : activateNoteMode;
+          document.getElementById('eraser').onclick = isDisabled ? useEraserCanvas2 : useEraser;
+          document.getElementById('undo').onclick = isDisabled ? undoCanvas2 : undo;
+          document.getElementById('redo').onclick = isDisabled ? redoCanvas2 : redo;
+          // document.getElementById('microphone-icon').onclick = isDisabled ? redoCanvas2 : redo;
           const microphoneIcon = document.getElementById('microphone-icon');
           if (isDisabled) {
             microphoneIcon.removeEventListener('click', toggleMicrophone);
-            microphoneIcon.addEventListener('click', toggleMicrophoneDisabled); 
+            microphoneIcon.addEventListener('click', toggleMicrophoneCanvas2); 
         } else {
-            microphoneIcon.removeEventListener('click', toggleMicrophoneDisabled);
+            microphoneIcon.removeEventListener('click', toggleMicrophoneCanvas2);
             microphoneIcon.addEventListener('click', toggleMicrophone); 
         }
 
@@ -278,13 +278,13 @@ function newformatTime(seconds) {
             newFabricCanvas.freeDrawingBrush.color = shades[ColorIndex % shades.length]; 
         }  
     }
-    function drawFreehandDisabled() {
+    function freehandCanvas2() {
       console.log("Freehand mode is disabled");
       newFabricCanvas.isDrawingMode = true;
       drawingMode = '';
       setDrawingColor();
     }
-    function activateCircleDisabled () {
+    function CircleModeCanvas2 () {
       newFabricCanvas.isDrawingMode = false;
       drawingMode = 'circle';
        setDrawingColor(); 
@@ -300,7 +300,7 @@ function newformatTime(seconds) {
       newFabricCanvas.add(circle).setActiveObject(circle);
     }
     
-    function activateRectangleDisabled () {
+    function RectangleModeCanvas2 () {
       newFabricCanvas.isDrawingMode = false;
       drawingMode = 'rectangle';
       setDrawingColor(); 
@@ -315,20 +315,20 @@ function newformatTime(seconds) {
           });
           newFabricCanvas.add(rect).setActiveObject(rect);
     }
-    function activateLineDisabled() { 
+    function LineModeCanvas2() { 
       drawingMode = 'line';
       newFabricCanvas.isDrawingMode = false; 
       newFabricCanvas.upperCanvasEl.classList.add('canvas-plus-cursor');
      }
 
-     function activatePolylineDisabled() {
+     function PolylineModeCanvas2() {
       drawingMode = 'polyline';
       newFabricCanvas.isDrawingMode = false; // Disable freehand drawing mode
       polylinePoints = [];
       newFabricCanvas.upperCanvasEl.classList.add('canvas-plus-cursor');
      }
 
-     function activateTextDisabled() {
+     function TextModeCanvas2() {
       newFabricCanvas.isDrawingMode = false;
     drawingMode = 'text';
     const text = new fabric.Textbox('Type here', {
@@ -342,11 +342,11 @@ function newformatTime(seconds) {
     ColorIndex++;
     newFabricCanvas.add(text).setActiveObject(text);
      }
-     function activateImageDisabled() {
+     function activateImageCanvas2() {
 
       document.getElementById('imageTool').click();
      }
-     function activateNoteDisabled() {
+     function NoteModeCanvas2() {
       newFabricCanvas.isDrawingMode = false;
       drawingMode = 'note';
       const note = new fabric.Textbox('Note here', {
@@ -362,7 +362,7 @@ function newformatTime(seconds) {
     newFabricCanvas.add(note).setActiveObject(note);
      }
      
-     function useEraserDisabled() { 
+     function useEraserCanvas2() { 
       newFabricCanvas.isDrawingMode = false;
       newFabricCanvas.on('mouse:down', function(event) {
         if (event.target) {
@@ -387,7 +387,7 @@ function newformatTime(seconds) {
       let audioStr;
 
 
-     function toggleMicrophoneDisabled(){
+     function toggleMicrophoneCanvas2(){
       console.log('Toggle Microphone for new video');
       
         if (recording) {
@@ -495,7 +495,7 @@ function newformatTime(seconds) {
     //     }
     // }
     
-    function redoDisabled() {
+    function redoCanvas2() {
         if (newmods < state.length - 1) {
           newmods += 1;
           newFabricCanvas.loadFromJSON(newstate[newmods]);
@@ -504,7 +504,7 @@ function newformatTime(seconds) {
     }
     
    
-    function undoDisabled(){
+    function undoCanvas2(){
       if (newmods > 0) {
         newmods --;
         newFabricCanvas.loadFromJSON(newstate[newmods], () => {
@@ -585,6 +585,9 @@ function recordAnnotation2() {
    
 } else {
   newAnnotations.push(annotation);
+  // for (const annotation of newAnnotations) {
+  //   console.log('Annotation:', annotation);
+  // }
     
 }
 console.log('Annotation recorded:', annotation);
