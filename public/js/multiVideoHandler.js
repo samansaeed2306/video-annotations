@@ -1,3 +1,6 @@
+
+
+let newAnnotations = [];
 let ColorIndex = 0;
 const shades = ['#39FF14', '#FF2079', '#0AFF99', '#FF6EC7', '#ADFF2F', '#FFB3DE'];
 
@@ -500,9 +503,7 @@ function newformatTime(seconds) {
         }
     }
     
-    function recordAnnotation2(){
-
-    }
+   
     function undoDisabled(){
       if (newmods > 0) {
         newmods --;
@@ -565,6 +566,32 @@ function handleImgUpload(event) {
       // Read the image file as a data URL
       reader.readAsDataURL(file);
   }
+}
+
+function recordAnnotation2() {
+  newVideo = document.getElementById('new-video2');
+  const currentTime = newVideo.currentTime;
+  if(newVideo.paused){
+    const existingAnnotationIndex = newAnnotations.findIndex(annotation => Math.floor(annotation.time) === Math.floor(currentTime));
+  const annotation = {
+      time: currentTime,
+      content: JSON.stringify(newFabricCanvas.toJSON()), // Store the canvas state
+  };
+  
+  
+
+  if (existingAnnotationIndex !== -1) {
+    newAnnotations[existingAnnotationIndex] = annotation;
+   
+} else {
+  newAnnotations.push(annotation);
+    
+}
+console.log('Annotation recorded:', annotation);
+
+  }else {
+    console.log('Video is playing, not adding annotation');
+}
 }
 
 
