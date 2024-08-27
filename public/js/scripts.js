@@ -91,7 +91,7 @@ function setupTimeline(video) {
     pointer2.setAttribute('alt', 'draggable icon for progress bar');
     pointer2.classList.add('pointer2');
     pointer2.innerHTML = '<path d="M13 14.726C13 18.19 10.09 21 6.5 21S0 18.19 0 14.726C0 8.812 4.345 8 6.5 0 8 7.725 13 8.5 13 14.726z" fill="#CED0D1"></path><circle cx="6.5" cy="14.5" r="2.5" fill="#31373D"></circle>';
-
+    pointer2.style.display = 'none';
     timeline.appendChild(pointer2);
 
     // Update pointer position and tick colors based on video time

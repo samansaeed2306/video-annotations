@@ -293,16 +293,16 @@ video {
     opacity: 0.5;
 }
 
-.pointer2 {
+/* .pointer2 {
     position: absolute;
      top: 88px;
      margin-left: 10px;
     /* transform: translateX(-10%);  */ 
-    left: 0px; /* Start at the leftmost position */
+    /* left: 0px; 
     transform: translateX(0%);
     cursor: pointer;
-    z-index: 10;
-}
+    z-index: 10; */
+/* } */
 /* #play-pause-button {
     margin-left: 20px;
 } */
