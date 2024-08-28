@@ -142,3 +142,12 @@ display: none;
     height: 16px;
     display: block;
 }
+
+.newpointer {
+    position: absolute;
+    height: 20px;
+    width: 2px; 
+    background-color: rgb(34, 0, 255);
+    cursor: ew-resize;
+    opacity: 1;
+}
