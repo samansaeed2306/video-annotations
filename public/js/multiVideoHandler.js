@@ -48,6 +48,10 @@ document.addEventListener('DOMContentLoaded', () => {
     buttonsContainer.style.display = 'inline-block';
     buttonsContainer.style.left = '-400px';
     buttonsContainer.style.top = '-08px';
+    buttonsContainer.style.borderTopLeftRadius = '10px';
+    buttonsContainer.style.borderTopRightRadius = '10px';
+    buttonsContainer.style.borderBottomLeftRadius = '0';
+    buttonsContainer.style.borderBottomRightRadius = '0';
 
     timeline.style.width = '650px';
     timeline.style.float = 'left';
@@ -160,6 +164,11 @@ document.addEventListener('DOMContentLoaded', () => {
     newButtonsContainer.style.left = '-07px';
     newButtonsContainer.style.top = '-08px';
     newButtonsContainer.id='new-btn-container';
+    newButtonsContainer.style.borderTopLeftRadius = '10px';
+    newButtonsContainer.style.borderTopRightRadius = '10px';
+    newButtonsContainer.style.borderBottomLeftRadius = '0';
+    newButtonsContainer.style.borderBottomRightRadius = '0';
+
     document.getElementById('existing-btn-cont').style.left='0.4px';
     // timeline.style.left='-10%';
     
