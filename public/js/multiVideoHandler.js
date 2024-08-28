@@ -227,7 +227,7 @@ newplayPauseButton.addEventListener('click', () => {
       pauseIcon.style.display = 'block';
       
   }
-  video.onended = function() {
+  newVideo.onended = function() {
       playIcon.style.display = 'block';
       pauseIcon.style.display = 'none';
   };
