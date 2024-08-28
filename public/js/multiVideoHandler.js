@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const buttonsContainer = document.querySelector('.buttons-container');
     const timeline = document.querySelector('.timeline');
     const timelineWrapper = document.getElementById('timeline-wrapper');
-    timelineWrapper.style.top = '-10px';
+    timelineWrapper.style.top = '-8.5px';
 
     buttonsContainer.style.width = '650px';
     buttonsContainer.style.float = 'left';
@@ -587,8 +587,8 @@ function newformatTime(seconds) {
 
         showAnnotationsnewVideo(newVideo.currentTime);
         console.log('current time:',newVideo.currentTime);
-        if (!video.paused) { // Check if the video is playing
-            // playAudioAnnotationIfExists(video.currentTime);
+        if (!newVideo.paused) { // Check if the video is playing
+            playAudioAnnotation(newVideo.currentTime);
         }
       });
       });
@@ -894,6 +894,7 @@ function updateNewVideoTimelineIcons() {
               const startTimePercentage = (annotation.startTime / videoElement.duration) * 100;
               const durationPercentage = (annotation.endTime - annotation.startTime) / videoElement.duration * 100;
               audioElement.style.left = `${startTimePercentage}%`;
+              audioElement.style.height = '7px';
           }
       } else {
           if (tick) {
@@ -1180,4 +1181,38 @@ function displayCanvas(annotation, startTime, endTime) {
          // canvas.clear();
       }
   });
+}
+
+function playAudioAnnotation(currentTime){
+  newAnnotations.forEach(annotation => {
+    if (Math.abs(annotation.time - currentTime) <= 0.05 && annotation.type=='audio') {
+        console.log('Found audio annotation');
+        console.log('Annotation time: ',annotation.time);
+        const mimeType = "audio/webm";
+        // const base64String = annotation.content.split(',')[1];
+        const blob = convertBase64ToBlob(annotation.content, mimeType);
+        var url = URL.createObjectURL(blob);
+        const existingAudioElements = document.querySelectorAll('audio');
+        var audioElement = Array.from(existingAudioElements).find(audio => audio.src === url);
+
+        if (!audioElement) {
+            // Create a new audio element if not found
+
+            console.log('I am inside condition where audio element for new video is being created');
+            audioElement = document.createElement('audio');
+            audioElement.className = 'audio-element';
+            audioElement.controls = true;
+            audioElement.src = url;
+            document.body.appendChild(audioElement);
+        }
+
+        // Play the audio element
+        audioElement.play();
+        
+        // audio.play();
+    }
+    
+    
+
+});
 }
