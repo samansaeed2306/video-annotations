@@ -645,18 +645,11 @@ function setupTimelineforVideo2() {
     const newVideoDuration = Math.floor(videoElement.duration);
     timelineContainer.style.setProperty('--duration', newVideoDuration);
     const totalTimeSpan = document.querySelector('#hello span:nth-child(2) > span:first-child');
-    console.log('hello',totalTimeSpan);
+    console.log('total timespan:',totalTimeSpan);
     totalTimeSpan.textContent = ` / ${newVideo.duration}`;
-    // const inputElement = document.getElementById('new-video-time');
-    // inputElement.value = "O:40";
-  // console.log('Video url:',videoElement.src);
-  // console.log('Video duration:',videoElement.duration);
-  // const newVideoDuration = Math.floor(videoElement.duration);
+   
   timelineContainer.style.setProperty('--duration', newVideoDuration);
-  // const totalTimeSpan = document.querySelector('#hello span:nth-child(2) > span:first-child');
-
-  // totalTimeSpan.textContent = ` / ${newformatTime(videoElement.duration)}`;
-
+  
   for (let i = 0; i < newVideoDuration; i++) {
     const tick = document.createElement('div');
     tick.classList.add('newvideotick');
@@ -981,13 +974,13 @@ if (isDragging) {
       pointer.style.width = newWidth + 'px';
 
       
-      // let annotationDuration = calculateAnnotationDuration(newWidth);
-      // let annotationEndTime = annotationStartTime + annotationDuration;
-      // console.log('Annotation end time:', annotationEndTime);
-      // annotation = annotations.find(annotation => annotation.time === annotationStartTime);
-      // addClassToTicks(annotationStartTime,annotationEndTime);
-      // updateAnnotationDuration(annotationStartTime, annotationEndTime, annotationDuration);
-      // displayOnCanvas(annotation, annotationStartTime, annotationEndTime);
+      let annotationDuration = calculateDuration(newWidth);
+      let annotationEndTime = annotationStartTime + annotationDuration;
+      console.log('Annotation end time:', annotationEndTime);
+      annotation = newAnnotations.find(annotation => annotation.time === annotationStartTime);
+      addClassTicks(annotationStartTime,annotationEndTime);
+      updateDuration(annotationStartTime, annotationEndTime, annotationDuration);
+      displayCanvas(annotation, annotationStartTime, annotationEndTime);
 
   }
 }
@@ -1030,3 +1023,56 @@ function removePointernewvideo(tick) {
     }
 }
 
+function calculateDuration(width){
+  const timeline2 = document.getElementById('timeline-container2');
+  const timelineWidth = timeline2.offsetWidth;
+  return (width / timelineWidth) * newVideo.duration;
+
+}
+
+function addClassTicks(startTime, endTime) {
+  for (let i = startTime; i <= endTime; i++) {
+      const tick2 = document.querySelector(`.newvideotick2[data-time="${i}"]`);
+      if (tick2) {
+          tick2.classList.add('blocked');
+      }
+  }
+
+}
+
+function updateDuration(startTime, endTime, duration) {
+  console.log(`Updating annotation from ${startTime} to ${endTime} with duration: ${duration} seconds`);
+
+  // Find the annotation
+  const annotation = newAnnotations.find(a => Math.floor(a.time) === Math.floor(startTime));
+  if (annotation) {
+      annotation.duration = duration;
+      annotation.endTime = endTime;
+      annotation.startTime = startTime;
+      // Ensure the annotation is shown at all instances between start and end time
+      for (let time = startTime; time <= endTime; time += 0.01) {
+         // showAnnotations(annotation,time);
+      }
+
+
+
+      console.log('Updated annotation:', annotation);
+  } else {
+      console.log('Annotation not found for start time:', startTime);
+  }
+}
+
+function displayCanvas(annotation, startTime, endTime) {
+  newVideo.addEventListener('timeupdate', () => {
+      const currentTime = newVideo.currentTime;
+      if (currentTime >= startTime && currentTime <= endTime) {
+          newFabricCanvas.clear();
+          newFabricCanvas.loadFromJSON(annotation.content, () => {
+            newFabricCanvas.renderAll();
+          });
+      } else {
+          // Clear the canvas if the current time is outside the annotation range
+         // canvas.clear();
+      }
+  });
+}
