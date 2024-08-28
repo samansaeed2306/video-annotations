@@ -603,9 +603,24 @@ function recordAnnotation2() {
     
 }
 console.log('Annotation recorded:', annotation);
-updateNewVideoTimelineIcons();
-
-  }else {
+updateAnnotationsnewVideo();
+newupdateTimelineIcon(currentTime);
+// const timeline = document.getElementById('timeline');
+    const ticks = document.querySelectorAll('#timeline-container2 .newvideotick');
+    const annotationTime = Math.floor(newVideo.currentTime);
+    ticks.forEach(tick => {
+        if (parseInt(tick.dataset.time) === annotationTime) {
+            tick.classList.add('has-drawing');
+            const icon = tick.querySelector('.newvideoicon');
+            if(icon){
+                icon.style.display='block';
+            createPointernewvideo(tick);
+            }
+        }
+    });
+  }
+  
+  else {
     console.log('Video is playing, not adding annotation');
 }
 }
@@ -643,7 +658,7 @@ function setupTimelineforVideo2() {
     const img = document.createElement('img');
     img.src = 'icons/pencil.png';
     img.alt = 'Pencil';
-    img.style.display='none';
+    icon.style.display='none';
     icon.appendChild(img);
     tick.appendChild(icon);
 
@@ -739,7 +754,7 @@ function updateNewVideoTimelineIcons() {
       const icon = tick.querySelector('.newvideoicon img');
       // const audioElement = tick.querySelector('.audio-element');
       
-      // removePointerForPencilIcon(tick); // Assuming you have a similar function for newvideoicon
+      // removePointernewvideo(tick); // Assuming you have a similar function for newvideoicon
       if (icon) {
           icon.style.display = 'none';
       }
@@ -779,7 +794,7 @@ function updateNewVideoTimelineIcons() {
               const icon = tick.querySelector('.newvideoicon img');
               if (icon) {
                   icon.style.display = 'block';
-                  // createPointerForPencilIcon(icon); // Assuming you have this function for the newvideoicon
+                  createPointernewvideo(icon); // Assuming you have this function for the newvideoicon
               }
           }
       }
@@ -797,8 +812,8 @@ function updateAnnotationsnewVideo() {
   console.log('Inside list update:', annotations);
 
   // Clear the annotations list
-  const annotationsList = document.getElementById('new-annotations-list');
-  annotationsList.innerHTML = '';
+  // const annotationsList = document.getElementById('new-annotations-list');
+  // annotationsList.innerHTML = '';
 
   // Iterate over each annotation to create list items
   newAnnotations.forEach((annotation, index) => {
@@ -887,7 +902,7 @@ function updateAnnotationsnewVideo() {
                   
                   if (icon) {
                       icon.remove();
-                      removePointerForPencilIcon(tick);
+                      // removePointernewvideo(tick);
                   }
               }
 
@@ -899,7 +914,7 @@ function updateAnnotationsnewVideo() {
           // Append elements to the list item
           listItem.appendChild(deleteIcon);
           listItem.appendChild(commentInput);
-          annotationsList.appendChild(listItem);
+          // annotationsList.appendChild(listItem);
       }
   });
 }
@@ -914,8 +929,95 @@ function showAnnotationsnewVideo(currentTime){
       }
   });
 }
+function createPointernewvideo(tick) {
+  console.log('inside create pointer for new video');
+  if (tick.querySelector('.newpointer')) {
+  console.log('inside if in create pointer');
+      return; 
+  }
 
+const pointer = document.createElement('div');
+pointer.classList.add('newpointer');
+pointer.style.left = '50%'; 
+pointer.style.top = '-20px'; 
+const colors = ['#FF5733', '#33FF57', '#5733FF', '#FFFF33', '#FF33FF', '#33FFFF'];
+
+
+const randomColor = colors[currentColorIndex % colors.length];
+pointer.style.backgroundColor = randomColor;
+tick.appendChild(pointer);
+
+
+
+let isDragging = false;
+let startX;
+let startWidth;
+
+pointer.addEventListener('mousedown', (e) => {
+isDragging = true;
+startX = e.pageX;
+startWidth = pointer.offsetWidth;
+pointer.style.cursor = 'ew-resize'; 
+
+const tick = pointer.closest('.newvideotick');
+if (tick) {
+  annotationStartTime = parseFloat(tick.dataset.time);
+  console.log('Annotation found at:', annotationStartTime);}
+});
+
+document.addEventListener('mousemove', (e) => {
+if (isDragging) {
+  let newWidth = startWidth + (e.pageX - startX);
+  if (newWidth > 0) {
+      pointer.style.width = newWidth + 'px';
+
+      
+      // let annotationDuration = calculateAnnotationDuration(newWidth);
+      // let annotationEndTime = annotationStartTime + annotationDuration;
+      // console.log('Annotation end time:', annotationEndTime);
+      // annotation = annotations.find(annotation => annotation.time === annotationStartTime);
+      // addClassToTicks(annotationStartTime,annotationEndTime);
+      // updateAnnotationDuration(annotationStartTime, annotationEndTime, annotationDuration);
+      // displayOnCanvas(annotation, annotationStartTime, annotationEndTime);
+
+  }
+}
+});
+
+document.addEventListener('mouseup', () => {
+if (isDragging) {
+  isDragging = false;
+  pointer.style.cursor = 'ew-resize'; 
+}
+});
+}
  
-
-
+function removePointernewvideo(tick) {
+  console.log("Inside remove pointer function")
+  
+  const pointer = tick.querySelector('.newpointer');
+  
+  if (pointer && pointer.parentNode === tick) { 
+  tick.removeChild(pointer); 
+  console.log("Removed pointer")
+  }
+  }
+  // function calculateAnnotationDuration(width) {
+  // const timelineWidth = timeline.offsetWidth;
+  // return (width / timelineWidth) * video.duration;
+  // }
+  // function calculateAnnotationWidth(duration) {
+  //     const timelineWidth = timeline.offsetWidth;
+  //     return (duration / video.duration) * timelineWidth;
+  // }
+  function newupdateTimelineIcon(time) {
+    const timeline = document.getElementById('timeline-container2');
+    const ticks = timeline.getElementsByClassName('newvideotick');
+    for (let tick of ticks) {
+        if (parseInt(tick.dataset.time) === Math.floor(time)) {
+            tick.classList.add('has-drawing');
+            // createPointerForPencilIcon(icon);
+        }
+    }
+}
 
