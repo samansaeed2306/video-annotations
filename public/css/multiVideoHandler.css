@@ -133,3 +133,12 @@ left: 50%;
 transform: translateX(-50%);
 display: none;
 }
+
+#timeline-container2 .newvideotick.has-drawing .newvideoicon {
+    display: block;
+}
+#timeline-container2 .newvideotick.has-drawing .newvideoicon img {
+    width: 16px;
+    height: 16px;
+    display: block;
+}
