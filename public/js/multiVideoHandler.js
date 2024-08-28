@@ -40,7 +40,9 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const buttonsContainer = document.querySelector('.buttons-container');
     const timeline = document.querySelector('.timeline');
-  
+    const timelineWrapper = document.getElementById('timeline-wrapper');
+    timelineWrapper.style.top = '-10px';
+
     buttonsContainer.style.width = '650px';
     buttonsContainer.style.float = 'left';
     buttonsContainer.style.display = 'inline-block';
