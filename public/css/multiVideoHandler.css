@@ -149,5 +149,5 @@ display: none;
     width: 2px; 
     background-color: rgb(34, 0, 255);
     cursor: ew-resize;
-    opacity: 1;
+    opacity: 0.5;
 }
