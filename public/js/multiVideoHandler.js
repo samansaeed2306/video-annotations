@@ -437,7 +437,40 @@ function newformatTime(seconds) {
       console.log('Recording stopped');
      
   }
-     
+  // const timeline2 = document.getElementById('timeline-container2');
+  async function saveRecording() {
+    const blob = new Blob(recordedchunks, { type: 'audio/webm' });
+    const url = URL.createObjectURL(blob);
+
+    const audioElement = document.createElement('audio');
+    audioElement.className = 'audio-element';
+    audioElement.controls = true;
+    audioElement.src = url;
+    //audioElement.style.width='200px';
+  document.body.appendChild(audioElement);
+
+    // Save the recording with the corresponding video duration
+    const startTime = newVideo.currentTime;
+    console.log(blob.size);
+    const duration = (blob.size + 786.05)/17402.05;
+    console.log('Duration of recording: ',duration);
+    const endTime = startTime + duration; 
+    const base64String = await convertBlobToBase64(blob);
+    const annotation = {
+        time: startTime,
+        startTime: startTime,
+        endTime: endTime,
+        content: base64String,
+        type: 'audio'
+    };
+    newAnnotations.push(annotation);
+    updateAnnotationsnewVideo();
+    updateNewVideoTimelineIcons();
+    console.log('Recording saved', annotation);
+   
+}
+
+
     newFabricCanvas.on('mouse:down', function(options) {
       const pointer = newFabricCanvas.getPointer(options.e);
       if (drawingMode === 'line') {
@@ -559,6 +592,64 @@ function newformatTime(seconds) {
         }
       });
       });
+
+      
+let isZoomIn = false;
+const zScale = 1.2;
+
+
+newContainer.addEventListener('dblclick', () => {
+  isZoomIn = !isZoomIn;
+    
+    if (isZoomIn) {
+        newVideo.style.transform = `scale(${zScale})`;
+        console.log(`Video Transform scale(${newVideo.style.transform})`)
+        console.log(`Video Position scale(${newVideo.style.position})`)
+        // Adjust canvas dimensions to match zoomed video
+        const videoWidth = newVideo.clientWidth * zScale;
+        const videoHeight = newVideo.clientHeight * zScale;
+        newCanvas.width = videoWidth;
+        newCanvas.height = videoHeight;
+        newCanvas.top='100px';
+        newFabricCanvas.setWidth(videoWidth);
+        newFabricCanvas.setHeight(videoHeight);
+        //canvas.style.transform = video.style.transform;
+        const offsetX = (videoWidth - newVideo.clientWidth)/2;
+        const offsetY = (videoHeight - newVideo.clientHeight) / 2;
+        const canvasonSwitch = document.getElementById('toggle-icon2');
+        if(canvasonSwitch.style.display == 'block'){
+            canvasonSwitch.style.left= '500px';
+            canvasonSwitch.style.top = '510px';
+        }
+        // Use CSS to position the canvas
+        newFabricCanvas.wrapperEl.style.position = 'absolute';
+        newFabricCanvas.wrapperEl.style.left = `${offsetX}px`;
+        newFabricCanvas.wrapperEl.style.top = `${offsetY}px`;
+        
+        newFabricCanvas.calcOffset(); // Update the offset calculations
+       // document.getElementsByClassName('buttons-container')[0].style.marginTop = '250px';
+    } else {
+        newVideo.style.transform = 'scale(1)';
+        newCanvas.width = video.clientWidth;
+        newCanvas.height = video.clientHeight;
+        
+        newFabricCanvas.setWidth(video.clientWidth);
+        newFabricCanvas.setHeight(video.clientHeight);
+        // fabricCanvas.wrapperEl.style.position = 'static';
+        // fabricCanvas.wrapperEl.style.left = '0';
+        // fabricCanvas.wrapperEl.style.top = '0';
+        newFabricCanvas.wrapperEl.style.position = 'absolute';
+        newFabricCanvas.wrapperEl.style.top= '0.5px';
+        newFabricCanvas.wrapperEl.style.left= '3px';
+
+        const canvasonSwitch = document.getElementById('toggle-icon2');
+        if(canvasonSwitch.style.display == 'block'){
+            canvasonSwitch.style.left= '150px';
+            canvasonSwitch.style.top = '500px';
+        }
+        newFabricCanvas.calcOffset(); 
+    }
+});
   }
 
 
@@ -820,9 +911,9 @@ function updateAnnotationsnewVideo() {
       .map(time => newAnnotations.find(a => a.time === time));
 
   // Filter out empty or invalid content annotations
-  annotations = newAnnotations.filter(annotation => annotation.content && annotation.content !== '{"version":"4.5.0","objects":[]}');
+  newAnnotations = newAnnotations.filter(annotation => annotation.content && annotation.content !== '{"version":"4.5.0","objects":[]}');
 
-  console.log('Inside list update:', annotations);
+  console.log('Inside new video list update:', newAnnotations);
 
   // Clear the annotations list
   // const annotationsList = document.getElementById('new-annotations-list');
@@ -830,10 +921,10 @@ function updateAnnotationsnewVideo() {
 
   // Iterate over each annotation to create list items
   newAnnotations.forEach((annotation, index) => {
-      console.log('Processing annotation:', annotation);
+      console.log('Processing new video annotation:', annotation);
 
       if (annotation.content && annotation.content !== '{"version":"4.5.0","objects":[]}') {
-          console.log('Appending annotation to list:', annotation);
+          console.log('Appending new video annotation to list:', annotation);
 
           const listItem = document.createElement('li');
           listItem.className = 'annotation-item';
