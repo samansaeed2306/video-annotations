@@ -142,6 +142,11 @@ display: none;
     height: 16px;
     display: block;
 }
+#timeline-container2 .newvideotick.has-audio .newvideoicon img {
+    width: 16px;
+    height: 16px;
+    background-color: none;
+}
 
 .newpointer {
     position: absolute;

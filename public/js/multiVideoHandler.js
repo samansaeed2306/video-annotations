@@ -872,26 +872,29 @@ function updateNewVideoTimelineIcons() {
       const tick = timelineContainer.querySelector(`.newvideotick[data-time='${time}']`);
 
       if (annotation.type === 'audio') {
-          // if (tick) {
-          //     tick.classList.add('has-audio');
-          //     const icon = tick.querySelector('.newvideoicon img');
-          //     if (icon) {
-          //         icon.style.display = 'block';
-          //         icon.src = 'icons/mic.png';
-          //         icon.alt = 'Mic';
-          //     }
+          if (tick) {
+              tick.classList.add('has-audio');
+              const iconelement = tick.querySelector('.newvideoicon');
+              const icon = tick.querySelector('.newvideoicon img');
+              if (icon) {
+                  console.log('icon:',icon);
+                  iconelement.style.display = 'block';
+                  icon.src = 'icons/mic.png';
+                  icon.alt = 'Mic';
+                  icon.style.display = 'block';
+              }
 
-          //     const audioElement = document.createElement('audio');
-          //     audioElement.className = 'audio-element';
-          //     audioElement.controls = true;
-          //     audioElement.src = `data:audio/webm;base64,${annotation.content}`;
-          //     tick.appendChild(audioElement);
+              const audioElement = document.createElement('audio');
+              audioElement.className = 'audio-element';
+              audioElement.controls = true;
+              audioElement.src = `data:audio/webm;base64,${annotation.content}`;
+              tick.appendChild(audioElement);
 
-          //     const videoElement = document.getElementById('new-video2');
-          //     const startTimePercentage = (annotation.startTime / videoElement.duration) * 100;
-          //     const durationPercentage = (annotation.endTime - annotation.startTime) / videoElement.duration * 100;
-          //     audioElement.style.left = `${startTimePercentage}%`;
-          // }
+              const videoElement = document.getElementById('new-video2');
+              const startTimePercentage = (annotation.startTime / videoElement.duration) * 100;
+              const durationPercentage = (annotation.endTime - annotation.startTime) / videoElement.duration * 100;
+              audioElement.style.left = `${startTimePercentage}%`;
+          }
       } else {
           if (tick) {
               tick.classList.add('has-drawing');
