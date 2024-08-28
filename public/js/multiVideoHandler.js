@@ -943,7 +943,7 @@ pointer.style.top = '-20px';
 const colors = ['#FF5733', '#33FF57', '#5733FF', '#FFFF33', '#FF33FF', '#33FFFF'];
 
 
-const randomColor = colors[currentColorIndex % colors.length];
+const randomColor = colors[ColorIndex % colors.length];
 pointer.style.backgroundColor = randomColor;
 tick.appendChild(pointer);
 
