@@ -537,6 +537,10 @@ function newformatTime(seconds) {
 
     newVideo.addEventListener('loadedmetadata', function() {
       newVideo.addEventListener('timeupdate', () => {
+        const inputElement = document.getElementById('new-video-time');
+        inputElement.value = newformatTime(newVideo.currentTime);
+        
+
         showAnnotationsnewVideo(newVideo.currentTime);
         console.log('current time:',newVideo.currentTime);
         if (!video.paused) { // Check if the video is playing
@@ -640,6 +644,11 @@ function setupTimelineforVideo2() {
     console.log('Video duration:', videoElement.duration);
     const newVideoDuration = Math.floor(videoElement.duration);
     timelineContainer.style.setProperty('--duration', newVideoDuration);
+    const totalTimeSpan = document.querySelector('#hello span:nth-child(2) > span:first-child');
+    console.log('hello',totalTimeSpan);
+    totalTimeSpan.textContent = ` / ${newVideo.duration}`;
+    // const inputElement = document.getElementById('new-video-time');
+    // inputElement.value = "O:40";
   // console.log('Video url:',videoElement.src);
   // console.log('Video duration:',videoElement.duration);
   // const newVideoDuration = Math.floor(videoElement.duration);
