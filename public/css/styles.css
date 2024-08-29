@@ -681,7 +681,7 @@ body::before {
   
 
 /* Media queries for mobile responsiveness */
-@media  (max-width: 414px) and (min-width: 270px){
+@media  (max-width: 414px) and (min-width: 200px){
     /* Remove body styles to focus on video and canvas */
     body {
         margin: 0;
