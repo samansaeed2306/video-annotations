@@ -1,0 +1,22 @@
+#video-btn-id {
+    display: flex;
+    justify-content: space-between; /* Distribute space between buttons */
+    align-items: center; /* Center buttons vertically */
+    width: 100%; /* Full width of the container */
+    padding: 0 10px; /* Optional padding for spacing */
+}
+
+.video-button {
+    border: none;
+    background: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#audio-visualizer-button {
+    width: 200px; /* Increase width for small screens */
+}
