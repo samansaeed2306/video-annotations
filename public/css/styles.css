@@ -881,7 +881,7 @@ body::before {
 .timeline .tick2 {
     display: inline-block;
     width: calc(100% / var(--duration)); 
-    height: 5px;
+    height: 2px;
     background-color: #ffffff;
     cursor: pointer;
     position: relative;
