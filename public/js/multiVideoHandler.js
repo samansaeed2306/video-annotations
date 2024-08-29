@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
     annotationSidebar.style.display = 'none';
   
     const newContainer = document.createElement('div');
-    newContainer.style.right = '-200px';
+    newContainer.style.right = '-150px';
     newContainer.id = 'video-container2';
     newContainer.style.width = '500px';
     newContainer.style.height = '400px';
@@ -595,7 +595,7 @@ function newformatTime(seconds) {
 
       
 let isZoomIn = false;
-const zScale = 1.2;
+const zScale = 1.1;
 
 
 newContainer.addEventListener('dblclick', () => {
@@ -611,43 +611,80 @@ newContainer.addEventListener('dblclick', () => {
         newCanvas.width = videoWidth;
         newCanvas.height = videoHeight;
         newCanvas.top='100px';
+
+        const shiftX = 55; // Adjust this value to shift the video to the left
+        const shiftY = 35; // Adjust this value to shift the video upward
+    
+        newVideo.style.position = 'relative'; // Ensure the video is positioned relatively
+        newVideo.style.top = `${shiftY}px`;   // Move video upward
+        newVideo.style.left = `${shiftX}px`;  // Move video to the left
+
         newFabricCanvas.setWidth(videoWidth);
         newFabricCanvas.setHeight(videoHeight);
+
         //canvas.style.transform = video.style.transform;
-        const offsetX = (videoWidth - newVideo.clientWidth)/2;
-        const offsetY = (videoHeight - newVideo.clientHeight) / 2;
-        const canvasonSwitch = document.getElementById('toggle-icon2');
-        if(canvasonSwitch.style.display == 'block'){
-            canvasonSwitch.style.left= '500px';
-            canvasonSwitch.style.top = '510px';
-        }
+        const offsetX = ((videoWidth - newVideo.clientWidth)/2)-50;
+        const offsetY = ((videoHeight - newVideo.clientHeight) / 2)+100;
+        // const canvasonSwitch = document.getElementById('toggle-icon2');
+        // if(canvasonSwitch.style.display == 'block'){
+        //     canvasonSwitch.style.left= '800px';
+        //     canvasonSwitch.style.top = '500px';
+        // }
         // Use CSS to position the canvas
         newFabricCanvas.wrapperEl.style.position = 'absolute';
-        newFabricCanvas.wrapperEl.style.left = `${offsetX}px`;
+        newFabricCanvas.wrapperEl.style.left = `${-offsetX}px`;
         newFabricCanvas.wrapperEl.style.top = `${offsetY}px`;
         
         newFabricCanvas.calcOffset(); // Update the offset calculations
-       // document.getElementsByClassName('buttons-container')[0].style.marginTop = '250px';
+      
+        const newvideocontainer = document.getElementById('video-container2');
+        newvideocontainer.style.width = '600px';
+        newvideocontainer.style.right = '-150px';
     } else {
-        newVideo.style.transform = 'scale(1)';
-        newCanvas.width = video.clientWidth;
-        newCanvas.height = video.clientHeight;
-        
-        newFabricCanvas.setWidth(video.clientWidth);
-        newFabricCanvas.setHeight(video.clientHeight);
-        // fabricCanvas.wrapperEl.style.position = 'static';
-        // fabricCanvas.wrapperEl.style.left = '0';
-        // fabricCanvas.wrapperEl.style.top = '0';
-        newFabricCanvas.wrapperEl.style.position = 'absolute';
-        newFabricCanvas.wrapperEl.style.top= '0.5px';
-        newFabricCanvas.wrapperEl.style.left= '3px';
+      newVideo.style.transform = 'scale(1)'; // Reset scale to default
 
-        const canvasonSwitch = document.getElementById('toggle-icon2');
-        if(canvasonSwitch.style.display == 'block'){
-            canvasonSwitch.style.left= '150px';
-            canvasonSwitch.style.top = '500px';
-        }
-        newFabricCanvas.calcOffset(); 
+      // Reset canvas dimensions to match the original video size
+      const videoWidth = 500; // Original video width
+      const videoHeight = 281; // Original video height (aspect ratio)
+  
+      newCanvas.width = videoWidth;
+      newCanvas.height = videoHeight;
+  
+      // Reset video position to original centered state
+      newVideo.style.position = 'absolute';
+      newVideo.style.top = '50%';
+      newVideo.style.left = '0';
+      newVideo.style.transform = 'translateY(-50%)';
+  
+      newFabricCanvas.setWidth(videoWidth);
+      newFabricCanvas.setHeight(videoHeight);
+  
+      // Reset canvas position
+      newFabricCanvas.wrapperEl.style.position = 'absolute';
+      newFabricCanvas.wrapperEl.style.left = '0';
+      newFabricCanvas.wrapperEl.style.top = '100px';
+  
+  
+  
+     
+      
+  
+      const newContainer = document.getElementById('video-container2');
+      newContainer.style.width = '500px';
+      newContainer.style.height = '400px';
+      newContainer.style.position = 'relative';
+      newContainer.style.float = 'right';
+      newContainer.style.top = '0.5px';
+      newContainer.style.right = '-150px';
+      newContainer.style.backgroundColor = 'black';
+      
+      const canvasonSwitch = document.getElementById('toggle-icon2');
+      // if (canvasonSwitch.style.display == 'block') {
+      //     canvasonSwitch.style.left = '800px';
+      //     canvasonSwitch.style.top = '510px';
+      // }
+  
+      newFabricCanvas.calcOffset(); // Update the offset calculations
     }
 });
   }
