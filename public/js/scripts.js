@@ -34,7 +34,7 @@ function setupTimeline(video) {
     const timeline = document.getElementById('timeline');
     const duration = Math.floor(video.duration);
     timeline.style.setProperty('--duration', duration);
-
+    console.log(duration);
     for (let i = 0; i < duration; i++) {
                 const tick = document.createElement('div');
                 tick.classList.add('tick');
@@ -91,7 +91,7 @@ function setupTimeline(video) {
     pointer2.setAttribute('alt', 'draggable icon for progress bar');
     pointer2.classList.add('pointer2');
     pointer2.innerHTML = '<path d="M13 14.726C13 18.19 10.09 21 6.5 21S0 18.19 0 14.726C0 8.812 4.345 8 6.5 0 8 7.725 13 8.5 13 14.726z" fill="#CED0D1"></path><circle cx="6.5" cy="14.5" r="2.5" fill="#31373D"></circle>';
-
+    pointer2.style.display = 'none';
     timeline.appendChild(pointer2);
 
     // Update pointer position and tick colors based on video time
@@ -350,7 +350,7 @@ function view() {
 
 document.addEventListener('DOMContentLoaded', function() {
     const video = document.getElementById('video');
-    const currentTimeInput = document.querySelector('.current-time-input');
+    const currentTimeInput = document.getElementById('ex-current-time-input');
     const totalTimeSpan = document.querySelector('.formatted-timeframe span:nth-child(2) span:first-child');
 
    
@@ -559,6 +559,7 @@ function activateRectangleMode() {
 }
 
 function activateTextMode() {
+    
     canvas.isDrawingMode = false;
     drawingMode = 'text';
     const text = new fabric.Textbox('Type here', {
@@ -590,6 +591,7 @@ function activateNoteMode() {
 }
 
 function useEraser() {
+
     canvas.isDrawingMode = false;
     canvas.on('mouse:down', function(event) {
         if (event.target) {
@@ -603,8 +605,10 @@ function useEraser() {
 
     
     canvas.remove(removedObject);
+    
     // canvas.remove(event.target);
 }
+
 });
 }
 
@@ -2256,14 +2260,18 @@ const zoomScale = 1.2;
         //canvas.style.transform = video.style.transform;
         const offsetX = (videoWidth - video.clientWidth)/2;
         const offsetY = (videoHeight - video.clientHeight) / 2;
-
+        const canvasonSwitch = document.getElementById('toggle-icon');
+        if(canvasonSwitch.style.display == 'block'){
+            canvasonSwitch.style.left= '50px';
+            canvasonSwitch.style.top = '510px';
+        }
         // Use CSS to position the canvas
         canvas.wrapperEl.style.position = 'absolute';
         canvas.wrapperEl.style.left = `${-offsetX}px`;
         canvas.wrapperEl.style.top = `${-offsetY}px`;
         
         canvas.calcOffset(); // Update the offset calculations
-        document.getElementsByClassName('buttons-container')[0].style.marginTop = '250px';
+       // document.getElementsByClassName('buttons-container')[0].style.marginTop = '250px';
     } else {
         video.style.transform = 'scale(1)';
         fabricCanvas.width = video.clientWidth;
@@ -2277,6 +2285,12 @@ const zoomScale = 1.2;
         canvas.wrapperEl.style.position = 'absolute';
         canvas.wrapperEl.style.top= '0.5px';
         canvas.wrapperEl.style.left= '3px';
+
+        const canvasonSwitch = document.getElementById('toggle-icon');
+        if(canvasonSwitch.style.display == 'block'){
+            canvasonSwitch.style.left= '150px';
+            canvasonSwitch.style.top = '500px';
+        }
         canvas.calcOffset(); 
     }
 });

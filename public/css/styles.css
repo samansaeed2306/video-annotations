@@ -13,6 +13,7 @@ body {
     background-color:#252c31;
     /* background-color: #000; */
 }
+
 .tools {
     position: fixed;
     top: 0px;
@@ -62,7 +63,14 @@ body {
     top: 12px; /* You can adjust this to position it vertically */
     margin-right: 100px; /* Optional: Adjust the margin as needed */  
 }
+#container-wrapper {
+    display: flex;
+    justify-content: flex-start; 
+    align-items: flex-start;  
+   
+    position: relative;
 
+  }
 
 #video-container {
     margin-bottom: 0px;
@@ -83,6 +91,24 @@ video {
     
 }
 
+#toggle-icon {
+    position: absolute;
+    /* bottom: 10px;  */
+    top: 500px;
+    left: 150px; 
+    width: 30px; 
+    height: 30px;
+    cursor: pointer;
+}
+#toggle-icon2 {
+    position: absolute;
+    /* bottom: 10px;  */
+    top:500px;
+    left: 950px; 
+    width: 30px; 
+    height: 30px;
+    cursor: pointer;
+}
 #zoom-icon {
     position: absolute;
     top: 10px;
@@ -109,6 +135,48 @@ video {
     background-color: none;
     /* cursor: pointer;  */
 }
+
+/* Default (enabled) state */
+#toggle-icon.enabled path:first-child {
+    fill: rgb(87, 103, 201); /* Enabled color */
+    
+}
+
+/* Disabled state */
+#toggle-icon.disabled path:first-child {
+    fill: gray; /* Disabled color */
+}
+#toggle-icon.enabled .movable-path {
+    transform: translateX(0); /* Start at the right (default position) */
+    transition: transform 0.3s ease; /* Smooth transition */
+}
+
+/* Disabled state */
+#toggle-icon.disabled .movable-path {
+    transform: translateX(-40px); /* Move to the left */
+    transition: transform 0.3s ease; /* Smooth transition */
+}
+/* Default (enabled) state */
+#toggle-icon2.enabled path:first-child {
+    fill: rgb(87, 103, 201); /* Enabled color */
+}
+
+/* Disabled state */
+#toggle-icon2.disabled path:first-child {
+    fill: gray; /* Disabled color */
+}
+#toggle-icon2.enabled .movable-path {
+    transform: translateX(0); /* Start at the right (default position) */
+    transition: transform 0.3s ease; /* Smooth transition */
+}
+
+/* Disabled state */
+#toggle-icon2.disabled .movable-path {
+    transform: translateX(-40px); /* Move to the left */
+    transition: transform 0.3s ease; /* Smooth transition */
+}
+
+
 .annotations {
     position: fixed;
     right: -3px;
@@ -152,6 +220,16 @@ video {
 
 }
 
+#timeline-wrapper {
+  
+    position: relative;
+    width: 100%; 
+    overflow: hidden;
+    top:-2px;
+   
+}
+
+
 .timeline {
     position: relative;
     bottom:0px;
@@ -165,7 +243,7 @@ video {
     margin-top: 0px;
     overflow: hidden;
     height: 400px;
-    left: -9.8%;
+    left: -0.1%;
     margin: 0px;
     top:-2px;
     
@@ -192,7 +270,7 @@ video {
     width: calc(100% / var(--duration)); 
     height: 5px;
     background-color:white;
-    margin-top: 50px;
+    margin-top: 30px;
     cursor: pointer;
     position: relative;
 }
@@ -225,16 +303,16 @@ video {
     opacity: 0.5;
 }
 
-.pointer2 {
+/* .pointer2 {
     position: absolute;
      top: 88px;
      margin-left: 10px;
     /* transform: translateX(-10%);  */ 
-    left: 0px; /* Start at the leftmost position */
+    /* left: 0px; 
     transform: translateX(0%);
     cursor: pointer;
-    z-index: 10;
-}
+    z-index: 10; */
+/* } */
 /* #play-pause-button {
     margin-left: 20px;
 } */
@@ -242,7 +320,14 @@ video {
     display: none;
 }
 
-
+#parentbtncontainer {
+    display: flex;
+    justify-content: space-between; /* Adjust this as needed */
+    align-items: center;
+    width: 100%; /* Ensure it takes up the full width of the parent */
+    flex-wrap: wrap; /* Allows the containers to wrap to a new line if necessary */
+    gap: 10px; /* Adjust the spacing between the containers */
+}
 .buttons-container {
     display: flex;
     justify-content: space-between; 
@@ -252,7 +337,7 @@ video {
     /* background: var(--controls-background); */
     width: 78.7%;
     position: relative;
-    left: -10%; 
+    left: -0.5%; 
     margin-left: 10px; 
     top:-2px;
     /* margin-top: 100px; */
@@ -581,7 +666,19 @@ body::before {
     opacity: 0;
     transition: opacity 0.3s ease;  */
 /* }  */
-
+.upload-another-video-icon {
+    width: 20px;
+    height: 20px;
+   
+    position: relative;
+    right: -300px; 
+  }
+  
+  .upload-another-video-icon path {
+    stroke: #abb0c4;
+  }
+  
+  
 
 /* Media queries for mobile responsiveness */
 @media  (max-width: 414px) and (min-width: 270px){
