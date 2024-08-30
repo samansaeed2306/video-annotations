@@ -758,6 +758,7 @@ body::before {
     }
 
     .tools button {
+        /* opacity: 0.8; */
         margin:2px;
         padding: 0px;
         width: 25px;
@@ -899,7 +900,7 @@ body::before {
    display: none;
 }
 
-#undo, #redo, #eraser{
+#undo, #redo{
     display: none;
 }
 
@@ -915,5 +916,23 @@ body::before {
 #audio-visualizer-button{
 display: block;
 
+}
+
+.tools button img {
+    width: 17px;
+    height: 17px;
+    opacity: 1;
+}
+.tools button svg {
+    width: 17px;
+    height: 17px;
+    opacity: 1;
+}
+
+.tools button {
+    border-radius: 15px;
+    padding: 2px;
+    
+    
 }
 }
