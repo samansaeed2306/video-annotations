@@ -1,4 +1,4 @@
-// src/controllers/videoController.js
+
 
 import { createVideoFromImages } from '../utils/ffmpegUtil.js';
 import path from 'path';
@@ -19,12 +19,12 @@ export async function uploadAndCreateVideo(req, res) {
         const tempDir = path.join(__dirname, '../temp');
         const outputFilePath = path.join(tempDir, 'output.mp4');
 
-        // Ensure temp directory exists
+        
         if (!fs.existsSync(tempDir)) {
             fs.mkdirSync(tempDir);
         }
 
-        // Decode base64 images and save them temporarily
+        
         const imagePaths = [];
         for (let i = 0; i < base64Images.length; i++) {
             const base64Data = base64Images[i].split(',')[1];
@@ -34,12 +34,12 @@ export async function uploadAndCreateVideo(req, res) {
             imagePaths.push(filePath);
         }
 
-        // Create video from images
+      
         await createVideoFromImages(imagePaths, outputFilePath);
 
-        // Send video file as response
+        
         res.download(outputFilePath, 'video.mp4', (err) => {
-            // Clean up files
+           
             imagePaths.forEach(imagePath => fs.unlinkSync(imagePath));
             fs.unlinkSync(outputFilePath);
 

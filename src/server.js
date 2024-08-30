@@ -9,25 +9,25 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-app.use(express.json()); // For parsing application/json
+app.use(express.json()); 
 app.use(cors({
-  origin: 'http://localhost:3000' // Adjust this as needed
+  origin: 'http://localhost:3000' 
 }));
 // Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, '../public')));
 
 connectToDb();
 
-// API routes
+
 app.use('/api', annotationRoutes);
 // app.use('/', videoRoutes);
-// Handle 404 for unknown routes
+
 app.use((req, res, next) => {
   res.status(404).send('Not Found');
 });
 
 
-// Start the server
+
 const PORT = 8080;
 app.listen(PORT, () => {
   console.log(`Server is running at http://localhost:${PORT}`);
