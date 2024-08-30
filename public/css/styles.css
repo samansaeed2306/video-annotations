@@ -136,44 +136,44 @@ video {
     /* cursor: pointer;  */
 }
 
-/* Default (enabled) state */
+
 #toggle-icon.enabled path:first-child {
-    fill: rgb(87, 103, 201); /* Enabled color */
+    fill: rgb(87, 103, 201); 
     
 }
 
-/* Disabled state */
+
 #toggle-icon.disabled path:first-child {
-    fill: gray; /* Disabled color */
+    fill: gray;
 }
 #toggle-icon.enabled .movable-path {
-    transform: translateX(0); /* Start at the right (default position) */
-    transition: transform 0.3s ease; /* Smooth transition */
+    transform: translateX(0); 
+    transition: transform 0.3s ease; 
 }
 
-/* Disabled state */
+
 #toggle-icon.disabled .movable-path {
-    transform: translateX(-40px); /* Move to the left */
-    transition: transform 0.3s ease; /* Smooth transition */
-}
-/* Default (enabled) state */
-#toggle-icon2.enabled path:first-child {
-    fill: rgb(87, 103, 201); /* Enabled color */
+    transform: translateX(-40px); 
+    transition: transform 0.3s ease; 
 }
 
-/* Disabled state */
+#toggle-icon2.enabled path:first-child {
+    fill: rgb(87, 103, 201);
+}
+
+
 #toggle-icon2.disabled path:first-child {
-    fill: gray; /* Disabled color */
+    fill: gray; 
 }
 #toggle-icon2.enabled .movable-path {
-    transform: translateX(0); /* Start at the right (default position) */
-    transition: transform 0.3s ease; /* Smooth transition */
+    transform: translateX(0); 
+    transition: transform 0.3s ease; 
 }
 
-/* Disabled state */
+
 #toggle-icon2.disabled .movable-path {
-    transform: translateX(-40px); /* Move to the left */
-    transition: transform 0.3s ease; /* Smooth transition */
+    transform: translateX(-40px); 
+    transition: transform 0.3s ease; 
 }
 
 
@@ -261,7 +261,7 @@ video {
     opacity: 0.6;
 }
 .video-button {
-    background-color: #343a40; /* Sets the background color of the SVG */
+    background-color: #343a40; 
     
 }
 
@@ -322,11 +322,11 @@ video {
 
 #parentbtncontainer {
     display: flex;
-    justify-content: space-between; /* Adjust this as needed */
+    justify-content: space-between; 
     align-items: center;
-    width: 100%; /* Ensure it takes up the full width of the parent */
-    flex-wrap: wrap; /* Allows the containers to wrap to a new line if necessary */
-    gap: 10px; /* Adjust the spacing between the containers */
+    width: 100%; 
+    flex-wrap: wrap;
+    gap: 10px; 
 }
 .buttons-container {
     display: flex;
@@ -549,37 +549,37 @@ canvas4:nth-of-type(2) {
 }
 .save-btn {
     position: absolute;
-    top: 10px; /* Adjust as needed */
-    right: -90px; /* Adjust as needed */
+    top: 10px; 
+    right: -90px; 
     background: none;
     border: none;
     cursor: pointer;
 }
 
 .save-btn svg {
-    fill: #ffffff; /* Original color */
+    fill: #ffffff; 
 }
 
 .save-btn.active svg {
-    fill: #FFD700; /* Yellow color when active */
+    fill: #FFD700; 
 }
 
 #save-button:hover {
-    background-color: transparent; /* ensure no grey background on hover */
+    background-color: transparent; 
 }
 .save-label {
-    margin-left: 10px; /* space between icon and text */
-    color: white; /* text color */
-    font-size: 16px; /* adjust font size as needed */
+    margin-left: 10px; 
+    color: white; 
+    font-size: 16px; 
     position: absolute;
-    top: 23px; /* Adjust as needed */
-    right: 76px; /* Adjust as needed */
+    top: 23px; 
+    right: 76px;
     background: none;
 }
-/* Styles for the blur effect */
+
 .blur {
     filter: blur(5px);
-    pointer-events: none; /* Prevent interactions while blurred */
+    pointer-events: none; 
 }
 /* Styles for the blur effect */
 .blur {
@@ -678,10 +678,12 @@ body::before {
     stroke: #abb0c4;
   }
   
-  
+  #audio-visualizer-button{
+    display: none;
+    }
 
 /* Media queries for mobile responsiveness */
-@media  (max-width: 414px) and (min-width: 270px){
+@media  (max-width: 414px) and (min-width: 200px){
     /* Remove body styles to focus on video and canvas */
     body {
         margin: 0;
@@ -756,6 +758,7 @@ body::before {
     }
 
     .tools button {
+        /* opacity: 0.8; */
         margin:2px;
         padding: 0px;
         width: 25px;
@@ -824,7 +827,7 @@ body::before {
     .save-btn {
         position: fixed; /* Changed to fixed to stay relative to viewport */
         top: 10px; /* Distance from the top of the viewport */
-        right: -15px; /* Distance from the right edge of the viewport */
+        right: -45px; /* Distance from the right edge of the viewport */
         background: transparent;
         background-color: transparent;
         border: none;
@@ -881,7 +884,7 @@ body::before {
 .timeline .tick2 {
     display: inline-block;
     width: calc(100% / var(--duration)); 
-    height: 5px;
+    height: 2px;
     background-color: #ffffff;
     cursor: pointer;
     position: relative;
@@ -897,7 +900,7 @@ body::before {
    display: none;
 }
 
-#undo, #redo, #eraser{
+#undo, #redo{
     display: none;
 }
 
@@ -910,5 +913,26 @@ body::before {
 .view-icon {
    display:none;
 }
+#audio-visualizer-button{
+display: block;
 
+}
+
+.tools button img {
+    width: 17px;
+    height: 17px;
+    opacity: 1;
+}
+.tools button svg {
+    width: 17px;
+    height: 17px;
+    opacity: 1;
+}
+
+.tools button {
+    border-radius: 15px;
+    padding: 2px;
+    
+    
+}
 }
