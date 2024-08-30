@@ -17,6 +17,7 @@ function adjustVideoButtons() {
         // Check if audioVisualizerButton is present
         if (audioVisualizerButton) {
             console.log('audioVisualizerButton is present');
+            audioVisualizerButton.style.display = 'block';
         } else {
             console.log('audioVisualizerButton is not present');
         }
@@ -39,6 +40,7 @@ function adjustVideoButtons() {
             }
         });
         audioVisualizerButton.style.left = '-115px';
+        audioVisualizerButton.style.top = '-18px';
         previousButton.style.left = '-30px';
         nextButton.style.left = '-25px';
         videoButtons.style.backgroundColor = 'transparent';
@@ -80,6 +82,37 @@ function adjustVideoButtons() {
     }
 }
 
-// Call this function when the page loads and when the window is resized
+function toggleAudioWave() {
+    const audioWave = document.querySelector('.audio-wave');
+    audioWave.classList.toggle('active');
+}
+
+// // Simulating video play/pause
+// let isPlaying = false;
+// function togglePlayPause() {
+//     isPlaying = !isPlaying;
+//     const playPauseButton = document.getElementById('play-pause-button');
+//     const playPauseIcon = playPauseButton.querySelector('path:last-child');
+//     const audioWave = document.querySelector('.audio-wave');
+
+//     if (isPlaying) {
+//         playPauseIcon.setAttribute('d', 'M6 19h4V5H6v14zm8-14v14h4V5h-4z');
+//         playPauseButton.querySelector('.button-text').textContent = 'Pause';
+//         audioWave.classList.add('active');
+//     } else {
+//         playPauseIcon.setAttribute('d', 'M8 5v14l11-7z');
+//         playPauseButton.querySelector('.button-text').textContent = 'Play';
+//         audioWave.classList.remove('active');
+//     }
+// }
+
+// // Call this function when the page loads and when the window is resized
 window.addEventListener('load', adjustVideoButtons);
 window.addEventListener('resize', adjustVideoButtons);
+
+// // Add event listener for play/pause button
+// document.getElementById('play-pause-button').addEventListener('click', togglePlayPause);
+
+// // Add event listener for audio visualizer button
+// document.getElementById('audio-visualizer-button').addEventListener('click', toggleAudioWave);
+
