@@ -827,7 +827,7 @@ body::before {
     .save-btn {
         position: fixed; /* Changed to fixed to stay relative to viewport */
         top: 10px; /* Distance from the top of the viewport */
-        right: -15px; /* Distance from the right edge of the viewport */
+        right: -45px; /* Distance from the right edge of the viewport */
         background: transparent;
         background-color: transparent;
         border: none;
