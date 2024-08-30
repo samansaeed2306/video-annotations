@@ -586,7 +586,11 @@ canvas4:nth-of-type(2) {
     filter: blur(5px);
     pointer-events: none; /* Prevent interactions while blurred */
 }
-
+#video-btn-id{
+    margin-left: 200px;
+    margin-top: 20px;
+    
+}
 /* Styles for the message overlay */
 .overlay {
     position: fixed;
