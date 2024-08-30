@@ -11,7 +11,7 @@
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.5.0/fabric.min.js"></script>
     
-     <!-- Shaka Player -->
+     
      <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/3.1.0/shaka-player.compiled.js"></script>
      <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
      <!-- <script src="https://cdn.rawgit.com/antimatter15/whammy/8acfa3e6/whammy.js"></script> -->
@@ -26,12 +26,13 @@
 
      <link rel="stylesheet" href="css/styles.css">
      <link rel="stylesheet" href="css/multiVideoHandler.css">
+     <link rel="stylesheet" href="css/mobileLayout.css">
      
 
 </head>
 <body>
    
-    <!-- Drawing Tools -->
+   
     <div class="tools">  
         <div class="view-icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#abb0c4" onclick="view()">
@@ -191,7 +192,7 @@
     
 </div>
 
-    <!-- Fabric.js Canvas -->
+  
     <div id="container-wrapper">
     <div id="video-container">
         <video id="video"></video>
@@ -320,8 +321,8 @@
                 </ul>
             </div>
         </div>
-        <div class="video-buttons center">
-            <button class="video-button" title="Previous">
+        <div id="video-btn-id" class="video-buttons center">
+            <button class="video-button" title="Previous" id="previous-button">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
                     <path d="M0 0h24v24H0z" fill="none"></path>
                     <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"></path>
@@ -334,10 +335,43 @@
                     <path id="pause-icon" d="M6 6h2v12H6zm3.5 0h2v12h-2z" style="display: none;"></path>
                 </svg>
             </button>
-            <button class="video-button" title="Next">
+            <button class="video-button" title="Next" id="next-button">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
                     <path d="M0 0h24v24H0z" fill="none"></path>
                     <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"></path>
+                </svg>
+            </button>
+            <button class="video-button" title="Audio Visualizer" id="audio-visualizer-button">
+            <svg class="audio-wave" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="160" height="26" viewBox="0 0 256 256" xml:space="preserve">
+                    <g style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: none; fill-rule: nonzero; opacity: 1;" transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)">
+                        <path class="wave" d="M10.135 55.135c-1.104 0-2-0.896-2-2v-16.27c0-1.104 0.896-2 2-2s2 0.896 2 2v16.27C12.135 54.239 11.24 55.135 10.135 55.135z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: #ffffff; fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
+                        <path class="wave" d="M21.757 72.567c-1.104 0-2-0.896-2-2V19.433c0-1.104 0.896-2 2-2s2 0.896 2 2v51.135C23.757 71.672 22.861 72.567 21.757 72.567z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: #ffffff; fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
+                        <path class="wave" d="M33.378 90c-1.104 0-2-0.896-2-2V2c0-1.104 0.896-2 2-2s2 0.896 2 2v86C35.378 89.104 34.483 90 33.378 90z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: #ffffff; fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
+                        <path class="wave" d="M45 72.567c-1.104 0-2-0.896-2-2V19.433c0-1.104 0.896-2 2-2s2 0.896 2 2v51.135C47 71.672 46.104 72.567 45 72.567z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: #ffffff; fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
+                        <path class="wave" d="M56.622 55.135c-1.104 0-2-0.896-2-2v-16.27c0-1.104 0.896-2 2-2s2 0.896 2 2v16.27C58.622 54.239 57.727 55.135 56.622 55.135z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: #ffffff; fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
+                        <path class="wave" d="M68.243 72.567c-1.104 0-2-0.896-2-2V19.433c0-1.104 0.896-2 2-2s2 0.896 2 2v51.135C70.243 71.672 69.348 72.567 68.243 72.567z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: #ffffff; fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
+                        <path class="wave" d="M79.865 55.135c-1.104 0-2-0.896-2-2v-16.27c0-1.104 0.896-2 2-2s2 0.896 2 2v16.27C81.865 54.239 80.97 55.135 79.865 55.135z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: #ffffff; fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
+                        <path class="wave" d="M91.486 90c-1.104 0-2-0.896-2-2V2c0-1.104 0.896-2 2-2s2 0.896 2 2v86C93.486 89.104 92.591 90 91.486 90z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: #ffffff; fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
+                        <path class="wave" d="M103.108 72.567c-1.104 0-2-0.896-2-2V19.433c0-1.104 0.896-2 2-2s2 0.896 2 2v51.135C105.108 71.672 104.213 72.567 103.108 72.567z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: #ffffff; fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
+                        <path class="wave"d="M114.729 55.135c-1.104 0-2-0.896-2-2v-16.27c0-1.104 0.896-2 2-2s2 0.896 2 2v16.27C116.729 54.239 115.834 55.135 114.729 55.135z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: #ffffff; fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
+                        <path class="wave" d="M126.351 72.567c-1.104 0-2-0.896-2-2V19.433c0-1.104 0.896-2 2-2s2 0.896 2 2v51.135C128.351 71.672 127.455 72.567 126.351 72.567z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: #ffffff; fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
+                        <path class="wave" d="M137.973 55.135c-1.104 0-2-0.896-2-2v-16.27c0-1.104 0.896-2 2-2s2 0.896 2 2v16.27C139.973 54.239 139.078 55.135 137.973 55.135z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: #ffffff; fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
+                        <path class="wave" d="M149.594 72.567c-1.104 0-2-0.896-2-2V19.433c0-1.104 0.896-2 2-2s2 0.896 2 2v51.135C151.594 71.672 150.699 72.567 149.594 72.567z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: #ffffff; fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
+                        <path class="wave" d="M161.216 55.135c-1.104 0-2-0.896-2-2v-16.27c0-1.104 0.896-2 2-2s2 0.896 2 2v16.27C163.216 54.239 162.321 55.135 161.216 55.135z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: #ffffff; fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
+                        <path class="wave" d="M172.838 72.567c-1.104 0-2-0.896-2-2V19.433c0-1.104 0.896-2 2-2s2 0.896 2 2v51.135C174.838 71.672 173.943 72.567 172.838 72.567z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: #ffffff; fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
+                        <path class="wave" d="M184.459 90c-1.104 0-2-0.896-2-2V2c0-1.104 0.896-2 2-2s2 0.896 2 2v86C186.459 89.104 185.564 90 184.459 90z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: #ffffff; fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
+                        <path class="wave" d="M196.081 72.567c-1.104 0-2-0.896-2-2V19.433c0-1.104 0.896-2 2-2s2 0.896 2 2v51.135C198.081 71.672 197.185 72.567 196.081 72.567z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: #ffffff; fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
+                        <path class="wave" d="M207.702 55.135c-1.104 0-2-0.896-2-2v-16.27c0-1.104 0.896-2 2-2s2 0.896 2 2v16.27C209.702 54.239 208.807 55.135 207.702 55.135z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: #ffffff; fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
+                        <path class="wave" d="M219.324 72.567c-1.104 0-2-0.896-2-2V19.433c0-1.104 0.896-2 2-2s2 0.896 2 2v51.135C221.324 71.672 220.428 72.567 219.324 72.567z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: #ffffff; fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
+                        <path class="wave" d="M230.945 90c-1.104 0-2-0.896-2-2V2c0-1.104 0.896-2 2-2s2 0.896 2 2v86C232.945 89.104 232.05 90 230.945 90z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: #ffffff; fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
+                        <path class="wave" d="M242.567 72.567c-1.104 0-2-0.896-2-2V19.433c0-1.104 0.896-2 2-2s2 0.896 2 2v51.135C244.567 71.672 243.672 72.567 242.567 72.567z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: #ffffff; fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
+                        <path class="wave" d="M254.188 55.135c-1.104 0-2-0.896-2-2v-16.27c0-1.104 0.896-2 2-2s2 0.896 2 2v16.27C256.188 54.239 255.293 55.135 254.188 55.135z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: #ffffff; fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
+                        <path class="wave" d="M265.809 72.567c-1.104 0-2-0.896-2-2V19.433c0-1.104 0.896-2 2-2s2 0.896 2 2v51.135C267.809 71.672 266.913 72.567 265.809 72.567z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: #ffffff; fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
+                        <path class="wave" d="M277.43 90c-1.104 0-2-0.896-2-2V2c0-1.104 0.896-2 2-2s2 0.896 2 2v86C279.43 89.104 278.535 90 277.43 90z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: #ffffff; fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
+                        <path class="wave" d="M289.052 72.567c-1.104 0-2-0.896-2-2V19.433c0-1.104 0.896-2 2-2s2 0.896 2 2v51.135C291.052 71.672 290.156 72.567 289.052 72.567z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: #ffffff; fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
+                        <path class="wave" d="M300.673 55.135c-1.104 0-2-0.896-2-2v-16.27c0-1.104 0.896-2 2-2s2 0.896 2 2v16.27C302.673 54.239 301.778 55.135 300.673 55.135z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: #ffffff; fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
+                        <path class="wave" d="M312.295 72.567c-1.104 0-2-0.896-2-2V19.433c0-1.104 0.896-2 2-2s2 0.896 2 2v51.135C314.295 71.672 313.4 72.567 312.295 72.567z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: #ffffff; fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
+                    </g>
                 </svg>
             </button>
         </div>
@@ -426,7 +460,7 @@
     <script src="js/webm-writer.min.js"></script> -->
     <script src="js/scripts.js"></script>
     <script src="js/multiVideoHandler.js"></script>
-   
+    <script src="js/mobileLayout.js"></script>
    
 </body>
 </html>

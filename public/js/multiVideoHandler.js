@@ -81,9 +81,9 @@ document.addEventListener('DOMContentLoaded', () => {
     newVideo = document.createElement('video');
     newVideo.src = url;
     newVideo.style.width = '500px';
-    newVideo.style.height = '281px'; // Keep the original aspect ratio
+    newVideo.style.height = '281px'; 
 
-    // Center the video vertically in the container
+   
     newVideo.style.position = 'absolute';
     newVideo.style.top = '50%';
     newVideo.style.left = '0';
@@ -96,9 +96,9 @@ document.addEventListener('DOMContentLoaded', () => {
     newContainer.appendChild(newVideo);
     newContainer.appendChild(newCanvas);
     containerWrapper.appendChild(newContainer);
-    // newVideo.play();
+ 
     setupTimelineforVideo2();
-    // Initialize Fabric.js on the new canvas
+    
     newFabricCanvas = new fabric.Canvas(newCanvas, {
       selection: false,
       isDrawingMode: false
@@ -134,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
           document.getElementById('eraser').onclick = isDisabled ? useEraserCanvas2 : useEraser;
           document.getElementById('undo').onclick = isDisabled ? undoCanvas2 : undo;
           document.getElementById('redo').onclick = isDisabled ? redoCanvas2 : redo;
-          // document.getElementById('microphone-icon').onclick = isDisabled ? redoCanvas2 : redo;
+          
           const microphoneIcon = document.getElementById('microphone-icon');
           if (isDisabled) {
             microphoneIcon.removeEventListener('click', toggleMicrophone);
@@ -172,7 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('existing-btn-cont').style.left='0.4px';
     // timeline.style.left='-10%';
     
-    // Add the same buttons as the original buttons-container
+   
     newButtonsContainer.innerHTML = `
         <div class="video-buttons">
             <div class="button-with-menu">
@@ -219,10 +219,10 @@ document.addEventListener('DOMContentLoaded', () => {
         
     `;
     
-    // Append the new buttons-container to the containerWrapper
+    
     document.getElementById('parentbtncontainer').appendChild(newButtonsContainer);
     const newplayPauseButton = document.getElementById('new-play-pause-button');
-// const newplayPauseImage = playPauseButton.querySelector('img');
+
 
 newplayPauseButton.addEventListener('click', () => {
   const playIcon = document.getElementById('new-play-icon');
@@ -245,34 +245,16 @@ newplayPauseButton.addEventListener('click', () => {
 if (newVideo.paused) {
     console.log('inside play condition')
     newVideo.play();
-    //playAudioAnnotationIfExists(video.currentTime);
-   // playPauseImage.src = 'icons/pause.png';
-    //playPauseImage.alt = 'Pause';
+    
 } else {
     console.log('inside pause condition')
     newVideo.pause();
-   // playPauseImage.src = 'icons/play.jpg';
-   // playPauseImage.alt = 'Play';
+   
 }
 });
    
 
-  // const video2 = document.getElementById('new-video2');
-  //  const currentTimeInput2 = document.getElementById('new-video-time');
   
-
- 
-  
-  
-
-  // video2.addEventListener('timeupdate', function() {
-  //     currentTimeInput2.value = newformatTime(video.currentTime);
-  //     console.log('timeupdated');
-  // });
-
-  // video.addEventListener('loadedmetadata', function() {
-  //     totalTimeSpan.textContent = ` / ${newformatTime(video.duration)}`;
-  // });
 
 
 function newformatTime(seconds) {
@@ -381,15 +363,12 @@ function newformatTime(seconds) {
         if (event.target) {
             const removedObject = event.target;
     
-            // const currentTime = video.currentTime;
-           // removeAnnotation(currentTime); to be added 
-            // updateAnnotationsList();
-            // updateTimelineIcons(); 
+          
     
 
     
             newFabricCanvas.remove(removedObject);
-    // canvas.remove(event.target);
+  
 }
 });
      }
@@ -437,7 +416,7 @@ function newformatTime(seconds) {
       console.log('Recording stopped');
      
   }
-  // const timeline2 = document.getElementById('timeline-container2');
+  
   async function saveRecording() {
     const blob = new Blob(recordedchunks, { type: 'audio/webm' });
     const url = URL.createObjectURL(blob);
@@ -446,10 +425,10 @@ function newformatTime(seconds) {
     audioElement.className = 'audio-element';
     audioElement.controls = true;
     audioElement.src = url;
-    //audioElement.style.width='200px';
+    
   document.body.appendChild(audioElement);
 
-    // Save the recording with the corresponding video duration
+    
     const startTime = newVideo.currentTime;
     console.log(blob.size);
     const duration = (blob.size + 786.05)/17402.05;
@@ -533,14 +512,7 @@ function newformatTime(seconds) {
         //recordAnnotation(video.currentTime);
     }
     
-    // function undo() {
-    //     if (mods > 0) {
-    //         mods -= 1;
-    //         canvas.loadFromJSON(state[mods]);
-    //         canvas.renderAll();
-    //     }
-    // }
-    
+  
     function redoCanvas2() {
         if (newmods < state.length - 1) {
           newmods += 1;
@@ -605,52 +577,47 @@ newContainer.addEventListener('dblclick', () => {
         newVideo.style.transform = `scale(${zScale})`;
         console.log(`Video Transform scale(${newVideo.style.transform})`)
         console.log(`Video Position scale(${newVideo.style.position})`)
-        // Adjust canvas dimensions to match zoomed video
+        
         const videoWidth = newVideo.clientWidth * zScale;
         const videoHeight = newVideo.clientHeight * zScale;
         newCanvas.width = videoWidth;
         newCanvas.height = videoHeight;
         newCanvas.top='100px';
 
-        const shiftX = 55; // Adjust this value to shift the video to the left
-        const shiftY = 35; // Adjust this value to shift the video upward
+        const shiftX = 55; 
+        const shiftY = 35; 
     
-        newVideo.style.position = 'relative'; // Ensure the video is positioned relatively
-        newVideo.style.top = `${shiftY}px`;   // Move video upward
-        newVideo.style.left = `${shiftX}px`;  // Move video to the left
+        newVideo.style.position = 'relative'; 
+        newVideo.style.top = `${shiftY}px`;   
+        newVideo.style.left = `${shiftX}px`; 
 
         newFabricCanvas.setWidth(videoWidth);
         newFabricCanvas.setHeight(videoHeight);
 
-        //canvas.style.transform = video.style.transform;
+        
         const offsetX = ((videoWidth - newVideo.clientWidth)/2)-50;
         const offsetY = ((videoHeight - newVideo.clientHeight) / 2)+100;
-        // const canvasonSwitch = document.getElementById('toggle-icon2');
-        // if(canvasonSwitch.style.display == 'block'){
-        //     canvasonSwitch.style.left= '800px';
-        //     canvasonSwitch.style.top = '500px';
-        // }
-        // Use CSS to position the canvas
+        
         newFabricCanvas.wrapperEl.style.position = 'absolute';
         newFabricCanvas.wrapperEl.style.left = `${-offsetX}px`;
         newFabricCanvas.wrapperEl.style.top = `${offsetY}px`;
         
-        newFabricCanvas.calcOffset(); // Update the offset calculations
+        newFabricCanvas.calcOffset(); 
       
         const newvideocontainer = document.getElementById('video-container2');
         newvideocontainer.style.width = '600px';
         newvideocontainer.style.right = '-150px';
     } else {
-      newVideo.style.transform = 'scale(1)'; // Reset scale to default
+      newVideo.style.transform = 'scale(1)';
 
-      // Reset canvas dimensions to match the original video size
-      const videoWidth = 500; // Original video width
-      const videoHeight = 281; // Original video height (aspect ratio)
+      
+      const videoWidth = 500; 
+      const videoHeight = 281; 
   
       newCanvas.width = videoWidth;
       newCanvas.height = videoHeight;
   
-      // Reset video position to original centered state
+      
       newVideo.style.position = 'absolute';
       newVideo.style.top = '50%';
       newVideo.style.left = '0';
@@ -659,7 +626,7 @@ newContainer.addEventListener('dblclick', () => {
       newFabricCanvas.setWidth(videoWidth);
       newFabricCanvas.setHeight(videoHeight);
   
-      // Reset canvas position
+      
       newFabricCanvas.wrapperEl.style.position = 'absolute';
       newFabricCanvas.wrapperEl.style.left = '0';
       newFabricCanvas.wrapperEl.style.top = '100px';
@@ -679,12 +646,8 @@ newContainer.addEventListener('dblclick', () => {
       newContainer.style.backgroundColor = 'black';
       
       const canvasonSwitch = document.getElementById('toggle-icon2');
-      // if (canvasonSwitch.style.display == 'block') {
-      //     canvasonSwitch.style.left = '800px';
-      //     canvasonSwitch.style.top = '510px';
-      // }
-  
-      newFabricCanvas.calcOffset(); // Update the offset calculations
+      
+      newFabricCanvas.calcOffset(); 
     }
 });
   }
@@ -698,9 +661,9 @@ function handleImgUpload(event) {
       reader.onload = function(e) {
           const dataURL = e.target.result;
 
-          // Create a Fabric.js image object
+          
           fabric.Image.fromURL(dataURL, function(img) {
-              // Set default properties for the image
+            
               img.set({
                   left: 50,
                   top: 50,
@@ -711,14 +674,14 @@ function handleImgUpload(event) {
                   hasBorders: true,
               });
 
-              // Add the image to the canvas
+             
               newFabricCanvas.add(img);
               newFabricCanvas.centerObject(img);
               newFabricCanvas.renderAll();
           });
       };
 
-      // Read the image file as a data URL
+     
       reader.readAsDataURL(file);
   }
 }
@@ -730,7 +693,7 @@ function recordAnnotation2() {
     const existingAnnotationIndex = newAnnotations.findIndex(annotation => Math.floor(annotation.time) === Math.floor(currentTime));
   const annotation = {
       time: currentTime,
-      content: JSON.stringify(newFabricCanvas.toJSON()), // Store the canvas state
+      content: JSON.stringify(newFabricCanvas.toJSON()), 
   };
   
   
@@ -748,7 +711,7 @@ function recordAnnotation2() {
 console.log('Annotation recorded:', annotation);
 updateAnnotationsnewVideo();
 newupdateTimelineIcon(currentTime);
-// const timeline = document.getElementById('timeline');
+
     const ticks = document.querySelectorAll('#timeline-container2 .newvideotick');
     const annotationTime = Math.floor(newVideo.currentTime);
     ticks.forEach(tick => {
@@ -830,19 +793,9 @@ function setupTimelineforVideo2() {
   }
 
 
-  // const pointer2 = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-  // pointer2.setAttribute('width', '13');
-  // pointer2.setAttribute('height', '21');
-  // pointer2.setAttribute('fill', 'none');
-  // pointer2.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-  // pointer2.setAttribute('alt', 'draggable icon for progress bar');
-  // pointer2.classList.add('pointer2');
-  // pointer2.innerHTML = '<path d="M13 14.726C13 18.19 10.09 21 6.5 21S0 18.19 0 14.726C0 8.812 4.345 8 6.5 0 8 7.725 13 8.5 13 14.726z" fill="#CED0D1"></path><circle cx="6.5" cy="14.5" r="2.5" fill="#31373D"></circle>';
-  // timelineContainer.appendChild(pointer2);
-
   function updatePointerAndTicks() {
     const percentage = (videoElement.currentTime / newVideoDuration) * 100;
-    // pointer2.style.left = `calc(${percentage}% - 6.5px)`;
+    
 
     const ticks2 = document.querySelectorAll('.newvideotick2');
     ticks2.forEach((tick2, index) => {
@@ -852,36 +805,12 @@ function setupTimelineforVideo2() {
         tick2.style.backgroundColor = 'white';
       }
     });
-    // const currentTimeInput2 = document.getElementById('new-video-time');
-    // currentTimeInput2.value = newformatTime(videoElement.currentTime);
+   
   }
 
   videoElement.addEventListener('timeupdate', updatePointerAndTicks);
 
-  // pointer2.addEventListener('mousedown', (e) => {
-  //   e.preventDefault();
-
-  //   const movePointer = (e) => {
-  //     const rect = timelineContainer.getBoundingClientRect();
-  //     const x = e.clientX - rect.left;
-  //     const percentage = (x / rect.width) * 100;
-  //     const newTime = (percentage / 100) * newVideoDuration;
-  //     videoElement.currentTime = Math.min(Math.max(newTime, 0), newVideoDuration);
-  //   };
-
-  //   const stopDragging = () => {
-  //     document.removeEventListener('mousemove', movePointer);
-  //     document.removeEventListener('mouseup', stopDragging);
-  //     updatePointerAndTicks();
-  //   };
-
-  //   document.addEventListener('mousemove', movePointer);
-  //   document.addEventListener('mouseup', stopDragging);
-  // });
-
-  // videoElement.addEventListener('ended', () => {
-  //   pointer2.style.left = `calc(100% - 29.5px)`;
-  // });
+ 
 });
   timelineWrapper.appendChild(timelineContainer);
 }
@@ -893,15 +822,13 @@ function updateNewVideoTimelineIcons() {
   for (let tick of ticks) {
       tick.classList.remove('has-drawing');
       const icon = tick.querySelector('.newvideoicon img');
-      // const audioElement = tick.querySelector('.audio-element');
       
-      // removePointernewvideo(tick); // Assuming you have a similar function for newvideoicon
+      
+      
       if (icon) {
           icon.style.display = 'none';
       }
-      // if (audioElement) {
-      //     audioElement.remove();
-      // }
+     
   }
   
   newAnnotations.forEach(annotation => {
@@ -939,7 +866,7 @@ function updateNewVideoTimelineIcons() {
               const icon = tick.querySelector('.newvideoicon img');
               if (icon) {
                   icon.style.display = 'block';
-                  createPointernewvideo(icon); // Assuming you have this function for the newvideoicon
+                  createPointernewvideo(icon);
               }
           }
       }
@@ -947,20 +874,16 @@ function updateNewVideoTimelineIcons() {
 }
 
 function updateAnnotationsnewVideo() {
-  // Filter and remove duplicate annotations based on time
+ 
   newAnnotations = Array.from(new Set(newAnnotations.map(a => a.time)))
       .map(time => newAnnotations.find(a => a.time === time));
 
-  // Filter out empty or invalid content annotations
+ 
   newAnnotations = newAnnotations.filter(annotation => annotation.content && annotation.content !== '{"version":"4.5.0","objects":[]}');
 
   console.log('Inside new video list update:', newAnnotations);
 
-  // Clear the annotations list
-  // const annotationsList = document.getElementById('new-annotations-list');
-  // annotationsList.innerHTML = '';
 
-  // Iterate over each annotation to create list items
   newAnnotations.forEach((annotation, index) => {
       console.log('Processing new video annotation:', annotation);
 
@@ -982,7 +905,7 @@ function updateAnnotationsnewVideo() {
               listItem.textContent = `${annotation.type} ${formatTime(annotation.time)}`;
           }
 
-          // Comment input field
+        
           const commentInput = document.createElement('input');
           commentInput.type = 'text';
           commentInput.placeholder = 'Add comment';
@@ -992,7 +915,7 @@ function updateAnnotationsnewVideo() {
               annotations[index].comment = commentInput.value;
           });
 
-          // Cancel button
+         
           const cancelButton = document.createElement('button');
           cancelButton.textContent = 'Cancel';
           cancelButton.style.display = 'none';
@@ -1004,7 +927,7 @@ function updateAnnotationsnewVideo() {
               listItem.removeChild(buttonsContainer);
           });
 
-          // Save button
+         
           const saveButton = document.createElement('button');
           saveButton.textContent = 'Save';
           saveButton.style.display = 'none';
@@ -1017,7 +940,7 @@ function updateAnnotationsnewVideo() {
               listItem.removeChild(buttonsContainer);
           });
 
-          // Delete icon
+         
           const deleteIcon = document.createElement('img');
           deleteIcon.src = 'icons/delete2.png';
           deleteIcon.alt = 'Delete';
@@ -1027,10 +950,10 @@ function updateAnnotationsnewVideo() {
           deleteIcon.style.marginLeft = '10px';
 
           deleteIcon.addEventListener('click', function() {
-              // Remove annotation from the list
+              
               newAnnotations.splice(index, 1);
 
-              // Remove pencil icon, pointer, and audio from the new video timeline
+             
               const tick = document.querySelector(`.newvideotick[data-time="${annotation.time}"]`);
               const tick2 = document.querySelector(`.newvideotick2[data-time="${annotation.time}"]`);
 
@@ -1047,16 +970,16 @@ function updateAnnotationsnewVideo() {
                   
                   if (icon) {
                       icon.remove();
-                      // removePointernewvideo(tick);
+                     
                   }
               }
 
-              // Update the annotations list and timeline icons
+             
               updateAnnotationsnewVideo();
               updateNewVideoTimelineIcons();
           });
 
-          // Append elements to the list item
+         
           listItem.appendChild(deleteIcon);
           listItem.appendChild(commentInput);
           // annotationsList.appendChild(listItem);
@@ -1147,14 +1070,7 @@ function removePointernewvideo(tick) {
   console.log("Removed pointer")
   }
   }
-  // function calculateAnnotationDuration(width) {
-  // const timelineWidth = timeline.offsetWidth;
-  // return (width / timelineWidth) * video.duration;
-  // }
-  // function calculateAnnotationWidth(duration) {
-  //     const timelineWidth = timeline.offsetWidth;
-  //     return (duration / video.duration) * timelineWidth;
-  // }
+ 
   function newupdateTimelineIcon(time) {
     const timeline = document.getElementById('timeline-container2');
     const ticks = timeline.getElementsByClassName('newvideotick');
@@ -1186,13 +1102,13 @@ function addClassTicks(startTime, endTime) {
 function updateDuration(startTime, endTime, duration) {
   console.log(`Updating annotation from ${startTime} to ${endTime} with duration: ${duration} seconds`);
 
-  // Find the annotation
+  
   const annotation = newAnnotations.find(a => Math.floor(a.time) === Math.floor(startTime));
   if (annotation) {
       annotation.duration = duration;
       annotation.endTime = endTime;
       annotation.startTime = startTime;
-      // Ensure the annotation is shown at all instances between start and end time
+      
       for (let time = startTime; time <= endTime; time += 0.01) {
          // showAnnotations(annotation,time);
       }
@@ -1214,7 +1130,7 @@ function displayCanvas(annotation, startTime, endTime) {
             newFabricCanvas.renderAll();
           });
       } else {
-          // Clear the canvas if the current time is outside the annotation range
+          
          // canvas.clear();
       }
   });
@@ -1233,7 +1149,7 @@ function playAudioAnnotation(currentTime){
         var audioElement = Array.from(existingAudioElements).find(audio => audio.src === url);
 
         if (!audioElement) {
-            // Create a new audio element if not found
+          
 
             console.log('I am inside condition where audio element for new video is being created');
             audioElement = document.createElement('audio');
@@ -1243,10 +1159,10 @@ function playAudioAnnotation(currentTime){
             document.body.appendChild(audioElement);
         }
 
-        // Play the audio element
+        
         audioElement.play();
         
-        // audio.play();
+       
     }
     
     
