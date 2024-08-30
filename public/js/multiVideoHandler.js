@@ -62,7 +62,11 @@ document.addEventListener('DOMContentLoaded', () => {
   
     const videoButtonContainer = document.querySelector('.video-buttons-container');
     videoButtonContainer.style.display = 'none';
-  
+    const videobtn = document.getElementById('video-btn-id');
+    videobtn.style.marginLeft = '200px';
+    videobtn.style.marginTop = '01px';
+
+   
     const volumeButtonContainer = document.querySelector('.volume-button-container');
     volumeButtonContainer.style.display = 'none';
     const annotationSidebar = document.querySelector('.annotations');
