@@ -87,32 +87,8 @@ function toggleAudioWave() {
     audioWave.classList.toggle('active');
 }
 
-// // Simulating video play/pause
-// let isPlaying = false;
-// function togglePlayPause() {
-//     isPlaying = !isPlaying;
-//     const playPauseButton = document.getElementById('play-pause-button');
-//     const playPauseIcon = playPauseButton.querySelector('path:last-child');
-//     const audioWave = document.querySelector('.audio-wave');
-
-//     if (isPlaying) {
-//         playPauseIcon.setAttribute('d', 'M6 19h4V5H6v14zm8-14v14h4V5h-4z');
-//         playPauseButton.querySelector('.button-text').textContent = 'Pause';
-//         audioWave.classList.add('active');
-//     } else {
-//         playPauseIcon.setAttribute('d', 'M8 5v14l11-7z');
-//         playPauseButton.querySelector('.button-text').textContent = 'Play';
-//         audioWave.classList.remove('active');
-//     }
-// }
-
-// // Call this function when the page loads and when the window is resized
 window.addEventListener('load', adjustVideoButtons);
 window.addEventListener('resize', adjustVideoButtons);
 
-// // Add event listener for play/pause button
-// document.getElementById('play-pause-button').addEventListener('click', togglePlayPause);
 
-// // Add event listener for audio visualizer button
-// document.getElementById('audio-visualizer-button').addEventListener('click', toggleAudioWave);
 
