@@ -301,19 +301,18 @@ isDrawingMode: false
 
 const playPauseButton = document.getElementById('play-pause-button');
 const playPauseImage = playPauseButton.querySelector('img');
-
+const audioWave = document.querySelector('.audio-wave');
 playPauseButton.addEventListener('click', () => {
 if (video.paused) {
     console.log('inside play condition')
     video.play();
-    //playAudioAnnotationIfExists(video.currentTime);
-   // playPauseImage.src = 'icons/pause.png';
-    //playPauseImage.alt = 'Pause';
+    
+    // audioWave.classList.toggle('active');
+    audioWave.classList.add('active');
 } else {
     console.log('inside pause condition')
     video.pause();
-   // playPauseImage.src = 'icons/play.jpg';
-   // playPauseImage.alt = 'Play';
+    audioWave.classList.remove('active');
 }
 });
 
@@ -2294,5 +2293,8 @@ const zoomScale = 1.2;
         canvas.calcOffset(); 
     }
 });
+
+
+
 
 
