@@ -16,14 +16,14 @@
    Open a new terminal:
    
      cd video-annotations        
-     npm run start:backend
+     
 
   **Client:**
   
   Open another terminal:
   
      cd video-annotations             
-     npm run start:frontend
+   
       
                 
   
