@@ -14,12 +14,12 @@
    **Server:**
    
      cd video-annotations        
-     npm run start: backend
+     npm run start:backend
 
   **Client:**
   
      cd video-annotations             
-     npm run start: frontend
+     npm run start:frontend
       
                 
   
