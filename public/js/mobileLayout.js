@@ -6,7 +6,7 @@ function adjustVideoButtons() {
     const audioVisualizerButton = document.getElementById('audio-visualizer-button');
     const timeline = document.getElementById('timeline');
 
-    // Log the elements to check if they are found
+    
     console.log('videoButtons:', videoButtons);
     console.log('playPauseButton:', playPauseButton);
     console.log('previousButton:', previousButton);
@@ -14,7 +14,7 @@ function adjustVideoButtons() {
     console.log('audioVisualizerButton:', audioVisualizerButton);
 
     if (videoButtons && playPauseButton && previousButton && nextButton) {
-        // Check if audioVisualizerButton is present
+        
         if (audioVisualizerButton) {
             console.log('audioVisualizerButton is present');
             audioVisualizerButton.style.display = 'block';
@@ -22,7 +22,7 @@ function adjustVideoButtons() {
             console.log('audioVisualizerButton is not present');
         }
 
-        // Remove button borders and make them look like icons
+        
         const buttons = [playPauseButton, previousButton, nextButton, audioVisualizerButton];
         buttons.forEach(button => {
             if (button) {
@@ -34,7 +34,7 @@ function adjustVideoButtons() {
                 button.style.display = 'flex';
                 button.style.alignItems = 'center';
                 button.style.justifyContent = 'center';
-                button.style.position = 'relative'; // Add relative positioning
+                button.style.position = 'relative'; 
                 button.style.top = '-25px'; 
                 button.style.left = '-20px';
             }
@@ -46,12 +46,12 @@ function adjustVideoButtons() {
         videoButtons.style.backgroundColor = 'transparent';
 
         if (window.innerWidth <= 768) {
-            // Reorder buttons for small screens
+           
             videoButtons.innerHTML = '';
             videoButtons.style.display = 'flex';
-            videoButtons.style.justifyContent = 'space-between'; // Distribute space between buttons
-            videoButtons.style.alignItems = 'center'; // Center buttons vertically
-            videoButtons.style.padding = '0 10px'; // Optional padding for spacing
+            videoButtons.style.justifyContent = 'space-between'; 
+            videoButtons.style.alignItems = 'center'; 
+            videoButtons.style.padding = '0 10px';
 
             videoButtons.appendChild(playPauseButton);
             videoButtons.appendChild(previousButton);
@@ -60,20 +60,20 @@ function adjustVideoButtons() {
 
             if (audioVisualizerButton) {
                 audioVisualizerButton.style.display = 'block';
-                audioVisualizerButton.style.width = '60px'; // Increase width for audio visualizer button
+                audioVisualizerButton.style.width = '60px'; 
             }
         } else {
-            // Restore original order for larger screens
+            
             videoButtons.innerHTML = '';
             videoButtons.style.display = 'flex';
-            videoButtons.style.justifyContent = 'flex-start'; // Align items to the start
+            videoButtons.style.justifyContent = 'flex-start'; 
 
             videoButtons.appendChild(previousButton);
             videoButtons.appendChild(playPauseButton);
             videoButtons.appendChild(nextButton);
             if (audioVisualizerButton) {
                 audioVisualizerButton.style.display = 'none';
-                audioVisualizerButton.style.width = '40px'; // Default width for audio visualizer button
+                audioVisualizerButton.style.width = '40px'; 
                 videoButtons.appendChild(audioVisualizerButton);
             }
         }
