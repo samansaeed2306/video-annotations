@@ -27,7 +27,7 @@ export async function getAllAnnotations() {
     const db = await connectToDb();
     const collection = db.collection('annotations');
     
-    // Validate the ID format
+    
     if (!ObjectId.isValid(id)) {
       throw new Error('Invalid ID format');
     }
@@ -39,7 +39,7 @@ export async function getAllAnnotations() {
     const db = await connectToDb();
     const collection = db.collection('annotations');
   
-    // Validate the ID format
+   
     if (!ObjectId.isValid(id)) {
       throw new Error('Invalid ID format');
     }
@@ -59,9 +59,6 @@ export async function getAllAnnotations() {
 
 
 
-
-
-// Optional: You can move executeAnnotationsOperations function here if you want to test or run it as a model operation
 export async function executeAnnotationsOperations() {
   try {
     const annotation = {
@@ -76,5 +73,4 @@ export async function executeAnnotationsOperations() {
   }
 }
 
-// Optional: Uncomment to test this script independently
-//executeAnnotationsOperations().catch(console.dir);
+
