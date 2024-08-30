@@ -11,12 +11,12 @@ window.onload = () => {
     document.cookie.split(";").forEach(cookie => {
         document.cookie = cookie.trim().split("=")[0] + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
     });
-    // Call the function to load the script
+  
  // loadWebMWriterScript();
     
 };
 
-// Initialize Shaka Player
+
 document.addEventListener('DOMContentLoaded', function() {
     const video = document.getElementById('video');
     const player = new shaka.Player(video);
@@ -59,7 +59,7 @@ function setupTimeline(video) {
             
                 timeline.appendChild(tick);
             }
-    // Create the timeline ticks
+   
     for (let i = 0; i < duration; i++) {
         // const tick = document.createElement('div');
         // tick.classList.add('tick');
@@ -82,7 +82,7 @@ function setupTimeline(video) {
         });
     }
 
-    // Create the pointer (draggable SVG icon)
+    
     const pointer2 = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     pointer2.setAttribute('width', '13');
     pointer2.setAttribute('height', '21');
@@ -94,25 +94,25 @@ function setupTimeline(video) {
     pointer2.style.display = 'none';
     timeline.appendChild(pointer2);
 
-    // Update pointer position and tick colors based on video time
+   
     function updatePointerAndTicks() {
         const percentage = (video.currentTime / duration) * 100;
-        pointer2.style.left = `calc(${percentage}% - 6.5px)`; // Center pointer over tick
+        pointer2.style.left = `calc(${percentage}% - 6.5px)`; 
         
         // Update tick2 colors
         const ticks2 = document.querySelectorAll('.tick2');
         ticks2.forEach((tick2, index) => {
             if (index <= Math.floor(video.currentTime)) {
-                tick2.style.backgroundColor = 'red'; // Colored portion
+                tick2.style.backgroundColor = 'red'; 
             } else {
-                tick2.style.backgroundColor = 'white'; // Uncolored portion
+                tick2.style.backgroundColor = 'white'; 
             }
         });
     }
 
     video.addEventListener('timeupdate', updatePointerAndTicks);
 
-    // Handle dragging of the pointer
+   
     pointer2.addEventListener('mousedown', (e) => {
         e.preventDefault();
 
@@ -121,13 +121,13 @@ function setupTimeline(video) {
             const x = e.clientX - rect.left;
             const percentage = (x / rect.width) * 100;
             const newTime = (percentage / 100) * duration;
-            video.currentTime = Math.min(Math.max(newTime, 0), duration); // Constrain within bounds
+            video.currentTime = Math.min(Math.max(newTime, 0), duration); 
         };
 
         const stopDragging = () => {
             document.removeEventListener('mousemove', movePointer);
             document.removeEventListener('mouseup', stopDragging);
-            updatePointerAndTicks(); // Ensure final update after dragging
+            updatePointerAndTicks();
         };
 
         document.addEventListener('mousemove', movePointer);
@@ -293,7 +293,7 @@ updateTimelineIcons();
 
 
 
-// Fabric.js Canvas Initialization
+
 const canvas = new fabric.Canvas('canvas', {
 selection: false,
 isDrawingMode: false
@@ -484,7 +484,7 @@ function playAudioAnnotationIfExists(currentTime) {
             var audioElement = Array.from(existingAudioElements).find(audio => audio.src === url);
 
             if (!audioElement) {
-                // Create a new audio element if not found
+               
 
                 console.log('I am inside condition where audio element is being created');
                 audioElement = document.createElement('audio');
@@ -494,7 +494,7 @@ function playAudioAnnotationIfExists(currentTime) {
                 document.body.appendChild(audioElement);
             }
     
-            // Play the audio element
+           
             audioElement.play();
             
             // audio.play();
@@ -621,14 +621,14 @@ function unpickTool() {
 }
 function activatePolylineMode() {
     drawingMode = 'polyline';
-    canvas.isDrawingMode = false; // Disable freehand drawing mode
+    canvas.isDrawingMode = false; 
     polylinePoints = [];
     canvas.upperCanvasEl.classList.add('canvas-plus-cursor');
 }
 
 function activateLineMode() {
     drawingMode = 'line';
-    canvas.isDrawingMode = false; // Disable freehand drawing mode
+    canvas.isDrawingMode = false; 
     canvas.upperCanvasEl.classList.add('canvas-plus-cursor');
 }
 
@@ -643,9 +643,9 @@ function handleImageUpload(event) {
         reader.onload = function(e) {
             const dataURL = e.target.result;
 
-            // Create a Fabric.js image object
+            
             fabric.Image.fromURL(dataURL, function(img) {
-                // Set default properties for the image
+                
                 img.set({
                     left: 50,
                     top: 50,
@@ -656,14 +656,14 @@ function handleImageUpload(event) {
                     hasBorders: true,
                 });
 
-                // Add the image to the canvas
+                
                 canvas.add(img);
                 canvas.centerObject(img);
                 canvas.renderAll();
             });
         };
 
-        // Read the image file as a data URL
+       
         reader.readAsDataURL(file);
     }
 }
@@ -975,39 +975,7 @@ function calculateAnnotationWidth(duration) {
     return (duration / video.duration) * timelineWidth;
 }
 
-// function updateAnnotationDuration(pencilIconId, duration) {
 
-// console.log(`Updating annotation for ${pencilIconId} to duration: ${duration} seconds`);
-
-// const annotation = annotations.find(a => a.time === video.currentTime);
-// console.log(`start time: ${video.currentTime}`);
-// if (annotation) {
-// annotation.duration = duration;
-// console.log(`Real duration set: ${annotation.duration} `)
-// annotation.startTime=video.currentTime;
-// annotation.endTime = video.currentTime + duration;
-// const annotationData = JSON.parse(annotation.content);
-// let interval=1;
-//     for (let time = annotation.startTime; time <= annotation.endTime; time += 0.01) {
-//         // if (Math.abs(time - video.currentTime) < interval / 2) { // Adjust the condition as needed
-
-//         showAnnotations(time);
-//             // console.log(`Displaying annotation.content: ${annotation.content}`);
-//             // console.log(`Displaying annotationData: ${annotationData}` )
-//             // canvas.loadFromJSON(annotation.content, () => {
-//             //     canvas.renderAll();
-//             // });
-
-
-
-//        // }
-        
-//     }
-// // Ensure previous event listeners are removed to avoid multiple handlers
-// // video.removeEventListener('timeupdate', handleTimeUpdate);
-// // video.addEventListener('timeupdate', handleTimeUpdate);
-// }
-// }
 function updateAnnotationDuration(startTime, endTime, duration) {
     console.log(`Updating annotation from ${startTime} to ${endTime} with duration: ${duration} seconds`);
 
@@ -1039,7 +1007,7 @@ function displayOnCanvas(annotation, startTime, endTime) {
                 canvas.renderAll();
             });
         } else {
-            // Clear the canvas if the current time is outside the annotation range
+           
            // canvas.clear();
         }
     });
@@ -1050,17 +1018,16 @@ const currentTime = video.currentTime;
 const canvas = document.getElementById('canvas');
 if (canvas) {
     const ctx = canvas.getContext('2d');
-    // ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+   
     const annotation = annotations.find(a => a.time <= currentTime);
     
 if (annotation) {
     console.log(`Found annotation`);}
     
-    // Parse the annotation content
-    
+   
 
     if (currentTime >= annotation.startTime && currentTime <= annotation.endTime) {
-        // Display the annotation on the canvas
+        
         console.log(`Displaying annotation: ${annotation.startTime}`);
         // const annotationData = JSON.parse(annotation.content);
         
@@ -1080,7 +1047,7 @@ if (annotation) {
         
     // }
 
-    // Update the canvas rendering
+    
     //canvas.renderAll();
 
     } else {
@@ -1093,19 +1060,7 @@ if (annotation) {
 }
 }
 
-// function updateAnnotationsList() {
-//     const annotationsList = document.getElementById('annotations-list');
-//     annotationsList.innerHTML = '';
-//     annotations.forEach((annotation, index) => {
-//         const listItem = document.createElement('li');
-//         listItem.textContent = `Annotation at ${annotation.time.toFixed(2)}s`;
-//         listItem.addEventListener('click', () => {
-//             loadAnnotation(index);
-//         });
-//         annotationsList.appendChild(listItem);
-//     });
 
-// }
 function removeAnnotation(time) {
     console.log(`Removing annotation at time: ${time}`);
     annotations = annotations.filter(annotation => annotation.time !== time);
@@ -1195,9 +1150,9 @@ saveButton.addEventListener('click', function() {
            //deleteButton.appendChild(deleteIcon);
 
             deleteIcon.addEventListener('click', function() {
-                // Remove annotation from the list
+                
                 annotations.splice(index, 1);
-                // Remove pencil icon and pointer from the timeline
+               
                 const tick = document.querySelector(`.tick[data-time="${annotation.time}"]`);
                 const tick3= document.querySelector(`.tick[data-time="${annotation.time}"] .has-audio`);
                 if(tick3){
@@ -1228,7 +1183,7 @@ saveButton.addEventListener('click', function() {
                 
                 
                 }
-                // Update the annotations list
+                
                 updateAnnotationsList();
                 updateTimelineIcons();
             });
@@ -1373,42 +1328,9 @@ annotations.forEach(annotation => {
     
 });
 
-//     const ticks2 = document.querySelectorAll('.timeline .tick');
-// ticks2.forEach(tick => {
-//     const tickTime = parseInt(tick.dataset.time);
-//     const hasDrawing = annotations.some(annotation => Math.floor(annotation.time) === tickTime);
-//     if (!hasDrawing) {
-//         const icon = tick.querySelector('.icon');
-//         if (icon) {
-//             tick.removeChild(icon);
-//             removePointerForPencilIcon(tick);
-//         }
-//     }
-// });
+
 }
-// const annotation = {
-//     time:5, // End time in seconds
-//     content: '{"version":"4.5.0","objects":[{"type":"circle","version":"4.5.0","originX":"left","originY":"top","left":100,"top":70,"width":60,"height":60,"fill":"transparent","stroke":"#33FF57","strokeWidth":2,"strokeDashArray":null,"strokeLineCap":"butt","strokeDashOffset":0,"strokeLineJoin":"miter","strokeUniform":false,"strokeMiterLimit":4,"scaleX":2.43,"scaleY":2.43,"angle":0,"flipX":false,"flipY":false,"opacity":1,"shadow":null,"visible":true,"backgroundColor":"","fillRule":"nonzero","paintFirst":"fill","globalCompositeOperation":"source-over","skewX":0,"skewY":0,"radius":30,"startAngle":0,"endAngle":6.283185307179586}]}' 
-// };
-// annotations.push(annotation);
-//updateAnnotationsList();
-//updateTimelineIcons();
-// Display the annotation content at time 10 seconds
-//displayOnCanvas(annotation, 5, 10);
-// document.addEventListener('DOMContentLoaded', () => {
-//     const dropdownButton = document.querySelector('.Dropdown');
-//     const dropdownItems = document.querySelector('.Dropdown__items');
 
-//     dropdownButton.addEventListener('click', () => {
-//         dropdownItems.classList.toggle('hide');
-//     });
-
-//     document.addEventListener('click', (event) => {
-//         if (!dropdownButton.contains(event.target)) {
-//             dropdownItems.classList.add('hide');
-//         }
-//     });
-// });
 document.getElementById('microphone-icon').addEventListener('click', toggleMicrophone);
 
 let isRecording = false;
@@ -1463,7 +1385,7 @@ async function saveRecording() {
     //audioElement.style.width='200px';
   document.body.appendChild(audioElement);
 
-    // Save the recording with the corresponding video duration
+   
     const startTime = video.currentTime;
     console.log(blob.size);
     const duration = (blob.size + 786.05)/17402.05;
@@ -1481,14 +1403,7 @@ async function saveRecording() {
      updateAnnotationsList();
      updateTimelineIcons();
     console.log('Recording saved', annotation);
-   // displayRecordings();
-     // Store audio context for playback synchronization
-    //  audioContexts.push({
-    //     audio: audioElement,
-    //     startTime: annotation.startTime,
-    //     endTime: annotation.endTime,
-    //     isPlaying: false
-    // });
+  
 }
 
 
@@ -1525,25 +1440,7 @@ function displayRecordings() {
         }
     });
 }
-// function setupVideoPlayer(video) {
-//     video.addEventListener('timeupdate', () => {
-//         const currentTime = video.currentTime;
 
-//         audioContexts.forEach(context => {
-//             if (currentTime >= context.startTime && currentTime <= context.endTime) {
-//                 if (!context.isPlaying) {
-//                     context.audio.play();
-//                     context.isPlaying = true;
-//                 }
-//             } else {
-//                 if (context.isPlaying) {
-//                     context.audio.pause();
-//                     context.isPlaying = false;
-//                 }
-//             }
-//         });
-//     });
-// }
 function calculateWidthFromDuration(duration) {
     const timelineWidth = timeline.offsetWidth;
     return (duration / video.duration) * timelineWidth;
@@ -1558,71 +1455,32 @@ function convertBlobToBase64(blob) {
         reader.readAsDataURL(blob);
     });
 }
-// video.addEventListener('timeupdate', () => {
-//     annotations.forEach(annotation => {
-//         if (annotation.type === 'audio') {
-//             if (video.currentTime >= annotation.startTime && video.currentTime <= annotation.endTime) {
-//                 const audio = new Audio(annotation.content);
-//                 audio.currentTime = annotation.startTime;
-//                 audio.play();
-//             }
-//         }
-//     });
-// });
-// const activateFirstTime=false;
-// document.getElementById('save-button').addEventListener('click', function() {
-    
-//     // Apply blur effect to the body
-//    // document.body.style.filter = 'blur(5px)';
-//    if(document.getElementsByClassName('save-btn').svg.style.fill == '#ffffff' && !activateFirstTime ) {
-//     this.classList.toggle('active');
-//     activateFirstTime=true;
-// }
-    
-   
-//     if (this.classList.contains('active')) {
-//         annotations.forEach(annotation => {
-//             saveAnnotation(annotation);
-//         });
-     
-//         const overlay = document.getElementById('overlay');
-//         overlay.classList.add('active');
-    
-//         setTimeout(() => {
-//             document.body.classList.remove('blur');
-//             overlay.classList.remove('active');
-//             //document.body.style.filter = 'none';
-//         }, 1500);
-//     }else{
-//         return;
-//     }
 
-// });
 let activateFirstTime = false;
 
 document.getElementById('save-button').addEventListener('click', function() {
     const svgElement = this.querySelector('svg'); // Select the SVG element inside the button
 
-    // Toggle the active class
+    
     this.classList.toggle('active');
 
     if (this.classList.contains('active')) {
-        // If active, set the SVG fill color to yellow
+       
         svgElement.style.fill = '#FFFF00';
 
-        // Apply blur effect to the body
+        
        // document.body.classList.add('blur');
        
-        // Call saveAnnotation() for each annotation
+       
         annotations.forEach(annotation => {
             saveAnnotation(annotation);
         });
 
-        // Show overlay
+        
         const overlay = document.getElementById('overlay');
         overlay.classList.add('active');
 
-        // Remove blur and overlay after 1.5 seconds
+        
         setTimeout(() => {
           //  document.body.classList.remove('blur');
             overlay.classList.remove('active');
@@ -1630,13 +1488,10 @@ document.getElementById('save-button').addEventListener('click', function() {
 
         activateFirstTime = true;
     } else {
-        // If not active, reset the SVG fill color to white
+        
         svgElement.style.fill = '#FFFFFF';
         deleteAllAnnotations();
-        // Remove blur effect from the body
-       // document.body.classList.remove('blur');
-
-        // Hide overlay immediately
+      
         const overlay = document.getElementById('overlay');
         overlay.classList.remove('active');
 
@@ -1749,21 +1604,21 @@ async function convertFramesToVideo(frames, video) {
 
     while (currentFrameTime <= video.duration) {
         if (frameIndex < frames.length && frames[frameIndex].time == currentFrameTime) {
-            // Add the annotated frame without duration
+           
             videoOutput.add(frames[frameIndex].frame);
             frameIndex++;
         } else {
-            // Capture the original frame from the video
+           
             video.currentTime = currentFrameTime;
             await new Promise(resolve => video.onseeked = resolve);
 
-            // Draw the current video frame onto the temporary canvas
+           
             ctx.drawImage(video, 0, 0, tempCanvas.width, tempCanvas.height);
             
-            // Add the canvas frame to the video output without duration
+           
             videoOutput.add(tempCanvas);
         }
-        currentFrameTime += 1 / 30; // Move to the next frame time
+        currentFrameTime += 1 / 30; 
     }
 
     return videoOutput.compile();
@@ -2248,7 +2103,7 @@ const zoomScale = 1.2;
         video.style.transform = `scale(${zoomScale})`;
         console.log(`Video Transform scale(${video.style.transform})`)
         console.log(`Video Position scale(${video.style.position})`)
-        // Adjust canvas dimensions to match zoomed video
+       
         const videoWidth = video.clientWidth * zoomScale;
         const videoHeight = video.clientHeight * zoomScale;
         fabricCanvas.width = videoWidth;
@@ -2264,12 +2119,12 @@ const zoomScale = 1.2;
             canvasonSwitch.style.left= '50px';
             canvasonSwitch.style.top = '510px';
         }
-        // Use CSS to position the canvas
+       
         canvas.wrapperEl.style.position = 'absolute';
         canvas.wrapperEl.style.left = `${-offsetX}px`;
         canvas.wrapperEl.style.top = `${-offsetY}px`;
         
-        canvas.calcOffset(); // Update the offset calculations
+        canvas.calcOffset();
        // document.getElementsByClassName('buttons-container')[0].style.marginTop = '250px';
     } else {
         video.style.transform = 'scale(1)';
