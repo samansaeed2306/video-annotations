@@ -20,3 +20,26 @@
 #audio-visualizer-button {
     width: 200px; /* Increase width for small screens */
 }
+
+.audio-wave {
+    height: 30px;
+}
+
+.audio-wave .wave {
+    /* transform-origin: bottom; */
+    transform: scaleY(0.5); /* Start with no animation, scaled down */
+}
+
+.audio-wave.active .wave {
+    animation: wave 1s ease-in-out infinite;
+}
+
+@keyframes wave {
+    0%, 100% { transform: scaleY(0.5); }
+    50% { transform: scaleY(0.7); }
+}
+
+.wave:nth-child(2) { animation-delay: 0.1s; }
+.wave:nth-child(3) { animation-delay: 0.2s; }
+.wave:nth-child(4) { animation-delay: 0.3s; }
+.wave:nth-child(5) { animation-delay: 0.4s; }
