@@ -678,7 +678,9 @@ body::before {
     stroke: #abb0c4;
   }
   
-  
+  #audio-visualizer-button{
+    display: none;
+    }
 
 /* Media queries for mobile responsiveness */
 @media  (max-width: 414px) and (min-width: 200px){
@@ -910,5 +912,8 @@ body::before {
 .view-icon {
    display:none;
 }
+#audio-visualizer-button{
+display: block;
 
+}
 }
