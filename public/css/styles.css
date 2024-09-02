@@ -690,6 +690,10 @@ body::before {
     display: none;
     }
 
+    .header {
+        display: none;
+    }
+
 /* Media queries for mobile responsiveness */
 @media  (max-width: 414px) and (min-width: 200px){
     /* Remove body styles to focus on video and canvas */
@@ -994,6 +998,28 @@ display: block;
     width: 13px; /* Match SVG icon size with .tools */
     height: 13px;
     opacity: 1; /* Keep full opacity */
+}
+.header {
+    position: fixed; /* Fix the header at the top */
+    top: 0;
+    left: 0;
+    width: 100%; /* Full width */
+    height: 50px; /* Height of the header */
+    background-color: #17181a; /* Background color */
+    display: flex;
+    justify-content: space-around; /* Space between icons */
+    align-items: center; /* Center icons vertically */
+    z-index: 1001; /* Ensure it stays above other elements */
+    opacity: 0.6;
+}
+
+/* Style for the icons inside the header */
+.header-icon img {
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+    background-color: none;
+    opacity: 1;
 }
 
 
