@@ -939,4 +939,11 @@ display: block;
     
     
 }
+#video-btn-id {
+    display: flex;
+    justify-content: space-between; /* Distribute space between buttons */
+    align-items: center; /* Center buttons vertically */
+    width: 100%; /* Full width of the container */
+    padding: 0 10px; /* Optional padding for spacing */
+}
 }
