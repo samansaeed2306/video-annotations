@@ -22,8 +22,8 @@ function adjustVideoButtons() {
             console.log('audioVisualizerButton is not present');
         }
 
-        
-        const buttons = [playPauseButton, previousButton, nextButton, audioVisualizerButton];
+        if (window.innerWidth <= 300) {
+            const buttons = [playPauseButton, previousButton, nextButton, audioVisualizerButton];
         buttons.forEach(button => {
             if (button) {
                 button.style.border = 'none';
@@ -35,18 +35,18 @@ function adjustVideoButtons() {
                 button.style.alignItems = 'center';
                 button.style.justifyContent = 'center';
                 button.style.position = 'relative'; 
-                button.style.top = '-25px'; 
-                button.style.left = '-20px';
+                button.style.top = '-28px'; 
+                button.style.left = '-225px';
             }
         });
-        audioVisualizerButton.style.left = '-115px';
-        audioVisualizerButton.style.top = '-18px';
-        previousButton.style.left = '-30px';
-        nextButton.style.left = '-25px';
-        videoButtons.style.backgroundColor = 'transparent';
-
-        if (window.innerWidth <= 768) {
-           
+            audioVisualizerButton.style.left = '-308px';
+            audioVisualizerButton.style.top = '-18px';
+            videoButtons.innerHTML = '';
+            videoButtons.style.display = 'flex';
+            videoButtons.style.justifyContent = 'space-between'; 
+            videoButtons.style.alignItems = 'center'; 
+            videoButtons.style.padding = '0 10px';
+            // savebtn.style.left = '-200px';
             videoButtons.innerHTML = '';
             videoButtons.style.display = 'flex';
             videoButtons.style.justifyContent = 'space-between'; 
