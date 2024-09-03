@@ -87,6 +87,14 @@ function toggleAudioWave() {
     audioWave.classList.toggle('active');
 }
 
+function closeHeader() {
+    var header = document.querySelector('.header');
+    if (header) {
+        header.style.display = 'none';
+    }
+}
+
+
 window.addEventListener('load', adjustVideoButtons);
 window.addEventListener('resize', adjustVideoButtons);
 
