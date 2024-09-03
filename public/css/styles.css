@@ -551,6 +551,7 @@ canvas4:nth-of-type(2) {
     margin-bottom: 4px;
     opacity: 0.8;
 }
+
 .save-btn {
     position: absolute;
     top: 10px; 
@@ -753,7 +754,7 @@ body::before {
     .tools {
         opacity: 0.8;
         position: absolute;
-        top: 65px;
+        top: 70px;
         left: 0;
         height: 60%;
         width: 25px; /* Sidebar width */
@@ -764,8 +765,8 @@ body::before {
         z-index: 1000; /* Float above video and canvas */
         padding-top: 12px;
         border-radius: 25px;
-        padding-left: 10px;
-        margin-left: 12px;
+        padding-left: 5px;
+        margin-left: 8px;
         font-size: 0;
         /* display:none; */
     }
@@ -958,7 +959,7 @@ display: block;
 .bottom-right-sidebar {
     position: fixed;
     bottom: 35px; /* Adjust to align with the video or canvas bottom */
-    left: 123px;
+    left: 118px;
     height: 60%; /* Consistent with .tools height */
     width: 25px; /* Sidebar width similar to .tools */
     display: flex;
@@ -977,7 +978,7 @@ display: block;
     margin: 2px;
     padding: 0.5px;
     width: 25px; /* Match the width with .tools buttons */
-    margin-left: 125px;
+    margin-left: 118px;
     text-align: center;
     background-color: transparent;
     border-radius: 15px; /* Rounded corners similar to .tools buttons */
@@ -1000,27 +1001,72 @@ display: block;
     opacity: 1; /* Keep full opacity */
 }
 .header {
-    position: fixed; /* Fix the header at the top */
+    position: fixed;
     top: 0;
     left: 0;
-    width: 100%; /* Full width */
+    width: 228px; /* Set the total width of the header */
     height: 50px; /* Height of the header */
-    background-color: #17181a; /* Background color */
+    background-color: rgba(128, 128, 128, 0.5); /* Transparent grey background */
     display: flex;
-    justify-content: space-around; /* Space between icons */
+    justify-content: space-around; /* Space out items with gaps */
     align-items: center; /* Center icons vertically */
     z-index: 1001; /* Ensure it stays above other elements */
-    opacity: 0.6;
+    /* border-radius: 0 10px 10px 0; Rounded corners on the right side */
 }
 
 /* Style for the icons inside the header */
-.header-icon img {
-    width: 15px;
-    height: 15px;
+.header-icon {
+    width: 20px; /* Width for each icon button */
+    height: 20px; /* Height for each icon button */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%; /* Make the icons round */
+    background-color: transparent; /* No background color for buttons */
     cursor: pointer;
-    background-color: none;
-    opacity: 1;
+    transition: background-color 0.3s; /* Smooth transition for hover */
+}
+
+.header-icon img{
+    width: 15px; /* Icon size */
+    height: 15px;
+    fill: #abb0c4; /* Icon color */
+}
+.header-icon svg {
+    width: 50px; /* Standard size for all icons */
+    height: 50px;
+    fill: #abb0c4;
+    /* Ensure no additional styling conflicts */
+}
+/* Add hover effect for the icons */
+.header-icon:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Slight white background on hover */
 }
 
 
+/* Optional: Active state for icons */
+.header-icon:active {
+    background-color: rgba(52, 58, 64, 0.9); /* Further darken background on click */
 }
+
+/* Specific styles for the save button icon to ensure color is set */
+#save-button-mobile svg path {
+    fill: #abb0c4; /* Specific color for save button icon */
+}
+
+/* Specific styles for the close button icon to ensure color is set */
+#close-header-mobile svg path {
+    fill: #abb0c4; /* Specific color for close button icon */
+}
+
+#savemob-icon {
+    width: 20px; /* Set to 20px for a larger icon */
+    height: 20px; /* Set to 20px for a larger icon */
+    fill: #abb0c4; /* Ensure the icon color remains the same */
+}
+
+#frame-container{
+    display: none;
+}
+}
+
