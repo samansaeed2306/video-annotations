@@ -22,7 +22,7 @@ function adjustVideoButtons() {
             console.log('audioVisualizerButton is not present');
         }
 
-        if (window.innerWidth <= 400) {
+        if (window.innerWidth <= 500) {
             // window.addEventListener('resize', () => {
             //     document.getElementById('play-pause-button').click();
             // });
