@@ -439,7 +439,7 @@ video-buttons-container .video-button {
   .dropdown-content button {
     background-color: #f1f1f1;
     border: none;
-    color: black;
+    color: transparent;
     padding: 12px 16px;
     text-decoration: none;
     display: block;
@@ -703,6 +703,7 @@ body::before {
         padding: 0;
         overflow: hidden;
         touch-action: none; 
+        background-color:#252c31;
     }
 
     #video-container {
@@ -764,7 +765,7 @@ body::before {
         background-color: transparent;
         z-index: 1000; /* Float above video and canvas */
         padding-top: 12px;
-        border-radius: 25px;
+        border-radius: 35px;
         padding-left: 5px;
         margin-left: 8px;
         font-size: 0;
@@ -775,7 +776,7 @@ body::before {
         /* opacity: 0.8; */
         margin:2px;
         padding: 0px;
-        width: 25px;
+        width: 45px;
         margin-left: 125px;
         text-align: center;
         background-color: transparent;
@@ -794,7 +795,11 @@ body::before {
         background-color: #b03e2a;
      }  */
 
-
+     .video-button {
+        background-color: transparent; 
+        
+    }
+    
     
     .video-buttons {
         position: absolute;
@@ -839,6 +844,7 @@ body::before {
         background-color: transparent;
     }
     .save-btn {
+        display: none;
         position: fixed; /* Changed to fixed to stay relative to viewport */
         top: 10px; /* Distance from the top of the viewport */
         right: -45px; /* Distance from the right edge of the viewport */
@@ -884,7 +890,7 @@ body::before {
     position: relative;
     bottom: 0px;
     width: 100%;
-    background-color: #343a40;
+    background-color: transparent;
     border-radius: 0px;
     padding: 0px;
     margin-top: 0px;
@@ -905,7 +911,7 @@ body::before {
     z-index: 7;
     margin: 0;  /* Removes margin */
     padding: 0; /* Removes padding */
-    bottom: -365px;
+    bottom: -386px;
     right: -25px;
 }
 
@@ -933,18 +939,18 @@ display: block;
 }
 
 .tools button img {
-    width: 17px;
-    height: 17px;
+    width: 27px;
+    height: 27px;
     opacity: 1;
 }
 .tools button svg {
-    width: 17px;
-    height: 17px;
+    width: 27px;
+    height: 27px;
     opacity: 1;
 }
 
 .tools button {
-    border-radius: 15px;
+    border-radius: 30px;
     padding: 2px;
     
     
@@ -1004,14 +1010,14 @@ display: block;
     position: fixed;
     top: 0;
     left: 0;
-    width: 228px; /* Set the total width of the header */
-    height: 50px; /* Height of the header */
+    width: 100%; /* Full width of the viewport */
+    height: 80px; /* Height of the header */
     background-color: rgba(128, 128, 128, 0.5); /* Transparent grey background */
     display: flex;
     justify-content: space-around; /* Space out items with gaps */
     align-items: center; /* Center icons vertically */
     z-index: 1001; /* Ensure it stays above other elements */
-    /* border-radius: 0 10px 10px 0; Rounded corners on the right side */
+    border-radius: 0; /* Remove rounded corners */
 }
 
 /* Style for the icons inside the header */
@@ -1027,22 +1033,21 @@ display: block;
     transition: background-color 0.3s; /* Smooth transition for hover */
 }
 
-.header-icon img{
+.header-icon img {
     width: 15px; /* Icon size */
     height: 15px;
     fill: #abb0c4; /* Icon color */
 }
+
 .header-icon svg {
-    width: 50px; /* Standard size for all icons */
-    height: 50px;
-    fill: #abb0c4;
-    /* Ensure no additional styling conflicts */
-}
-/* Add hover effect for the icons */
-.header-icon:hover {
-    background-color: rgba(255, 255, 255, 0.1); /* Slight white background on hover */
+    width: 15px; /* SVG icon size */
+    height: 15px;
+    fill: #abb0c4; /* SVG icon color */
 }
 
+.header-icon:hover {
+    background-color: rgba(0, 0, 0, 0.2); /* Darker background on hover */
+}
 
 /* Optional: Active state for icons */
 .header-icon:active {
