@@ -40,7 +40,7 @@ function adjustVideoButtons() {
                 button.style.alignItems = 'center';
                 button.style.justifyContent = 'center';
                 button.style.position = 'relative'; 
-                button.style.top = '730px'; 
+                button.style.top = '600px'; 
                 button.style.left = '-190px';
             //     if(button!=audioVisualizerButton){
             //     const svg = button.querySelector('svg');
@@ -55,7 +55,7 @@ function adjustVideoButtons() {
             // const progressbar = document.querySelector('.timeline .tick2');
             // console.log('Width of the progress bar',progressbar.style.width);
             audioVisualizerButton.style.left = '-278px';
-            audioVisualizerButton.style.top = '740px';
+            audioVisualizerButton.style.top = '610px';
             videoButtons.innerHTML = '';
             videoButtons.style.display = 'flex';
             videoButtons.style.justifyContent = 'space-between'; 
@@ -69,6 +69,7 @@ function adjustVideoButtons() {
             videoButtons.style.padding = '0 10px';
 
             playPauseButton.style.left='-60';
+            // playPauseButton.style.top='90px';
 
             videoButtons.appendChild(playPauseButton);
             videoButtons.appendChild(previousButton);
