@@ -701,7 +701,18 @@ body::before {
     /* :root {
         --duration: 60; 
     } */
-    
+    .tools button,
+    .video-buttons .video-button,
+    .bottom-right-sidebar button,
+    .header-icon {
+        background-color: transparent; /* No background */
+        border: none; /* No border */
+        box-shadow: none; /* No shadow */
+        padding: 0; /* Remove padding for a flat look */
+        margin: 2px; /* Adjust margin as needed */
+        outline: none; /* Remove outline on focus */
+        cursor: pointer; /* Pointer cursor on hover */
+    }
       html, body {
         margin: 0;
         padding: 0;
@@ -761,7 +772,7 @@ body::before {
     .tools {
         opacity: 0.8;
         position: absolute;
-        top: 150px;
+        top: 130px;
         left: 0;
         height: 60%;
         width: 45px; /* Adjusted Sidebar width */
@@ -914,7 +925,7 @@ body::before {
     --duration: 60;
     bottom: 0px;
     top: 11px;
-    margin-top: 600px;
+    margin-top: 480px;
 }
 
 .timeline .tick2 {
