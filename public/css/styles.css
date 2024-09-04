@@ -761,7 +761,7 @@ body::before {
     .tools {
         opacity: 0.8;
         position: absolute;
-        top: 90px;
+        top: 150px;
         left: 0;
         height: 60%;
         width: 45px; /* Adjusted Sidebar width */
@@ -936,7 +936,7 @@ body::before {
 
 .bottom-right-sidebar {
     position: fixed;
-    bottom: 200px; /* Adjust to align with the video or canvas bottom */
+    bottom: 260px; /* Adjust to align with the video or canvas bottom */
     right: 0; /* Move sidebar to the right side */
     height: auto; /* Consistent with .tools height */
     width: 45px; /* Sidebar width similar to .tools */
@@ -1004,12 +1004,12 @@ display: block;
 .bottom-right-sidebar button {
     margin: 2px;
     padding: 0.5px;
-    width: 45px; /* Match the width with .tools buttons */
+    width: 30px; /* Match the width with .tools buttons */
     margin-left: 118px;
     text-align: center;
     background-color: transparent;
     border-radius: 30px; /* Rounded corners similar to .tools buttons */
-    padding: 2px;
+    padding: 4px;
     transition: background-color 0.3s; /* Smooth background transition */
 }
 
@@ -1018,13 +1018,13 @@ display: block;
 }
 
 .bottom-right-sidebar button img {
-    width: 27px; /* Match the icon size with .tools */
-    height: 27px;
+    width: 20px; /* Match the icon size with .tools */
+    height: 20px;
     opacity: 1; /* Keep full opacity */
 }
 .bottom-right-sidebar button svg {
-    width: 27px; /* Match SVG icon size with .tools */
-    height: 27px;
+    width: 20px; /* Match SVG icon size with .tools */
+    height: 20px;
     opacity: 1; /* Keep full opacity */
 }
 .header {
@@ -1055,14 +1055,14 @@ display: block;
 }
 
 .header-icon img {
-    width: 20px; /* Icon size */
-    height: 20x;
+    width: 17px; /* Icon size */
+    height: 17px;
     fill: #abb0c4; /* Icon color */
 }
 
 .header-icon svg {
-    width: 20px; /* SVG icon size */
-    height: 20px;
+    width: 17px; /* SVG icon size */
+    height: 17px;
     fill: #abb0c4; /* SVG icon color */
 }
 
