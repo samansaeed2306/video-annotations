@@ -22,7 +22,7 @@ function adjustVideoButtons() {
             console.log('audioVisualizerButton is not present');
         }
 
-        if (window.innerWidth <= 300) {
+        if (window.innerWidth <= 400) {
             const buttons = [playPauseButton, previousButton, nextButton, audioVisualizerButton];
         buttons.forEach(button => {
             if (button) {
@@ -99,4 +99,4 @@ window.addEventListener('load', adjustVideoButtons);
 window.addEventListener('resize', adjustVideoButtons);
 
 
-
+// adjustVideoButtons();
