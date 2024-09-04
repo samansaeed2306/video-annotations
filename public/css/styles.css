@@ -698,7 +698,10 @@ body::before {
 /* Media queries for mobile responsiveness */
 @media  (max-width: 414px) and (min-width: 200px){
     /* Remove body styles to focus on video and canvas */
-   
+    /* :root {
+        --duration: 60; 
+    } */
+    
       html, body {
         margin: 0;
         padding: 0;
@@ -758,7 +761,7 @@ body::before {
     .tools {
         opacity: 0.8;
         position: absolute;
-        top: 70px;
+        top: 90px;
         left: 0;
         height: 60%;
         width: 45px; /* Adjusted Sidebar width */
@@ -876,17 +879,19 @@ body::before {
 #progress-wave {
     display: none;
 }
-.timeline {
-    position: absolute;
+/* .timeline {
+    position: relative;
     bottom: 0;
     width: 100%;
-    background-color: transparent;
+    background-color: rgb(205, 122, 21);
     padding: 0;
     margin: 0;
     height: 50px; /* Adjust timeline height */
-}
+    /* z-index: 1000;
+    top: 0px; */ 
+/* } */
 
-.timeline .tick2 {
+/* .timeline .tick2 {
     display: inline-block;
     width: calc(100% / var(--duration)); 
     height: 2px;
@@ -896,12 +901,43 @@ body::before {
     padding: 0;
     position: absolute;
     bottom: 0;
+} */
+.timeline {
+    position: relative;
+    width: 100%;
+    /* background-color: rgb(205, 122, 21);  */
+    background-color: transparent; 
+    height: 50px; /* Height of the timeline */
+    z-index: 1000; /* Ensure it is above other elements */
+    padding: 0;
+    margin: 0;
+    --duration: 60;
+    bottom: 0px;
+    top: 11px;
+    margin-top: 600px;
 }
+
+.timeline .tick2 {
+    display: inline-block;
+    width: 100%;
+    
+    height: 4px; /* Increased height for visibility */
+    background-color: #ffffff; /* Ensure contrast with background */
+    cursor: pointer;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    bottom: 10px; /* Position above the bottom */
+    left: 50%;
+    transform: translateX(-50%); /* Center horizontally */
+    z-index: 1000; /* Ensure it's above other elements */
+}
+
 
 .bottom-right-sidebar {
     position: fixed;
-    bottom: 20px; /* Adjust to align with the video or canvas bottom */
-    left: 0;
+    bottom: 200px; /* Adjust to align with the video or canvas bottom */
+    right: 0; /* Move sidebar to the right side */
     height: auto; /* Consistent with .tools height */
     width: 45px; /* Sidebar width similar to .tools */
     display: flex;
@@ -911,9 +947,10 @@ body::before {
     z-index: 1000; /* Same z-index as .tools */
     padding-top: 12px;
     border-radius: 25px;
-    padding-left: 10px;
-    margin-left: 12px;
+    padding-right: 15px; /* Adjust for padding on the right side */
+    margin-right: 52px; /* Adjust for margin on the right side */
 }
+
 
 
 .timeline .tick {
@@ -967,11 +1004,11 @@ display: block;
 .bottom-right-sidebar button {
     margin: 2px;
     padding: 0.5px;
-    width: 25px; /* Match the width with .tools buttons */
+    width: 45px; /* Match the width with .tools buttons */
     margin-left: 118px;
     text-align: center;
     background-color: transparent;
-    border-radius: 15px; /* Rounded corners similar to .tools buttons */
+    border-radius: 30px; /* Rounded corners similar to .tools buttons */
     padding: 2px;
     transition: background-color 0.3s; /* Smooth background transition */
 }
@@ -981,13 +1018,13 @@ display: block;
 }
 
 .bottom-right-sidebar button img {
-    width: 13px; /* Match the icon size with .tools */
-    height: 13px;
+    width: 27px; /* Match the icon size with .tools */
+    height: 27px;
     opacity: 1; /* Keep full opacity */
 }
 .bottom-right-sidebar button svg {
-    width: 13px; /* Match SVG icon size with .tools */
-    height: 13px;
+    width: 27px; /* Match SVG icon size with .tools */
+    height: 27px;
     opacity: 1; /* Keep full opacity */
 }
 .header {
@@ -996,7 +1033,7 @@ display: block;
     left: 0;
     width: 100%; /* Full width of the viewport */
     height: 80px; /* Height of the header */
-    background-color: rgba(128, 128, 128, 0.5); /* Transparent grey background */
+    background-color: rgba(128, 128, 128, 0.3); /* Transparent grey background */
     display: flex;
     justify-content: space-around; /* Space out items with gaps */
     align-items: center; /* Center icons vertically */
@@ -1006,8 +1043,8 @@ display: block;
 
 /* Style for the icons inside the header */
 .header-icon {
-    width: 20px; /* Width for each icon button */
-    height: 20px; /* Height for each icon button */
+    width: 30px; /* Width for each icon button */
+    height: 30px; /* Height for each icon button */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1018,14 +1055,14 @@ display: block;
 }
 
 .header-icon img {
-    width: 15px; /* Icon size */
-    height: 15px;
+    width: 20px; /* Icon size */
+    height: 20x;
     fill: #abb0c4; /* Icon color */
 }
 
 .header-icon svg {
-    width: 15px; /* SVG icon size */
-    height: 15px;
+    width: 20px; /* SVG icon size */
+    height: 20px;
     fill: #abb0c4; /* SVG icon color */
 }
 
@@ -1055,6 +1092,10 @@ display: block;
 }
 
 #frame-container{
+    display: none;
+}
+
+#upload-svg{
     display: none;
 }
 }
