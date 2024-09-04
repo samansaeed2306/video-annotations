@@ -40,12 +40,22 @@ function adjustVideoButtons() {
                 button.style.alignItems = 'center';
                 button.style.justifyContent = 'center';
                 button.style.position = 'relative'; 
-                button.style.top = '-28px'; 
-                button.style.left = '-225px';
+                button.style.top = '730px'; 
+                button.style.left = '-190px';
+            //     if(button!=audioVisualizerButton){
+            //     const svg = button.querySelector('svg');
+            //     if (svg) {
+            //         svg.style.width = '50px';  // Set desired width
+            //     }
+            
+            // }
             }
         });
-            audioVisualizerButton.style.left = '-308px';
-            audioVisualizerButton.style.top = '-18px';
+
+            // const progressbar = document.querySelector('.timeline .tick2');
+            // console.log('Width of the progress bar',progressbar.style.width);
+            audioVisualizerButton.style.left = '-278px';
+            audioVisualizerButton.style.top = '740px';
             videoButtons.innerHTML = '';
             videoButtons.style.display = 'flex';
             videoButtons.style.justifyContent = 'space-between'; 
@@ -57,6 +67,8 @@ function adjustVideoButtons() {
             videoButtons.style.justifyContent = 'space-between'; 
             videoButtons.style.alignItems = 'center'; 
             videoButtons.style.padding = '0 10px';
+
+            playPauseButton.style.left='-60';
 
             videoButtons.appendChild(playPauseButton);
             videoButtons.appendChild(previousButton);
@@ -102,6 +114,13 @@ function closeHeader() {
 
 window.addEventListener('load', adjustVideoButtons);
 window.addEventListener('resize', adjustVideoButtons);
-
+document.addEventListener('DOMContentLoaded', () => {
+    const progressbar = document.querySelector('.timeline .tick2');
+    if (progressbar) {
+        console.log('Width of the progress bar', progressbar.style.width);
+    } else {
+        console.log('Element .timeline .tick2 not found');
+    }
+});
 
 // adjustVideoButtons();

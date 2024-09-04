@@ -1,131 +1,715 @@
-.header {
-    position: fixed; /* Fix the header at the top */
-    top: 0;
-    left: 0;
-    width: 100%; /* Full width */
-    height: 50px; /* Height of the header */
-    background-color: #17181a; /* Background color */
-    display: flex;
-    justify-content: space-around; /* Space between icons */
-    align-items: center; /* Center icons vertically */
-    z-index: 1001; /* Ensure it stays above other elements */
-    opacity: 1;
+h3{
+    color: #ffffff;
+    padding-left: 80px;
 }
 
-/* Style for the icons inside the header */
-.header-icon img {
-    width: 15px;
-    height: 15px;
-    cursor: pointer;
-    background-color: transparent;
-    opacity: 1;
+.bottom-right-sidebar {
+    display: none;
 }
-.header-icon svg {
-    width: 15px;
-    height: 15px;
-    cursor: pointer;
-    background-color: transparent;
-    opacity: 1;
-}
-
- 
- 
- 
- 
- 
- 
- 
- /* Adjust for smaller screens */
- body {
+body {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     height: 100vh;
     margin: 0;
-    overflow: hidden; /* Prevent scrollbars */
+    font-family: Arial, sans-serif;
+    background-color:#252c31;
+    /* background-color: #000; */
 }
 
 .tools {
+    position: fixed;
+    top: 0px;
+    /* left: -60px; */
+    z-index: 1000;
+    background-color:#17181a;
+    padding: 5px;
+    /* border: 1px solid #ccc; */
+    border-radius: 0px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   
+}
+.tools button {
+    margin: 5px;
+    padding: 5px;
+    cursor: pointer;
+    transform: translateX(-65px);
+    /* left: -60px; */
+    background-color: #17181a;
+    
+    
+}
+.tools button:hover {
+    background-color: #485056 ;
+}
+.tools button:clicked {
+    background-color:#1A4971 ;
+}
+
+
+.tools button img {
+    width: 20px;
+    height: 20px;
+    
+    
+}
+
+#screen-recording{
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    right: 0;
+    top: 12px; /* You can adjust this to position it vertically */
+    margin-right: 100px; /* Optional: Adjust the margin as needed */  
+}
+#container-wrapper {
+    display: flex;
+    justify-content: flex-start; 
+    align-items: flex-start;  
+   
+    position: relative;
+
+  }
+
+#video-container {
+    margin-bottom: 0px;
+    margin: 100PX 0px;
+    width:500px;
+    position: relative;
+    height: 350px;
+    left:-80px;
+
+}
+video {
+    width: 100%;
+    height: auto;
     position: absolute;
     top: 0;
     left: 0;
-    height: 100%;
-    width: 60px; /* Sidebar width */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #17181a;
-    z-index: 1000;
-    padding-top: 10px;
+    pointer-events: none;
+    
 }
 
-.tools button {
-    margin: 0;
-    padding: 5px;
+#toggle-icon {
+    position: absolute;
+    /* bottom: 10px;  */
+    top: 500px;
+    left: 150px; 
+    width: 30px; 
+    height: 30px;
+    cursor: pointer;
+}
+#toggle-icon2 {
+    position: absolute;
+    /* bottom: 10px;  */
+    top:500px;
+    left: 950px; 
+    width: 30px; 
+    height: 30px;
+    cursor: pointer;
+}
+#zoom-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    background-image: url('https://png.pngtree.com/element_our/20190531/ourmid/pngtree-zoom-in-icon-image_1287460.jpg');
+    background-size: cover;
+    display: none;
+    cursor: pointer;
+}
+/* #video-container:hover #zoom-icon {
+    display: block;
+} */
+#canvas {
     width: 100%;
-    text-align: center;
-}
-
-.tools button img {
-    width: 20px; /* Reduced icon size */
-    height: 20px; /* Reduced icon size */
-}
-
-.timeline {
-    position: absolute;
-    bottom: 0;
-    width: calc(100% - 60px); /* Adjust width to account for the sidebar */
-    height: 60px;
-    background-color: #343a40;
-    z-index: 1000;
-    left: 60px; /* Move timeline to the right of the sidebar */
-    display: none;
-}
-
-.buttons-container {
-    position: absolute;
-    bottom: 60px; /* Ensure it does not overlap with the timeline */
-    width: calc(100% - 60px);
-    left: 60px;
-    display: none;
-}
-
-#video-container {
+    height: auto;
     position: absolute;
     top: 0;
-    left: 60px; /* Move video container to the right of the sidebar */
-    width: calc(100% - 60px); /* Adjust width to account for the sidebar */
-    height: calc(100vh - 60px); /* Adjust height considering the timeline */
-    margin: 0;
-    padding: 0;
+    left: 0;
+    z-index: 2;
+    /* background-color: rgba(0,0,0,0.5); */
+    pointer-events: none;
+    background-color: none;
+    /* cursor: pointer;  */
 }
 
-video, #canvas {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
+
+#toggle-icon.enabled path:first-child {
+    fill: rgb(87, 103, 201); 
+    
 }
+
+
+#toggle-icon.disabled path:first-child {
+    fill: gray;
+}
+#toggle-icon.enabled .movable-path {
+    transform: translateX(0); 
+    transition: transform 0.3s ease; 
+}
+
+
+#toggle-icon.disabled .movable-path {
+    transform: translateX(-40px); 
+    transition: transform 0.3s ease; 
+}
+
+#toggle-icon2.enabled path:first-child {
+    fill: rgb(87, 103, 201);
+}
+
+
+#toggle-icon2.disabled path:first-child {
+    fill: gray; 
+}
+#toggle-icon2.enabled .movable-path {
+    transform: translateX(0); 
+    transition: transform 0.3s ease; 
+}
+
+
+#toggle-icon2.disabled .movable-path {
+    transform: translateX(-40px); 
+    transition: transform 0.3s ease; 
+}
+
 
 .annotations {
+    position: fixed;
+    right: -3px;
+    top: 10px;
+    width: 245px;
+    background: rgb(48, 54, 60);
+    /* border: 0.5px solid #ccc; */
+    border-radius: 5px;
+    border-left: 0.5px solid #897f7f;
+    padding: 10px;
+    text-shadow: #d5b211;
+    padding-right: 35px;
+    height: 100%;
+    overflow-y: auto;
+    z-index: 2;
+}
+
+/* /* .annotations ul li {
+    /* color: white;
+    }  */
+ 
+.annotation-item {
+    background:#252c31;
+    border: 1px solid #252c31;
+    border-radius: 0px;
+    padding: 10px;
+    margin-bottom: 10px;
+    color: white;
+}
+.annotation-item input {
+    width: calc(100% - 20px);
+    margin-top: 10px;
+}
+.annotation-buttons {
+    text-align: right;
+    margin-top: 5px;
+    gap: 3px;
+}
+.annotation-buttons button {
+    margin-left: 5px;
+
+}
+
+#timeline-wrapper {
+  
+    position: relative;
+    width: 100%; 
+    overflow: hidden;
+    top:-2px;
+   
+}
+
+
+.timeline {
+    position: relative;
+    bottom:0px;
+    width: 78.7%; 
+    background-color: #343a40;
+    
+    
+
+    border-radius: 0px;
+    padding: 15px;
+    margin-top: 0px;
+    overflow: hidden;
+    height: 400px;
+    left: -0.1%;
+    margin: 0px;
+    top:-2px;
+    
+    
+}
+.timeline .tick {
+    display: inline-block;
+    width: calc(100% / var(--duration)); 
+    height: 2px;
+    background-color: #212425;
+    margin: 0;
+    
+    /* cursor: pointer; */
+    position: relative;
+    opacity: 0.6;
+}
+.video-button {
+    background-color: #343a40; 
+    
+}
+
+.timeline .tick2 {
+    display: inline-block;
+    width: calc(100% / var(--duration)); 
+    height: 5px;
+    background-color:white;
+    margin-top: 30px;
+    cursor: pointer;
+    position: relative;
+}
+.timeline .tick .icon {
+    position: absolute;
+    top: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: none;
+}
+.timeline .tick.has-drawing .icon {
+    display: block;
+}
+.timeline .tick.has-drawing .icon img {
+    width: 16px;
+    height: 16px;
+}
+.timeline .tick.has-audio .icon img {
+    width: 16px;
+    height: 16px;
+    background-color: none;
+}
+
+.pointer {
+    position: absolute;
+    height: 20px;
+    width: 2px; 
+    background-color: rgb(187, 255, 0);
+    cursor: ew-resize;
+    opacity: 0.5;
+}
+
+/* .pointer2 {
+    position: absolute;
+     top: 88px;
+     margin-left: 10px;
+    /* transform: translateX(-10%);  */ 
+    /* left: 0px; 
+    transform: translateX(0%);
+    cursor: pointer;
+    z-index: 10; */
+/* } */
+/* #play-pause-button {
+    margin-left: 20px;
+} */
+.hide {
     display: none;
 }
 
+#parentbtncontainer {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    width: 100%; 
+    flex-wrap: wrap;
+    gap: 10px; 
+}
+.buttons-container {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    padding: 15px;
+    background-color: #343a40;
+    /* background: var(--controls-background); */
+    width: 78.7%;
+    position: relative;
+    left: -0.5%; 
+    margin-left: 10px; 
+    top:-2px;
+    /* margin-top: 100px; */
+    /* opacity: 0.2; */
+}
 
 
+.button-with-menu {
+    flex: 1; 
+    display: flex;
+    align-items: center; 
+}
 
-/* Media queries for mobile responsiveness */
-@media (max-width: 414px) {
-    /* Remove body styles to focus on video and canvas */
-    body {
-        margin: 0;
-        padding: 0;
-        overflow: hidden; /* Prevent scrollbars */
+
+.video-buttons {
+    display: flex;
+    gap: 10px; 
+    flex: 1; 
+    justify-content: center; 
+    background-color: #343a40;
+    
+}
+
+
+.volume-button-container {
+    display: flex;
+    align-items: center;
+    gap: 5px; 
+    flex: 1; 
+    justify-content: flex-end; 
+    background-color: #343a40;
+    
+}
+.volume-button{
+    background-color: #343a40;
+}
+
+.current-time-input{
+    background-color: #21242A;
+    width: 45px;
+    border: 0.5px solid  #897f7f;
+    border-radius: 1px;
+    height: 20px;
+    text-align: center;
+    color: white;
+}
+.volume-slider {
+    width: 80px; 
+    color: blue;
+}
+
+
+.video-setting-button {
+    background-color: #343a40;
+    border: none;
+    cursor: pointer;
+}
+.video-buttons-container {
+    display: flex; 
+    gap: 10px; 
+    align-items: center; 
+}
+
+.icon {
+    fill: var(--icon-color); 
+    background-color: #343a40;
+    width: 22px;
+    height: 22px; 
+}
+video-buttons-container .video-button {
+    background-color: #343a40;
+    border: none;
+    cursor: pointer;
+    
+}
+
+.menu-popup-option-active {
+    font-weight: bold;
+}
+
+#myIcon {
+    color: rgb(106, 0, 255);
+  }
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 100%;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+  
+  .dropdown-content button {
+    background-color: #f1f1f1;
+    border: none;
+    color: transparent;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+    width: 100%;
+  }
+  
+  .dropdown-content button:hover {
+    background-color: #ddd;
+  }
+  
+  .show {
+    display: none;
+  }
+
+  .canvas-plus-cursor {
+    cursor: crosshair; 
+}
+
+.waveform-container {
+    position: relative;
+    width: 100%;
+    padding: 0 25px;
+}
+
+.waveform {
+    cursor: default;
+    
+   
+}
+
+wave {
+    display: block;
+    position: relative;
+    user-select: none;
+    height: 150px;
+    overflow: auto hidden;
+    
+   
+}
+
+#progress-wave {
+    position: absolute;
+    z-index: 3;
+    left: 0px;
+    top: 0px;
+    bottom: 0px;
+    overflow: hidden;
+    width: 242.4px;
+    display: block;
+    box-sizing: border-box;
+    border-right: 1px solid rgb(170, 190, 209);
+    pointer-events: none;
+    color: #000;
+}
+
+canvas4 {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    bottom: 0px;
+    height: 100%;
+    width: 508px;
+}
+
+canvas4:nth-of-type(2) {
+    z-index: 2;
+    pointer-events: none;
+}
+
+.draggable-pointer {
+    position: absolute;
+    z-index: 2;
+}
+.recording {
+    /* position: absolute;  */
+  
+    background-color: rgba(81, 10, 10, 0.5);
+}
+/* @keyframes recordingAnimation {
+    0%, 100% {
+        fill: rgba(81, 10, 10, 0.5);
+    }
+    50% {
+        fill: white;
+    }
+} */
+
+#microphone-icon.recording path {
+    animation: recordingAnimation 1s infinite;
+    /* height: 24px;
+    width: 24px; */
+    /* position: absolute; */
+  
+}
+.audio-element {
+    position: absolute;
+    bottom: 100%;  
+    /* left: 50%; */
+    transform: translateX(-50%);
+    background-color: #7c3e3e; 
+    border: 1px solid #7c3e3e;  
+    border-radius: 30px;
+    height: 13px;
+    z-index: 1;               
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    color: #333; 
+    padding: 5px;
+    margin-bottom: 4px;
+    opacity: 0.8;
+}
+
+.save-btn {
+    position: absolute;
+    top: 10px; 
+    right: -90px; 
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.save-btn svg {
+    fill: #ffffff; 
+}
+
+.save-btn.active svg {
+    fill: #FFD700; 
+}
+
+#save-button:hover {
+    background-color: transparent; 
+}
+.save-label {
+    margin-left: 10px; 
+    color: white; 
+    font-size: 16px; 
+    position: absolute;
+    top: 23px; 
+    right: 76px;
+    background: none;
+}
+
+.blur {
+    filter: blur(5px);
+    pointer-events: none; 
+}
+/* Styles for the blur effect */
+.blur {
+    filter: blur(5px);
+    pointer-events: none; /* Prevent interactions while blurred */
+}
+#video-btn-id{
+    margin-left: 200px;
+    margin-top: 20px;
+    
+}
+/* Styles for the message overlay */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure overlay is on top */
+    visibility: hidden; /* Initially hidden */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.overlay.active {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Ensure the content in the overlay is not blurred */
+.overlay-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    position: relative; /* Ensure this is positioned on top of the blur */
+    z-index: 1001;
+}
+
+.overlay-content svg {
+    width: 48px; /* Adjust size as needed */
+    height: 48px; /* Adjust size as needed */
+    fill: #00ff2a; /* Yellow color */
+}
+
+.overlay-content p {
+    margin-top: 10px;
+    color: #333;
+    font-size: 18px;
+}
+
+.overlay-content > * {
+    position: relative;
+ }
+
+ .view-icon {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 8px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.view-icon svg {
+    width: 24px;
+    height: 24px;
+    fill: #fafbfc; 
+}
+/*  
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    /* filter: blur(5px);
+    /* z-index: 999; /* Ensure it's below the overlay */
+    /* visibility: hidden; Initially hidden
+    opacity: 0;
+    transition: opacity 0.3s ease;  */
+/* }  */
+.upload-another-video-icon {
+    width: 20px;
+    height: 20px;
+   
+    position: relative;
+    right: -300px; 
+  }
+  
+  .upload-another-video-icon path {
+    stroke: #abb0c4;
+  }
+  
+  #audio-visualizer-button{
+    display: none;
     }
 
+    .header {
+        display: none;
+    }
+
+/* Media queries for mobile responsiveness */
+@media  (max-width: 414px) and (min-width: 200px){
+    /* Remove body styles to focus on video and canvas */
+   
+      html, body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden; /* Prevent overflow */
+        touch-action: none; 
+        background-color: #252c31;
+    }
+
+
     #video-container {
-        position: absolute;
+        position: fixed; /* Fixed to cover the entire viewport */
         top: 0;
         left: 0;
         width: 100%;
@@ -143,52 +727,354 @@ video, #canvas {
         object-fit: cover; /* Ensure the video covers the entire area */
     }
 
-    .tools {
+    video {
+        width: 100%;
+        height: 100vh;
         position: absolute;
         top: 0;
         left: 0;
-        height: 100%;
-        width: 30px; /* Sidebar width */
+        z-index: 1;
+        pointer-events: none;
+        object-fit: cover;
+        margin: 0;
+        padding: 0;
+    }
+
+    #canvas {
+        width: 100%;
+        height: 100vh;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 2;
+        pointer-events: none;
+        background-color: transparent;
+        object-fit: cover;
+        margin: 0;
+        padding: 0;
+        cursor: pointer; 
+    }
+
+    .tools {
+        opacity: 0.8;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        height: 60%;
+        width: 45px; /* Adjusted Sidebar width */
         display: flex;
         flex-direction: column;
-        align-items: center;
-        background-color: #17181a;
+        background-color: transparent;
         z-index: 1000; /* Float above video and canvas */
-        padding-top: 10px;
+        padding-top: 12px;
+        border-radius: 35px;
+        padding-left: 5px;
+        margin-left: 8px;
+        font-size: 0;
     }
 
     .tools button {
-        margin: 0;
-        padding: 5px;
-        width: 100%;
+        margin: 2px;
+        padding: 0px;
+        width: 45px;
+        margin-left: 125px;
         text-align: center;
+        background-color: transparent;
     }
 
-    .tools button img {
+    /* .tools button img {
         width: 20px; /* Reduced icon size */
-        height: 20px; /* Reduced icon size */
+        /* height: 20px; Reduced icon size */
+        
+    /* /* } 
+     #freehand{
+        background-color: #b03e2a;
+     }  */
+
+     .video-buttons {
+        position: absolute;
+        bottom: 20px; /* Position 20px from the bottom of the screen */
+        left: 50%;
+        transform: translateX(-50%); /* Center horizontally */
+        z-index: 1000; /* Float above video and canvas */
+        display: flex;
+        justify-content: center;
+        background-color: transparent; /* Slightly transparent background */
+        padding: 5px;
+        border-radius: 5px;
     }
 
-    .timeline {
-        position: absolute;
-        bottom: 0;
-        width: 100%;
-        height: 60px;
-        background-color: #343a40;
-        z-index: 1000; /* Float above video and canvas */
+    .video-buttons .video-button {
+        margin: 0 13px;
+        margin-bottom: 14px;
+        background-color: transparent;
+    }
+
+    .video-buttons svg {
+        fill: #ffffff; /* White color for icons */
+    }
+
+    .volume-button-container{
         display: none;
     }
 
-    .buttons-container {
-        position: absolute;
-        bottom: 60px; /* Ensure it does not overlap with the timeline */
-        width: 100%;
-        z-index: 1000; /* Float above video and canvas */
-        /* display: none; */
-        opacity: 0.5;
+    .video-buttons-container{
+        display:none;
     }
 
+    .button-with-menu{
+        display:none;
+    }
     .annotations {
         display: none;
     }
+    .save-container{
+        position: relative;
+        background: transparent;
+        background-color: transparent;
+    }
+    .save-btn {
+        display: none;
+        position: fixed; /* Changed to fixed to stay relative to viewport */
+        top: 10px; /* Distance from the top of the viewport */
+        right: -45px; /* Distance from the right edge of the viewport */
+        background: transparent;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        z-index: 1001; /* Ensure it's above other elements */
+    }
+
+    .save-btn svg {
+        fill: #ffffff; /* Original color */
+    }
+
+    .save-btn.active svg {
+        fill: #FFD700; /* Yellow color when active */
+    }
+
+    #save-button:hover {
+        background-color: transparent; /* Ensure no grey background on hover */
+    }
+
+    wave{
+        display: none;
+    }
+    
+.waveform-container {
+    display: none;
 }
+
+.waveform {
+    display: none;
+    
+   
+}
+
+
+
+#progress-wave {
+    display: none;
+}
+.timeline {
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    background-color: rgb(205, 122, 21);
+    padding: 0;
+    margin: 0;
+    height: 50px; /* Adjust timeline height */
+    z-index: 1000;
+    top: 0px;
+}
+
+/* .timeline .tick2 {
+    display: inline-block;
+    width: calc(100% / var(--duration)); 
+    height: 2px;
+    background-color: #ffffff;
+    cursor: pointer;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    bottom: 0;
+} */
+.timeline .tick2 {
+    display: inline-block;
+    width: calc(100% / var(--duration)); /* Adjust width based on duration */
+    height: 2px;
+    background-color: #f0ebeb;
+    cursor: pointer;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    bottom: 50px; /* Adjust this value to position above video buttons */
+    left: 50%;
+    transform: translateX(-50%); /* Centers the element horizontally */
+    z-index: 1000;
+}
+
+.bottom-right-sidebar {
+    position: fixed;
+    bottom: 150px; /* Adjust to align with the video or canvas bottom */
+    right: 0; /* Move sidebar to the right side */
+    height: auto; /* Consistent with .tools height */
+    width: 45px; /* Sidebar width similar to .tools */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: transparent;
+    z-index: 1000; /* Same z-index as .tools */
+    padding-top: 12px;
+    border-radius: 25px;
+    padding-right: 10px; /* Adjust for padding on the right side */
+    margin-right: 52px; /* Adjust for margin on the right side */
+}
+
+
+
+.timeline .tick {
+   display: none;
+}
+
+#undo, #redo{
+    display: none;
+}
+
+
+.tools svg, /* Exclude SVGs or icons from being hidden */
+.tools button {
+    font-size: initial;
+}
+
+.view-icon {
+   display:none;
+}
+#audio-visualizer-button{
+display: block;
+
+}
+
+.tools button img {
+    width: 27px;
+    height: 27px;
+    opacity: 1;
+}
+.tools button svg {
+    width: 27px;
+    height: 27px;
+    opacity: 1;
+}
+
+.tools button {
+    border-radius: 30px;
+    padding: 2px;
+    
+    
+}
+#video-btn-id {
+    display: flex;
+    justify-content: space-between; /* Distribute space between buttons */
+    align-items: center; /* Center buttons vertically */
+    width: 100%; /* Full width of the container */
+    padding: 0 10px; /* Optional padding for spacing */
+}
+
+
+.bottom-right-sidebar button {
+    margin: 2px;
+    padding: 0.5px;
+    width: 25px; /* Match the width with .tools buttons */
+    margin-left: 118px;
+    text-align: center;
+    background-color: transparent;
+    border-radius: 15px; /* Rounded corners similar to .tools buttons */
+    padding: 2px;
+    transition: background-color 0.3s; /* Smooth background transition */
+}
+
+.bottom-right-sidebar button:hover {
+    background-color: #485056; /* Keep this as the hover state */
+}
+
+.bottom-right-sidebar button img {
+    width: 13px; /* Match the icon size with .tools */
+    height: 13px;
+    opacity: 1; /* Keep full opacity */
+}
+.bottom-right-sidebar button svg {
+    width: 13px; /* Match SVG icon size with .tools */
+    height: 13px;
+    opacity: 1; /* Keep full opacity */
+}
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%; /* Full width of the viewport */
+    height: 80px; /* Height of the header */
+    background-color: rgba(128, 128, 128, 0.5); /* Transparent grey background */
+    display: flex;
+    justify-content: space-around; /* Space out items with gaps */
+    align-items: center; /* Center icons vertically */
+    z-index: 1001; /* Ensure it stays above other elements */
+    border-radius: 0; /* Remove rounded corners */
+}
+
+/* Style for the icons inside the header */
+.header-icon {
+    width: 20px; /* Width for each icon button */
+    height: 20px; /* Height for each icon button */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%; /* Make the icons round */
+    background-color: transparent; /* No background color for buttons */
+    cursor: pointer;
+    transition: background-color 0.3s; /* Smooth transition for hover */
+}
+
+.header-icon img {
+    width: 15px; /* Icon size */
+    height: 15px;
+    fill: #abb0c4; /* Icon color */
+}
+
+.header-icon svg {
+    width: 15px; /* SVG icon size */
+    height: 15px;
+    fill: #abb0c4; /* SVG icon color */
+}
+
+.header-icon:hover {
+    background-color: rgba(0, 0, 0, 0.2); /* Darker background on hover */
+}
+
+/* Optional: Active state for icons */
+.header-icon:active {
+    background-color: rgba(52, 58, 64, 0.9); /* Further darken background on click */
+}
+
+/* Specific styles for the save button icon to ensure color is set */
+#save-button-mobile svg path {
+    fill: #abb0c4; /* Specific color for save button icon */
+}
+
+/* Specific styles for the close button icon to ensure color is set */
+#close-header-mobile svg path {
+    fill: #abb0c4; /* Specific color for close button icon */
+}
+
+#savemob-icon {
+    width: 20px; /* Set to 20px for a larger icon */
+    height: 20px; /* Set to 20px for a larger icon */
+    fill: #abb0c4; /* Ensure the icon color remains the same */
+}
+
+#frame-container{
+    display: none;
+}
+
+
+}
+
