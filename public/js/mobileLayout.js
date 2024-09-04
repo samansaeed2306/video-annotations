@@ -23,6 +23,11 @@ function adjustVideoButtons() {
         }
 
         if (window.innerWidth <= 400) {
+            // window.addEventListener('resize', () => {
+            //     document.getElementById('play-pause-button').click();
+            // });
+            
+
             const buttons = [playPauseButton, previousButton, nextButton, audioVisualizerButton];
         buttons.forEach(button => {
             if (button) {
