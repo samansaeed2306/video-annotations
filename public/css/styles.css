@@ -1051,8 +1051,8 @@ display: block;
 }
 
 #library-btn svg{
-    width: 30px; /* Icon size */
-    height: 30px;
+    width: 25px; /* Icon size */
+    height: 25px;
     fill: #abb0c4; /* Icon color */
 }
 
@@ -1132,6 +1132,11 @@ display: block;
 
 #save-button-mobile:hover {
     background-color: transparent; 
+}
+
+#screen-recording2{
+    width: 20px; 
+    height: 20px;
 }
 }
 
