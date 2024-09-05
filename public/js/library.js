@@ -40,5 +40,5 @@ function addVideoCard(videoSrc, title) {
 }
 
 
-addVideoCard('../sampleVideos/rolling-tissues.mp4', 'rolling-tissues');
-addVideoCard('../sampleVideos/burning-planet.mp4', 'burning-planet');
+addVideoCard('../sampleVideos/rolling-tissues.mp4', 'rolling-tissues.mp4');
+addVideoCard('../sampleVideos/burning-planet.mp4', 'burning-planet.mp4');
