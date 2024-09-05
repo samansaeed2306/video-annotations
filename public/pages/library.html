@@ -6,95 +6,8 @@
     <title>Video Gallery with Load More</title>
     <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="../images/favicon-16x16.png">
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f0f0f0;
-        }
-        .gallery {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-        }
-        .card {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            width: 300px;
-            margin-bottom: 20px;
-        }
-        .card video {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-        .card-content {
-            padding: 15px;
-        }
-        .card h3 {
-            margin-top: 0;
-        }
-        .load-more {
-            display: block;
-            width: 200px;
-            margin: 20px auto;
-            padding: 10px;
-            background-color: #007bff;
-            color: white;
-            text-align: center;
-            text-decoration: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .load-more:hover {
-            background-color: #0056b3;
-        }
-        #fileInput {
-            display: none;
-        }
-        header {
-            background-color: white;
-            padding: 0.5rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        nav {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .logo {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #ea4c89;
-            margin-bottom: 0.5rem;
-        }
-        .nav-links {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        .nav-links a {
-            margin: 0.25rem;
-            text-decoration: none;
-            color: #333;
-            font-size: 0.9rem;
-        }
-        main {
-            max-width: 390px;
-            margin: 1rem auto;
-            padding: 0 1rem;
-        }
-        h1 {
-            font-size: 1.5rem;
-            color: #333;
-            text-align: center;
-        }
-    </style>
+    <link rel="stylesheet" href="../css/library.css">
+    
 </head>
 <body>
     <header>
@@ -115,52 +28,6 @@
         <a href="#" class="load-more" id="loadMore">Upload Video</a>
     </main>
    
-
-    <script>
-        const gallery = document.getElementById('gallery');
-        const loadMore = document.getElementById('loadMore');
-        const fileInput = document.getElementById('fileInput');
-
-        let videoCount = 0;
-
-        loadMore.addEventListener('click', function(e) {
-            e.preventDefault();
-            fileInput.click();
-        });
-
-        fileInput.addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const videoURL = URL.createObjectURL(file);
-                addVideoCard(videoURL, file.name);
-            }
-        });
-
-        function addVideoCard(videoSrc, title) {
-            const card = document.createElement('div');
-            card.className = 'card';
-
-            const video = document.createElement('video');
-            video.src = videoSrc;
-            video.controls = true;
-
-            const cardContent = document.createElement('div');
-            cardContent.className = 'card-content';
-
-            const heading = document.createElement('h3');
-            heading.textContent = title;
-
-            cardContent.appendChild(heading);
-            card.appendChild(video);
-            card.appendChild(cardContent);
-            gallery.appendChild(card);
-
-            videoCount++;
-        }
-
-    
-        addVideoCard('../sampleVideos/rolling-tissues.mp4', 'rolling-tissues');
-        addVideoCard('../sampleVideos/burning-planet.mp4', 'burning-planet');
-    </script>
+      <script src="../js/library.js"></script>
 </body>
 </html>
