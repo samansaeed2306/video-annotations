@@ -2072,8 +2072,7 @@ const displayMediaOptions = {
     monitorTypeSurfaces: "include",
   };
   
-
-startBtn.addEventListener('click', async () => {
+  async function screenRecorder(){
     try {
         const icon = startBtn;
 
@@ -2127,7 +2126,63 @@ startBtn.addEventListener('click', async () => {
     } catch (error) {
         console.error('Error during recording:', error);
     }
-});
+  }
+
+startBtn.addEventListener('click', screenRecorder);
+//     try {
+//         const icon = startBtn;
+
+//         if (icon.classList.contains('start-recording')) {
+            
+//             const stream = await navigator.mediaDevices.getDisplayMedia(displayMediaOptions);
+
+//             mediaRecorder2 = new MediaRecorder(stream);
+
+//             mediaRecorder2.ondataavailable = event => {
+//                 if (event.data.size > 0) {
+//                     chunks.push(event.data);
+//                 }
+//             };
+
+//             mediaRecorder2.onstop = () => {
+//                 const blob = new Blob(chunks, { type: 'video/webm' });
+//                 const url = URL.createObjectURL(blob);
+//                 const a = document.createElement('a');
+//                 a.href = url;
+//                 a.download = 'screen-recording.webm';
+//                 a.click();
+//                 chunks = [];
+//             };
+
+//             mediaRecorder2.start();
+//             console.log('Screen recording started');
+
+//             // Change the class to stop-recording
+//             icon.classList.remove('start-recording');
+//             icon.classList.add('stop-recording');
+//             // Change the image to stop recording icon
+//             icon.src = 'icons/stop-record.png';
+//             icon.alt = 'Stop Recording';
+//             icon.title='Stop Recording'
+//         } else if (icon.classList.contains('stop-recording')) {
+//             // Stop recording
+//             if (mediaRecorder2) {
+//                 mediaRecorder2.stop();
+//                 console.log('Screen recording stopped');
+
+//                 // Change the class back to start-recording
+//                 icon.classList.remove('stop-recording');
+//                 icon.classList.add('start-recording');
+//                 // Change the image back to start recording icon
+//                 icon.src = 'icons/screenrecorder.png';
+//                 icon.alt = 'Start Recording';
+//                 icon.title='Record Screen'
+//             }
+//         }
+//     } catch (error) {
+//         console.error('Error during recording:', error);
+//     }
+// });
 
        
 const captureArea = document.getElementById('video-container');
