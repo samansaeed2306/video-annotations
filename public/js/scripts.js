@@ -1458,46 +1458,87 @@ function convertBlobToBase64(blob) {
 
 let activateFirstTime = false;
 
-document.getElementById('save-button').addEventListener('click', function() {
-    const svgElement = this.querySelector('svg'); // Select the SVG element inside the button
-
+function handleSaveButtonClick(buttonElement) {
+    const svgElement = buttonElement.querySelector('svg'); // Select the SVG element inside the button
     
-    this.classList.toggle('active');
+    buttonElement.classList.toggle('active');
 
-    if (this.classList.contains('active')) {
-       
-        svgElement.style.fill = '#FFFF00';
+    if (buttonElement.classList.contains('active')) {
+        svgElement.style.fill = '#FFFF00';  // Change fill color to yellow
 
-        
-       // document.body.classList.add('blur');
-       
-       
+        // Loop through all annotations and save each one
         annotations.forEach(annotation => {
             saveAnnotation(annotation);
         });
 
-        
+        // Activate overlay
         const overlay = document.getElementById('overlay');
         overlay.classList.add('active');
 
-        
+        // Deactivate overlay after a delay
         setTimeout(() => {
-          //  document.body.classList.remove('blur');
             overlay.classList.remove('active');
         }, 1500);
 
         activateFirstTime = true;
     } else {
-        
-        svgElement.style.fill = '#FFFFFF';
+        svgElement.style.fill = '#FFFFFF';  // Reset fill color to white
+
+        // Delete all annotations
         deleteAllAnnotations();
       
+        // Remove overlay activation
         const overlay = document.getElementById('overlay');
         overlay.classList.remove('active');
 
         activateFirstTime = false;
     }
+}
+
+document.getElementById('save-button').addEventListener('click', function() {
+    handleSaveButtonClick(this);  
 });
+
+// document.getElementById('save-button').addEventListener('click', function() {
+//     const svgElement = this.querySelector('svg'); // Select the SVG element inside the button
+
+    
+//     this.classList.toggle('active');
+
+//     if (this.classList.contains('active')) {
+       
+//         svgElement.style.fill = '#FFFF00';
+
+        
+//        // document.body.classList.add('blur');
+       
+       
+//         annotations.forEach(annotation => {
+//             saveAnnotation(annotation);
+//         });
+
+        
+//         const overlay = document.getElementById('overlay');
+//         overlay.classList.add('active');
+
+        
+//         setTimeout(() => {
+//           //  document.body.classList.remove('blur');
+//             overlay.classList.remove('active');
+//         }, 1500);
+
+//         activateFirstTime = true;
+//     } else {
+        
+//         svgElement.style.fill = '#FFFFFF';
+//         deleteAllAnnotations();
+      
+//         const overlay = document.getElementById('overlay');
+//         overlay.classList.remove('active');
+
+//         activateFirstTime = false;
+//     }
+// });
   
 //   function loadWebMWriterScript() {
 //     fetch("https://unpkg.com/webm-writer@1.0.0/dist/webm-writer.min.js", {
@@ -2031,8 +2072,7 @@ const displayMediaOptions = {
     monitorTypeSurfaces: "include",
   };
   
-
-startBtn.addEventListener('click', async () => {
+  async function screenRecorder(){
     try {
         const icon = startBtn;
 
@@ -2086,7 +2126,63 @@ startBtn.addEventListener('click', async () => {
     } catch (error) {
         console.error('Error during recording:', error);
     }
-});
+  }
+
+startBtn.addEventListener('click', screenRecorder);
+//     try {
+//         const icon = startBtn;
+
+//         if (icon.classList.contains('start-recording')) {
+            
+//             const stream = await navigator.mediaDevices.getDisplayMedia(displayMediaOptions);
+
+//             mediaRecorder2 = new MediaRecorder(stream);
+
+//             mediaRecorder2.ondataavailable = event => {
+//                 if (event.data.size > 0) {
+//                     chunks.push(event.data);
+//                 }
+//             };
+
+//             mediaRecorder2.onstop = () => {
+//                 const blob = new Blob(chunks, { type: 'video/webm' });
+//                 const url = URL.createObjectURL(blob);
+//                 const a = document.createElement('a');
+//                 a.href = url;
+//                 a.download = 'screen-recording.webm';
+//                 a.click();
+//                 chunks = [];
+//             };
+
+//             mediaRecorder2.start();
+//             console.log('Screen recording started');
+
+//             // Change the class to stop-recording
+//             icon.classList.remove('start-recording');
+//             icon.classList.add('stop-recording');
+//             // Change the image to stop recording icon
+//             icon.src = 'icons/stop-record.png';
+//             icon.alt = 'Stop Recording';
+//             icon.title='Stop Recording'
+//         } else if (icon.classList.contains('stop-recording')) {
+//             // Stop recording
+//             if (mediaRecorder2) {
+//                 mediaRecorder2.stop();
+//                 console.log('Screen recording stopped');
+
+//                 // Change the class back to start-recording
+//                 icon.classList.remove('stop-recording');
+//                 icon.classList.add('start-recording');
+//                 // Change the image back to start recording icon
+//                 icon.src = 'icons/screenrecorder.png';
+//                 icon.alt = 'Start Recording';
+//                 icon.title='Record Screen'
+//             }
+//         }
+//     } catch (error) {
+//         console.error('Error during recording:', error);
+//     }
+// });
 
        
 const captureArea = document.getElementById('video-container');
