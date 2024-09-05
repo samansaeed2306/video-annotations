@@ -1458,46 +1458,87 @@ function convertBlobToBase64(blob) {
 
 let activateFirstTime = false;
 
-document.getElementById('save-button').addEventListener('click', function() {
-    const svgElement = this.querySelector('svg'); // Select the SVG element inside the button
-
+function handleSaveButtonClick(buttonElement) {
+    const svgElement = buttonElement.querySelector('svg'); // Select the SVG element inside the button
     
-    this.classList.toggle('active');
+    buttonElement.classList.toggle('active');
 
-    if (this.classList.contains('active')) {
-       
-        svgElement.style.fill = '#FFFF00';
+    if (buttonElement.classList.contains('active')) {
+        svgElement.style.fill = '#FFFF00';  // Change fill color to yellow
 
-        
-       // document.body.classList.add('blur');
-       
-       
+        // Loop through all annotations and save each one
         annotations.forEach(annotation => {
             saveAnnotation(annotation);
         });
 
-        
+        // Activate overlay
         const overlay = document.getElementById('overlay');
         overlay.classList.add('active');
 
-        
+        // Deactivate overlay after a delay
         setTimeout(() => {
-          //  document.body.classList.remove('blur');
             overlay.classList.remove('active');
         }, 1500);
 
         activateFirstTime = true;
     } else {
-        
-        svgElement.style.fill = '#FFFFFF';
+        svgElement.style.fill = '#FFFFFF';  // Reset fill color to white
+
+        // Delete all annotations
         deleteAllAnnotations();
       
+        // Remove overlay activation
         const overlay = document.getElementById('overlay');
         overlay.classList.remove('active');
 
         activateFirstTime = false;
     }
+}
+
+document.getElementById('save-button').addEventListener('click', function() {
+    handleSaveButtonClick(this);  
 });
+
+// document.getElementById('save-button').addEventListener('click', function() {
+//     const svgElement = this.querySelector('svg'); // Select the SVG element inside the button
+
+    
+//     this.classList.toggle('active');
+
+//     if (this.classList.contains('active')) {
+       
+//         svgElement.style.fill = '#FFFF00';
+
+        
+//        // document.body.classList.add('blur');
+       
+       
+//         annotations.forEach(annotation => {
+//             saveAnnotation(annotation);
+//         });
+
+        
+//         const overlay = document.getElementById('overlay');
+//         overlay.classList.add('active');
+
+        
+//         setTimeout(() => {
+//           //  document.body.classList.remove('blur');
+//             overlay.classList.remove('active');
+//         }, 1500);
+
+//         activateFirstTime = true;
+//     } else {
+        
+//         svgElement.style.fill = '#FFFFFF';
+//         deleteAllAnnotations();
+      
+//         const overlay = document.getElementById('overlay');
+//         overlay.classList.remove('active');
+
+//         activateFirstTime = false;
+//     }
+// });
   
 //   function loadWebMWriterScript() {
 //     fetch("https://unpkg.com/webm-writer@1.0.0/dist/webm-writer.min.js", {
