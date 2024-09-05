@@ -1050,6 +1050,12 @@ display: block;
     border-radius: 0; /* Remove rounded corners */
 }
 
+#library-btn svg{
+    width: 30px; /* Icon size */
+    height: 30px;
+    fill: #abb0c4; /* Icon color */
+}
+
 /* Style for the icons inside the header */
 .header-icon {
     width: 30px; /* Width for each icon button */
