@@ -130,3 +130,6 @@ document.getElementById('save-button-mobile').addEventListener('click', function
 
 document.getElementById('screen-recording2').addEventListener('click', screenRecorder);
 // adjustVideoButtons();
+document.getElementById('library-btn').addEventListener('click', function() {
+    window.location.href = 'pages/library.html'; 
+});
