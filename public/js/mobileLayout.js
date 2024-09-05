@@ -127,4 +127,6 @@ document.addEventListener('DOMContentLoaded', () => {
 document.getElementById('save-button-mobile').addEventListener('click', function() {
     handleSaveButtonClick(this);  
 });
+
+document.getElementById('screen-recording2').addEventListener('click', screenRecorder);
 // adjustVideoButtons();
