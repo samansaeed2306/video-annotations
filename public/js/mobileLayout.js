@@ -22,8 +22,13 @@ function adjustVideoButtons() {
             console.log('audioVisualizerButton is not present');
         }
 
-        
-        const buttons = [playPauseButton, previousButton, nextButton, audioVisualizerButton];
+        if (window.innerWidth <= 500) {
+            // window.addEventListener('resize', () => {
+            //     document.getElementById('play-pause-button').click();
+            // });
+            
+
+            const buttons = [playPauseButton, previousButton, nextButton, audioVisualizerButton];
         buttons.forEach(button => {
             if (button) {
                 button.style.border = 'none';
@@ -35,23 +40,36 @@ function adjustVideoButtons() {
                 button.style.alignItems = 'center';
                 button.style.justifyContent = 'center';
                 button.style.position = 'relative'; 
-                button.style.top = '-25px'; 
-                button.style.left = '-20px';
+                button.style.top = '560px'; 
+                button.style.left = '-190px';
+            //     if(button!=audioVisualizerButton){
+            //     const svg = button.querySelector('svg');
+            //     if (svg) {
+            //         svg.style.width = '50px';  // Set desired width
+            //     }
+            
+            // }
             }
         });
-        audioVisualizerButton.style.left = '-115px';
-        audioVisualizerButton.style.top = '-18px';
-        previousButton.style.left = '-30px';
-        nextButton.style.left = '-25px';
-        videoButtons.style.backgroundColor = 'transparent';
 
-        if (window.innerWidth <= 768) {
-           
+            // const progressbar = document.querySelector('.timeline .tick2');
+            // console.log('Width of the progress bar',progressbar.style.width);
+            audioVisualizerButton.style.left = '-278px';
+            audioVisualizerButton.style.top = '570px';
             videoButtons.innerHTML = '';
             videoButtons.style.display = 'flex';
             videoButtons.style.justifyContent = 'space-between'; 
             videoButtons.style.alignItems = 'center'; 
             videoButtons.style.padding = '0 10px';
+            // savebtn.style.left = '-200px';
+            videoButtons.innerHTML = '';
+            videoButtons.style.display = 'flex';
+            videoButtons.style.justifyContent = 'space-between'; 
+            videoButtons.style.alignItems = 'center'; 
+            videoButtons.style.padding = '0 10px';
+
+            playPauseButton.style.left='-60';
+            // playPauseButton.style.top='90px';
 
             videoButtons.appendChild(playPauseButton);
             videoButtons.appendChild(previousButton);
@@ -87,8 +105,28 @@ function toggleAudioWave() {
     audioWave.classList.toggle('active');
 }
 
+function closeHeader() {
+    var header = document.querySelector('.header');
+    if (header) {
+        header.style.display = 'none';
+    }
+}
+
+
 window.addEventListener('load', adjustVideoButtons);
 window.addEventListener('resize', adjustVideoButtons);
+document.addEventListener('DOMContentLoaded', () => {
+    const progressbar = document.querySelector('.timeline .tick2');
+    if (progressbar) {
+        console.log('Width of the progress bar', progressbar.style.width);
+    } else {
+        console.log('Element .timeline .tick2 not found');
+    }
+});
 
+document.getElementById('save-button-mobile').addEventListener('click', function() {
+    handleSaveButtonClick(this);  
+});
 
-
+document.getElementById('screen-recording2').addEventListener('click', screenRecorder);
+// adjustVideoButtons();
