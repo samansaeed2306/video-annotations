@@ -24,11 +24,27 @@ body {
     object-fit: cover;
 }
 .card-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 15px;
 }
 .card h3 {
     margin-top: 0;
 }
+
+.edit-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.edit-button img {
+    width: 24px;
+    height: 24px;
+}
+
 .load-more {
     display: block;
     width: 200px;
