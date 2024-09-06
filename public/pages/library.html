@@ -23,11 +23,49 @@
     </header>
     <main>
         <h1>Video Library</h1>
-        <div class="gallery" id="gallery"></div>
+        <div class="panel-selector">
+            <button id="videosButton" class="panel-button active">Videos</button>
+            <button id="imagesButton" class="panel-button inactive">Images</button>
+        </div>
+        <div id="videosPanel" class="panel active">
+            <div class="gallery" id="gallery"></div>
+            <input type="file" id="fileInput" accept="video/*">
+            <a href="#" class="load-more" id="loadMore">Upload Video</a>
+        </div>
+        <div id="imagesPanel" class="panel">
+            <div class="gallery" id="imageGallery"></div>
+            <input type="file" id="imageFileInput" accept="image/*">
+            <a href="#" class="load-more" id="loadMoreImages">Upload Image</a>
+        </div>
+        <!-- <div class="gallery" id="gallery"></div>
         <input type="file" id="fileInput" accept="video/*">
-        <a href="#" class="load-more" id="loadMore">Upload Video</a>
+        <a href="#" class="load-more" id="loadMore">Upload Video</a> -->
     </main>
    
       <script src="../js/library.js"></script>
+      <script>
+        const videosButton = document.getElementById('videosButton');
+        const imagesButton = document.getElementById('imagesButton');
+        const videosPanel = document.getElementById('videosPanel');
+        const imagesPanel = document.getElementById('imagesPanel');
+
+        videosButton.addEventListener('click', () => {
+            videosButton.classList.add('active');
+            videosButton.classList.remove('inactive');
+            imagesButton.classList.add('inactive');
+            imagesButton.classList.remove('active');
+            videosPanel.classList.add('active');
+            imagesPanel.classList.remove('active');
+        });
+
+        imagesButton.addEventListener('click', () => {
+            imagesButton.classList.add('active');
+            imagesButton.classList.remove('inactive');
+            videosButton.classList.add('inactive');
+            videosButton.classList.remove('active');
+            imagesPanel.classList.add('active');
+            videosPanel.classList.remove('active');
+        });
+    </script>
 </body>
 </html>
