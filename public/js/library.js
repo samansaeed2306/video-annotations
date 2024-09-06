@@ -115,4 +115,4 @@ function addImageCard(imageSrc, title) {
 }
 
 addImageCard('../sampleImages/dolphin.jfif', 'Dolphin');
-// addImageCard('../sampleImages/image2.jpg', 'Image 2');
+addImageCard('../sampleImages/scenery.jpg', 'Scenery');
