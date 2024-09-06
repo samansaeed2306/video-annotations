@@ -20,15 +20,19 @@ window.onload = () => {
 document.addEventListener('DOMContentLoaded', function() {
     const video = document.getElementById('video');
     const player = new shaka.Player(video);
-    const manifestUri = 'https://storage.googleapis.com/shaka-demo-assets/angel-one/dash.mpd';
-    // const manifestUri = 'https://samplelib.com/lib/preview/mp4/sample-5s.mp4';
-    player.load(manifestUri).then(function() {
-        console.log('The video has now been loaded!');
-        //setupVideoPlayer(video);
-        setupTimeline(video);
-    }).catch(function(error) {
-        console.error('Error code', error.code, 'object', error);
-    });
+    const storedVideoSrc = localStorage.getItem('selectedVideoSrc');
+    const manifestUri = storedVideoSrc || 'https://storage.googleapis.com/shaka-demo-assets/angel-one/dash.mpd';
+
+    function loadVideo(manifestUri) {
+        player.load(manifestUri).then(function() {
+            console.log('The video has now been loaded!');
+            setupTimeline(video);
+        }).catch(function(error) {
+            console.error('Error code', error.code, 'object', error);
+        });
+    }
+    loadVideo(manifestUri);
+    localStorage.removeItem('selectedVideoSrc');
 });
 function setupTimeline(video) {
     const timeline = document.getElementById('timeline');

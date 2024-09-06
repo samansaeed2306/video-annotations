@@ -38,7 +38,12 @@ function addVideoCard(videoSrc, title) {
     icon.alt = 'Edit';
     editButton.appendChild(icon);
 
-    // Append heading and button to the card content
+
+    editButton.addEventListener('click', function() {
+        localStorage.setItem('selectedVideoSrc', videoSrc);
+        window.location.href = '../index.html';
+    });
+   
     cardContent.appendChild(heading);
     cardContent.appendChild(editButton);
 
@@ -49,6 +54,13 @@ function addVideoCard(videoSrc, title) {
     videoCount++;
 }
 
-
+function loadVideo(manifestUri) {
+    player.load(manifestUri).then(function() {
+        console.log('The video has now been loaded!');
+        setupTimeline(video);
+    }).catch(function(error) {
+        console.error('Error code', error.code, 'object', error);
+    });
+}
 addVideoCard('../sampleVideos/rolling-tissues.mp4', 'rolling-tissues.mp4');
 addVideoCard('../sampleVideos/burning-planet.mp4', 'burning-planet.mp4');
