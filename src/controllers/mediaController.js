@@ -3,16 +3,28 @@ import * as model from '../models/mediaModel.js';
 import { ObjectId } from 'mongodb';
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export async function addMedia(req, res) {
   try {
     const { originalname, mimetype, filename, size } = req.file;
+    const userId = req.body.userId; // Assuming userId is sent in the request body
+
+    // Validate userId
+    if (!ObjectId.isValid(userId)) {
+      return res.status(400).json({ error: 'Invalid user ID format' });
+    }
+
     const media = {
       originalName: originalname,
       mimeType: mimetype,
       fileName: filename,
       size: size,
-      uploadDate: new Date()
+      uploadDate: new Date(),
+      userId: new ObjectId(userId) // Add userId
     };
     const createdMedia = await model.createMediaDocument(media);
     res.status(201).json({
