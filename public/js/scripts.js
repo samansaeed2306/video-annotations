@@ -537,7 +537,7 @@ function activateCircleMode() {
 
     const circle = new fabric.Circle({
         left: 100,
-        top: 70,
+        top: 170,
         radius: 30,
         fill: 'transparent',
         stroke: colors[currentColorIndex % colors.length],
@@ -550,8 +550,8 @@ function activateRectangleMode() {
     drawingMode = 'rectangle';
     setCurrentDrawingColor(); 
     const rect = new fabric.Rect({
-            left: 50,
-            top: 50,
+            left: 90,
+            top: 150,
             width: 60,
             height: 60,
             fill: 'transparent',
@@ -566,8 +566,8 @@ function activateTextMode() {
     canvas.isDrawingMode = false;
     drawingMode = 'text';
     const text = new fabric.Textbox('Type here', {
-        left: 50,
-        top: 50,
+        left: 150,
+        top: 350,
         fontSize: 20,
         fontFamily: 'Arial',
         fill: colors[currentColorIndex % colors.length],
@@ -581,8 +581,8 @@ function activateNoteMode() {
     canvas.isDrawingMode = false;
     drawingMode = 'note';
     const note = new fabric.Textbox('Note here', {
-        left: 50,
-        top: 50,
+        left: 150,
+        top: 550,
         fontSize: 14,
         fontFamily: 'Arial',
         fill: colors[currentColorIndex % colors.length],
