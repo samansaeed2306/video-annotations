@@ -14,10 +14,31 @@ fileInput.addEventListener('change', function(e) {
     if (file) {
         const videoURL = URL.createObjectURL(file);
         addVideoCard(videoURL, file.name);
-    }
+
+        const apiUrl = 'http://localhost:8080/api/media'; 
+
+        const formData = new FormData();
+        formData.append('file', file);
+
+        fetch(`${apiUrl}/upload`, {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Video uploaded:', data);
+            // // You might want to update the video src with the new path
+            // video.src = `/uploads/${data.media.ops[0].fileName}`;
+        })
+        .catch(error => console.error('Error uploading video:', error));
+
+        // ... rest of the existing code ...
+        }
 });
 
 function addVideoCard(videoSrc, title) {
+
+   
     const card = document.createElement('div');
     card.className = 'card';
 
@@ -53,6 +74,9 @@ function addVideoCard(videoSrc, title) {
     gallery.appendChild(card);
 
     videoCount++;
+
+    
+
 }
 
 function loadVideo(manifestUri) {
