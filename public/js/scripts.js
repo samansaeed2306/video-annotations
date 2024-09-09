@@ -653,8 +653,8 @@ function handleImageUpload(event) {
                 img.set({
                     left: 50,
                     top: 50,
-                    scaleX: 1,
-                    scaleY: 1,
+                    scaleX: 0.5,
+                    scaleY: 0.5,
                     selectable: true,
                     hasControls: true,
                     hasBorders: true,
