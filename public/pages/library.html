@@ -14,12 +14,10 @@
     <header>
         <nav>
             <div class="logo">Video Annotator</div>
-            <div class="nav-links">
-                <a href="#">Inspiration</a>
-                <a href="#">Find Designers</a>
-                <a href="#">Jobs</a>
-                <a href="#">Go Pro</a>
-            </div>
+            <form id="searchForm">
+                <input type="text" id="searchInput" placeholder="Search videos or images..." aria-label="Search">
+                <button type="submit">Search</button>
+            </form>
         </nav>
     </header>
     <main>
@@ -67,6 +65,44 @@
             imagesPanel.classList.add('active');
             videosPanel.classList.remove('active');
         });
+
+        searchForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const query = searchInput.value.toLowerCase();
+            
+           
+            if (videosPanel.classList.contains('active')) {
+                searchVideos(query);
+            } else if (imagesPanel.classList.contains('active')) {
+                searchImages(query);
+            }
+        });
+
+        
+        function searchVideos(query) {
+            const videoCards = gallery.querySelectorAll('.card');
+            videoCards.forEach(card => {
+                const videoTitle = card.querySelector('h3').textContent.toLowerCase();
+                if (videoTitle.includes(query)) {
+                    card.style.display = 'block'; 
+                } else {
+                    card.style.display = 'none'; 
+                }
+            });
+        }
+
+       
+        function searchImages(query) {
+            const imageCards = imageGallery.querySelectorAll('.card');
+            imageCards.forEach(card => {
+                const imageTitle = card.querySelector('h3').textContent.toLowerCase();
+                if (imageTitle.includes(query)) {
+                    card.style.display = 'block'; 
+                } else {
+                    card.style.display = 'none'; 
+                }
+            });
+        }
     </script>
 </body>
 </html>
