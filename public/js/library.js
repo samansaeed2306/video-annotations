@@ -40,6 +40,7 @@ function addVideoCard(videoSrc, title) {
 
 
     editButton.addEventListener('click', function() {
+        localStorage.setItem('selectedMediaType', 'video');
         localStorage.setItem('selectedVideoSrc', videoSrc);
         window.location.href = '../index.html';
     });
@@ -105,6 +106,11 @@ function addImageCard(imageSrc, title) {
     icon.alt = 'Edit';
     editButton.appendChild(icon);
 
+    editButton.addEventListener('click', function() {
+        localStorage.setItem('selectedMediaType', 'image');
+        localStorage.setItem('selectedImageSrc', imageSrc);
+        window.location.href = '../index.html';
+    });
 
     cardContent.appendChild(heading);
     cardContent.appendChild(editButton);
