@@ -11,12 +11,13 @@ const __dirname = path.dirname(__filename);
 export async function addMedia(req, res) {
   try {
     const { originalname, mimetype, filename, size } = req.file;
-    const userId = req.body.userId; // Assuming userId is sent in the request body
+    // Comment out userId handling for now
+    // const userId = req.body.userId; // Assuming userId is sent in the request body
 
-    // Validate userId
-    if (!ObjectId.isValid(userId)) {
-      return res.status(400).json({ error: 'Invalid user ID format' });
-    }
+    // Validate userId (commented out)
+    // if (userId && !ObjectId.isValid(userId)) {
+    //   return res.status(400).json({ error: 'Invalid user ID format' });
+    // }
 
     const media = {
       originalName: originalname,
@@ -24,17 +25,20 @@ export async function addMedia(req, res) {
       fileName: filename,
       size: size,
       uploadDate: new Date(),
-      userId: new ObjectId(userId) // Add userId
+      // userId: userId ? new ObjectId(userId) : undefined // Add userId if provided
     };
+
     const createdMedia = await model.createMediaDocument(media);
     res.status(201).json({
       message: 'Media uploaded successfully!',
       media: createdMedia
     });
   } catch (error) {
+    console.error('Error:', error); // Log the error for debugging
     res.status(500).json({ error: 'Failed to upload media' });
   }
 }
+
 
 export async function getAllMedia(req, res) {
   try {
@@ -45,7 +49,7 @@ export async function getAllMedia(req, res) {
   }
 }
 export function getMediaFiles(req, res){
-  const directoryPath = path.join(__dirname, '../../uploads');
+  const directoryPath = path.join(__dirname, '../../public/uploads/');
 
   // Read files in the 'uploads' folder
   fs.readdir(directoryPath, (err, files) => {
