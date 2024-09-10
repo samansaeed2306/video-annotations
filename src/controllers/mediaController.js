@@ -44,6 +44,19 @@ export async function getAllMedia(req, res) {
     res.status(500).json({ error: 'Failed to retrieve media' });
   }
 }
+export function getMediaFiles(req, res){
+  const directoryPath = path.join(__dirname, '../../uploads');
+
+  // Read files in the 'uploads' folder
+  fs.readdir(directoryPath, (err, files) => {
+      if (err) {
+          return res.status(500).send({ message: 'Unable to scan files' });
+      }
+      
+      // Send back the file names
+      res.status(200).send(files);
+  });
+};
 
 export async function getMediaById(req, res) {
   try {
@@ -84,3 +97,4 @@ export async function deleteMedia(req, res) {
     res.status(500).json({ error: 'Failed to delete media' });
   }
 }
+
