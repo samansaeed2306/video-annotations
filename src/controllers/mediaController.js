@@ -48,20 +48,32 @@ export async function getAllMedia(req, res) {
     res.status(500).json({ error: 'Failed to retrieve media' });
   }
 }
-export function getMediaFiles(req, res){
+
+export async function getMediaFiles(req, res) {
   const directoryPath = path.join(__dirname, '../../public/uploads/');
 
-  // Read files in the 'uploads' folder
-  fs.readdir(directoryPath, (err, files) => {
-      if (err) {
-          return res.status(500).send({ message: 'Unable to scan files' });
-      }
-      
-      // Send back the file names
-      res.status(200).send(files);
-  });
-};
+  try {
+    // Read file names in the 'uploads' folder
+    const files = await fs.promises.readdir(directoryPath);
 
+    // Get media metadata from the database
+    const mediaRecords = await model.getAllMedia(); // Assuming this gets media from the database
+
+    // Map the files to their original names using the media records from the database
+    const fileDetails = files.map(fileName => {
+      const media = mediaRecords.find(m => m.fileName === fileName);
+      return {
+        fileName: fileName,
+        originalName: media ? media.originalName : fileName  // Fall back to fileName if not found
+      };
+    });
+
+    res.status(200).json(fileDetails);
+  } catch (err) {
+    console.error('Error fetching media files:', err);
+    res.status(500).send({ message: 'Unable to scan files or retrieve media metadata' });
+  }
+}
 export async function getMediaById(req, res) {
   try {
     const { id } = req.params;

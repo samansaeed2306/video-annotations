@@ -4,18 +4,18 @@ fetch('http://localhost:8080/api/media/getmediafiles')
   .then(files => {
     // Loop through each file and call addImageCard or addVideoCard based on file extension
     files.forEach(file => {
-        console.log('File: ', file);
+        console.log('File: ', file.fileName);
       // Check the file extension to decide if it's an image or video
-      const fileExtension = file.split('.').pop().toLowerCase();
+      const fileExtension = file.fileName.split('.').pop().toLowerCase();
       const filePath = `../uploads`;
       console.log('File Path', filePath);
-      const impfile = 'test.mp4';
+    //   const testfile = 'test.mp4';
       if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
         // addImageCard('../../uploads/test.mp4', 'test');
       } else if (['mp4', 'webm'].includes(fileExtension)) {
         // const videoURL = filePath;
         // addVideoCard(videoURL, file);
-        addVideoCard(`${filePath}/${file}`, file);
+        addVideoCard(`${filePath}/${file.fileName}`, file.originalName);
         // addVideoCard('../../uploads/test.mp4', 'test.mp4');
       }
     });
