@@ -58,8 +58,10 @@ fileInput.addEventListener('change', function(e) {
             console.log('Video uploaded:', data);
             // Optionally update the video src with the new path
             // video.src = `/uploads/${data.media.fileName}`;
-            if (data.media && data.media.fileUrl) {
-                addVideoCard(data.media.fileUrl, file.name);
+            console.log('Video originalName:', data.media.originalName);
+            if (data.media && data.media.fileUrl && data.media.originalName) {
+                
+                addVideoCard(data.media.fileUrl, data.media.originalName);
                 console.log("Inside if condition");
                 
             }
@@ -101,7 +103,7 @@ imageFileInput.addEventListener('change', function(e) {
 // Functions
 function addVideoCard(videoSrc, title) {
 
-    console.log('Inside add video card');
+    console.log('Inside add video card.Title: ',title);
     console.log('Video source: ',videoSrc);
 
     const card = document.createElement('div');
