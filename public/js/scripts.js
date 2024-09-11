@@ -1,8 +1,7 @@
 //import { saveAnnotation, updateAnnotation } from './api.js';
 
 // import WebMWriter from 'webm-writer';
-let mediaElement;
-const selectedMediaType = localStorage.getItem('selectedMediaType');
+
 
 let annotations = [];
 let currentColorIndex = 0;
@@ -19,7 +18,6 @@ window.onload = () => {
 
 
 document.addEventListener('DOMContentLoaded', function() {
-    if (selectedMediaType === 'video') {
     const video = document.getElementById('video');
     const player = new shaka.Player(video);
     const storedVideoSrc = localStorage.getItem('selectedVideoSrc');
@@ -34,8 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     loadVideo(manifestUri);
-    localStorage.removeItem('selectedVideoSrc');}
-    
+    localStorage.removeItem('selectedVideoSrc');
 });
 function setupTimeline(video) {
     const timeline = document.getElementById('timeline');
@@ -2251,7 +2248,6 @@ const zoomScale = 1.2;
         canvas.calcOffset(); 
     }
 });
-
 
 
 
