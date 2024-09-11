@@ -7,28 +7,122 @@ let annotations = [];
 let currentColorIndex = 0;
 const colors = ['#FF5733', '#33FF57', '#5733FF', '#FFFF33', '#FF33FF', '#33FFFF'];
 
-window.onload = () => {
-    document.cookie.split(";").forEach(cookie => {
-        document.cookie = cookie.trim().split("=")[0] + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+let selectedMediaType='';
+const canvas = new fabric.Canvas('canvas', {
+    selection: false,
+    isDrawingMode: false
     });
-  
- // loadWebMWriterScript();
+window.onload = () => {
+
+    selectedMediaType = localStorage.getItem('selectedMediaType') || '';
+    localStorage.removeItem('selectedMediaType'); 
+
+    const videoContainer = document.getElementById('video-container');
+    const canvas2 = document.getElementById('canvas');
+    const buttonsContainer = document.querySelector('.buttons-container');
+    console.log("Selected Media Type: ",selectedMediaType);
+    if (selectedMediaType === 'image') {
+        const storedImageSrc = localStorage.getItem('selectedImageSrc');
+        if (storedImageSrc) {
+            const video = document.getElementById('video');
+            if (video) {
+                console.log('The video element has been removed');
+                video.remove();
+            }
+            console.log("Video Container:", videoContainer);
+
+            const img = document.createElement('img');
+            img.id = 'media-element';
+            img.src = storedImageSrc;
+            img.style.display = 'block';
+            console.log("Created img element:", img);
+          
+            
+
+            
+
+            img.style.position = 'absolute'; 
+            img.style.top = '0';  
+            img.style.left = '0'; 
+            img.style.width = '100%';
+            img.style.height = '100%';
+            img.style.objectFit = 'contain';
+            
+            if(videoContainer.contains(canvas2)) {
+            videoContainer.appendChild(img); }
+            console.log('videoContainer.contains(canvas): ',videoContainer.contains(canvas2));
+           
+            const observer = new MutationObserver((mutations) => {
+                console.log('Observer alert!');
+                if (videoContainer.contains(canvas)) {
+                   
+                        console.log("Inserting img element:", img);
+                        videoContainer.insertBefore(img, canvas2);
+                        console.log("Image element inserted after delay.");
+                        console.log("Image element after delay insertion:", document.getElementById('media-element'));
+                        observer.disconnect(); 
+                 
+                }
+            });
+
+            observer.observe(videoContainer, { childList: true });
+            mediaElement = img;
+            console.log("Removed Local Storage");
+            localStorage.removeItem('selectedImageSrc');
+            console.log("Image element after insertion:", document.getElementById('media-element'));
+
+            img.onload = () => {
+                console.log('Image has been successfully loaded');
+                fabricCanvas.width = img.clientWidth;
+                fabricCanvas.height = img.clientHeight;
+                canvas.setWidth(img.clientWidth);
+                canvas.setHeight(img.clientHeight);
+
+                console.log(`Canvas resized to: ${img.clientWidth}x${img.clientHeight}`);
+            };
+            img.onerror = (e) => {
+                console.error('Failed to load image', e);
+            };
+            if (buttonsContainer) {
+                buttonsContainer.style.display = 'none'; 
+                console.log("Buttons container hidden.");
+            }
+
+            console.log("Video Container after insertion:", videoContainer);
+        }
+    } else {
+        mediaElement = document.getElementById('video');
+    }
+
     
 };
 
 
 document.addEventListener('DOMContentLoaded', function() {
+
+
+    setTimeout(() => {
     const video = document.getElementById('video');
+    
+    if (selectedMediaType === '' || selectedMediaType === 'video') {
+    if(video){
     const player = new shaka.Player(video);
-    const manifestUri = 'https://storage.googleapis.com/shaka-demo-assets/angel-one/dash.mpd';
-    // const manifestUri = 'https://samplelib.com/lib/preview/mp4/sample-5s.mp4';
-    player.load(manifestUri).then(function() {
-        console.log('The video has now been loaded!');
-        //setupVideoPlayer(video);
-        setupTimeline(video);
-    }).catch(function(error) {
-        console.error('Error code', error.code, 'object', error);
-    });
+    const storedVideoSrc = localStorage.getItem('selectedVideoSrc');
+    const manifestUri = storedVideoSrc || 'https://storage.googleapis.com/shaka-demo-assets/angel-one/dash.mpd';
+
+    function loadVideo(manifestUri) {
+        player.load(manifestUri).then(function() {
+            console.log('The video has now been loaded!');
+            setupTimeline(video);
+        }).catch(function(error) {
+            console.error('Error code', error.code, 'object', error);
+        });
+    }
+    loadVideo(manifestUri);}
+    localStorage.removeItem('selectedVideoSrc');}
+
+}, 1000);
+
 });
 function setupTimeline(video) {
     const timeline = document.getElementById('timeline');
@@ -294,10 +388,7 @@ updateTimelineIcons();
 
 
 
-const canvas = new fabric.Canvas('canvas', {
-selection: false,
-isDrawingMode: false
-});
+
 
 const playPauseButton = document.getElementById('play-pause-button');
 const playPauseImage = playPauseButton.querySelector('img');
@@ -533,7 +624,9 @@ function activateCircleMode() {
 
     const circle = new fabric.Circle({
         left: 100,
-        top: 70,
+
+        top: 170,
+
         radius: 30,
         fill: 'transparent',
         stroke: colors[currentColorIndex % colors.length],
@@ -546,8 +639,10 @@ function activateRectangleMode() {
     drawingMode = 'rectangle';
     setCurrentDrawingColor(); 
     const rect = new fabric.Rect({
-            left: 50,
-            top: 50,
+
+            left: 90,
+            top: 150,
+
             width: 60,
             height: 60,
             fill: 'transparent',
@@ -562,8 +657,10 @@ function activateTextMode() {
     canvas.isDrawingMode = false;
     drawingMode = 'text';
     const text = new fabric.Textbox('Type here', {
-        left: 50,
-        top: 50,
+
+        left: 150,
+        top: 350,
+
         fontSize: 20,
         fontFamily: 'Arial',
         fill: colors[currentColorIndex % colors.length],
@@ -577,8 +674,10 @@ function activateNoteMode() {
     canvas.isDrawingMode = false;
     drawingMode = 'note';
     const note = new fabric.Textbox('Note here', {
-        left: 50,
-        top: 50,
+
+        left: 150,
+        top: 550,
+
         fontSize: 14,
         fontFamily: 'Arial',
         fill: colors[currentColorIndex % colors.length],
@@ -649,8 +748,10 @@ function handleImageUpload(event) {
                 img.set({
                     left: 50,
                     top: 50,
-                    scaleX: 1,
-                    scaleY: 1,
+
+                    scaleX: 0.5,
+                    scaleY: 0.5,
+
                     selectable: true,
                     hasControls: true,
                     hasBorders: true,
