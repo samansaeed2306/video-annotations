@@ -6,19 +6,88 @@
 let annotations = [];
 let currentColorIndex = 0;
 const colors = ['#FF5733', '#33FF57', '#5733FF', '#FFFF33', '#FF33FF', '#33FFFF'];
-
+let selectedMediaType='';
 window.onload = () => {
-    document.cookie.split(";").forEach(cookie => {
-        document.cookie = cookie.trim().split("=")[0] + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
-    });
-  
- // loadWebMWriterScript();
+
+    selectedMediaType = localStorage.getItem('selectedMediaType') || '';
+    localStorage.removeItem('selectedMediaType'); 
+
+    const videoContainer = document.getElementById('video-container');
+    const canvas = document.getElementById('canvas');
+    const buttonsContainer = document.querySelector('.buttons-container');
+    console.log("Selected Media Type: ",selectedMediaType);
+    if (selectedMediaType === 'image') {
+        const storedImageSrc = localStorage.getItem('selectedImageSrc');
+        if (storedImageSrc) {
+            const video = document.getElementById('video');
+            if (video) {
+                console.log('The video element has been removed');
+                video.remove();
+            }
+            console.log("Video Container:", videoContainer);
+
+            const img = document.createElement('img');
+            img.id = 'media-element';
+            img.src = storedImageSrc;
+            img.style.display = 'block'; // Ensure image is displayed
+            console.log("Created img element:", img);
+            // Add onload and onerror handlers for debugging
+            img.onload = () => {
+                console.log('Image has been successfully loaded');
+            };
+
+            img.onerror = (e) => {
+                console.error('Failed to load image', e);
+            };
+            img.style.width = '100%';
+            img.style.height = '100%';
+            img.style.objectFit = 'contain';
+            if(canvas){
+                console.log('Canvas does exist');
+                
+            }
+            if(videoContainer.contains(canvas)) {
+            videoContainer.appendChild(img); }
+            console.log('videoContainer.contains(canvas): ',videoContainer.contains(canvas));
+            // Use MutationObserver to detect when canvas is added
+            const observer = new MutationObserver((mutations) => {
+                console.log('Observer alert!');
+                if (videoContainer.contains(canvas)) {
+                   
+                        console.log("Inserting img element:", img);
+                        videoContainer.insertBefore(img, canvas);
+                        console.log("Image element inserted after delay.");
+                        console.log("Image element after delay insertion:", document.getElementById('media-element'));
+                        observer.disconnect(); // Stop observing after insertion
+                 
+                }
+            });
+
+            observer.observe(videoContainer, { childList: true });
+            mediaElement = img;
+            console.log("Removed Local Storage");
+            localStorage.removeItem('selectedImageSrc');
+            console.log("Image element after insertion:", document.getElementById('media-element'));
+            if (buttonsContainer) {
+                buttonsContainer.style.display = 'none'; 
+                console.log("Buttons container hidden.");
+            }
+            console.log("Video Container after insertion:", videoContainer);
+        }
+    } else {
+        mediaElement = document.getElementById('video');
+    }
     
 };
 
 
 document.addEventListener('DOMContentLoaded', function() {
+
+    setTimeout(() => {
     const video = document.getElementById('video');
+    
+    if (selectedMediaType === '' || selectedMediaType === 'video') {
+    if(video){
     const player = new shaka.Player(video);
     const storedVideoSrc = localStorage.getItem('selectedVideoSrc');
     const manifestUri = storedVideoSrc || 'https://storage.googleapis.com/shaka-demo-assets/angel-one/dash.mpd';
@@ -31,8 +100,10 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('Error code', error.code, 'object', error);
         });
     }
-    loadVideo(manifestUri);
-    localStorage.removeItem('selectedVideoSrc');
+    loadVideo(manifestUri);}
+    localStorage.removeItem('selectedVideoSrc');}
+
+}, 1000);
 });
 function setupTimeline(video) {
     const timeline = document.getElementById('timeline');

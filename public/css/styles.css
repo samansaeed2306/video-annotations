@@ -85,7 +85,7 @@ body {
     left:-80px;
 
 }
-video {
+video,#media-element {
     width: 100%;
     height: auto;
     position: absolute;
@@ -733,7 +733,7 @@ body::before {
         z-index: 1; /* Place behind floating elements */
     }
 
-    video, #canvas {
+    video, #canvas ,#media-element{
         width: 100%;
         height: 100vh; /* Full viewport height */
         margin: 0;
@@ -741,7 +741,7 @@ body::before {
         object-fit: cover; /* Ensure the video covers the entire area */
     }
 
-    video {
+    video ,#media-element{
         width: 100%;
         height: 100vh;
         position: absolute;
