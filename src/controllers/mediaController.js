@@ -1,0 +1,116 @@
+// controllers/mediaController.js
+import * as model from '../models/mediaModel.js';
+import { ObjectId } from 'mongodb';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+export async function addMedia(req, res) {
+  try {
+    const { originalname, mimetype, filename, size } = req.file;
+    // Comment out userId handling for now
+    // const userId = req.body.userId; // Assuming userId is sent in the request body
+
+    // Validate userId (commented out)
+    // if (userId && !ObjectId.isValid(userId)) {
+    //   return res.status(400).json({ error: 'Invalid user ID format' });
+    // }
+
+    const media = {
+      originalName: originalname,
+      mimeType: mimetype,
+      fileName: filename,
+      size: size,
+      uploadDate: new Date(),
+      // userId: userId ? new ObjectId(userId) : undefined // Add userId if provided
+    };
+
+    const createdMedia = await model.createMediaDocument(media);
+    res.status(201).json({
+      message: 'Media uploaded successfully!',
+      media: createdMedia
+    });
+  } catch (error) {
+    console.error('Error:', error); // Log the error for debugging
+    res.status(500).json({ error: 'Failed to upload media' });
+  }
+}
+
+
+export async function getAllMedia(req, res) {
+  try {
+    const media = await model.getAllMedia();
+    res.status(200).json(media);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to retrieve media' });
+  }
+}
+
+export async function getMediaFiles(req, res) {
+  const directoryPath = path.join(__dirname, '../../public/uploads/');
+
+  try {
+    // Read file names in the 'uploads' folder
+    const files = await fs.promises.readdir(directoryPath);
+
+    // Get media metadata from the database
+    const mediaRecords = await model.getAllMedia(); // Assuming this gets media from the database
+
+    // Map the files to their original names using the media records from the database
+    const fileDetails = files.map(fileName => {
+      const media = mediaRecords.find(m => m.fileName === fileName);
+      return {
+        fileName: fileName,
+        originalName: media ? media.originalName : fileName  // Fall back to fileName if not found
+      };
+    });
+
+    res.status(200).json(fileDetails);
+  } catch (err) {
+    console.error('Error fetching media files:', err);
+    res.status(500).send({ message: 'Unable to scan files or retrieve media metadata' });
+  }
+}
+export async function getMediaById(req, res) {
+  try {
+    const { id } = req.params;
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).json({ error: 'Invalid ID format' });
+    }
+    const media = await model.getMediaById(id);
+    if (!media) {
+      return res.status(404).json({ error: 'Media not found' });
+    }
+    res.status(200).json(media);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to retrieve media' });
+  }
+}
+
+export async function deleteMedia(req, res) {
+  try {
+    const { id } = req.params;
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).json({ error: 'Invalid ID format' });
+    }
+    const media = await model.getMediaById(id);
+    if (!media) {
+      return res.status(404).json({ error: 'Media not found' });
+    }
+    
+    // Delete file from the file system
+    const filePath = path.join(__dirname, '..', 'uploads', media.fileName);
+    fs.unlinkSync(filePath);
+
+    // Delete media document from the database
+    await model.deleteMedia(id);
+
+    res.status(200).json({ message: 'Media deleted successfully!' });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to delete media' });
+  }
+}
+

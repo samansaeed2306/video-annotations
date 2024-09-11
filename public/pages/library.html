@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Gallery with Load More</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../images/favicon-16x16.png">
+    <link rel="stylesheet" href="../css/library.css">
+    
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Video Annotator</div>
+            <form id="searchForm">
+                <input type="text" id="searchInput" placeholder="Search videos or images..." aria-label="Search">
+                <button type="submit">Search</button>
+            </form>
+        </nav>
+    </header>
+    <main>
+        <h1>Library</h1>
+        <div class="panel-selector">
+            <button id="videosButton" class="panel-button active">Videos</button>
+            <button id="imagesButton" class="panel-button inactive">Images</button>
+        </div>
+        <div id="videosPanel" class="panel active">
+            <div class="gallery" id="gallery"></div>
+            <input type="file" id="fileInput" accept="video/*">
+            <a href="#" class="load-more" id="loadMore">Upload Video</a>
+        </div>
+        <div id="imagesPanel" class="panel">
+            <div class="gallery" id="imageGallery"></div>
+            <input type="file" id="imageFileInput" accept="image/*">
+            <a href="#" class="load-more" id="loadMoreImages">Upload Image</a>
+        </div>
+        <!-- <div class="gallery" id="gallery"></div>
+        <input type="file" id="fileInput" accept="video/*">
+        <a href="#" class="load-more" id="loadMore">Upload Video</a> -->
+    </main>
+   
+      <script src="../js/library.js"></script>
+      <script>
+        const videosButton = document.getElementById('videosButton');
+        const imagesButton = document.getElementById('imagesButton');
+        const videosPanel = document.getElementById('videosPanel');
+        const imagesPanel = document.getElementById('imagesPanel');
+
+        videosButton.addEventListener('click', () => {
+            videosButton.classList.add('active');
+            videosButton.classList.remove('inactive');
+            imagesButton.classList.add('inactive');
+            imagesButton.classList.remove('active');
+            videosPanel.classList.add('active');
+            imagesPanel.classList.remove('active');
+        });
+
+        imagesButton.addEventListener('click', () => {
+            imagesButton.classList.add('active');
+            imagesButton.classList.remove('inactive');
+            videosButton.classList.add('inactive');
+            videosButton.classList.remove('active');
+            imagesPanel.classList.add('active');
+            videosPanel.classList.remove('active');
+        });
+
+        searchForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const query = searchInput.value.toLowerCase();
+            
+           
+            if (videosPanel.classList.contains('active')) {
+                searchVideos(query);
+            } else if (imagesPanel.classList.contains('active')) {
+                searchImages(query);
+            }
+        });
+
+        
+        function searchVideos(query) {
+            const videoCards = gallery.querySelectorAll('.card');
+            videoCards.forEach(card => {
+                const videoTitle = card.querySelector('h3').textContent.toLowerCase();
+                if (videoTitle.includes(query)) {
+                    card.style.display = 'block'; 
+                } else {
+                    card.style.display = 'none'; 
+                }
+            });
+        }
+
+       
+        function searchImages(query) {
+            const imageCards = imageGallery.querySelectorAll('.card');
+            imageCards.forEach(card => {
+                const imageTitle = card.querySelector('h3').textContent.toLowerCase();
+                if (imageTitle.includes(query)) {
+                    card.style.display = 'block'; 
+                } else {
+                    card.style.display = 'none'; 
+                }
+            });
+        }
+    </script>
+</body>
+</html>
