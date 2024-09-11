@@ -6,6 +6,7 @@
 let annotations = [];
 let currentColorIndex = 0;
 const colors = ['#FF5733', '#33FF57', '#5733FF', '#FFFF33', '#FF33FF', '#33FFFF'];
+
 let selectedMediaType='';
 const canvas = new fabric.Canvas('canvas', {
     selection: false,
@@ -92,11 +93,13 @@ window.onload = () => {
     } else {
         mediaElement = document.getElementById('video');
     }
+
     
 };
 
 
 document.addEventListener('DOMContentLoaded', function() {
+
 
     setTimeout(() => {
     const video = document.getElementById('video');
@@ -119,6 +122,7 @@ document.addEventListener('DOMContentLoaded', function() {
     localStorage.removeItem('selectedVideoSrc');}
 
 }, 1000);
+
 });
 function setupTimeline(video) {
     const timeline = document.getElementById('timeline');
@@ -620,7 +624,9 @@ function activateCircleMode() {
 
     const circle = new fabric.Circle({
         left: 100,
+
         top: 170,
+
         radius: 30,
         fill: 'transparent',
         stroke: colors[currentColorIndex % colors.length],
@@ -633,8 +639,10 @@ function activateRectangleMode() {
     drawingMode = 'rectangle';
     setCurrentDrawingColor(); 
     const rect = new fabric.Rect({
+
             left: 90,
             top: 150,
+
             width: 60,
             height: 60,
             fill: 'transparent',
@@ -649,8 +657,10 @@ function activateTextMode() {
     canvas.isDrawingMode = false;
     drawingMode = 'text';
     const text = new fabric.Textbox('Type here', {
+
         left: 150,
         top: 350,
+
         fontSize: 20,
         fontFamily: 'Arial',
         fill: colors[currentColorIndex % colors.length],
@@ -664,8 +674,10 @@ function activateNoteMode() {
     canvas.isDrawingMode = false;
     drawingMode = 'note';
     const note = new fabric.Textbox('Note here', {
+
         left: 150,
         top: 550,
+
         fontSize: 14,
         fontFamily: 'Arial',
         fill: colors[currentColorIndex % colors.length],
@@ -736,8 +748,10 @@ function handleImageUpload(event) {
                 img.set({
                     left: 50,
                     top: 50,
+
                     scaleX: 0.5,
                     scaleY: 0.5,
+
                     selectable: true,
                     hasControls: true,
                     hasBorders: true,
@@ -2331,6 +2345,7 @@ const zoomScale = 1.2;
         canvas.calcOffset(); 
     }
 });
+
 
 
 

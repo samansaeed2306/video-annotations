@@ -6,9 +6,10 @@
     "start:frontend": "http-server public -p 3000"
   },
   "dependencies": {
+
     "express": "^4.19.2",
     "http-server": "^14.0.0",
     "multer": "^1.4.5-lts.1",
-    "webm-writer": "^1.0.0"
+
   }
 }
