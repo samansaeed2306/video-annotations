@@ -7,13 +7,17 @@ let annotations = [];
 let currentColorIndex = 0;
 const colors = ['#FF5733', '#33FF57', '#5733FF', '#FFFF33', '#FF33FF', '#33FFFF'];
 let selectedMediaType='';
+const canvas = new fabric.Canvas('canvas', {
+    selection: false,
+    isDrawingMode: false
+    });
 window.onload = () => {
 
     selectedMediaType = localStorage.getItem('selectedMediaType') || '';
     localStorage.removeItem('selectedMediaType'); 
 
     const videoContainer = document.getElementById('video-container');
-    const canvas = document.getElementById('canvas');
+    const canvas2 = document.getElementById('canvas');
     const buttonsContainer = document.querySelector('.buttons-container');
     console.log("Selected Media Type: ",selectedMediaType);
     if (selectedMediaType === 'image') {
@@ -29,36 +33,33 @@ window.onload = () => {
             const img = document.createElement('img');
             img.id = 'media-element';
             img.src = storedImageSrc;
-            img.style.display = 'block'; // Ensure image is displayed
+            img.style.display = 'block';
             console.log("Created img element:", img);
-            // Add onload and onerror handlers for debugging
-            img.onload = () => {
-                console.log('Image has been successfully loaded');
-            };
+          
+            
 
-            img.onerror = (e) => {
-                console.error('Failed to load image', e);
-            };
+            
+
+            img.style.position = 'absolute'; 
+            img.style.top = '0';  
+            img.style.left = '0'; 
             img.style.width = '100%';
             img.style.height = '100%';
             img.style.objectFit = 'contain';
-            if(canvas){
-                console.log('Canvas does exist');
-                
-            }
-            if(videoContainer.contains(canvas)) {
+            
+            if(videoContainer.contains(canvas2)) {
             videoContainer.appendChild(img); }
-            console.log('videoContainer.contains(canvas): ',videoContainer.contains(canvas));
-            // Use MutationObserver to detect when canvas is added
+            console.log('videoContainer.contains(canvas): ',videoContainer.contains(canvas2));
+           
             const observer = new MutationObserver((mutations) => {
                 console.log('Observer alert!');
                 if (videoContainer.contains(canvas)) {
                    
                         console.log("Inserting img element:", img);
-                        videoContainer.insertBefore(img, canvas);
+                        videoContainer.insertBefore(img, canvas2);
                         console.log("Image element inserted after delay.");
                         console.log("Image element after delay insertion:", document.getElementById('media-element'));
-                        observer.disconnect(); // Stop observing after insertion
+                        observer.disconnect(); 
                  
                 }
             });
@@ -68,10 +69,24 @@ window.onload = () => {
             console.log("Removed Local Storage");
             localStorage.removeItem('selectedImageSrc');
             console.log("Image element after insertion:", document.getElementById('media-element'));
+
+            img.onload = () => {
+                console.log('Image has been successfully loaded');
+                fabricCanvas.width = img.clientWidth;
+                fabricCanvas.height = img.clientHeight;
+                canvas.setWidth(img.clientWidth);
+                canvas.setHeight(img.clientHeight);
+
+                console.log(`Canvas resized to: ${img.clientWidth}x${img.clientHeight}`);
+            };
+            img.onerror = (e) => {
+                console.error('Failed to load image', e);
+            };
             if (buttonsContainer) {
                 buttonsContainer.style.display = 'none'; 
                 console.log("Buttons container hidden.");
             }
+
             console.log("Video Container after insertion:", videoContainer);
         }
     } else {
@@ -369,10 +384,7 @@ updateTimelineIcons();
 
 
 
-const canvas = new fabric.Canvas('canvas', {
-selection: false,
-isDrawingMode: false
-});
+
 
 const playPauseButton = document.getElementById('play-pause-button');
 const playPauseImage = playPauseButton.querySelector('img');
