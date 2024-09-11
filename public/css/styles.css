@@ -85,6 +85,7 @@ body {
     left:-80px;
 
 }
+
 video,#media-element {
     width: 100%;
     height: auto;
@@ -733,7 +734,9 @@ body::before {
         z-index: 1; /* Place behind floating elements */
     }
 
+
     video, #canvas ,#media-element{
+
         width: 100%;
         height: 100vh; /* Full viewport height */
         margin: 0;
@@ -741,7 +744,9 @@ body::before {
         object-fit: cover; /* Ensure the video covers the entire area */
     }
 
+
     video ,#media-element{
+
         width: 100%;
         height: 100vh;
         position: absolute;
@@ -1051,8 +1056,10 @@ display: block;
 }
 
 #library-btn svg{
+
     width: 25px; /* Icon size */
     height: 25px;
+
     fill: #abb0c4; /* Icon color */
 }
 
@@ -1134,9 +1141,11 @@ display: block;
     background-color: transparent; 
 }
 
+
 #screen-recording2{
     width: 20px; 
     height: 20px;
 }
+
 }
 
