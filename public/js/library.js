@@ -11,6 +11,8 @@ fetch('http://localhost:8080/api/media/getmediafiles')
       console.log('File Path', filePath);
     //   const testfile = 'test.mp4';
       if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
+
+        addImageCard(`${filePath}/${file.fileName}`, file.originalName);
         // addImageCard('../../uploads/test.mp4', 'test');
       } else if (['mp4', 'webm'].includes(fileExtension)) {
         // const videoURL = filePath;
@@ -80,7 +82,7 @@ imageFileInput.addEventListener('change', function(e) {
     const file = e.target.files[0];
     if (file) {
         const imageURL = URL.createObjectURL(file);
-        addImageCard(imageURL, file.name);
+        // addImageCard(imageURL, file.name);
 
         const apiUrl = 'http://localhost:8080/api/media'; 
         const formData = new FormData();
@@ -95,6 +97,15 @@ imageFileInput.addEventListener('change', function(e) {
             console.log('Image uploaded:', data);
             // Optionally update the image src with the new path
             // img.src = `/uploads/${data.media.fileName}`;
+
+            console.log('Image originalName:', data.media.originalName);
+            if (data.media && data.media.fileUrl && data.media.originalName) {
+                
+                addImageCard(data.media.fileUrl, data.media.originalName);
+                console.log("Inside if condition of image");
+                
+            }
+            window.location.reload();
         })
         .catch(error => console.error('Error uploading image:', error));
     }

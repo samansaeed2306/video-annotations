@@ -36,6 +36,13 @@ body {
     background-color: #2a2a2a; /* Slightly lighter content background */
 }
 
+.card img {
+    width: 100%; /* Make the image take up the full width of the card */
+    height: 200px; /* Set a fixed height for images */
+    object-fit: cover; /* Ensure the image scales while keeping aspect ratio */
+    border-radius: 8px 8px 0 0; /* Match the card's border-radius */
+}
+
 .card h3 {
     margin-top: 0;
     color: #ffffff; /* White text for headers */
