@@ -15,7 +15,7 @@ Install [Docker](https://www.docker.com/ "Docker") , then:
 
      docker run -p 3000:3000 -p 8080:8080 annotator
 
- Then open your browser on the same node to http://localhost:3000
+ Then open your browser on the same node to http://localhost:3000 to access the application
 
   
   
