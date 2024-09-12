@@ -1,39 +1,22 @@
-**Steps to run:**
-# Quick Start
 
+# Quick Start
+Install [Docker](https://www.docker.com/ "Docker") , then:
+  
   **Clone repository:**
      
      git clone https://github.com/samansaeed2306/video-annotations.git
      
- **Install dependencies:**
+ **Build Image:**
  
      cd video-annotations
-     npm i
-     cd src
-     npm i
+     docker build -t annotator .
      
-   **Server:**
+   **Run App in Container:**
+
+     docker run -p 3000:3000 -p 8080:8080 annotator
+
+ Then open your browser on the same node to http://localhost:3000
+
   
-   Open a new terminal:
-   
-
-
-     cd video-annotations   
-
-     npm run start:backend
-     
-
-  **Client:**
   
-  Open another terminal:
-  
-
-     cd video-annotations             
-     npm run start:frontend
       
-
-   
-
-
-                
-  
