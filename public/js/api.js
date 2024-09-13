@@ -1,6 +1,6 @@
 // api.js
 
-const apiUrl = 'http://localhost:8080/api';
+const apiUrl = 'http://174.138.56.121:8080/api';
 
 
 
