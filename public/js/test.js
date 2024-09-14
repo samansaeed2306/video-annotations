@@ -210,7 +210,16 @@ function handleDrop(event) {
     console.log('Drag start:', dragTime);
     event.dataTransfer.setData('text/plain', dragTime);
 }
+// console.log("Object: ",event.target);
 
+//         if (event.target) {
+//             console.log("Object: ",event.target);
+//             const removedObject = event.target;
+//             const currentTime = video.currentTime;
+//             removeAnnotation(currentTime);
+//             canvas.remove(removedObject);
+//             console.log("Removed");
+//         }
 function handleDragOver(event) {
     console.log('Drag over:', event.target.dataset.time);
     event.preventDefault();
