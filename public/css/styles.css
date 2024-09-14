@@ -1,6 +1,7 @@
 h3{
     color: #ffffff;
     padding-left: 80px;
+    margin-top: 40px;
 }
 
 .bottom-right-sidebar {
@@ -35,14 +36,17 @@ body {
 }
 .tools button {
     margin: 5px;
-    padding: 5px;
     cursor: pointer;
-    transform: translateX(-65px);
-    /* left: -60px; */
     background-color: #17181a;
+    transform: translateX(-65px);
+    border: none; /* Remove border */
+    border-radius: 50%; /* Make the buttons round */
+    color: #fff; /* Text color inside the button */
     
     
 }
+
+
 .tools button:hover {
     background-color: #485056 ;
 }
@@ -64,7 +68,7 @@ body {
     height: 40px;
     position: absolute;
     right: 0;
-    top: 12px; /* You can adjust this to position it vertically */
+    top: 07px; /* You can adjust this to position it vertically */
     margin-right: 100px; /* Optional: Adjust the margin as needed */  
 }
 #container-wrapper {
@@ -273,7 +277,7 @@ video,#media-element {
     margin-top: 0px;
     overflow: hidden;
     height: 400px;
-    left: -0.1%;
+    left: 2.2px;
     margin: 0px;
     top:-2px;
     
