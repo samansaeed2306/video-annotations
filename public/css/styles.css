@@ -61,7 +61,13 @@ body {
     
     
 }
+#library svg{
 
+    width: 25px; /* Icon size */
+    height: 25px;
+
+    fill: #abb0c4; /* Icon color */
+}
 #screen-recording{
     cursor: pointer;
     width: 40px;
