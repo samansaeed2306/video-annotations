@@ -618,6 +618,10 @@ function drawFreehand() {
 
   
 function activateCircleMode() {
+    if (eraserListener) {
+        canvas.off('mouse:down', eraserListener);
+        eraserListener = null;  // Clear the reference
+    }
     canvas.isDrawingMode = false;
     drawingMode = 'circle';
     setCurrentDrawingColor(); 
@@ -635,6 +639,10 @@ function activateCircleMode() {
     canvas.add(circle).setActiveObject(circle);
 }
 function activateRectangleMode() {
+    if (eraserListener) {
+        canvas.off('mouse:down', eraserListener);
+        eraserListener = null;  // Clear the reference
+    }
     canvas.isDrawingMode = false;
     drawingMode = 'rectangle';
     setCurrentDrawingColor(); 
@@ -653,7 +661,10 @@ function activateRectangleMode() {
 }
 
 function activateTextMode() {
-    
+    if (eraserListener) {
+        canvas.off('mouse:down', eraserListener);
+        eraserListener = null;  // Clear the reference
+    }
     canvas.isDrawingMode = false;
     drawingMode = 'text';
     const text = new fabric.Textbox('Type here', {
@@ -671,12 +682,17 @@ function activateTextMode() {
 }
 
 function activateNoteMode() {
+    if (eraserListener) {
+        canvas.off('mouse:down', eraserListener);
+        eraserListener = null;  // Clear the reference
+    }
+    console.log("Activate Note function")
     canvas.isDrawingMode = false;
     drawingMode = 'note';
     const note = new fabric.Textbox('Note here', {
 
-        left: 150,
-        top: 550,
+        left: 50,
+        top: 250,
 
         fontSize: 14,
         fontFamily: 'Arial',
@@ -687,38 +703,62 @@ function activateNoteMode() {
     currentColorIndex++;
     canvas.add(note).setActiveObject(note);
 }
-
+let eraserListener = null;
 function useEraser() {
-
     canvas.isDrawingMode = false;
-    canvas.on('mouse:down', function(event) {
-        if (event.target) {
-            const removedObject = event.target;
-    
+    canvas.defaultCursor = 'crosshair';
+
+    eraserListener = function(event) {
+        const pointer = canvas.getPointer(event.e);
+        const objects = canvas.getObjects(); // Get all objects on the canvas
+        let foundObject = null;
+
+        // Check if any object contains the pointer
+        for (const obj of objects) {
+            if (obj instanceof fabric.Line || obj instanceof fabric.Polyline) {
+                // For lines and polylines, use different logic
+                const { x, y } = pointer;
+                const bbox = obj.getBoundingRect(); // Get bounding box of the object
+                if (x >= bbox.left && x <= bbox.left + bbox.width && y >= bbox.top && y <= bbox.top + bbox.height) {
+                    foundObject = obj;
+                    break;
+                }
+            } else if (obj.containsPoint(pointer)) {
+                foundObject = obj;
+                break;
+            }
+        }
+
+        if (foundObject) {
+            console.log("foundObject: ", foundObject);
             const currentTime = video.currentTime;
             removeAnnotation(currentTime);
-            // updateAnnotationsList();
-            // updateTimelineIcons(); 
-    
+            canvas.remove(foundObject);
+        } else {
+            console.log("No object found under the pointer.");
+        }
+    };
 
-    
-    canvas.remove(removedObject);
-    
-    // canvas.remove(event.target);
-}
-
-});
+    canvas.on('mouse:down', eraserListener);
 }
 
 
 
 
 function unpickTool() {
+    if (eraserListener) {
+        canvas.off('mouse:down', eraserListener);
+        eraserListener = null;  
+    }
     canvas.isDrawingMode = false;
     canvas.defaultCursor = 'default';
     canvas.selection = true;
 }
 function activatePolylineMode() {
+    if (eraserListener) {
+        canvas.off('mouse:down', eraserListener);
+        eraserListener = null;  // Clear the reference
+    }
     drawingMode = 'polyline';
     canvas.isDrawingMode = false; 
     polylinePoints = [];
@@ -726,12 +766,29 @@ function activatePolylineMode() {
 }
 
 function activateLineMode() {
+    if (eraserListener) {
+        canvas.off('mouse:down', eraserListener);
+        eraserListener = null;  // Clear the reference
+    }
     drawingMode = 'line';
     canvas.isDrawingMode = false; 
-    canvas.upperCanvasEl.classList.add('canvas-plus-cursor');
+    // canvas.upperCanvasEl.classList.add('canvas-plus-cursor');
+
+    const line = new fabric.Line([50, 50, 200, 200], {
+        left: 100,
+        top: 100,
+        stroke: colors[currentColorIndex % colors.length],
+        strokeWidth: 2
+    });
+    canvas.add(line);
+    canvas.setActiveObject(line)
 }
 
 function activateImage() {
+    if (eraserListener) {
+        canvas.off('mouse:down', eraserListener);
+        eraserListener = null;  // Clear the reference
+    }
     document.getElementById('imageInput').click();
 }
 
@@ -771,17 +828,17 @@ function handleImageUpload(event) {
 canvas.on('mouse:down', function(options) {
     const pointer = canvas.getPointer(options.e);
     if (drawingMode === 'line') {
-        isDrawing = true;
+        // isDrawing = true;
        
-        const points = [pointer.x, pointer.y, pointer.x, pointer.y];
-        currentShape = new fabric.Line(points, {
-            strokeWidth: 2,
-            fill: colors[currentColorIndex % colors.length],
-            stroke: colors[currentColorIndex % colors.length],
-            originX: 'center',
-            originY: 'center'
-        });
-        canvas.add(currentShape);
+        // const points = [pointer.x, pointer.y, pointer.x, pointer.y];
+        // currentShape = new fabric.Line(points, {
+        //     strokeWidth: 2,
+        //     fill: colors[currentColorIndex % colors.length],
+        //     stroke: colors[currentColorIndex % colors.length],
+        //     originX: 'center',
+        //     originY: 'center'
+        // });
+        // canvas.add(currentShape);
     }else if (drawingMode === 'polyline') {
         polylinePoints.push({ x: pointer.x, y: pointer.y });
         if (polylinePoints.length > 1) {
@@ -2292,61 +2349,94 @@ const captureArea = document.getElementById('video-container');
 let isZoomedIn = false;
 const zoomScale = 1.2;
 
-
-    videoContainer.addEventListener('dblclick', () => {
+const toggleZoom = () => {
+    // Variable to toggle between zoom in and out
     isZoomedIn = !isZoomedIn;
-    
+
+    // Zoom-in state
     if (isZoomedIn) {
         video.style.transform = `scale(${zoomScale})`;
-        console.log(`Video Transform scale(${video.style.transform})`)
-        console.log(`Video Position scale(${video.style.position})`)
-       
+        console.log(`Video Transform: scale(${zoomScale})`);
+        console.log(`Video Position: ${video.style.position}`);
+
+        // Calculate new video dimensions based on zoom scale
         const videoWidth = video.clientWidth * zoomScale;
         const videoHeight = video.clientHeight * zoomScale;
+        
+        // Set the Fabric.js canvas dimensions to match the zoomed video
         fabricCanvas.width = videoWidth;
         fabricCanvas.height = videoHeight;
-        fabricCanvas.top='-80px';
+        fabricCanvas.top = '-80px';
+        
         canvas.setWidth(videoWidth);
         canvas.setHeight(videoHeight);
-        //canvas.style.transform = video.style.transform;
-        const offsetX = (videoWidth - video.clientWidth)/2;
+
+        // Calculate the offsets to adjust the canvas position
+        const offsetX = (videoWidth - video.clientWidth) / 2;
         const offsetY = (videoHeight - video.clientHeight) / 2;
+
+        // Update the position of the toggle icon if it's displayed
         const canvasonSwitch = document.getElementById('toggle-icon');
-        if(canvasonSwitch.style.display == 'block'){
-            canvasonSwitch.style.left= '50px';
+        if (canvasonSwitch.style.display == 'block') {
+            canvasonSwitch.style.left = '50px';
             canvasonSwitch.style.top = '510px';
         }
-       
+
+        // Adjust canvas wrapper position based on the calculated offsets
         canvas.wrapperEl.style.position = 'absolute';
         canvas.wrapperEl.style.left = `${-offsetX}px`;
         canvas.wrapperEl.style.top = `${-offsetY}px`;
         
         canvas.calcOffset();
-       // document.getElementsByClassName('buttons-container')[0].style.marginTop = '250px';
-    } else {
+    } 
+    // Zoom-out state
+    else {
+        // Reset the video scale to normal
         video.style.transform = 'scale(1)';
+        
+        // Reset the canvas size to match the original video dimensions
         fabricCanvas.width = video.clientWidth;
         fabricCanvas.height = video.clientHeight;
-        
+
         canvas.setWidth(video.clientWidth);
         canvas.setHeight(video.clientHeight);
-        // fabricCanvas.wrapperEl.style.position = 'static';
-        // fabricCanvas.wrapperEl.style.left = '0';
-        // fabricCanvas.wrapperEl.style.top = '0';
-        canvas.wrapperEl.style.position = 'absolute';
-        canvas.wrapperEl.style.top= '0.5px';
-        canvas.wrapperEl.style.left= '3px';
 
+        // Reset the canvas wrapper position
+        canvas.wrapperEl.style.position = 'absolute';
+        canvas.wrapperEl.style.left = '3px';
+        canvas.wrapperEl.style.top = '0.5px';
+
+        // Update the toggle icon position
         const canvasonSwitch = document.getElementById('toggle-icon');
-        if(canvasonSwitch.style.display == 'block'){
-            canvasonSwitch.style.left= '150px';
+        if (canvasonSwitch.style.display == 'block') {
+            canvasonSwitch.style.left = '150px';
             canvasonSwitch.style.top = '500px';
         }
-        canvas.calcOffset(); 
+
+        canvas.calcOffset();
     }
+};
+
+    videoContainer.addEventListener('dblclick',toggleZoom);
+
+
+const resizeVideoButton = document.getElementById('resize-video');
+
+
+resizeVideoButton.addEventListener('click', () => {
+    toggleZoom(); 
 });
 
 
-
+document.getElementById('toggle-sidebar-btn').addEventListener('click', function() {
+    const sidebar = document.querySelector('.annotations');
+    if (sidebar.classList.contains('collapsed')) {
+        sidebar.classList.remove('collapsed');
+        sidebar.classList.add('expanded');
+    } else {
+        sidebar.classList.remove('expanded');
+        sidebar.classList.add('collapsed');
+    }
+});
 
 
