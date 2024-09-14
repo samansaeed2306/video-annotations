@@ -17,22 +17,12 @@ const app = express();
 app.use(express.json()); 
 
 
-const corsOptions = {
-  origin: 'http://localhost:3000',
-  optionsSuccessStatus: 200
-};
-
-app.use(cors(corsOptions));
-
 
 // Enable CORS for frontend (adjust to your public IP if needed)
-// app.use(cors({
-//   origin: [
-//     'http://localhost:3000',
-//     'http://174.138.56.121:3000'
-//   ],
-//   credentials: true
-// }));
+app.use(cors({
+  origin: process.env.CORS_ORIGIN || '*',
+  credentials: true
+}));
 
 
 // Serve static files from the 'public' directory
