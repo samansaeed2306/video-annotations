@@ -1,6 +1,7 @@
 // Fetch media files from the server
 // fetch('http://localhost:8080/api/media/getmediafiles')
-fetch('http://174.138.56.121:8080/api/media/getmediafiles')
+const apiUrl = 'http://174.138.56.121:8080/api/media'; 
+fetch(`${apiUrl}/getmediafiles`)
   .then(response => response.json())
   .then(files => {
     // Loop through each file and call addImageCard or addVideoCard based on file extension
@@ -48,7 +49,7 @@ fileInput.addEventListener('change', function(e) {
         // addVideoCard(videoURL, file.name);
         console.log('File Name:',file.name);
 
-        const apiUrl = 'http://174.138.56.121:8080/api/media'; 
+        
         const formData = new FormData();
         formData.append('file', file);
 
@@ -85,7 +86,7 @@ imageFileInput.addEventListener('change', function(e) {
         const imageURL = URL.createObjectURL(file);
         // addImageCard(imageURL, file.name);
 
-        const apiUrl = 'http://174.138.56.121:8080/api/media';
+        
         const formData = new FormData();
         formData.append('file', file);
 
