@@ -221,7 +221,24 @@ video,#media-element {
     right: 0px; /* Fully expanded */
     transition: right 0.3s ease;
 }
-#toggle-sidebar-btn {
+.annotations-icon {
+    position: absolute;
+    left: 5px; /* Adjust based on desired position */
+    top: 350px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    z-index: 3;
+}
+
+.annotations-icon svg {
+    fill: #fff; /* Icon color */
+}
+
+.annotations-icon:hover svg {
+    fill: #d5b211; /* Hover color */
+}
+/* #toggle-sidebar-btn {
     position: absolute;
     right: 250px;
     top: 10px;
@@ -231,7 +248,7 @@ video,#media-element {
     padding: 5px 10px;
     cursor: pointer;
     z-index: 3;
-}
+} */
 /* #freehand{
     display: none;
 } */

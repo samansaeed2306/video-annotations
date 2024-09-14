@@ -100,7 +100,7 @@
                 </path>
             </svg>
         </button>
-        <button id="toggle-sidebar-btn">Toggle Annotations</button>
+        <!-- <button id="toggle-sidebar-btn">Toggle Annotations</button> -->
         
         
         
@@ -271,7 +271,7 @@
         <div class="overlay-content">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="48" height="48">
                 <circle cx="12" cy="12" r="10" stroke="green" stroke-width="2" fill="green"/>
-                <path d="M16 10.5l-4 4-2.5-2.5" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                <path id="toggle-icon-path" d="M16 10.5l-4 4-2.5-2.5" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
             
             <p>Annotations saved to DB</p>
@@ -285,7 +285,16 @@
     <!-- Annotations Sidebar -->
     
     <div class="annotations">
-       
+        <div id="toggle-sidebar-btn" class="annotations-icon">
+            <!-- Left Arrow -->
+            <svg id="left-arrow" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="black" viewBox="0 0 16 16">
+                <path d="M11.354 1.646a.5.5 0 0 1 0 .708L6.707 7l4.647 4.646a.5.5 0 0 1-.708.708l-5-5a.5.5 0 0 1 0-.708l5-5a.5.5 0 0 1 .708 0z"/>
+            </svg>
+            <!-- Right Arrow -->
+            <svg id="right-arrow" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="black" viewBox="0 0 16 16" style="display:none;">
+                <path d="M4.646 1.646a.5.5 0 0 1 .708 0L11.293 7l-5.646 5.646a.5.5 0 0 1-.708-.708L10.293 7 4.646 1.646a.5.5 0 0 1 0-.708z"/>
+            </svg>
+            </div>
         <h3>Annotations</h3>
         <!-- <div data-element="notesPanelHeader" class="header">
             <div data-element="notesPanelHeader-inputContainer" class="input-container">

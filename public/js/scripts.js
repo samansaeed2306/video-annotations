@@ -2430,14 +2430,22 @@ resizeVideoButton.addEventListener('click', () => {
 
 document.getElementById('toggle-sidebar-btn').addEventListener('click', function() {
     const sidebar = document.querySelector('.annotations');
+    const leftArrow = document.getElementById('left-arrow');
+    const rightArrow = document.getElementById('right-arrow');
+
     if (sidebar.classList.contains('collapsed')) {
         sidebar.classList.remove('collapsed');
         sidebar.classList.add('expanded');
+        leftArrow.style.display = 'none';
+        rightArrow.style.display = 'block';
     } else {
         sidebar.classList.remove('expanded');
         sidebar.classList.add('collapsed');
+        leftArrow.style.display = 'block';
+        rightArrow.style.display = 'none';
     }
 });
+
 
 document.getElementById('library').addEventListener('click', function() {
     window.location.href = 'pages/library.html'; 
