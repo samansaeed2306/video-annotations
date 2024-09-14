@@ -189,7 +189,9 @@ function addImageCard(imageSrc, title) {
     card.appendChild(cardContent);
     imageGallery.appendChild(card);
 }
-
+document.getElementById("backtoindex").addEventListener("click", function() {
+    window.location.href = "../index.html"; // Redirect to index.html
+});
 // // Example calls
 
 // addVideoCard('../sampleVideos/burning-planet.mp4', 'burning-planet.mp4');
