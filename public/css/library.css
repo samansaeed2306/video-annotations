@@ -94,8 +94,27 @@ nav {
     flex-direction: column;
     align-items: center;
 }
+/* Styling for logo container */
+
+
+/* Resize the SVG */
+.logo-icon {
+    width: 10px; /* Adjust this to the desired size */
+    height: 10px;
+    margin-right: 20px; /* Spacing between icon and text */
+    margin-left: -40px; /* Adjust the negative value to move the icon to the left */
+}
+
+
+/* Styling for logo text */
+.logo-text {
+    font-size: 20px; /* Adjust this based on your preferred font size */
+    font-weight: bold;
+}
 
 .logo {
+    display: flex;
+    align-items: center;
     font-size: 1.2rem;
     font-weight: bold;
     color: #ea4c89; /* Highlight color */
