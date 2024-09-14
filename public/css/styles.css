@@ -181,10 +181,13 @@ video,#media-element {
     transition: transform 0.3s ease; 
 }
 
-
+#annotations-wrapper {
+    position: relative;
+    height: 100%;
+}
 .annotations {
     position: fixed;
-    right: -3px;
+    right: -250px;
     top: 10px;
     width: 245px;
     background: rgb(48, 54, 60);
@@ -199,6 +202,29 @@ video,#media-element {
     z-index: 2;
 }
 
+.annotations.collapsed {
+    right: -250px; /* Adjust as necessary */
+    transition: right 0.3s ease;
+}
+
+.annotations.expanded {
+    right: 0px; /* Fully expanded */
+    transition: right 0.3s ease;
+}
+#toggle-sidebar-btn {
+    position: absolute;
+    right: 250px;
+    top: 10px;
+    background-color: #343a40;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    cursor: pointer;
+    z-index: 3;
+}
+/* #freehand{
+    display: none;
+} */
 /* /* .annotations ul li {
     /* color: white;
     }  */
@@ -224,7 +250,6 @@ video,#media-element {
     margin-left: 5px;
 
 }
-
 #timeline-wrapper {
   
     position: relative;
@@ -254,6 +279,7 @@ video,#media-element {
     
     
 }
+
 .timeline .tick {
     display: inline-block;
     width: calc(100% / var(--duration)); 
@@ -348,6 +374,7 @@ video,#media-element {
     /* margin-top: 100px; */
     /* opacity: 0.2; */
 }
+
 
 
 .button-with-menu {
@@ -1148,4 +1175,3 @@ display: block;
 }
 
 }
-
