@@ -6,7 +6,6 @@ function adjustVideoButtons() {
     const audioVisualizerButton = document.getElementById('audio-visualizer-button');
     const timeline = document.getElementById('timeline');
 
-    
     console.log('videoButtons:', videoButtons);
     console.log('playPauseButton:', playPauseButton);
     console.log('previousButton:', previousButton);
@@ -14,7 +13,6 @@ function adjustVideoButtons() {
     console.log('audioVisualizerButton:', audioVisualizerButton);
 
     if (videoButtons && playPauseButton && previousButton && nextButton) {
-        
         if (audioVisualizerButton) {
             console.log('audioVisualizerButton is present');
             audioVisualizerButton.style.display = 'block';
@@ -23,83 +21,77 @@ function adjustVideoButtons() {
         }
 
         if (window.innerWidth <= 500) {
-            // window.addEventListener('resize', () => {
-            //     document.getElementById('play-pause-button').click();
-            // });
-            
-
-            const buttons = [playPauseButton, previousButton, nextButton, audioVisualizerButton];
-        buttons.forEach(button => {
-            if (button) {
-                button.style.border = 'none';
-                button.style.background = 'none';
-                button.style.padding = '0';
-                button.style.margin = '0';
-                button.style.cursor = 'pointer';
-                button.style.display = 'flex';
-                button.style.alignItems = 'center';
-                button.style.justifyContent = 'center';
-                button.style.position = 'relative'; 
-                button.style.top = '560px'; 
-                button.style.left = '-190px';
-            //     if(button!=audioVisualizerButton){
-            //     const svg = button.querySelector('svg');
-            //     if (svg) {
-            //         svg.style.width = '50px';  // Set desired width
-            //     }
-            
-            // }
-            }
-        });
-
-            // const progressbar = document.querySelector('.timeline .tick2');
-            // console.log('Width of the progress bar',progressbar.style.width);
-            audioVisualizerButton.style.left = '-278px';
-            audioVisualizerButton.style.top = '570px';
+            // Set up the container for buttons
+           
+            // Clear existing content
             videoButtons.innerHTML = '';
-            videoButtons.style.display = 'flex';
-            videoButtons.style.justifyContent = 'space-between'; 
-            videoButtons.style.alignItems = 'center'; 
-            videoButtons.style.padding = '0 10px';
-            // savebtn.style.left = '-200px';
-            videoButtons.innerHTML = '';
-            videoButtons.style.display = 'flex';
-            videoButtons.style.justifyContent = 'space-between'; 
-            videoButtons.style.alignItems = 'center'; 
-            videoButtons.style.padding = '0 10px';
 
-            playPauseButton.style.left='-60';
-            // playPauseButton.style.top='90px';
+            const buttons = [audioVisualizerButton, previousButton, playPauseButton, nextButton];
+            buttons.forEach((button, index) => {
+                if (button) {
+                    button.style.position = 'static';
+                    button.style.width = 'auto'; // Allow natural width
+                    // videoButtons.appendChild(button);
+                }
+            });
 
             videoButtons.appendChild(playPauseButton);
             videoButtons.appendChild(previousButton);
             videoButtons.appendChild(audioVisualizerButton);
             videoButtons.appendChild(nextButton);
+            
 
             if (audioVisualizerButton) {
                 audioVisualizerButton.style.display = 'block';
-                audioVisualizerButton.style.width = '60px'; 
-            }
-        } else {
-            
-            videoButtons.innerHTML = '';
-            videoButtons.style.display = 'flex';
-            videoButtons.style.justifyContent = 'flex-start'; 
+                audioVisualizerButton.style.width = '100px';
+                // audioVisualizerButton.style.marginLeft = '-90px';
+                audioVisualizerButton.style.transform = 'translateX(-60px)';
+                audioVisualizerButton.style.marginTop = '15px';
 
+            }
+
+            videoButtons.style.position = 'fixed';
+            videoButtons.style.bottom = '0';
+            videoButtons.style.left = '-4.5%'; 
+            videoButtons.style.width = '100%';
+            videoButtons.style.display = 'flex';
+            videoButtons.style.justifyContent = 'space-between';
+            videoButtons.style.alignItems = 'center';
+            videoButtons.style.padding = '10px 10%';
+            videoButtons.style.backgroundColor = 'rgba(0, 0, 0, 0.5)'; // Semi-transparent background
+        } else {
+            // Reset styles for larger screens
+            videoButtons.style.position = 'static';
+            videoButtons.style.display = 'flex';
+            videoButtons.style.justifyContent = 'space-between';
+            videoButtons.style.backgroundColor = 'transparent';
+            videoButtons.style.padding = '0';
+
+            videoButtons.innerHTML = '';
             videoButtons.appendChild(previousButton);
             videoButtons.appendChild(playPauseButton);
             videoButtons.appendChild(nextButton);
+
             if (audioVisualizerButton) {
                 audioVisualizerButton.style.display = 'none';
-                audioVisualizerButton.style.width = '40px'; 
+                audioVisualizerButton.style.width = '40px';
+                audioVisualizerButton.style.marginLeft = '-10px';
                 videoButtons.appendChild(audioVisualizerButton);
             }
+
+            [previousButton, playPauseButton, nextButton, audioVisualizerButton].forEach(button => {
+                if (button) {
+                    button.style.position = 'static';
+                    button.style.width = 'auto';
+                }
+            });
         }
     } else {
         console.error("One or more required elements are not found in the DOM.");
     }
 }
 
+// The rest of the code remains unchanged
 function toggleAudioWave() {
     const audioWave = document.querySelector('.audio-wave');
     audioWave.classList.toggle('active');
@@ -111,7 +103,6 @@ function closeHeader() {
         header.style.display = 'none';
     }
 }
-
 
 window.addEventListener('load', adjustVideoButtons);
 window.addEventListener('resize', adjustVideoButtons);
@@ -129,9 +120,7 @@ document.getElementById('save-button-mobile').addEventListener('click', function
 });
 
 document.getElementById('screen-recording2').addEventListener('click', screenRecorder);
-// adjustVideoButtons();
 
 document.getElementById('library-btn').addEventListener('click', function() {
     window.location.href = 'pages/library.html'; 
 });
-
