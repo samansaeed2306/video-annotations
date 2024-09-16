@@ -1,6 +1,7 @@
 // Fetch media files from the server
-// fetch('http://localhost:8080/api/media/getmediafiles')
-const apiUrl = 'http://174.138.56.121:8080/api/media'; 
+
+// const apiUrl = 'http://174.138.56.121:8080/api/media'; 
+const apiUrl = 'http://localhost:8080/api/media'; 
 fetch(`${apiUrl}/getmediafiles`)
   .then(response => response.json())
   .then(files => {
