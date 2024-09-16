@@ -866,31 +866,40 @@ body::before {
 
      .video-buttons {
         position: absolute;
-        bottom: 20px; /* Position 20px from the bottom of the screen */
+        bottom: 20px;
         left: 50%;
-        transform: translateX(-50%); /* Center horizontally */
-        z-index: 1000; /* Float above video and canvas */
+        transform: translateX(-50%);
+        z-index: 1000;
         display: flex;
         justify-content: center;
-        background-color: transparent; /* Slightly transparent background */
         padding: 5px;
         border-radius: 5px;
+        background-color: transparent;
     }
-
-    .video-buttons .video-button {
+    .video-button {
+        flex: 1;
+        max-width: 25%; /* Adjust the width of individual buttons */
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        /* background-color: #652ebe; */
+      }
+    
+      .video-buttons .video-button {
         margin: 0 13px;
         margin-bottom: 14px;
         background-color: transparent;
     }
 
+    
     .video-buttons svg {
         fill: #ffffff; /* White color for icons */
     }
-
-    .volume-button-container{
+    
+    .volume-button-container {
         display: none;
     }
-
     .video-buttons-container{
         display:none;
     }
@@ -972,20 +981,26 @@ body::before {
     position: absolute;
     bottom: 0;
 } */
-.timeline {
+#timeline-wrapper {
     position: relative;
     width: 100%;
-    /* background-color: rgb(205, 122, 21);  */
-    background-color: transparent; 
-    height: 50px; /* Height of the timeline */
-    z-index: 1000; /* Ensure it is above other elements */
+    height: 100%; /* Ensure wrapper has full height */
+    overflow: hidden;
+}
+
+.timeline {
+    position: absolute;
+    bottom: 10%; /* Stick to the bottom */
+    width: 100%;
+    height: 1%;
+    background-color: transparent; /* Temporary background color for visibility */
+    z-index: 10000;
     padding: 0;
     margin: 0;
-    --duration: 60;
-    bottom: 0px;
-    top: 11px;
-    margin-top: 480px;
+    top: unset; 
+ 
 }
+
 
 .timeline .tick2 {
     display: inline-block;
@@ -1059,13 +1074,20 @@ display: block;
     
     
 }
+
 #video-btn-id {
-    display: flex;
-    justify-content: space-between; /* Distribute space between buttons */
-    align-items: center; /* Center buttons vertically */
-    width: 100%; /* Full width of the container */
-    padding: 0 10px; /* Optional padding for spacing */
+    bottom: 0%;      /* Set it to the bottom of the screen in mobile views */
+    width: 100%;
+    padding: 0 5%;
+    z-index: 10;
+    /* outline: 1px solid red; */
 }
+
+
+
+
+
+
 
 
 .bottom-right-sidebar button {
@@ -1078,6 +1100,7 @@ display: block;
     border-radius: 30px; /* Rounded corners similar to .tools buttons */
     padding: 4px;
     transition: background-color 0.3s; /* Smooth background transition */
+
 }
 
 .bottom-right-sidebar button:hover {
