@@ -849,7 +849,7 @@ body::before {
     .tools button {
         margin: 2px;
         padding: 0px;
-        width: 45px;
+        width: 48px;
         margin-left: 125px;
         text-align: center;
         background-color: rgba(52, 58, 64, 0.9);
@@ -1043,13 +1043,13 @@ display: block;
 }
 
 .tools button img {
-    width: 27px;
-    height: 27px;
+    width: 30px;
+    height: 30px;
     opacity: 1;
 }
 .tools button svg {
-    width: 27px;
-    height: 27px;
+    width: 30px;
+    height: 30px;
     opacity: 1;
 }
 
@@ -1071,7 +1071,7 @@ display: block;
 .bottom-right-sidebar button {
     margin: 2px;
     padding: 0.5px;
-    width: 30px; /* Match the width with .tools buttons */
+    width: 33px; /* Match the width with .tools buttons */
     margin-left: 118px;
     text-align: center;
     background-color: rgba(52, 58, 64, 0.9);
@@ -1085,13 +1085,13 @@ display: block;
 }
 
 .bottom-right-sidebar button img {
-    width: 20px; /* Match the icon size with .tools */
-    height: 20px;
+    width: 23px; /* Match the icon size with .tools */
+    height: 23px;
     opacity: 1; /* Keep full opacity */
 }
 .bottom-right-sidebar button svg {
-    width: 20px; /* Match SVG icon size with .tools */
-    height: 20px;
+    width: 23px; /* Match SVG icon size with .tools */
+    height: 23px;
     opacity: 1; /* Keep full opacity */
 }
 .header {
@@ -1115,6 +1115,10 @@ display: block;
     height: 25px;
 
     fill: #abb0c4; /* Icon color */
+}
+
+#library{
+    display: none;
 }
 
 /* Style for the icons inside the header */
