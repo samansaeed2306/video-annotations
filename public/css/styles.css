@@ -304,8 +304,6 @@ video,#media-element {
     left: 2.2px;
     margin: 0px;
     top:-2px;
-    
-    
 }
 
 .timeline .tick {
@@ -752,7 +750,7 @@ body::before {
     }
 
 /* Media queries for mobile responsiveness */
-@media  (max-width: 414px) and (min-width: 200px){
+@media  (max-width: 520px) and (min-width: 320px){
     /* Remove body styles to focus on video and canvas */
     /* :root {
         --duration: 60; 
