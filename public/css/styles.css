@@ -103,6 +103,7 @@ video,#media-element {
     top: 0;
     left: 0;
     pointer-events: none;
+  
     
 }
 
@@ -290,7 +291,7 @@ video,#media-element {
 .timeline {
     position: relative;
     bottom:0px;
-    width: 78.7%; 
+    width: 95.7%; 
     background-color: #343a40;
     
     
@@ -393,7 +394,7 @@ video,#media-element {
     padding: 15px;
     background-color: #343a40;
     /* background: var(--controls-background); */
-    width: 78.7%;
+    width: 95.7%;
     position: relative;
     left: -0.5%; 
     margin-left: 10px; 

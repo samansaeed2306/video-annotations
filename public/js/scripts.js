@@ -2450,3 +2450,4 @@ document.getElementById('toggle-sidebar-btn').addEventListener('click', function
 document.getElementById('library').addEventListener('click', function() {
     window.location.href = 'pages/library.html'; 
 });
+
