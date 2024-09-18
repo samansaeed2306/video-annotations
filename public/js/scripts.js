@@ -2450,4 +2450,7 @@ document.getElementById('toggle-sidebar-btn').addEventListener('click', function
 document.getElementById('library').addEventListener('click', function() {
     window.location.href = 'pages/library.html'; 
 });
+document.getElementById('canvas').addEventListener('click', (event) => {
+    console.log('Canvas clicked');
+  });
 
