@@ -2452,5 +2452,6 @@ document.getElementById('library').addEventListener('click', function() {
 });
 document.getElementById('canvas').addEventListener('click', (event) => {
     console.log('Canvas clicked');
+    console.log("Canvas z-index: ",document.getElementById('canvas').style.zIndex);
   });
 
