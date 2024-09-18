@@ -744,7 +744,7 @@ function setupTimelineforVideo2() {
   const timelineContainer = document.createElement('div');
   timelineContainer.id = 'timeline-container2';
   timelineContainer.style.width = '650px';
-  timelineContainer.style.right = '-160px';
+  timelineContainer.style.right = '-169px';
   const videoElement = document.getElementById('new-video2');
   videoElement.addEventListener('loadedmetadata', function() {
     console.log('Video URL:', videoElement.src);
