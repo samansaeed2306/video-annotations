@@ -647,7 +647,7 @@ canvas4:nth-of-type(2) {
     pointer-events: none; /* Prevent interactions while blurred */
 }
 #video-btn-id{
-    margin-left: 200px;
+    margin-left: 30px;
     margin-top: 20px;
     
 }
@@ -1080,6 +1080,7 @@ display: block;
     width: 100%;
     padding: 0 5%;
     z-index: 10;
+    margin-left: 200px;
     /* outline: 1px solid red; */
 }
 

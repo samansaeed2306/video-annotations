@@ -60,31 +60,31 @@ function adjustVideoButtons() {
             videoButtons.style.padding = '10px 10%';
             videoButtons.style.backgroundColor = 'rgba(0, 0, 0, 0.5)'; // Semi-transparent background
         } else {
-            // Reset styles for larger screens
-            videoButtons.style.position = 'static';
-            videoButtons.style.display = 'flex';
-            videoButtons.style.justifyContent = 'space-between';
-            videoButtons.style.backgroundColor = 'transparent';
-            videoButtons.style.padding = '0';
+            // // Reset styles for larger screens
+            // videoButtons.style.position = 'static';
+            // videoButtons.style.display = 'flex';
+            // videoButtons.style.justifyContent = 'space-between';
+            // videoButtons.style.backgroundColor = 'transparent';
+            // videoButtons.style.padding = '0';
 
-            videoButtons.innerHTML = '';
-            videoButtons.appendChild(previousButton);
-            videoButtons.appendChild(playPauseButton);
-            videoButtons.appendChild(nextButton);
+            // videoButtons.innerHTML = '';
+            // videoButtons.appendChild(previousButton);
+            // videoButtons.appendChild(playPauseButton);
+            // videoButtons.appendChild(nextButton);
 
             if (audioVisualizerButton) {
-                audioVisualizerButton.style.display = 'none';
-                audioVisualizerButton.style.width = '40px';
-                audioVisualizerButton.style.marginLeft = '-10px';
-                videoButtons.appendChild(audioVisualizerButton);
-            }
+                audioVisualizerButton.style.display = 'none';}
+            //     audioVisualizerButton.style.width = '40px';
+            //     audioVisualizerButton.style.marginLeft = '-10px';
+            //     videoButtons.appendChild(audioVisualizerButton);
+            // }
 
-            [previousButton, playPauseButton, nextButton, audioVisualizerButton].forEach(button => {
-                if (button) {
-                    button.style.position = 'static';
-                    button.style.width = 'auto';
-                }
-            });
+            // [previousButton, playPauseButton, nextButton, audioVisualizerButton].forEach(button => {
+            //     if (button) {
+            //         button.style.position = 'static';
+            //         button.style.width = 'auto';
+            //     }
+            // });
         }
     } else {
         console.error("One or more required elements are not found in the DOM.");
