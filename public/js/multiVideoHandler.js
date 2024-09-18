@@ -34,10 +34,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const canvasonSwitch2 = document.getElementById('toggle-icon2');
     canvasonSwitch2.style.display = 'block';
     const containerWrapper = document.getElementById('container-wrapper');
+    const videoButtons = document.getElementById('video-btn-id');
     if (!existingContainer) return;
     
     existingContainer.style.backgroundColor = 'black';
-    
+     videoButtons.style.marginLeft='0px';
     const buttonsContainer = document.querySelector('.buttons-container');
     const timeline = document.querySelector('.timeline');
     const timelineWrapper = document.getElementById('timeline-wrapper');
@@ -47,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
     buttonsContainer.style.float = 'left';
     buttonsContainer.style.display = 'inline-block';
     buttonsContainer.style.left = '-400px';
-    buttonsContainer.style.top = '-08px';
+    buttonsContainer.style.top = '-17px';
     buttonsContainer.style.borderTopLeftRadius = '10px';
     buttonsContainer.style.borderTopRightRadius = '10px';
     buttonsContainer.style.borderBottomLeftRadius = '0';
@@ -58,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
     timeline.style.display = 'inline-block';
     timeline.style.marginLeft = '0';
     timeline.style.left = '10px';
-    timeline.style.top = '-08px';
+    timeline.style.top = '-03px';
   
     const videoButtonContainer = document.querySelector('.video-buttons-container');
     videoButtonContainer.style.display = 'none';
@@ -166,7 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
     newButtonsContainer.style.float = 'left';
     newButtonsContainer.style.display = 'inline-block';
     newButtonsContainer.style.left = '-07px';
-    newButtonsContainer.style.top = '-08px';
+    newButtonsContainer.style.top = '-17px';
     newButtonsContainer.id='new-btn-container';
     newButtonsContainer.style.borderTopLeftRadius = '10px';
     newButtonsContainer.style.borderTopRightRadius = '10px';
@@ -199,7 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </ul>
             </div>
         </div>
-        <div class="video-buttons center">
+        <div id="video-btn-id-2" class="video-buttons center">
             <button class="video-button" title="Previous">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
                     <path d="M0 0h24v24H0z" fill="none"></path>
