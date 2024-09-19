@@ -394,16 +394,18 @@ const playPauseButton = document.getElementById('play-pause-button');
 const playPauseImage = playPauseButton.querySelector('img');
 const audioWave = document.querySelector('.audio-wave');
 playPauseButton.addEventListener('click', () => {
+    console.log('Canvas outside conditions Z index: ',document.getElementById('canvas').style.zIndex);
 if (video.paused) {
     console.log('inside play condition')
     video.play();
-    
+    console.log('Canvas inside if Z index: ',document.getElementById('canvas').style.zIndex);
     // audioWave.classList.toggle('active');
     audioWave.classList.add('active');
 } else {
     console.log('inside pause condition')
     video.pause();
     audioWave.classList.remove('active');
+    console.log('Canvas inside else Z index: ',document.getElementById('canvas').style.zIndex);
 }
 });
 
@@ -980,7 +982,7 @@ video.addEventListener('loadedmetadata', () => {
 
 video.addEventListener('pause', () => {
     canvas.isDrawingMode = true; 
-    fabricCanvas.style.pointerEvents = 'auto'; 
+    fabricCanvas.style.pointerEvents = 'none'; 
 });
 
 
@@ -2453,5 +2455,12 @@ document.getElementById('library').addEventListener('click', function() {
 document.getElementById('canvas').addEventListener('click', (event) => {
     console.log('Canvas clicked');
     console.log("Canvas z-index: ",document.getElementById('canvas').style.zIndex);
+    console.log("Canvas position: ",document.getElementById('canvas').style.position);
+    console.log("Canvas height: ",document.getElementById('canvas').style.height);
+    console.log("Canvas width: ",document.getElementById('canvas').style.width);
+    console.log("Canvas top: ",document.getElementById('canvas').style.top);
+    console.log("Canvas left: ",document.getElementById('canvas').style.left);
+    console.log("Canvas pointer events: ",document.getElementById('canvas').style.pointerEvents);
+    console.log("Canvas bg color: ",document.getElementById('canvas').style.backgroundColor);
   });
 
