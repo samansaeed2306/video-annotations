@@ -706,21 +706,78 @@ function activateNoteMode() {
     canvas.add(note).setActiveObject(note);
 }
 let eraserListener = null;
+// function useEraser() {
+//     canvas.isDrawingMode = false;
+//     canvas.defaultCursor = 'crosshair';
+
+//     eraserListener = function(event) {
+//         const pointer = canvas.getPointer(event.e);
+//         const objects = canvas.getObjects(); // Get all objects on the canvas
+//         let foundObject = null;
+
+//         // Check if any object contains the pointer
+//         for (const obj of objects) {
+//             if (obj instanceof fabric.Line || obj instanceof fabric.Polyline) {
+//                 // For lines and polylines, use different logic
+//                 const { x, y } = pointer;
+//                 const bbox = obj.getBoundingRect(); // Get bounding box of the object
+//                 if (x >= bbox.left && x <= bbox.left + bbox.width && y >= bbox.top && y <= bbox.top + bbox.height) {
+//                     foundObject = obj;
+//                     break;
+//                 }
+//             }
+//             else if (obj.containsPoint(pointer)) {
+//                 foundObject = obj;
+//                 break;
+//             }
+//         }
+
+//         if (foundObject) {
+//             console.log("foundObject: ", foundObject);
+//             const currentTime = video.currentTime;
+//             removeAnnotation(currentTime);
+//             canvas.remove(foundObject);
+//         } else {
+//             console.log("No object found under the pointer.");
+//         }
+//     };
+
+//     canvas.on('mouse:down', eraserListener);
+// }
+
+function deactivatePolylineMode() {
+    if (isPolylineActive) {
+        drawingMode = null;
+        canvas.upperCanvasEl.classList.remove('canvas-plus-cursor');
+        isPolylineActive = false;
+        // if (polylinePoints.length > 1) {
+        //     finalizePolyline();
+        // }
+        polylinePoints = [];
+    }
+}
+
 function useEraser() {
+    // Remove any existing eraser listener
+    deactivatePolylineMode(); 
+    if (eraserListener) {
+        canvas.off('mouse:down', eraserListener);
+    }
+
     canvas.isDrawingMode = false;
     canvas.defaultCursor = 'crosshair';
 
     eraserListener = function(event) {
         const pointer = canvas.getPointer(event.e);
-        const objects = canvas.getObjects(); // Get all objects on the canvas
+        const objects = canvas.getObjects();
+        let objectsToRemove = new Set();
         let foundObject = null;
 
-        // Check if any object contains the pointer
+        // Check for individual objects (existing functionality)
         for (const obj of objects) {
             if (obj instanceof fabric.Line || obj instanceof fabric.Polyline) {
-                // For lines and polylines, use different logic
                 const { x, y } = pointer;
-                const bbox = obj.getBoundingRect(); // Get bounding box of the object
+                const bbox = obj.getBoundingRect();
                 if (x >= bbox.left && x <= bbox.left + bbox.width && y >= bbox.top && y <= bbox.top + bbox.height) {
                     foundObject = obj;
                     break;
@@ -731,11 +788,30 @@ function useEraser() {
             }
         }
 
-        if (foundObject) {
-            console.log("foundObject: ", foundObject);
+        // Check for connected polylines (new functionality)
+        for (const obj of objects) {
+            if (obj instanceof fabric.Line) {
+                const { x, y } = pointer;
+                const bbox = obj.getBoundingRect();
+                if (x >= bbox.left && x <= bbox.left + bbox.width && y >= bbox.top && y <= bbox.top + bbox.height) {
+                    findConnectedObjects(obj, objects, objectsToRemove);
+                }
+            }
+        }
+
+        if (foundObject && !objectsToRemove.has(foundObject)) {
+            objectsToRemove.add(foundObject);
+        }
+
+        if (objectsToRemove.size > 0) {
             const currentTime = video.currentTime;
-            removeAnnotation(currentTime);
-            canvas.remove(foundObject);
+            objectsToRemove.forEach(obj => {
+                canvas.remove(obj);
+                updateTimelineIcons();
+            });
+            // removeAnnotation(currentTime);
+            canvas.renderAll();
+            console.log(`Removed ${objectsToRemove.size} objects`);
         } else {
             console.log("No object found under the pointer.");
         }
@@ -743,9 +819,60 @@ function useEraser() {
 
     canvas.on('mouse:down', eraserListener);
 }
+function findAssociatedAngleText(lineObj, allObjects, objectsToRemove) {
+    const linePoints = [
+        { x: lineObj.x1, y: lineObj.y1 },
+        { x: lineObj.x2, y: lineObj.y2 }
+    ];
 
+    for (const obj of allObjects) {
+        if (obj instanceof fabric.Text && obj.text.includes('°') && !objectsToRemove.has(obj)) {
+            if (isNearPoint(obj, linePoints[0]) || isNearPoint(obj, linePoints[1])) {
+                objectsToRemove.add(obj);
+            }
+        }
+    }
+}
+function findConnectedObjects(startObj, allObjects, objectsToRemove) {
+    objectsToRemove.add(startObj);
 
+    const startPoints = [
+        { x: startObj.x1, y: startObj.y1 },
+        { x: startObj.x2, y: startObj.y2 }
+    ];
 
+    for (const obj of allObjects) {
+        if (obj instanceof fabric.Line && !objectsToRemove.has(obj)) {
+            const endPoints = [
+                { x: obj.x1, y: obj.y1 },
+                { x: obj.x2, y: obj.y2 }
+            ];
+
+            if (pointsMatch(startPoints, endPoints)) {
+                findConnectedObjects(obj, allObjects, objectsToRemove);
+            }
+        } else if (obj instanceof fabric.Text && obj.text.includes('°')) {
+            // Check if the angle text is near any of the line's endpoints
+            if (isNearPoint(obj, startPoints[0]) || isNearPoint(obj, startPoints[1])) {
+                objectsToRemove.add(obj);
+            }
+        }
+    }
+}
+
+function pointsMatch(points1, points2) {
+    return points1.some(p1 => points2.some(p2 => 
+        Math.abs(p1.x - p2.x) < 1 && Math.abs(p1.y - p2.y) < 1
+    ));
+}
+
+function isNearPoint(textObj, point) {
+    const textCenter = textObj.getCenterPoint();
+    const distance = Math.sqrt(
+        Math.pow(textCenter.x - point.x, 2) + Math.pow(textCenter.y - point.y, 2)
+    );
+    return distance < 20; // Adjust this threshold as needed
+}
 
 function unpickTool() {
     if (eraserListener) {
@@ -756,6 +883,7 @@ function unpickTool() {
     canvas.defaultCursor = 'default';
     canvas.selection = true;
 }
+let isPolylineActive = false;
 function activatePolylineMode() {
     if (eraserListener) {
         canvas.off('mouse:down', eraserListener);
@@ -765,6 +893,7 @@ function activatePolylineMode() {
     canvas.isDrawingMode = false; 
     polylinePoints = [];
     canvas.upperCanvasEl.classList.add('canvas-plus-cursor');
+    isPolylineActive = true;
 }
 
 function activateLineMode() {
