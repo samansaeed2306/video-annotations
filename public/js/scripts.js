@@ -2631,3 +2631,43 @@ volumeSlider.addEventListener('input', (event) => {
         muteIcon.style.display = 'none';
     }
 });
+
+const timeInput = document.getElementById('ex-current-time-input');
+
+// Function to convert time string (e.g., "0:01") to seconds
+const timeStringToSeconds = (timeString) => {
+    const parts = timeString.split(':');
+    if (parts.length !== 2) return NaN;
+    const minutes = parseInt(parts[0], 10);
+    const seconds = parseInt(parts[1], 10);
+    return minutes * 60 + seconds;
+};
+
+// Function to format seconds back to "minutes:seconds"
+const secondsToTimeString = (totalSeconds) => {
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+};
+
+timeInput.addEventListener('change', () => {
+    const inputTime = timeInput.value;
+
+    // Convert input time to seconds
+    const newTime = timeStringToSeconds(inputTime);
+    const videoDuration = video.duration;
+
+    // Validate the new time
+    if (!isNaN(newTime) && newTime >= 0 && newTime <= videoDuration) {
+        // If valid, update the video's current time
+        video.currentTime = newTime;
+    } else {
+        // If invalid, revert to the previous correct time
+        timeInput.value = secondsToTimeString(video.currentTime);
+    }
+});
+
+// Optional: Update input field when video current time changes
+video.addEventListener('timeupdate', () => {
+    timeInput.value = secondsToTimeString(video.currentTime);
+});
