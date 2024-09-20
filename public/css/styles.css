@@ -771,7 +771,7 @@ body::before {
     fill: var(--icon-color);
 }
 
-#loop.active-loop {
+#loop.active-loop,#loop:hover{
     fill: #ffffff; 
 }
 
@@ -784,7 +784,7 @@ body::before {
 
 
 /* Change the SVG path color when the button is active */
-#resize-video.active .icon path {
+#resize-video.active .icon path, #resize-video:hover .icon path {
     fill: #ffffff; /* Red color for the path when active */
 }
 /* Media queries for mobile responsiveness */
