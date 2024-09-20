@@ -775,6 +775,18 @@ body::before {
     fill: #ffffff; 
 }
 
+#resize-video {
+    background-color: var(--icon-color); /* Default color */
+}
+#resize-video .icon path {
+    fill: var(--icon-color); /* Default path color */
+}
+
+
+/* Change the SVG path color when the button is active */
+#resize-video.active .icon path {
+    fill: #ffffff; /* Red color for the path when active */
+}
 /* Media queries for mobile responsiveness */
 @media  (max-width: 520px) and (min-width: 320px){
     /* Remove body styles to focus on video and canvas */
