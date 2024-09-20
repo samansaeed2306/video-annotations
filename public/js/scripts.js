@@ -2610,3 +2610,24 @@ document.getElementById('canvas').addEventListener('click', (event) => {
       }
   });
   
+
+const volumeSlider = document.querySelector('.volume-slider');
+const muteIcon = document.getElementById('mute-icon');
+const volumeIcon = document.getElementById('volume-icon');
+// Set initial volume
+video.volume = volumeSlider.value / 100;
+
+// Add event listener to the volume slider
+volumeSlider.addEventListener('input', (event) => {
+    const volumeValue = event.target.value / 100;
+    video.volume = volumeValue; // Update video volume
+
+    // Check volume level and update icon
+    if (volumeValue === 0) {
+        volumeIcon.style.display = 'none';
+        muteIcon.style.display = 'block';
+    } else {
+        volumeIcon.style.display = 'block';
+        muteIcon.style.display = 'none';
+    }
+});
