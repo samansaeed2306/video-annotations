@@ -2548,14 +2548,17 @@ const toggleZoom = () => {
     }
 };
 
-    videoContainer.addEventListener('dblclick',toggleZoom);
-
+    videoContainer.addEventListener('dblclick',() => {
+        toggleZoom(); 
+        resizeVideoButton.classList.toggle('active');
+    });
 
 const resizeVideoButton = document.getElementById('resize-video');
 
 
 resizeVideoButton.addEventListener('click', () => {
     toggleZoom(); 
+    resizeVideoButton.classList.toggle('active');
 });
 
 
@@ -2599,7 +2602,7 @@ document.getElementById('canvas').addEventListener('click', (event) => {
   loopButton.addEventListener('click', function() {
       isLooping = !isLooping; 
       video.loop = isLooping; 
-      
+
       if (isLooping) {
           loopButton.classList.add('active-loop'); 
       } else {
