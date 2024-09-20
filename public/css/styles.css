@@ -750,6 +750,22 @@ body::before {
         display: none;
     }
 
+    #previous-button:hover svg path:nth-child(2),
+#previous-button:active svg path:nth-child(2) {
+    fill: #ffffff; /* Whitish bright color */
+}
+
+/* Play/Pause button hover and active state */
+#play-pause-button:hover svg path:nth-child(2),
+#play-pause-button:active svg path:nth-child(2) {
+    fill: #ffffff; /* Whitish bright color */
+}
+
+/* Next button hover and active state */
+#next-button:hover svg path:nth-child(2),
+#next-button:active svg path:nth-child(2) {
+    fill: #ffffff; /* Whitish bright color */
+}
 /* Media queries for mobile responsiveness */
 @media  (max-width: 520px) and (min-width: 320px){
     /* Remove body styles to focus on video and canvas */
