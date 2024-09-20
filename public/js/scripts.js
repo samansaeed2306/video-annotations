@@ -2593,3 +2593,17 @@ document.getElementById('canvas').addEventListener('click', (event) => {
     console.log("Canvas bg color: ",document.getElementById('canvas').style.backgroundColor);
   });
 
+  const loopButton = document.getElementById('loop');
+  let isLooping = false;
+  
+  loopButton.addEventListener('click', function() {
+      isLooping = !isLooping; 
+      video.loop = isLooping; 
+      
+      if (isLooping) {
+          loopButton.classList.add('active-loop'); 
+      } else {
+          loopButton.classList.remove('active-loop'); 
+      }
+  });
+  
