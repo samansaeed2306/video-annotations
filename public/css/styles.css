@@ -766,6 +766,15 @@ body::before {
 #next-button:active svg path:nth-child(2) {
     fill: #ffffff; /* Whitish bright color */
 }
+
+#loop {
+    fill: var(--icon-color);
+}
+
+#loop.active-loop {
+    fill: #ffffff; 
+}
+
 /* Media queries for mobile responsiveness */
 @media  (max-width: 520px) and (min-width: 320px){
     /* Remove body styles to focus on video and canvas */
