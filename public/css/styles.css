@@ -792,16 +792,16 @@ body::before {
     width: 23px;
     height: 23px;
 }
-#color-wheel-container {
+/* #color-wheel-container {
     position: relative;
     width: 200px; /* Set width */
-    height: 600px; /* Set height to be equal to width */
+    /* height: 600px; Set height to be equal to width */
     /* border-radius: 50%; Make it circular */
-    display: none; /* Initially hidden */
+    /* display: none; Initially hidden */
     /* overflow: hidden; Prevent overflow of content */
-  }
+  /* } */ 
 
-  #selected-color {
+  /* #selected-color {
     margin-top: 10px;
     padding: 10px;
     border: 1px solid #a87272;
@@ -818,14 +818,6 @@ body::before {
     border-radius: 50%;
     cursor: crosshair;
   }
-/* #color-wheel-container {
-    position: relative;
-    width: 100px;
-    height: 800px;
-    border-radius: 90%;
-    display: none;
-    
-  } */
 
   .color-wheel {
     position: absolute;
@@ -845,8 +837,29 @@ body::before {
     cursor: pointer;
     border: 1px solid #ccc;
     display: inline-block;
+  } */
+
+  .color-picker {
+    display: grid;
+    grid-template-columns: repeat(10, 30px);
+    grid-gap: 5px;
+    margin: 20px 0;
+  }
+  
+  .color-box {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    border: 1px solid #ccc;
   }
 
+  #selected-color {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #000;
+    width: 100px;
+    text-align: center;
+  }
   
 
 /* Media queries for mobile responsiveness */

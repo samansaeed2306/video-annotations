@@ -599,8 +599,8 @@ function playAudioAnnotationIfExists(currentTime) {
 }
 function setCurrentDrawingColor() {
     if (canvas.freeDrawingBrush) {
-        currentColorIndex++;
-        canvas.freeDrawingBrush.color = colors[currentColorIndex % colors.length];
+        // currentColorIndex++;
+        canvas.freeDrawingBrush.color = selectedColor;
         
         console.log('inside free hand drawing condition')
     }
@@ -630,7 +630,7 @@ function activateCircleMode() {
     }
     canvas.isDrawingMode = false;
     drawingMode = 'circle';
-    setCurrentDrawingColor(); 
+    // setCurrentDrawingColor(); 
 
     const circle = new fabric.Circle({
         left: 100,
@@ -639,7 +639,7 @@ function activateCircleMode() {
 
         radius: 30,
         fill: 'transparent',
-        stroke: colors[currentColorIndex % colors.length],
+        stroke: selectedColor,
         strokeWidth: 2
     });
     canvas.add(circle).setActiveObject(circle);
@@ -651,7 +651,7 @@ function activateRectangleMode() {
     }
     canvas.isDrawingMode = false;
     drawingMode = 'rectangle';
-    setCurrentDrawingColor(); 
+    //setCurrentDrawingColor(); 
     const rect = new fabric.Rect({
 
             left: 90,
@@ -660,7 +660,7 @@ function activateRectangleMode() {
             width: 60,
             height: 60,
             fill: 'transparent',
-            stroke: colors[currentColorIndex % colors.length],
+            stroke: selectedColor,
             strokeWidth: 2
         });
         canvas.add(rect).setActiveObject(rect);
@@ -680,7 +680,7 @@ function activateTextMode() {
 
         fontSize: 20,
         fontFamily: 'Arial',
-        fill: colors[currentColorIndex % colors.length],
+        fill: selectedColor,
         width: 200
     });
     currentColorIndex++;
@@ -702,7 +702,7 @@ function activateNoteMode() {
 
         fontSize: 14,
         fontFamily: 'Arial',
-        fill: colors[currentColorIndex % colors.length],
+        fill: selectedColor,
         backgroundColor: '#ffffcc',
         width: 200
     });
@@ -912,7 +912,7 @@ function activateLineMode() {
     const line = new fabric.Line([50, 50, 200, 200], {
         left: 100,
         top: 100,
-        stroke: colors[currentColorIndex % colors.length],
+        stroke: selectedColor,
         strokeWidth: 2
     });
     canvas.add(line);
@@ -983,7 +983,7 @@ canvas.on('mouse:down', function(options) {
                 polylinePoints[polylinePoints.length - 1].x,
                 polylinePoints[polylinePoints.length - 1].y
             ], {
-                stroke: colors[currentColorIndex % colors.length],
+                stroke: selectedColor,
                 strokeWidth: 2
             });
             canvas.add(line);
@@ -997,7 +997,7 @@ canvas.on('mouse:down', function(options) {
                     left: polylinePoints[polylinePoints.length - 2].x,
                     top: polylinePoints[polylinePoints.length - 2].y,
                     fontSize: 14,
-                    fill: colors[currentColorIndex % colors.length]
+                    fill: selectedColor
                 });
                 canvas.add(angleText);
             }
@@ -1201,7 +1201,7 @@ function recordAnnotation(time) {
     const colors = ['#FF5733', '#33FF57', '#5733FF', '#FFFF33', '#FF33FF', '#33FFFF'];
 
 
-    const randomColor = colors[currentColorIndex % colors.length];
+    const randomColor = selectedColor;
     pointer.style.backgroundColor = randomColor;
     tick.appendChild(pointer);
 
@@ -2678,48 +2678,48 @@ video.addEventListener('timeupdate', () => {
 
 
 
-function selectColor() {
-    const picker = document.getElementById("picker-overlay");
-    const selectedColorDisplay = document.getElementById("selected-color");
-    const colorWheelContainer = document.getElementById("color-wheel-container");
-    const colorWheel = document.querySelector("color-wheel");
-    // console.log("Color Wheel width:", colorWheel.style.width);
-    // Show the color wheel container when the function is triggered
-    colorWheelContainer.style.display = "block";
+// function selectColor() {
+//     const picker = document.getElementById("picker-overlay");
+//     const selectedColorDisplay = document.getElementById("selected-color");
+//     const colorWheelContainer = document.getElementById("color-wheel-container");
+//     const colorWheel = document.querySelector("color-wheel");
+//     // console.log("Color Wheel width:", colorWheel.style.width);
+//     // Show the color wheel container when the function is triggered
+//     colorWheelContainer.style.display = "block";
 
-    const context = picker.getContext("2d");
-     const width = picker.width = 200;
-    //  const height = picker.height = colorWheel.style.height;
-    const radius = width / 2;
+//     const context = picker.getContext("2d");
+//      const width = picker.width = 200;
+//     //  const height = picker.height = colorWheel.style.height;
+//     const radius = width / 2;
 
-    // Create a color wheel using a conic gradient
-    const gradient = context.createConicGradient(0, radius, radius);
-    gradient.addColorStop(0, 'red');
-    gradient.addColorStop(1 / 6, 'yellow');
-    gradient.addColorStop(2 / 6, 'lime');
-    gradient.addColorStop(3 / 6, 'cyan');
-    gradient.addColorStop(4 / 6, 'blue');
-    gradient.addColorStop(5 / 6, 'magenta');
-    gradient.addColorStop(1, 'red');
+//     // Create a color wheel using a conic gradient
+//     const gradient = context.createConicGradient(0, radius, radius);
+//     gradient.addColorStop(0, 'red');
+//     gradient.addColorStop(1 / 6, 'yellow');
+//     gradient.addColorStop(2 / 6, 'lime');
+//     gradient.addColorStop(3 / 6, 'cyan');
+//     gradient.addColorStop(4 / 6, 'blue');
+//     gradient.addColorStop(5 / 6, 'magenta');
+//     gradient.addColorStop(1, 'red');
 
-    // Draw the color wheel
-    context.fillStyle = gradient;
-    context.beginPath();
-    context.arc(radius, radius, radius, 0, 2 * Math.PI);
-    context.fill();
+//     // Draw the color wheel
+//     context.fillStyle = gradient;
+//     context.beginPath();
+//     context.arc(radius, radius, radius, 0, 2 * Math.PI);
+//     context.fill();
 
-    // Capture the clicked color from the canvas
-    picker.addEventListener("click", function(event) {
-      const x = event.offsetX;
-      const y = event.offsetY;
+//     // Capture the clicked color from the canvas
+//     picker.addEventListener("click", function(event) {
+//       const x = event.offsetX;
+//       const y = event.offsetY;
 
-      // Get the color data from the clicked pixel
-      const imgData = context.getImageData(x, y, 1, 1).data;
-      const rgb = `rgb(${imgData[0]}, ${imgData[1]}, ${imgData[2]})`;
+//       // Get the color data from the clicked pixel
+//       const imgData = context.getImageData(x, y, 1, 1).data;
+//       const rgb = `rgb(${imgData[0]}, ${imgData[1]}, ${imgData[2]})`;
 
-      // Display the selected color on the screen and log it
-      selectedColorDisplay.style.backgroundColor = rgb;
-      selectedColorDisplay.textContent = rgb;
-      console.log("Selected Color:", rgb);
-    });
-  }
+//       // Display the selected color on the screen and log it
+//       selectedColorDisplay.style.backgroundColor = rgb;
+//       selectedColorDisplay.textContent = rgb;
+//       console.log("Selected Color:", rgb);
+//     });
+//   }
