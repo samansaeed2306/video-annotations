@@ -2671,3 +2671,51 @@ timeInput.addEventListener('change', () => {
 video.addEventListener('timeupdate', () => {
     timeInput.value = secondsToTimeString(video.currentTime);
 });
+
+
+
+function selectColor() {
+    const picker = document.getElementById("picker-overlay");
+    const selectedColorDisplay = document.getElementById("selected-color");
+    const colorWheelContainer = document.getElementById("color-wheel-container");
+    const colorWheel = document.querySelector("color-wheel");
+    // console.log("Color Wheel width:", colorWheel.style.width);
+    // Show the color wheel container when the function is triggered
+    colorWheelContainer.style.display = "block";
+
+    const context = picker.getContext("2d");
+     const width = picker.width = 200;
+    //  const height = picker.height = colorWheel.style.height;
+    const radius = width / 2;
+
+    // Create a color wheel using a conic gradient
+    const gradient = context.createConicGradient(0, radius, radius);
+    gradient.addColorStop(0, 'red');
+    gradient.addColorStop(1 / 6, 'yellow');
+    gradient.addColorStop(2 / 6, 'lime');
+    gradient.addColorStop(3 / 6, 'cyan');
+    gradient.addColorStop(4 / 6, 'blue');
+    gradient.addColorStop(5 / 6, 'magenta');
+    gradient.addColorStop(1, 'red');
+
+    // Draw the color wheel
+    context.fillStyle = gradient;
+    context.beginPath();
+    context.arc(radius, radius, radius, 0, 2 * Math.PI);
+    context.fill();
+
+    // Capture the clicked color from the canvas
+    picker.addEventListener("click", function(event) {
+      const x = event.offsetX;
+      const y = event.offsetY;
+
+      // Get the color data from the clicked pixel
+      const imgData = context.getImageData(x, y, 1, 1).data;
+      const rgb = `rgb(${imgData[0]}, ${imgData[1]}, ${imgData[2]})`;
+
+      // Display the selected color on the screen and log it
+      selectedColorDisplay.style.backgroundColor = rgb;
+      selectedColorDisplay.textContent = rgb;
+      console.log("Selected Color:", rgb);
+    });
+  }

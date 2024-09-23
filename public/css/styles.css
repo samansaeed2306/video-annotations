@@ -41,7 +41,7 @@ body {
     transform: translateX(-65px);
     border: none; /* Remove border */
     border-radius: 50%; /* Make the buttons round */
-    color: #fff; /* Text color inside the button */
+    /* color: #fff; Text color inside the button */
     
     
 }
@@ -787,6 +787,68 @@ body::before {
 #resize-video.active .icon path, #resize-video:hover .icon path {
     fill: #ffffff; /* Red color for the path when active */
 }
+
+#colorWheel img{
+    width: 23px;
+    height: 23px;
+}
+#color-wheel-container {
+    position: relative;
+    width: 200px; /* Set width */
+    height: 600px; /* Set height to be equal to width */
+    /* border-radius: 50%; Make it circular */
+    display: none; /* Initially hidden */
+    /* overflow: hidden; Prevent overflow of content */
+  }
+
+  #selected-color {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #a87272;
+    width: 100px;
+    text-align: center;
+  }
+
+  #picker-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    cursor: crosshair;
+  }
+/* #color-wheel-container {
+    position: relative;
+    width: 100px;
+    height: 800px;
+    border-radius: 90%;
+    display: none;
+    
+  } */
+
+  .color-wheel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 200px;
+    border-radius: 50%;
+    background-image: conic-gradient(
+      red, yellow, lime, cyan, blue, magenta, red
+    );
+  }
+
+  .color-box {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    display: inline-block;
+  }
+
+  
+
 /* Media queries for mobile responsiveness */
 @media  (max-width: 520px) and (min-width: 320px){
     /* Remove body styles to focus on video and canvas */
@@ -1168,6 +1230,15 @@ display: block;
     align-items: center; /* Center icons vertically */
     z-index: 1001; /* Ensure it stays above other elements */
     border-radius: 0; /* Remove rounded corners */
+}
+
+#header-open {
+    position: fixed;
+    top: 20px; /* Adjust to be below the header */
+    left: 12px; /* Adjust as needed */
+    color: rgba(253, 249, 249, 0.3); /* Change color as needed */
+    display: none; /* Initially hidden */
+    z-index: 1002; /* Ensure it's above other elements */
 }
 
 #library-btn svg{
