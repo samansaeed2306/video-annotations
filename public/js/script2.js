@@ -32,7 +32,7 @@ function selectColor() {
       "#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#FF00FF",
       "#00FFFF", "#800000", "#808000", "#008080", "#800080",
       "#FFA500", "#FFC0CB", "#A52A2A", "#000000", "#FFFFFF",
-      "#D2691E", "#7FFF00", "#4682B4", "#2E8B57", "#FF1493",
+      "#D2691E", "#7FFF00", "#0f79e3", "#c2e115", "#FF1493",
     ];
 
     const colorPickerDiv = document.createElement("div");
@@ -51,6 +51,8 @@ function selectColor() {
         selectedColor = color;
         console.log('Color Selected: ', color);
         console.log('Color Selected variable: ', selectedColor);
+
+        updateButtonColors(selectedColor);
       });
 
       colorPickerDiv.appendChild(colorBox);
@@ -60,3 +62,14 @@ function selectColor() {
     // Append the color picker to the container
     colorPickerContainer.appendChild(colorPickerDiv);
   }
+
+
+  function updateButtonColors(color) {
+    // Select all buttons with SVG icons that need color updates
+    const buttonsWithSvg = document.querySelectorAll('button[data-color-change="true"] svg');
+
+    // Loop through each button and update the fill color of the SVG elements
+    buttonsWithSvg.forEach((svg) => {
+        svg.style.fill = color;  // Update the fill color to the selected color
+    });
+}
