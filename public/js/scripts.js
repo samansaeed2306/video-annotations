@@ -612,6 +612,10 @@ let drawingMode = '';
 let isDrawing = false;
 
 function drawFreehand() {
+    if (eraserListener) {
+        canvas.off('mouse:down', eraserListener);
+        eraserListener = null;  // Clear the reference
+    }
     canvas.isDrawingMode = true;
     drawingMode = '';
     setCurrentDrawingColor(); 
