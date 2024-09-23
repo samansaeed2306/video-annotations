@@ -1104,7 +1104,7 @@ body::before {
 .timeline .tick2 {
     display: inline-block;
     width: calc(100% / var(--duration)); 
-    height: 2px;
+    height: 4px;
     background-color: #ffffff;
     cursor: pointer;
     position: relative;
