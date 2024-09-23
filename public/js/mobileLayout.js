@@ -99,9 +99,13 @@ function toggleAudioWave() {
 
 function closeHeader() {
     var header = document.querySelector('.header');
+    var svgIcon = document.getElementById('header-open');
+    
     if (header) {
         header.style.display = 'none';
     }
+    svgIcon.style.display = 'block';
+    console.log("Header closed, icon displayed.");
 }
 
 window.addEventListener('load', adjustVideoButtons);
@@ -124,3 +128,14 @@ document.getElementById('screen-recording2').addEventListener('click', screenRec
 document.getElementById('library-btn').addEventListener('click', function() {
     window.location.href = 'pages/library.html'; 
 });
+
+function openHeader() {
+    var header = document.querySelector('.header');
+    var svgIcon = document.getElementById('header-open');
+    
+    if (header) {
+        header.style.display = 'flex'; 
+    }
+    svgIcon.style.display = 'none'; 
+    console.log("Header opened, icon hidden.");
+}
