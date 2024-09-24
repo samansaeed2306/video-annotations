@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function loadVideo(manifestUri) {
         player.load(manifestUri).then(function() {
             console.log('The video has now been loaded!');
-            toggleZoom(); 
+            // toggleZoom(); 
             setupTimeline(video);
         }).catch(function(error) {
             console.error('Error code', error.code, 'object', error);
@@ -152,11 +152,6 @@ function setupTimeline(video) {
             }
    
     for (let i = 0; i < duration; i++) {
-        // const tick = document.createElement('div');
-        // tick.classList.add('tick');
-        // tick.dataset.time = i;
-        // timeline.appendChild(tick);
-
         const tick2 = document.createElement('div');
         tick2.classList.add('tick2');
         tick2.dataset.time = i;
@@ -190,7 +185,6 @@ function setupTimeline(video) {
         const percentage = (video.currentTime / duration) * 100;
         pointer2.style.left = `calc(${percentage}% - 6.5px)`; 
         
-        // Update tick2 colors
         const ticks2 = document.querySelectorAll('.tick2');
         ticks2.forEach((tick2, index) => {
             if (index <= Math.floor(video.currentTime)) {
@@ -231,65 +225,6 @@ function setupTimeline(video) {
 }
 
 
-// function setupTimeline(video) {
-//     const timeline = document.getElementById('timeline');
-//     const duration = Math.floor(video.duration);
-//     timeline.style.setProperty('--duration', duration); 
-
-//     for (let i = 0; i < duration; i++) {
-//         const tick = document.createElement('div');
-//         tick.classList.add('tick');
-//         tick.dataset.time = i; 
-
-        
-//         const icon = document.createElement('div');
-//         icon.classList.add('icon');
-//         const img = document.createElement('img');
-//         img.src = 'icons/pencil.png';
-//         img.alt = 'Pencil';
-//         icon.appendChild(img);
-//         tick.appendChild(icon);
-
-       
-
-        
-//         img.addEventListener('dragstart', handleDragStart);
-//         tick.addEventListener('dragover', handleDragOver);
-//         tick.addEventListener('drop', handleDrop);
-//         img.setAttribute('draggable', true);
-    
-//         timeline.appendChild(tick);
-//     }
-//     for (let i = 0; i < duration; i++) {
-//         const tick2 = document.createElement('div');
-//         tick2.classList.add('tick2');
-//         tick2.dataset.time = i; 
-
-//         // tick2.addEventListener('click', function() {
-//         //     console.log(`Clicked on tick at ${i} seconds.`);
-//         //     video.currentTime = i;
-//         //     event.stopPropagation();
-//         // });
-//         tick2.addEventListener('click', function(event) {
-//             if (tick2.classList.contains('blocked')) {
-//                 console.log(`Tick at ${i} seconds is blocked.`);
-//                 event.stopPropagation();
-//                 return;
-//             }
-//             console.log(`Clicked on tick at ${i} seconds.`);
-//             video.currentTime = i;
-//         });
-        
-
-        
-       
-//         timeline.appendChild(tick2);
-
-      
-        
-        
-//     }
-// }
 
 function addClassToTicks(startTime, endTime) {
     for (let i = startTime; i <= endTime; i++) {
@@ -350,7 +285,7 @@ moveAnnotation(oldTime, newTime);
 const oldTick = document.querySelector(`.tick[data-time='${oldTime}'] .icon`);
 const icon = oldTick.querySelector('.icon img');
 if(icon.alt == 'Pencil'){
-// if(oldTick.icon.src=='Pencil.png')
+
 if (oldTick) {
 oldTick.style.display = 'none';
 removePointerForPencilIcon(oldTick);
@@ -367,7 +302,6 @@ canvas.forEachObject(obj => {
 }else{
     if (oldTick) {
         oldTick.style.display = 'none';
-        //removePointerForPencilIcon(oldTick);
         }
         
         const annotationIndex = annotations.findIndex(annotation => Math.floor(annotation.time) === parseInt(oldTime));
@@ -396,7 +330,7 @@ if (video.paused) {
     console.log('inside play condition')
     video.play();
     console.log('Canvas inside if Z index: ',document.getElementById('canvas').style.zIndex);
-    // audioWave.classList.toggle('active');
+   
     audioWave.classList.add('active');
 } else {
     console.log('inside pause condition')
@@ -455,30 +389,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// document.addEventListener('DOMContentLoaded', () => {
-//     //const canvas = new fabric.Canvas('canvas-id');
 
-//     // Sample annotation object
-//     const annotation = {
-//         time:5,
-//         startTime: 5, // Start time in seconds
-//         endTime: 10, // End time in seconds
-//         content: '{"version":"4.5.0","objects":[{"type":"circle","version":"4.5.0","originX":"left","originY":"top","left":100,"top":70,"width":60,"height":60,"fill":"transparent","stroke":"#33FF57","strokeWidth":2,"strokeDashArray":null,"strokeLineCap":"butt","strokeDashOffset":0,"strokeLineJoin":"miter","strokeUniform":false,"strokeMiterLimit":4,"scaleX":2.43,"scaleY":2.43,"angle":0,"flipX":false,"flipY":false,"opacity":1,"shadow":null,"visible":true,"backgroundColor":"","fillRule":"nonzero","paintFirst":"fill","globalCompositeOperation":"source-over","skewX":0,"skewY":0,"radius":30,"startAngle":0,"endAngle":6.283185307179586}]}' 
-//     };
-//     updateAnnotationsList();
-//     // Call the showAnnotations function with the annotation and a test time
-    
-//         const testtime = 3;
-//         showAnnotations(annotation, testtime);
-
-//     updateAnnotationsList();
-//     });
-
-// video.addEventListener('timeupdate', () => {
-//     if (!video.paused) { // Check if the video is playing
-//         playAudioAnnotationIfExists(video.currentTime);
-//     }
-// });
 document.getElementById('play-pause-button').addEventListener('click', function() {
     const playIcon = document.getElementById('play-icon');
     const pauseIcon = document.getElementById('pause-icon');
@@ -534,7 +445,6 @@ annotations.forEach(ann => {
 updateAnnotationsList();
 updateTimelineIcons();
 
-//updateAnnotation(annotation);
 }
 
 }
@@ -567,7 +477,7 @@ function playAudioAnnotationIfExists(currentTime) {
             console.log('Found an audio annotation');
             console.log('Annotation time: ',annotation.time);
             const mimeType = "audio/webm";
-            // const base64String = annotation.content.split(',')[1];
+           
             const blob = convertBase64ToBlob(annotation.content, mimeType);
             var url = URL.createObjectURL(blob);
             const existingAudioElements = document.querySelectorAll('audio');
@@ -587,7 +497,7 @@ function playAudioAnnotationIfExists(currentTime) {
            
             audioElement.play();
             
-            // audio.play();
+           
         }
         
         
@@ -596,7 +506,7 @@ function playAudioAnnotationIfExists(currentTime) {
 }
 function setCurrentDrawingColor() {
     if (canvas.freeDrawingBrush) {
-        // currentColorIndex++;
+        
         canvas.freeDrawingBrush.color = selectedColor;
         
         console.log('inside free hand drawing condition')
@@ -611,24 +521,23 @@ let isDrawing = false;
 function drawFreehand() {
     if (eraserListener) {
         canvas.off('mouse:down', eraserListener);
-        eraserListener = null;  // Clear the reference
+        eraserListener = null; 
     }
     canvas.isDrawingMode = true;
     drawingMode = '';
     setCurrentDrawingColor(); 
-    //canvas.freeDrawingBrush= colors[currentColorIndex % colors.length]
+   
 }
 
   
 function activateCircleMode() {
     if (eraserListener) {
         canvas.off('mouse:down', eraserListener);
-        eraserListener = null;  // Clear the reference
+        eraserListener = null; 
     }
     canvas.isDrawingMode = false;
     drawingMode = 'circle';
-    // setCurrentDrawingColor(); 
-
+   
     const circle = new fabric.Circle({
         left: 100,
 
@@ -644,11 +553,11 @@ function activateCircleMode() {
 function activateRectangleMode() {
     if (eraserListener) {
         canvas.off('mouse:down', eraserListener);
-        eraserListener = null;  // Clear the reference
+        eraserListener = null;  
     }
     canvas.isDrawingMode = false;
     drawingMode = 'rectangle';
-    //setCurrentDrawingColor(); 
+   
     const rect = new fabric.Rect({
 
             left: 90,
@@ -666,7 +575,7 @@ function activateRectangleMode() {
 function activateTextMode() {
     if (eraserListener) {
         canvas.off('mouse:down', eraserListener);
-        eraserListener = null;  // Clear the reference
+        eraserListener = null; 
     }
     canvas.isDrawingMode = false;
     drawingMode = 'text';
@@ -687,7 +596,7 @@ function activateTextMode() {
 function activateNoteMode() {
     if (eraserListener) {
         canvas.off('mouse:down', eraserListener);
-        eraserListener = null;  // Clear the reference
+        eraserListener = null;  
     }
     console.log("Activate Note function")
     canvas.isDrawingMode = false;
@@ -707,59 +616,19 @@ function activateNoteMode() {
     canvas.add(note).setActiveObject(note);
 }
 let eraserListener = null;
-// function useEraser() {
-//     canvas.isDrawingMode = false;
-//     canvas.defaultCursor = 'crosshair';
-
-//     eraserListener = function(event) {
-//         const pointer = canvas.getPointer(event.e);
-//         const objects = canvas.getObjects(); // Get all objects on the canvas
-//         let foundObject = null;
-
-//         // Check if any object contains the pointer
-//         for (const obj of objects) {
-//             if (obj instanceof fabric.Line || obj instanceof fabric.Polyline) {
-//                 // For lines and polylines, use different logic
-//                 const { x, y } = pointer;
-//                 const bbox = obj.getBoundingRect(); // Get bounding box of the object
-//                 if (x >= bbox.left && x <= bbox.left + bbox.width && y >= bbox.top && y <= bbox.top + bbox.height) {
-//                     foundObject = obj;
-//                     break;
-//                 }
-//             }
-//             else if (obj.containsPoint(pointer)) {
-//                 foundObject = obj;
-//                 break;
-//             }
-//         }
-
-//         if (foundObject) {
-//             console.log("foundObject: ", foundObject);
-//             const currentTime = video.currentTime;
-//             removeAnnotation(currentTime);
-//             canvas.remove(foundObject);
-//         } else {
-//             console.log("No object found under the pointer.");
-//         }
-//     };
-
-//     canvas.on('mouse:down', eraserListener);
-// }
 
 function deactivatePolylineMode() {
     if (isPolylineActive) {
         drawingMode = null;
         canvas.upperCanvasEl.classList.remove('canvas-plus-cursor');
         isPolylineActive = false;
-        // if (polylinePoints.length > 1) {
-        //     finalizePolyline();
-        // }
+       
         polylinePoints = [];
     }
 }
 
 function useEraser() {
-    // Remove any existing eraser listener
+    
     deactivatePolylineMode(); 
     if (eraserListener) {
         canvas.off('mouse:down', eraserListener);
@@ -774,7 +643,7 @@ function useEraser() {
         let objectsToRemove = new Set();
         let foundObject = null;
 
-        // Check for individual objects (existing functionality)
+      
         for (const obj of objects) {
             if (obj instanceof fabric.Line || obj instanceof fabric.Polyline) {
                 const { x, y } = pointer;
@@ -789,7 +658,7 @@ function useEraser() {
             }
         }
 
-        // Check for connected polylines (new functionality)
+       
         for (const obj of objects) {
             if (obj instanceof fabric.Line) {
                 const { x, y } = pointer;
@@ -810,7 +679,7 @@ function useEraser() {
                 canvas.remove(obj);
                 updateTimelineIcons();
             });
-            // removeAnnotation(currentTime);
+           
             canvas.renderAll();
             console.log(`Removed ${objectsToRemove.size} objects`);
         } else {
@@ -853,7 +722,7 @@ function findConnectedObjects(startObj, allObjects, objectsToRemove) {
                 findConnectedObjects(obj, allObjects, objectsToRemove);
             }
         } else if (obj instanceof fabric.Text && obj.text.includes('°')) {
-            // Check if the angle text is near any of the line's endpoints
+           
             if (isNearPoint(obj, startPoints[0]) || isNearPoint(obj, startPoints[1])) {
                 objectsToRemove.add(obj);
             }
@@ -872,7 +741,7 @@ function isNearPoint(textObj, point) {
     const distance = Math.sqrt(
         Math.pow(textCenter.x - point.x, 2) + Math.pow(textCenter.y - point.y, 2)
     );
-    return distance < 20; // Adjust this threshold as needed
+    return distance < 20; 
 }
 
 function unpickTool() {
@@ -888,7 +757,7 @@ let isPolylineActive = false;
 function activatePolylineMode() {
     if (eraserListener) {
         canvas.off('mouse:down', eraserListener);
-        eraserListener = null;  // Clear the reference
+        eraserListener = null; 
     }
     drawingMode = 'polyline';
     canvas.isDrawingMode = false; 
@@ -900,11 +769,11 @@ function activatePolylineMode() {
 function activateLineMode() {
     if (eraserListener) {
         canvas.off('mouse:down', eraserListener);
-        eraserListener = null;  // Clear the reference
+        eraserListener = null; 
     }
     drawingMode = 'line';
     canvas.isDrawingMode = false; 
-    // canvas.upperCanvasEl.classList.add('canvas-plus-cursor');
+    
 
     const line = new fabric.Line([50, 50, 200, 200], {
         left: 100,
@@ -919,7 +788,7 @@ function activateLineMode() {
 function activateImage() {
     if (eraserListener) {
         canvas.off('mouse:down', eraserListener);
-        eraserListener = null;  // Clear the reference
+        eraserListener = null;  
     }
     document.getElementById('imageInput').click();
 }
@@ -960,17 +829,7 @@ function handleImageUpload(event) {
 canvas.on('mouse:down', function(options) {
     const pointer = canvas.getPointer(options.e);
     if (drawingMode === 'line') {
-        // isDrawing = true;
-       
-        // const points = [pointer.x, pointer.y, pointer.x, pointer.y];
-        // currentShape = new fabric.Line(points, {
-        //     strokeWidth: 2,
-        //     fill: colors[currentColorIndex % colors.length],
-        //     stroke: colors[currentColorIndex % colors.length],
-        //     originX: 'center',
-        //     originY: 'center'
-        // });
-        // canvas.add(currentShape);
+        
     }else if (drawingMode === 'polyline') {
         polylinePoints.push({ x: pointer.x, y: pointer.y });
         if (polylinePoints.length > 1) {
@@ -1017,44 +876,7 @@ canvas.on('mouse:up', function() {
     currentShape = null;
     }
 });
-// canvas.on('mouse:down', function(opt) {
-//     if (drawingMode === 'rectangle') {
-//         isDrawing = true;
-//         const pointer = canvas.getPointer(opt.e);
-//         const rect = new fabric.Rect({
-//             left: pointer.x,
-//             top: pointer.y,
-//             width: 0,
-//             height: 0,
-//             fill: 'transparent',
-//             stroke: colors[currentColorIndex % colors.length],
-//             strokeWidth: 2
-//         });
-//         currentColorIndex++;
-//         canvas.add(rect);
-//         canvas.setActiveObject(rect);
 
-//         canvas.on('mouse:move', function(opt) {
-//             if (!isDrawing) return;
-//             const pointer = canvas.getPointer(opt.e);
-//             const activeObject = canvas.getActiveObject();
-// //             activeObject.set({
-// //                 width: Math.abs(pointer.x - activeObject.left),
-// //                 height: Math.abs(pointer.y - activeObject.top)
-//             });
-//             canvas.add(rect);
-//             canvas.setActiveObject(rect);
-//             activeObject.setCoords();
-//             canvas.renderAll();
-//             saveState();
-//         });
-
-//         canvas.on('mouse:up', function() {
-//             isDrawing = false;
-//             canvas.off('mouse:move');
-//         });
-//     }
-// });
 function calculateAngle(p1, p2, p3) {
     const dx1 = p2.x - p1.x;
     const dy1 = p2.y - p1.y;
@@ -1078,7 +900,7 @@ function saveState() {
     }
     state.push(JSON.stringify(canvas));
     console.log('I am inside savestate')
-    //recordAnnotation(video.currentTime);
+    
 }
 
 function undo() {
@@ -1103,10 +925,13 @@ const video = document.getElementById('video');
 const fabricCanvas = document.getElementById('canvas');
 
 video.addEventListener('loadedmetadata', () => {
+   
     fabricCanvas.width = video.clientWidth;
     fabricCanvas.height = video.clientHeight;
     canvas.setWidth(video.clientWidth);
     canvas.setHeight(video.clientHeight);
+    console.log("Canvas Resizing!");
+    toggleZoom();
 });
 
 
@@ -1141,14 +966,9 @@ function recordAnnotation(time) {
 
     if (existingAnnotationIndex !== -1) {
         annotations[existingAnnotationIndex] = annotation;
-       // Object.assign(existingAnnotation, annotation);
-        // updateAnnotation(existingAnnotation);
+      
     } else {
         annotations.push(annotation);
-        // saveAnnotation(annotation);
-        // annotations.forEach(annotation => {
-        //     console.log('annotations id got:',annotation.id);
-        // })
     }
 
     console.log('Annotation recorded');
@@ -1171,22 +991,6 @@ function recordAnnotation(time) {
     console.log('Video is playing, not adding annotation');
 }
     }
-    //     if (icon && icon.querySelector('img').alt === 'Pencil') {
-    //         const pencilPointer = document.getElementById('pencil-pointer');
-    //         pencilPointer.style.display = 'block';
-    //         console.log('pointer placed')
-    //         pencilPointer.style.top = `${icon.offsetTop - 20}px`; 
-    //         pencilPointer.style.left = `${icon.offsetLeft}px`; 
-            
-    //     }
-    // }
-         
-    // setTimeout(() => {
-    //     const pencilPointer = document.getElementById('pencil-pointer');
-    //     pencilPointer.style.display = 'none';
-    // }, 2000); // Adjust delay (in milliseconds) as needed
-
-
     function createPointerForPencilIcon(tick) {
         if (tick.querySelector('.pointer')) {
             return; 
@@ -1319,26 +1123,6 @@ if (annotation) {
     if (currentTime >= annotation.startTime && currentTime <= annotation.endTime) {
         
         console.log(`Displaying annotation: ${annotation.startTime}`);
-        // const annotationData = JSON.parse(annotation.content);
-        
-    //let start = Math.max(annotation.startTime, startTime);
-    //let end = Math.min(annotation.endTime, endTime);
-
-    
-    // let interval=1;
-    // for (let time = annotation.startTime; time <= annotation.endTime; time += interval) {
-    //     // if (Math.abs(time - video.currentTime) < interval / 2) { // Adjust the condition as needed
-    //         console.log(`Displaying annotation.content: ${annotation.content}`);
-    //         console.log(`Displaying annotationData: ${annotationData}` )
-    //         canvas.loadFromJSON(annotation.content, () => {
-    //             canvas.renderAll();
-    //         });
-    //    // }
-        
-    // }
-
-    
-    //canvas.renderAll();
 
     } else {
         
@@ -1427,8 +1211,7 @@ saveButton.addEventListener('click', function() {
     buttonsContainer.style.display='none';
     listItem.removeChild(buttonsContainer);
 });
-//updateAnnotation(annotations[index]);
-//const deleteButton = document.createElement('button');
+
             const deleteIcon = document.createElement('img');
             deleteIcon.src = 'icons/delete2.png'; // Path to your delete icon
             deleteIcon.alt = 'Delete';
@@ -1437,7 +1220,7 @@ saveButton.addEventListener('click', function() {
             deleteIcon.style.backgroundColor='none';
             deleteIcon.style.marginLeft= '10px'
            
-           //deleteButton.appendChild(deleteIcon);
+           
 
             deleteIcon.addEventListener('click', function() {
                 
@@ -1482,7 +1265,7 @@ buttonsContainer.className = 'annotation-buttons';
 buttonsContainer.appendChild(commentInput);
 buttonsContainer.appendChild(cancelButton);
 buttonsContainer.appendChild(saveButton);
-//buttonsContainer.appendChild(deleteIcon);
+
 
 listItem.appendChild(deleteIcon);
 listItem.appendChild(buttonsContainer);
@@ -1497,13 +1280,9 @@ listItem.addEventListener('click', () => {
 });
 
 
-    // listItem.appendChild(commentInput);
-    // listItem.addEventListener('click', () => {
-    //     commentInput.style.display = 'block';
-        
-    // });
+   
     annotationsList.appendChild(listItem);
-    // updateAnnotation(annotation);
+   
     }else {
     console.log('Skipping empty annotation:', annotation);
 }});
@@ -1523,8 +1302,7 @@ function showAnnotations(annotation,time) {
     console.log('I am inside showAnnotations function');
     canvas.clear();
 
-    // Check if the current time falls within the annotation's duration
-    // if (time >= annotation.startTime && time <= annotation.endTime) {
+    
         console.log('Start time: ',annotation.startTime);
         console.log('end time: ',annotation.endTime);
         // Load the annotation content to the canvas
@@ -1536,7 +1314,7 @@ function showAnnotations(annotation,time) {
             canvas.renderAll();
             console.log('Loaded')
         });
-    // }
+  
 }
 function showAnnotationsAtCurrentTime(currentTime) {
     canvas.clear();
@@ -1705,11 +1483,7 @@ function displayRecordings() {
             const endTime = annotation.endTime;
             const duration = endTime - startTime;
             const width = calculateWidthFromDuration(duration);
-            // const audioElements = document.getElementsByClassName('audio-element');
-            // Array.from(audioElements).forEach(audio => {
-            //     audio.style.width=`${calculateWidthFromDuration()}px`;
-            //     audio.style.backgroundColor='red';  
-            // });
+            
             
 
             const recordingElement = document.createElement('div');
@@ -1719,12 +1493,7 @@ function displayRecordings() {
             recordingElement.style.height='20px';
             //recordingElement.src=url;
             recordingElement.style.backgroundColor='red';
-            // recordingElement.addEventListener('click', () => {
-            //     const audio = new Audio(annotation.content);
-            //     audio.currentTime=startTime;
-            //     // audio.style.backgroundColor='red';
-            //     audio.play();
-            // });
+           
 
            timeline.appendChild(recordingElement);
         }
@@ -1749,35 +1518,35 @@ function convertBlobToBase64(blob) {
 let activateFirstTime = false;
 
 function handleSaveButtonClick(buttonElement) {
-    const svgElement = buttonElement.querySelector('svg'); // Select the SVG element inside the button
+    const svgElement = buttonElement.querySelector('svg'); 
     
     buttonElement.classList.toggle('active');
 
     if (buttonElement.classList.contains('active')) {
-        svgElement.style.fill = '#FFFF00';  // Change fill color to yellow
+        svgElement.style.fill = '#FFFF00'; 
 
-        // Loop through all annotations and save each one
+        
         annotations.forEach(annotation => {
             saveAnnotation(annotation);
         });
 
-        // Activate overlay
+       
         const overlay = document.getElementById('overlay');
         overlay.classList.add('active');
 
-        // Deactivate overlay after a delay
+       
         setTimeout(() => {
             overlay.classList.remove('active');
         }, 1500);
 
         activateFirstTime = true;
     } else {
-        svgElement.style.fill = '#FFFFFF';  // Reset fill color to white
+        svgElement.style.fill = '#FFFFFF';  
 
-        // Delete all annotations
+        
         deleteAllAnnotations();
       
-        // Remove overlay activation
+       
         const overlay = document.getElementById('overlay');
         overlay.classList.remove('active');
 
@@ -1788,140 +1557,6 @@ function handleSaveButtonClick(buttonElement) {
 document.getElementById('save-button').addEventListener('click', function() {
     handleSaveButtonClick(this);  
 });
-
-// document.getElementById('save-button').addEventListener('click', function() {
-//     const svgElement = this.querySelector('svg'); // Select the SVG element inside the button
-
-    
-//     this.classList.toggle('active');
-
-//     if (this.classList.contains('active')) {
-       
-//         svgElement.style.fill = '#FFFF00';
-
-        
-//        // document.body.classList.add('blur');
-       
-       
-//         annotations.forEach(annotation => {
-//             saveAnnotation(annotation);
-//         });
-
-        
-//         const overlay = document.getElementById('overlay');
-//         overlay.classList.add('active');
-
-        
-//         setTimeout(() => {
-//           //  document.body.classList.remove('blur');
-//             overlay.classList.remove('active');
-//         }, 1500);
-
-//         activateFirstTime = true;
-//     } else {
-        
-//         svgElement.style.fill = '#FFFFFF';
-//         deleteAllAnnotations();
-      
-//         const overlay = document.getElementById('overlay');
-//         overlay.classList.remove('active');
-
-//         activateFirstTime = false;
-//     }
-// });
-  
-//   function loadWebMWriterScript() {
-//     fetch("https://unpkg.com/webm-writer@1.0.0/dist/webm-writer.min.js", {
-//       method: "GET",
-//       mode: "cors",
-//       headers: {
-//         "Accept": "*/*"
-//       }
-//     })
-//     .then(response => response.text())
-//     .then(scriptText => {
-//       // Create a new script element
-//       const script = document.createElement('script');
-//       script.text = scriptText;
-//       document.head.appendChild(script);
-//     })
-//     .catch(error => {
-//       console.error('Error loading script:', error);
-//     });
-//   }
-// async function captureFrames(video, canvas, annotations) {
-//     const frames = [];
-//     let currentTime;
-
-//     // Sort annotations by time to process them sequentially
-//     annotations.sort((a, b) => a.time - b.time);
-
-//     for (let annotation of annotations) {
-//         currentTime = annotation.time;
-//         video.currentTime = currentTime;
-//         await new Promise(resolve => video.onseeked = resolve);
-
-//         // Draw annotations on canvas
-//         canvas.clear();
-//         canvas.loadFromJSON(annotation.content, canvas.renderAll.bind(canvas));
-
-//         // Capture the frame
-//         const frame = await html2canvas(canvas.getElement(), {
-//             logging: false,
-//             useCORS: true
-//         });
-//         frames.push({ time: currentTime, frame });
-//     }
-
-//     return frames;
-// }
-
-
-
-// function displayFrames(frames) {
-//     const container = document.getElementById('frame-container');
-//     for (let i = 0; i < Math.min(frames.length, 5); i++) {
-//         const img = document.createElement('img');
-//         img.src = frames[i].frame.toDataURL();
-//         container.appendChild(img);
-//     }
-// }
-
-
-
-
-// async function convertFramesToVideo(frames, video) {
-//     const videoOutput = new Whammy.Video(30); // 30 FPS
-
-//     let frameIndex = 0;
-//     let currentFrameTime = 0;
-
-//     const tempCanvas = document.createElement('canvas');
-//     const ctx = tempCanvas.getContext('2d');
-//     tempCanvas.width = video.videoWidth;
-//     tempCanvas.height = video.videoHeight;
-
-//     while (currentFrameTime <= video.duration) {
-//         if (frameIndex < frames.length && frames[frameIndex].time <= currentFrameTime) {
-//             // Add the annotated frame
-//             videoOutput.add(frames[frameIndex].frame, 1000 / 30);
-//             frameIndex++;
-//         } else {
-//             // Capture the original frame from the video
-//             video.currentTime = currentFrameTime;
-//             await new Promise(resolve => video.onseeked = resolve);
-
-//             // Draw the current video frame onto the temporary canvas
-//             ctx.drawImage(video, 0, 0, tempCanvas.width, tempCanvas.height);
-            
-//             // Add the canvas frame to the video output
-//             videoOutput.add(tempCanvas);
-//         }
-//         currentFrameTime += 1 / 30;
-//     }
-
-//     return videoOutput.compile();
-// }
 async function convertFramesToVideo(frames, video) {
     const videoOutput = new Whammy.Video(30); // 30 FPS
 
@@ -1971,269 +1606,21 @@ function downloadVideo(blob) {
     a.click();
     document.body.removeChild(a);
 }
-// import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg';
 
-// async function convertWebMtoMP4(webMBlob) {
-//     const ffmpeg = createFFmpeg({ log: true });
-//     await ffmpeg.load();
-    
-//     ffmpeg.FS('writeFile', 'input.webm', await fetchFile(webMBlob));
-//     await ffmpeg.run('-i', 'input.webm', 'output.mp4');
-//     const data = ffmpeg.FS('readFile', 'output.mp4');
-
-//     const mp4Blob = new Blob([data.buffer], { type: 'video/mp4' });
-//     downloadVideo(mp4Blob);
-// }
 async function exportAnnotatedVideo(video, canvas, annotations) {
     try {
         const frames = await captureFrames(video, canvas, annotations);
-        displayFrames(frames);  // Display the captured frames
+        displayFrames(frames);  
         const videoBlob = await convertFramesToVideo(frames, video);
         console.log('Blob size:', videoBlob.size, 'bytes');
         downloadVideo(videoBlob);
-        // await convertWebMtoMP4(videoBlob);
+      
     } catch (error) {
         console.error('Error exporting video:', error);
     }
 }
 
 
-// document.getElementById('export-button').addEventListener('click', async () => {
-//    try{
-//     const video = document.getElementById('video');
-    
-//     // const annotations = // Load your annotations list here;
-//     await exportAnnotatedVideo(video, canvas, annotations);
-//     console.log('Video export complete!');
-//    }
-//    catch(error){
-//     console.error('Error exporting video:', error);
-//    }
-// });
-
-
-// async function captureFrames(video, canvas, annotations) {
-//     const frames = [];
-//     let currentTime;
-
-//     // Sort annotations by time to process them sequentially
-//     annotations.sort((a, b) => a.time - b.time);
-
-//     for (let annotation of annotations) {
-//         currentTime = annotation.time;
-//         video.currentTime = currentTime;
-//         await new Promise(resolve => video.onseeked = resolve);
-
-//         // Draw annotations on canvas
-//         canvas.clear();
-//         canvas.loadFromJSON(annotation.content, canvas.renderAll.bind(canvas));
-
-//         // Capture the frame
-//         const frame = await html2canvas(canvas.getElement(), {
-//             logging: false,
-//             useCORS: true
-//         });
-//         frames.push({ time: currentTime, frame });
-//     }
-
-//     return frames;
-// }
-
-// function displayFrames(frames) {
-//     const container = document.getElementById('frame-container');
-//     for (let i = 0; i < Math.min(frames.length, 5); i++) {
-//         const img = document.createElement('img');
-//         img.src = frames[i].toDataURL();
-//         container.appendChild(img);
-//     }
-// }
-// async function convertFramesToVideo(frames, video, canvas) {
-//     const videoOutput = new Whammy.Video(30); // 30 FPS
-
-//     let frameIndex = 0;
-//     let currentFrameTime = 0;
-    
-//     const tempCanvas = document.createElement('canvas');
-//     const ctx = tempCanvas.getContext('2d');
-//     tempCanvas.width = video.videoWidth;
-//     tempCanvas.height = video.videoHeight;
-
-//     while (currentFrameTime <= video.duration) {
-//         if (frameIndex < frames.length && frames[frameIndex].time <= currentFrameTime) {
-//             // Add the annotated frame
-//             videoOutput.add(frames[frameIndex].frame, 1000 / 30);
-//             frameIndex++;
-//         } else {
-//             // Capture the original frame from the video
-//             video.currentTime = currentFrameTime;
-//             await new Promise(resolve => video.onseeked = resolve);
-
-//             // Draw the current video frame onto the temporary canvas
-//             ctx.drawImage(video, 0, 0, tempCanvas.width, tempCanvas.height);
-            
-//             // Add the canvas frame to the video output
-//             videoOutput.add(tempCanvas, 1000 / 30);
-//         }
-//         currentFrameTime += 1 / 30;
-//     }
-
-//     return videoOutput.compile();
-// }
-
-
-// function downloadVideo(blob) {
-//     const url = URL.createObjectURL(blob);
-//     const a = document.createElement('a');
-//     a.style.display = 'none';
-//     a.href = url;
-//     a.download = 'annotated-video.webm';
-//     document.body.appendChild(a);
-//     a.click();
-//     document.body.removeChild(a);
-// }
-// async function exportAnnotatedVideo(video, canvas, annotations) {
-//     const frames = await captureFrames(video, canvas, annotations);
-//     displayFrames(frames.map(f => f.frame));  // Display the captured frames
-//     const videoBlob = convertFramesToVideo(frames, video);
-//     downloadVideo(videoBlob);
-// }
-
-// document.getElementById('export-button').addEventListener('click', async () => {
-//     try {
-//         const video = document.getElementById('video');
-        
-//         // const annotations = // Load your annotations list here;
-//         await exportAnnotatedVideo(video, canvas, annotations);
-//         console.log('Video export complete!');
-//     } catch (error) {
-//         console.error('Error exporting video:', error);
-//     }
-// });
-
-// async function captureScreenshot(video, canvas, timestamp) {
-//     return new Promise((resolve, reject) => {
-//         // Create an offscreen canvas for capturing video frames
-//         const videoCanvas = document.createElement('canvas');
-//         const videoContext = videoCanvas.getContext('2d');
-
-//         // Set videoCanvas size to video size
-//         videoCanvas.width = video.videoWidth;
-//         videoCanvas.height = video.videoHeight;
-
-//         // Seek to the specified time
-//         video.currentTime = timestamp;
-        
-//         // Wait for the video to seek to the correct time
-//         video.onseeked = async () => {
-//             // Draw the video frame onto the videoCanvas
-//             videoContext.drawImage(video, 0, 0, videoCanvas.width, videoCanvas.height);
-
-//             // Draw annotations on canvas
-//             canvas.clear();
-//             canvas.renderAll();
-
-//             // Draw the annotations from the fabric.js canvas onto the videoCanvas
-//             const canvasElement = canvas.getElement();
-//             videoContext.drawImage(canvasElement, 0, 0, videoCanvas.width, videoCanvas.height);
-
-//             // Capture the frame from the videoCanvas
-//             videoCanvas.toBlob((blob) => {
-//                 if (blob) {
-//                     resolve(URL.createObjectURL(blob)); // Return the URL of the captured image
-//                 } else {
-//                     reject('Failed to capture the screenshot.');
-//                 }
-//             }, 'image/png');
-//         };
-
-//         // Handle errors
-//         video.onerror = () => {
-//             reject('Error occurred while seeking the video.');
-//         };
-//     });
-// }
-
-// const container = document.createElement('div');
-// container.id = 'screenshot-container';
-// document.body.appendChild(container);
-// async function captureScreenshot(video, canvas, timestamp) {
-//     return new Promise((resolve, reject) => {
-//         // Create an offscreen canvas for capturing video frames
-//         const videoCanvas = document.createElement('canvas');
-//         const videoContext = videoCanvas.getContext('2d');
-
-//         // Set videoCanvas size to video size
-//         videoCanvas.width = video.videoWidth;
-//         videoCanvas.height = video.videoHeight;
-
-//         // Seek to the specified time
-//         video.currentTime = timestamp;
-
-//         // Wait for the video to seek to the correct time
-//         video.onseeked = async () => {
-//             // Draw the video frame onto the videoCanvas
-//             videoContext.drawImage(video, 0, 0, videoCanvas.width, videoCanvas.height);
-
-//             // Find the annotation for the current timestamp
-//             const annotation = annotations.find(a => a.time === timestamp);
-
-//             if (annotation) {
-//                 // Draw annotations on canvas
-//                 canvas.clear();
-//                 canvas.loadFromJSON(annotation.content, canvas.renderAll.bind(canvas));
-                
-//                 // Draw the annotations from the fabric.js canvas onto the videoCanvas
-//                 const canvasElement = canvas.getElement();
-//                 videoContext.drawImage(canvasElement, 0, 0, videoCanvas.width, videoCanvas.height);
-//             }
-
-//             // Capture the frame from the videoCanvas
-//             videoCanvas.toBlob((blob) => {
-//                 if (blob) {
-//                     resolve(URL.createObjectURL(blob)); // Return the URL of the captured image
-//                 } else {
-//                     reject('Failed to capture the screenshot.');
-//                 }
-//             }, 'image/png');
-
-         
-//         };
-        
-//         // Handle errors
-//         video.onerror = () => {
-//             reject('Error occurred while seeking the video.');
-//         };
-//     });
-// }
-
-
-// document.getElementById('export-button').addEventListener('click',  () => {
-// captureScreenshot(video, canvas, 17)// Capture at 10 seconds
-//     .then((screenshotUrl) => {
-//         // Create an image element to display the screenshot
-//         const img = document.createElement('img');
-//         img.src = screenshotUrl;
-//         img.style.width='100px';
-//         img.style.height='100px';
-//         img.style.left='-20%';
-//         document.body.appendChild(img);
-//     })
-//     .catch((error) => {
-//         console.error(error);
-//     });
-
-
-    // captureScreenshot(video, canvas, 30) // Capture at 10 seconds
-    // .then((screenshotUrl) => {
-    //     // Create an image element to display the screenshot
-        
-    // })
-    // .catch((error) => {
-    //     console.error(error);
-  //  });
-// });
-
-// Create a container element for the screenshots
 const container = document.createElement('div');
 container.id = 'screenshot-container';
 document.body.appendChild(container);
@@ -2241,37 +1628,34 @@ const imageData = [];
 async function captureScreenshot(video, canvas, timestamp, annotations) {
     return new Promise((resolve, reject) => {
         
-        // Create an offscreen canvas for capturing video frames
+       
         const videoCanvas = document.createElement('canvas');
         const videoContext = videoCanvas.getContext('2d');
 
-        // Set videoCanvas size to video size
+      
         videoCanvas.width = video.videoWidth;
         videoCanvas.height = video.videoHeight;
         console.log('Timestamp',timestamp);
-        // Seek to the specified time
+       
          video.currentTime = timestamp;
 
-        // Wait for the video to seek to the correct time
-        // video.onseeked = async () => {
-            // Draw the video frame onto the videoCanvas
+        
             videoContext.drawImage(video, 0, 0, videoCanvas.width, videoCanvas.height);
             for (const annotation of annotations) {
-            // Find the annotation for the current timestamp
-            // const annotation = annotations.find(a => a.time === timestamp);
+            
             
             if (annotation.time==timestamp) {
                 console.log('Annotation time',annotation.time);
-                // Draw annotations on canvas
+                
                 canvas.clear();
                 canvas.loadFromJSON(annotation.content, canvas.renderAll.bind(canvas));
                 
-                // Draw the annotations from the fabric.js canvas onto the videoCanvas
+               
                 const canvasElement = canvas.getElement();
                 videoContext.drawImage(canvasElement, 0, 0, videoCanvas.width, videoCanvas.height);
             
 
-            // Capture the frame from the videoCanvas
+           
             videoCanvas.toBlob((blob) => {
                 if (blob) {
                     const base64String = convertBlobToBase64(blob);
@@ -2280,17 +1664,17 @@ async function captureScreenshot(video, canvas, timestamp, annotations) {
                     console.log('Number of images:', imageData.length);
                     const screenshotUrl = URL.createObjectURL(blob);
                     
-                    // Create an image element to display the screenshot
+                   
                     const img = document.createElement('img');
                     img.src = screenshotUrl;
                     img.style.width = '100px';
                     img.style.height = '100px';
-                    img.style.margin = '5px'; // Add some spacing between images
+                    img.style.margin = '5px'; 
 
-                    // Append the image to the container
+                   
                     container.appendChild(img);
                     console.log('Added image')
-                    resolve(screenshotUrl); // Return the URL of the captured image
+                    resolve(screenshotUrl); 
 
                 } else {
                     reject('Failed to capture the screenshot.');
@@ -2300,11 +1684,11 @@ async function captureScreenshot(video, canvas, timestamp, annotations) {
         else{
 
         }
-       // }
+      
     };
     
         
-        // Handle errors
+        
         video.onerror = () => {
             reject('Error occurred while seeking the video.');
         };
@@ -2313,36 +1697,7 @@ async function captureScreenshot(video, canvas, timestamp, annotations) {
    
 }
 
-// To be included in export feature (uncomment)
-// document.getElementById('export-button').addEventListener('click', async () => {
-//     // Clear the container before adding new images
-//     container.innerHTML = '';
-    
-//     // Define the timestamps at which you want to capture screenshots
-//     const timestamps = [10, 20, 30]; // Example timestamps (in seconds)
-    
-//     // Array to hold the promises for each screenshot
-//     const screenshotPromises = timestamps.map(timestamp => 
-      
-//         captureScreenshot(video, canvas, timestamp, annotations),
-//        // console.log('timestamp:',timestamp),
-//     );
 
-//     try {
-//         // Wait for all screenshots to be captured
-//         await Promise.all(screenshotPromises);
-//         container.childNodes.forEach((child, index) => {
-//             console.log(`Child ${index + 1}:`, child);
-//         });
-//         console.log('Number of images calling:', imageData.length);
-        
-//         console.log('Screenshots captured and displayed.');
-//     } catch (error) {
-//         console.error('Error capturing screenshots:', error);
-//     }
-
-   
-// });
 
 const startBtn = document.getElementById('screen-recording');
 
@@ -2391,23 +1746,23 @@ const displayMediaOptions = {
             mediaRecorder2.start();
             console.log('Screen recording started');
 
-            // Change the class to stop-recording
+            
             icon.classList.remove('start-recording');
             icon.classList.add('stop-recording');
-            // Change the image to stop recording icon
+           
             icon.src = 'icons/stop-record.png';
             icon.alt = 'Stop Recording';
             icon.title='Stop Recording'
         } else if (icon.classList.contains('stop-recording')) {
-            // Stop recording
+           
             if (mediaRecorder2) {
                 mediaRecorder2.stop();
                 console.log('Screen recording stopped');
 
-                // Change the class back to start-recording
+                
                 icon.classList.remove('stop-recording');
                 icon.classList.add('start-recording');
-                // Change the image back to start recording icon
+                
                 icon.src = 'icons/screenrecorder.png';
                 icon.alt = 'Start Recording';
                 icon.title='Record Screen'
@@ -2419,60 +1774,6 @@ const displayMediaOptions = {
   }
 
 startBtn.addEventListener('click', screenRecorder);
-//     try {
-//         const icon = startBtn;
-
-//         if (icon.classList.contains('start-recording')) {
-            
-//             const stream = await navigator.mediaDevices.getDisplayMedia(displayMediaOptions);
-
-//             mediaRecorder2 = new MediaRecorder(stream);
-
-//             mediaRecorder2.ondataavailable = event => {
-//                 if (event.data.size > 0) {
-//                     chunks.push(event.data);
-//                 }
-//             };
-
-//             mediaRecorder2.onstop = () => {
-//                 const blob = new Blob(chunks, { type: 'video/webm' });
-//                 const url = URL.createObjectURL(blob);
-//                 const a = document.createElement('a');
-//                 a.href = url;
-//                 a.download = 'screen-recording.webm';
-//                 a.click();
-//                 chunks = [];
-//             };
-
-//             mediaRecorder2.start();
-//             console.log('Screen recording started');
-
-//             // Change the class to stop-recording
-//             icon.classList.remove('start-recording');
-//             icon.classList.add('stop-recording');
-//             // Change the image to stop recording icon
-//             icon.src = 'icons/stop-record.png';
-//             icon.alt = 'Stop Recording';
-//             icon.title='Stop Recording'
-//         } else if (icon.classList.contains('stop-recording')) {
-//             // Stop recording
-//             if (mediaRecorder2) {
-//                 mediaRecorder2.stop();
-//                 console.log('Screen recording stopped');
-
-//                 // Change the class back to start-recording
-//                 icon.classList.remove('stop-recording');
-//                 icon.classList.add('start-recording');
-//                 // Change the image back to start recording icon
-//                 icon.src = 'icons/screenrecorder.png';
-//                 icon.alt = 'Start Recording';
-//                 icon.title='Record Screen'
-//             }
-//         }
-//     } catch (error) {
-//         console.error('Error during recording:', error);
-//     }
-// });
 
        
 const captureArea = document.getElementById('video-container');
@@ -2482,20 +1783,20 @@ let isZoomedIn = false;
 const zoomScale = 1.6;
 
 const toggleZoom = () => {
-    // Variable to toggle between zoom in and out
+  console.log("Inside toggle Zoom function");
     isZoomedIn = !isZoomedIn;
 
-    // Zoom-in state
+    
     if (isZoomedIn) {
         video.style.transform = `scale(${zoomScale})`;
         console.log(`Video Transform: scale(${zoomScale})`);
         console.log(`Video Position: ${video.style.position}`);
 
-        // Calculate new video dimensions based on zoom scale
+        
         const videoWidth = video.clientWidth * zoomScale;
         const videoHeight = video.clientHeight * zoomScale;
         
-        // Set the Fabric.js canvas dimensions to match the zoomed video
+        
         fabricCanvas.width = videoWidth;
         fabricCanvas.height = videoHeight;
         fabricCanvas.top = '-80px';
@@ -2503,42 +1804,42 @@ const toggleZoom = () => {
         canvas.setWidth(videoWidth);
         canvas.setHeight(videoHeight);
 
-        // Calculate the offsets to adjust the canvas position
+        
         const offsetX = (videoWidth - video.clientWidth) / 2;
         const offsetY = (videoHeight - video.clientHeight) / 2;
 
-        // Update the position of the toggle icon if it's displayed
+        
         const canvasonSwitch = document.getElementById('toggle-icon');
         if (canvasonSwitch.style.display == 'block') {
             canvasonSwitch.style.left = '50px';
             canvasonSwitch.style.top = '510px';
         }
 
-        // Adjust canvas wrapper position based on the calculated offsets
+        
         canvas.wrapperEl.style.position = 'absolute';
         canvas.wrapperEl.style.left = `${-offsetX}px`;
         canvas.wrapperEl.style.top = `${-offsetY}px`;
         
         canvas.calcOffset();
     } 
-    // Zoom-out state
+    
     else {
-        // Reset the video scale to normal
+       
         video.style.transform = 'scale(1)';
         
-        // Reset the canvas size to match the original video dimensions
+        
         fabricCanvas.width = video.clientWidth;
         fabricCanvas.height = video.clientHeight;
 
         canvas.setWidth(video.clientWidth);
         canvas.setHeight(video.clientHeight);
 
-        // Reset the canvas wrapper position
+       
         canvas.wrapperEl.style.position = 'absolute';
         canvas.wrapperEl.style.left = '3px';
         canvas.wrapperEl.style.top = '0.5px';
 
-        // Update the toggle icon position
+   
         const canvasonSwitch = document.getElementById('toggle-icon');
         if (canvasonSwitch.style.display == 'block') {
             canvasonSwitch.style.left = '150px';
@@ -2549,22 +1850,22 @@ const toggleZoom = () => {
     }
 };
 
-function zoomOut() { // Reset the video scale to normal
+function zoomOut() { 
 video.style.transform = 'scale(1)';
 
-// Reset the canvas size to match the original video dimensions
+
 fabricCanvas.width = video.clientWidth;
 fabricCanvas.height = video.clientHeight;
 
 canvas.setWidth(video.clientWidth);
 canvas.setHeight(video.clientHeight);
 
-// Reset the canvas wrapper position
+
 canvas.wrapperEl.style.position = 'absolute';
 canvas.wrapperEl.style.left = '3px';
 canvas.wrapperEl.style.top = '0.5px';
 
-// Update the toggle icon position
+
 const canvasonSwitch = document.getElementById('toggle-icon');
 if (canvasonSwitch.style.display == 'block') {
     canvasonSwitch.style.left = '150px';
@@ -2640,7 +1941,7 @@ document.getElementById('canvas').addEventListener('click', (event) => {
 const volumeSlider = document.querySelector('.volume-slider');
 const muteIcon = document.getElementById('mute-icon');
 const volumeIcon = document.getElementById('volume-icon');
-// Set initial volume
+
 video.volume = volumeSlider.value / 100;
 
 // Add event listener to the volume slider
@@ -2660,7 +1961,7 @@ volumeSlider.addEventListener('input', (event) => {
 
 const timeInput = document.getElementById('ex-current-time-input');
 
-// Function to convert time string (e.g., "0:01") to seconds
+
 const timeStringToSeconds = (timeString) => {
     const parts = timeString.split(':');
     if (parts.length !== 2) return NaN;
@@ -2669,7 +1970,7 @@ const timeStringToSeconds = (timeString) => {
     return minutes * 60 + seconds;
 };
 
-// Function to format seconds back to "minutes:seconds"
+
 const secondsToTimeString = (totalSeconds) => {
     const minutes = Math.floor(totalSeconds / 60);
     const seconds = totalSeconds % 60;
@@ -2679,13 +1980,13 @@ const secondsToTimeString = (totalSeconds) => {
 timeInput.addEventListener('change', () => {
     const inputTime = timeInput.value;
 
-    // Convert input time to seconds
+   
     const newTime = timeStringToSeconds(inputTime);
     const videoDuration = video.duration;
 
-    // Validate the new time
+   
     if (!isNaN(newTime) && newTime >= 0 && newTime <= videoDuration) {
-        // If valid, update the video's current time
+        
         video.currentTime = newTime;
     } else {
         // If invalid, revert to the previous correct time
@@ -2699,49 +2000,3 @@ video.addEventListener('timeupdate', () => {
 });
 
 
-
-// function selectColor() {
-//     const picker = document.getElementById("picker-overlay");
-//     const selectedColorDisplay = document.getElementById("selected-color");
-//     const colorWheelContainer = document.getElementById("color-wheel-container");
-//     const colorWheel = document.querySelector("color-wheel");
-//     // console.log("Color Wheel width:", colorWheel.style.width);
-//     // Show the color wheel container when the function is triggered
-//     colorWheelContainer.style.display = "block";
-
-//     const context = picker.getContext("2d");
-//      const width = picker.width = 200;
-//     //  const height = picker.height = colorWheel.style.height;
-//     const radius = width / 2;
-
-//     // Create a color wheel using a conic gradient
-//     const gradient = context.createConicGradient(0, radius, radius);
-//     gradient.addColorStop(0, 'red');
-//     gradient.addColorStop(1 / 6, 'yellow');
-//     gradient.addColorStop(2 / 6, 'lime');
-//     gradient.addColorStop(3 / 6, 'cyan');
-//     gradient.addColorStop(4 / 6, 'blue');
-//     gradient.addColorStop(5 / 6, 'magenta');
-//     gradient.addColorStop(1, 'red');
-
-//     // Draw the color wheel
-//     context.fillStyle = gradient;
-//     context.beginPath();
-//     context.arc(radius, radius, radius, 0, 2 * Math.PI);
-//     context.fill();
-
-//     // Capture the clicked color from the canvas
-//     picker.addEventListener("click", function(event) {
-//       const x = event.offsetX;
-//       const y = event.offsetY;
-
-//       // Get the color data from the clicked pixel
-//       const imgData = context.getImageData(x, y, 1, 1).data;
-//       const rgb = `rgb(${imgData[0]}, ${imgData[1]}, ${imgData[2]})`;
-
-//       // Display the selected color on the screen and log it
-//       selectedColorDisplay.style.backgroundColor = rgb;
-//       selectedColorDisplay.textContent = rgb;
-//       console.log("Selected Color:", rgb);
-//     });
-//   }
