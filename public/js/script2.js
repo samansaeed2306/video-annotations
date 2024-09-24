@@ -36,10 +36,10 @@ function selectColor() {
     }
    
     const colors = [
-      "#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#FF00FF",
-      "#00FFFF", "#800000", "#808000", "#008080",
+      "#FF6F61", "#6B5B95", "#88B04B", "#955251", "#FF00FF",
+      "#00FFFF", "#92A8D1", "#808000", "#008080",
       "#FFA500", "#FFC0CB", "#A52A2A", "#000000", "#FFFFFF",
-      "#D2691E", "#7FFF00", "#0f79e3", "#c2e115", "#FF1493",
+      "#B565A7", "#7FFF00", "#0f79e3", "#c2e115", "#D65076",
     ];
 
     const colorPickerDiv = document.createElement("div");
