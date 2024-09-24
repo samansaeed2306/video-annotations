@@ -110,7 +110,7 @@ video,#media-element {
 #toggle-icon {
     position: absolute;
     /* bottom: 10px;  */
-    top: 500px;
+    top: 550px;
     left: 150px; 
     width: 30px; 
     height: 30px;
@@ -119,7 +119,7 @@ video,#media-element {
 #toggle-icon2 {
     position: absolute;
     /* bottom: 10px;  */
-    top:500px;
+    top: 550px;
     left: 950px; 
     width: 30px; 
     height: 30px;
@@ -865,7 +865,9 @@ body::before {
     text-align: center;
   }
   
-
+  /* #header-open {
+    display: none;
+  } */
 /* Media queries for mobile responsiveness */
 @media  (max-width: 520px) and (min-width: 320px){
     /* Remove body styles to focus on video and canvas */

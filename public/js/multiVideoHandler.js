@@ -23,6 +23,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function handleVideoUpload(event) {
     zoomOut();
+    const headerOpen = document.getElementById('header-open');
+    headerOpen.style.display = 'none';
+
     const file = event.target.files[0];
     if (!file) return;
   
@@ -30,12 +33,14 @@ document.addEventListener('DOMContentLoaded', () => {
   
     const existingContainer = document.getElementById('video-container');
     existingContainer.style.left = '-100px';
+    existingContainer.style.marginTop = '50px';
     const canvasonSwitch = document.getElementById('toggle-icon');
     canvasonSwitch.style.display = 'block';
     const canvasonSwitch2 = document.getElementById('toggle-icon2');
     canvasonSwitch2.style.display = 'block';
     const containerWrapper = document.getElementById('container-wrapper');
     const videoButtons = document.getElementById('video-btn-id');
+    const parentBtnContainer = document.getElementById('parentbtncontainer');
     if (!existingContainer) return;
     
     existingContainer.style.backgroundColor = 'black';
@@ -43,7 +48,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const buttonsContainer = document.querySelector('.buttons-container');
     const timeline = document.querySelector('.timeline');
     const timelineWrapper = document.getElementById('timeline-wrapper');
-    timelineWrapper.style.top = '-8.5px';
+    timelineWrapper.style.bottom = '0px';
+
+    parentBtnContainer.style.marginTop = '100px';
 
     buttonsContainer.style.width = '650px';
     buttonsContainer.style.float = 'left';
@@ -746,6 +753,7 @@ function setupTimelineforVideo2() {
   timelineContainer.id = 'timeline-container2';
   timelineContainer.style.width = '650px';
   timelineContainer.style.right = '-169px';
+  timelineContainer.style.height = '58px';
   const videoElement = document.getElementById('new-video2');
   videoElement.addEventListener('loadedmetadata', function() {
     console.log('Video URL:', videoElement.src);
