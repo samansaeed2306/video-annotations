@@ -22,7 +22,7 @@ function adjustVideoButtons() {
 
         if (window.innerWidth <= 500) {
             // Set up the container for buttons
-           
+            zoomOut();
             // Clear existing content
             videoButtons.innerHTML = '';
 
