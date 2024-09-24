@@ -109,6 +109,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function loadVideo(manifestUri) {
         player.load(manifestUri).then(function() {
             console.log('The video has now been loaded!');
+            toggleZoom(); 
             setupTimeline(video);
         }).catch(function(error) {
             console.error('Error code', error.code, 'object', error);
@@ -2478,7 +2479,7 @@ const captureArea = document.getElementById('video-container');
 
 
 let isZoomedIn = false;
-const zoomScale = 1.7;
+const zoomScale = 1.6;
 
 const toggleZoom = () => {
     // Variable to toggle between zoom in and out
@@ -2548,6 +2549,31 @@ const toggleZoom = () => {
     }
 };
 
+function zoomOut() { // Reset the video scale to normal
+video.style.transform = 'scale(1)';
+
+// Reset the canvas size to match the original video dimensions
+fabricCanvas.width = video.clientWidth;
+fabricCanvas.height = video.clientHeight;
+
+canvas.setWidth(video.clientWidth);
+canvas.setHeight(video.clientHeight);
+
+// Reset the canvas wrapper position
+canvas.wrapperEl.style.position = 'absolute';
+canvas.wrapperEl.style.left = '3px';
+canvas.wrapperEl.style.top = '0.5px';
+
+// Update the toggle icon position
+const canvasonSwitch = document.getElementById('toggle-icon');
+if (canvasonSwitch.style.display == 'block') {
+    canvasonSwitch.style.left = '150px';
+    canvasonSwitch.style.top = '500px';
+}
+
+canvas.calcOffset();
+
+}
     videoContainer.addEventListener('dblclick',() => {
         toggleZoom(); 
         resizeVideoButton.classList.toggle('active');
