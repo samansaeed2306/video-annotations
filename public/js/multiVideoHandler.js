@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   function handleVideoUpload(event) {
+    zoomOut();
     const file = event.target.files[0];
     if (!file) return;
   
