@@ -1,7 +1,3 @@
-//import { saveAnnotation, updateAnnotation } from './api.js';
-
-// import WebMWriter from 'webm-writer';
-
 
 let annotations = [];
 let currentColorIndex = 0;
@@ -2482,7 +2478,7 @@ const captureArea = document.getElementById('video-container');
 
 
 let isZoomedIn = false;
-const zoomScale = 1.2;
+const zoomScale = 1.7;
 
 const toggleZoom = () => {
     // Variable to toggle between zoom in and out

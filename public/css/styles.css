@@ -210,7 +210,7 @@ video,#media-element {
     padding-right: 35px;
     height: 100%;
     overflow-y: auto;
-    z-index: 2;
+    z-index: 4;
 }
 
 .annotations.collapsed {
@@ -283,7 +283,7 @@ video,#media-element {
     position: relative;
     width: 100%; 
     overflow: hidden;
-   
+    margin-bottom: -1%;
    
 }
 
@@ -300,10 +300,12 @@ video,#media-element {
     padding: 15px;
     margin-top: 0px;
     overflow: hidden;
-    height: 125px;
+    height: 58px;
     left: 2.2px;
-    margin: 0px;
-    top:-2px;
+   
+    top:0px;
+    z-index: 3;
+    
 }
 
 .timeline .tick {
@@ -384,7 +386,8 @@ video,#media-element {
     width: 100%; 
     flex-wrap: wrap;
     gap: 10px; 
-    height: 50px;
+    height: 40px;
+    z-index: 3;
 }
 .buttons-container {
     display: flex;
@@ -408,6 +411,7 @@ video,#media-element {
     flex: 1; 
     display: flex;
     align-items: center; 
+    margin-top: -4px;;
 }
 
 
@@ -648,7 +652,7 @@ canvas4:nth-of-type(2) {
 }
 #video-btn-id{
     margin-left: -150px;
-    margin-top: 12px;
+    margin-top: 05px;
     
 }
 /* Styles for the message overlay */
