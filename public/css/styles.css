@@ -712,6 +712,7 @@ canvas4:nth-of-type(2) {
     display: flex;
     justify-content: center;
     align-items: center;
+    /* visibility: hidden; */
 }
 
 .view-icon svg {
@@ -865,9 +866,9 @@ body::before {
     text-align: center;
   }
   
-  /* #header-open {
-    display: none;
-  } */
+  #header-open {
+    visibility: hidden;
+  }
 /* Media queries for mobile responsiveness */
 @media  (max-width: 520px) and (min-width: 320px){
     /* Remove body styles to focus on video and canvas */

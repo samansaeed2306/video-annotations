@@ -104,6 +104,7 @@ function closeHeader() {
     if (header) {
         header.style.display = 'none';
     }
+    document.getElementById("header-open").style.visibility = "visible";
     svgIcon.style.display = 'block';
     console.log("Header closed, icon displayed.");
 }
