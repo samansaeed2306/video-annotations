@@ -86,7 +86,7 @@ function selectColor() {
 
     colorPickerDiv.style.position = 'fixed';
     colorPickerDiv.style.left = '3%'; 
-    colorPickerDiv.style.top = '10%'; 
+    colorPickerDiv.style.top = '12%'; 
     colorPickerDiv.style.transform = 'translateY(-50%)'; 
     colorPickerDiv.style.padding = '10px'; 
     colorPickerDiv.style.backgroundColor = 'rgba(0, 0, 0, 0.5)'; 
