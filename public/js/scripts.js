@@ -2,13 +2,14 @@
 let annotations = [];
 let currentColorIndex = 0;
 const colors = ['#FF5733', '#33FF57', '#5733FF', '#FFFF33', '#FF33FF', '#33FFFF'];
-
+let videoAspectRatio='';
 let selectedMediaType='';
 const canvas = new fabric.Canvas('canvas', {
     selection: false,
     isDrawingMode: false
     });
 window.onload = () => {
+    
 
     selectedMediaType = localStorage.getItem('selectedMediaType') || '';
     localStorage.removeItem('selectedMediaType'); 
@@ -91,6 +92,7 @@ window.onload = () => {
         }
     } else {
         mediaElement = document.getElementById('video');
+        
     }
 
     
@@ -99,31 +101,31 @@ window.onload = () => {
 
 document.addEventListener('DOMContentLoaded', function() {
 
-
+    
     setTimeout(() => {
     const video = document.getElementById('video');
-    
+   
     if (selectedMediaType === '' || selectedMediaType === 'video') {
     if(video){
     const player = new shaka.Player(video);
     const storedVideoSrc = localStorage.getItem('selectedVideoSrc');
     const manifestUri = storedVideoSrc || 'https://storage.googleapis.com/shaka-demo-assets/angel-one/dash.mpd';
-
+    
     function loadVideo(manifestUri) {
         player.load(manifestUri).then(function() {
             console.log('The video has now been loaded!');
-            const videoAspectRatio = video.videoWidth / video.videoHeight;
+            // videoAspectRatio = video.videoWidth / video.videoHeight;
             // console.log(`Video Aspect Ratio: ${videoAspectRatio}`);
-            console.log(`Video Aspect Ratio: ${video.videoWidth}/${video.videoHeight}`);
+            // console.log(`Video Aspect Ratio: ${video.videoWidth}/${video.videoHeight}`);
 
-            if (videoAspectRatio < 1) {
-                console.log("This is a portrait video.");
-            } else if (videoAspectRatio > 1) {
-                console.log("This is a landscape video.");
-            } else {
-                console.log("This is a square video.");
-            }
-            
+            // if (videoAspectRatio < 1) {
+            //     console.log("This is a portrait video.");
+            // } else if (videoAspectRatio > 1) {
+            //     console.log("This is a landscape video.");
+            // } else {
+            //     console.log("This is a square video.");
+            // }
+
             // toggleZoom(); 
             setupTimeline(video);
         }).catch(function(error) {
@@ -940,13 +942,67 @@ const video = document.getElementById('video');
 const fabricCanvas = document.getElementById('canvas');
 
 video.addEventListener('loadedmetadata', () => {
-   
+    
+
     fabricCanvas.width = video.clientWidth;
     fabricCanvas.height = video.clientHeight;
     canvas.setWidth(video.clientWidth);
     canvas.setHeight(video.clientHeight);
+    videoAspectRatio = video.videoWidth / video.videoHeight;
+    console.log(`Video Aspect Ratio: ${video.videoWidth}/${video.videoHeight}`);
+
+    if (videoAspectRatio < 1) {
+        console.log("This is a portrait video.");
+        //resetCanvasStyles();
+        const lowerCanvas = document.getElementById('canvas'); 
+        const upperCanvas = document.querySelector('.upper-canvas'); 
+        const canvasContainer = document.querySelector('.canvas-container'); 
+
+    if (upperCanvas) {
+        upperCanvas.style.height = '450px';
+        upperCanvas.style.top = '19px';
+        console.log("DONE")
+    } else {
+        console.error("upperCanvas element not found");
+    }
+
+    if (lowerCanvas) {
+        lowerCanvas.style.height = '503px';
+        console.log("DONE LOWER")
+    } else {
+        console.error("lowerCanvas element not found");
+    }
+
+    if (canvasContainer) {
+        canvasContainer.style.height = '503px';
+        console.log("DONE CONTAINER")
+    } else {
+        console.error("canvasContainer element not found");
+    }
+        zoomOut2x();
+    } else if (videoAspectRatio > 1) {
+        console.log("This is a landscape video.");
+        // fabricCanvas.width = video.clientWidth;
+        // fabricCanvas.height = video.clientHeight;
+        // canvas.setWidth(video.clientWidth);
+        // canvas.setHeight(video.clientHeight);
+        toggleZoom();
+        
+    } else {
+        console.log("This is a square video.");
+        // fabricCanvas.width = video.clientWidth;
+        // fabricCanvas.height = video.clientHeight;
+        // canvas.setWidth(video.clientWidth);
+        // canvas.setHeight(video.clientHeight);
+        toggleZoom();
+    }
+    console.log('Video Aspect Ratio Recorded: ',videoAspectRatio);
+    if (videoAspectRatio < 1) {
+        console.log("Hello");
+    }
     console.log("Canvas Resizing!");
-    // toggleZoom();
+   
+    
 });
 
 
@@ -1864,7 +1920,64 @@ const toggleZoom = () => {
         canvas.calcOffset();
     }
 };
+function zoomOut2x() { 
+    if (window.innerWidth > 520) {
+    video.style.transform = 'scale(0.5)';
+    video.style.marginTop = '-220px';
+    const videoContainer = document.getElementById('video-container');
+    videoContainer.style.backgroundColor='black';
+    videoContainer.style.height='445px';
+    fabricCanvas.width = video.clientWidth;
+    fabricCanvas.height = video.clientHeight;
+    
+    canvas.setWidth(video.clientWidth);
+    canvas.setHeight(video.clientHeight);
+    
+    
+    canvas.wrapperEl.style.position = 'absolute';
+    canvas.wrapperEl.style.left = '3px';
+    canvas.wrapperEl.style.top = '-25px';
+    
+    // const upperCanvas = document.querySelector('upper-canvas');
+    // const lowerCanvas = document.querySelector('lower-canvas');
+    // const canvasContainer = document.querySelector('canvas-container');
+    
+    // upperCanvas.height = '450px';
+    // upperCanvas.top = '19px';
 
+    // lowerCanvas.style.height = '503px';
+    
+    // canvasContainer.style.height = '503px';
+
+    // if (upperCanvas) {
+    //     upperCanvas.style.height = '450px';
+    //     upperCanvas.style.top = '19px';
+    // } else {
+    //     console.error("upperCanvas element not found");
+    // }
+
+    // if (lowerCanvas) {
+    //     lowerCanvas.style.height = '503px';
+    // } else {
+    //     console.error("lowerCanvas element not found");
+    // }
+
+    // if (canvasContainer) {
+    //     canvasContainer.style.height = '503px';
+    // } else {
+    //     console.error("canvasContainer element not found");
+    // }
+
+    const canvasonSwitch = document.getElementById('toggle-icon');
+    if (canvasonSwitch.style.display == 'block') {
+        canvasonSwitch.style.left = '150px';
+        canvasonSwitch.style.top = '500px';
+    }
+    
+    canvas.calcOffset();
+}
+    
+    }
 function zoomOut() { 
 video.style.transform = 'scale(1)';
 
