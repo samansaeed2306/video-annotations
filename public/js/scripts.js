@@ -554,7 +554,22 @@ function activateCircleMode() {
     }
     canvas.isDrawingMode = false;
     drawingMode = 'circle';
-   
+   if(videoAspectRatio<1){
+    console.log('Oops!! This is portrait circle');
+    const circle = new fabric.Circle({
+        left: 100,
+
+        top: 270,
+
+        radius: 30,
+        fill: 'transparent',
+        stroke: selectedColor,
+        strokeWidth: 2
+    });
+    canvas.add(circle).setActiveObject(circle);
+   }
+   else{
+
     const circle = new fabric.Circle({
         left: 100,
 
@@ -566,6 +581,9 @@ function activateCircleMode() {
         strokeWidth: 2
     });
     canvas.add(circle).setActiveObject(circle);
+   }
+    
+   
 }
 function activateRectangleMode() {
     if (eraserListener) {
