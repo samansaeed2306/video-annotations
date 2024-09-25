@@ -69,6 +69,9 @@ window.onload = () => {
 
             img.onload = () => {
                 console.log('Image has been successfully loaded');
+                const aspectRatio = img.naturalWidth / img.naturalHeight;
+                console.log(`Image Aspect Ratio: ${aspectRatio.toFixed(2)} (Width: ${img.naturalWidth}, Height: ${img.naturalHeight})`);
+
                 fabricCanvas.width = img.clientWidth;
                 fabricCanvas.height = img.clientHeight;
                 canvas.setWidth(img.clientWidth);
@@ -109,6 +112,18 @@ document.addEventListener('DOMContentLoaded', function() {
     function loadVideo(manifestUri) {
         player.load(manifestUri).then(function() {
             console.log('The video has now been loaded!');
+            const videoAspectRatio = video.videoWidth / video.videoHeight;
+            // console.log(`Video Aspect Ratio: ${videoAspectRatio}`);
+            console.log(`Video Aspect Ratio: ${video.videoWidth}/${video.videoHeight}`);
+
+            if (videoAspectRatio < 1) {
+                console.log("This is a portrait video.");
+            } else if (videoAspectRatio > 1) {
+                console.log("This is a landscape video.");
+            } else {
+                console.log("This is a square video.");
+            }
+            
             // toggleZoom(); 
             setupTimeline(video);
         }).catch(function(error) {
@@ -931,7 +946,7 @@ video.addEventListener('loadedmetadata', () => {
     canvas.setWidth(video.clientWidth);
     canvas.setHeight(video.clientHeight);
     console.log("Canvas Resizing!");
-    toggleZoom();
+    // toggleZoom();
 });
 
 
