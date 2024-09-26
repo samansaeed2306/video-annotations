@@ -114,19 +114,6 @@ document.addEventListener('DOMContentLoaded', function() {
     function loadVideo(manifestUri) {
         player.load(manifestUri).then(function() {
             console.log('The video has now been loaded!');
-            // videoAspectRatio = video.videoWidth / video.videoHeight;
-            // console.log(`Video Aspect Ratio: ${videoAspectRatio}`);
-            // console.log(`Video Aspect Ratio: ${video.videoWidth}/${video.videoHeight}`);
-
-            // if (videoAspectRatio < 1) {
-            //     console.log("This is a portrait video.");
-            // } else if (videoAspectRatio > 1) {
-            //     console.log("This is a landscape video.");
-            // } else {
-            //     console.log("This is a square video.");
-            // }
-
-            // toggleZoom(); 
             setupTimeline(video);
         }).catch(function(error) {
             console.error('Error code', error.code, 'object', error);
@@ -143,6 +130,8 @@ function setupTimeline(video) {
     const duration = Math.floor(video.duration);
     timeline.style.setProperty('--duration', duration);
     console.log(duration);
+    video.currentTime = 3;
+    console.log("Video's current Time: ",video.currentTime);
     for (let i = 0; i < duration; i++) {
                 const tick = document.createElement('div');
                 tick.classList.add('tick');
