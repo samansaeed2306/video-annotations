@@ -139,14 +139,14 @@ function setupTimeline(video) {
             <g transform="matrix(1.0607 1.0607 -1.0607 1.0607 1146.8 34.926)">
                 <path d="m-63 1003.4v11.3 0.7 1l2 2 2-2v-1-0.7-11.3h-4z" fill="#ecf0f1"/>
                 <path d="m-61 1003.4v15l2-2v-1-0.7-11.3h-2z" fill="#bdc3c7"/>
-                <rect fill="${selectedColor || 'blue'}" height="11" width="4" x="-63" y="1004.4"/>
+                <rect fill="blue" height="11" width="4" x="-63" y="1004.4"/>
                 <path d="m-61 1000.4c-1.105 0-2 0.9-2 2v1h4v-1c0-1.1-0.895-2-2-2z" fill="#7f8c8d"/>
                 <g transform="translate(-7,1)">
                     <path d="m-55.406 1016 1.406 1.4 1.406-1.4h-1.406-1.406z" fill="#34495e"/>
                     <path d="m-54 1016v1.4l1.406-1.4h-1.406z" fill="#2c3e50"/>
                 </g>
                 <path d="m-61 1000.4c-1.105 0-2 0.9-2 2v1h2v-3z" fill="#95a5a6"/>
-                <rect fill="${selectedColor || 'blue'}" height="11" width="2" x="-61" y="1004.4"/>
+                <rect fill="blue" height="11" width="2" x="-61" y="1004.4"/>
             </g>
         </g>
     </svg>`;
@@ -2228,7 +2228,7 @@ function updatePencilColor(svgMarkup, selectedColor) {
         console.log("Rects color changed");
         return `${p1}${color}"`;
     });
-    
+
     // Return the updated SVG markup
     return updatedSvgMarkup;
 }
