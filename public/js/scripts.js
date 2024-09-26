@@ -592,11 +592,11 @@ function activateRectangleMode() {
     }
     canvas.isDrawingMode = false;
     drawingMode = 'rectangle';
-   
-    const rect = new fabric.Rect({
+    if(videoAspectRatio<1){
+        const rect = new fabric.Rect({
 
-            left: 90,
-            top: 150,
+            left: 120,
+            top: 350,
 
             width: 60,
             height: 60,
@@ -605,6 +605,21 @@ function activateRectangleMode() {
             strokeWidth: 2
         });
         canvas.add(rect).setActiveObject(rect);
+    }else{
+        const rect = new fabric.Rect({
+
+            left: 250,
+            top: 470,
+
+            width: 60,
+            height: 60,
+            fill: 'transparent',
+            stroke: selectedColor,
+            strokeWidth: 2
+        });
+        canvas.add(rect).setActiveObject(rect);
+    }
+    
 }
 
 function activateTextMode() {
@@ -614,18 +629,35 @@ function activateTextMode() {
     }
     canvas.isDrawingMode = false;
     drawingMode = 'text';
-    const text = new fabric.Textbox('Type here', {
+    if(videoAspectRatio<1){
+        const text = new fabric.Textbox('Type here', {
 
-        left: 150,
-        top: 350,
+            left: 150,
+            top: 350,
+    
+            fontSize: 20,
+            fontFamily: 'Arial',
+            fill: selectedColor,
+            width: 200
+        });
+        currentColorIndex++;
+        canvas.add(text).setActiveObject(text);
+    }
+    else{
+        const text = new fabric.Textbox('Type here', {
 
-        fontSize: 20,
-        fontFamily: 'Arial',
-        fill: selectedColor,
-        width: 200
-    });
-    currentColorIndex++;
-    canvas.add(text).setActiveObject(text);
+            left: 250,
+            top: 450,
+    
+            fontSize: 20,
+            fontFamily: 'Arial',
+            fill: selectedColor,
+            width: 200
+        });
+        currentColorIndex++;
+        canvas.add(text).setActiveObject(text);
+    }
+    
 }
 
 function activateNoteMode() {
