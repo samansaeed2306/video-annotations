@@ -559,7 +559,7 @@ function activateCircleMode() {
     const circle = new fabric.Circle({
         left: 100,
 
-        top: 270,
+        top: 350,
 
         radius: 30,
         fill: 'transparent',
@@ -571,9 +571,9 @@ function activateCircleMode() {
    else{
 
     const circle = new fabric.Circle({
-        left: 100,
+        left: 230,
 
-        top: 170,
+        top: 470,
 
         radius: 30,
         fill: 'transparent',
