@@ -668,19 +668,37 @@ function activateNoteMode() {
     console.log("Activate Note function")
     canvas.isDrawingMode = false;
     drawingMode = 'note';
-    const note = new fabric.Textbox('Note here', {
+    if(videoAspectRatio<1){
+        const note = new fabric.Textbox('Note here', {
 
-        left: 50,
-        top: 250,
+            left: 150,
+            top: 550,
+    
+            fontSize: 14,
+            fontFamily: 'Arial',
+            fill: selectedColor,
+            backgroundColor: '#ffffcc',
+            width: 200
+        });
+        currentColorIndex++;
+        canvas.add(note).setActiveObject(note);
+    }
+    else{
+        const note = new fabric.Textbox('Note here', {
 
-        fontSize: 14,
-        fontFamily: 'Arial',
-        fill: selectedColor,
-        backgroundColor: '#ffffcc',
-        width: 200
-    });
-    currentColorIndex++;
-    canvas.add(note).setActiveObject(note);
+            left: 250,
+            top: 500,
+    
+            fontSize: 14,
+            fontFamily: 'Arial',
+            fill: selectedColor,
+            backgroundColor: '#ffffcc',
+            width: 200
+        });
+        currentColorIndex++;
+        canvas.add(note).setActiveObject(note);
+    }
+   
 }
 let eraserListener = null;
 
@@ -840,16 +858,27 @@ function activateLineMode() {
     }
     drawingMode = 'line';
     canvas.isDrawingMode = false; 
+    if(videoAspectRatio<1){
+        const line = new fabric.Line([50, 50, 200, 200], {
+            left: 100,
+            top: 300,
+            stroke: selectedColor,
+            strokeWidth: 2
+        });
+        canvas.add(line);
+        canvas.setActiveObject(line)
+    }
+    else{
+        const line = new fabric.Line([50, 50, 200, 200], {
+            left: 230,
+            top: 400,
+            stroke: selectedColor,
+            strokeWidth: 2
+        });
+        canvas.add(line);
+        canvas.setActiveObject(line)
+    }
     
-
-    const line = new fabric.Line([50, 50, 200, 200], {
-        left: 100,
-        top: 100,
-        stroke: selectedColor,
-        strokeWidth: 2
-    });
-    canvas.add(line);
-    canvas.setActiveObject(line)
 }
 
 function activateImage() {
