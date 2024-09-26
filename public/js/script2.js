@@ -21,7 +21,7 @@ document.getElementById('previous-button').addEventListener('click', function() 
 });
 
 
-let selectedColor = '#7FFF00';
+let selectedColor = 'yellow';
 function selectColor() {
     console.log('Color Selected variable before setting: ', selectedColor);
     const colorPickerContainer = document.getElementById("color-picker-container");
@@ -106,4 +106,9 @@ function selectColor() {
     buttonsWithSvg.forEach((svg) => {
         svg.style.fill = color;  
     });
+
+    updatePencilColor(svgMarkup, color);
+
 }
+
+
