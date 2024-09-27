@@ -1941,10 +1941,15 @@ const captureArea = document.getElementById('video-container');
 
 
 let isZoomedIn = false;
-const zoomScale = 1.6;
+let zoomScale = 1.6;
 
 const toggleZoom = () => {
   console.log("Inside toggle Zoom function");
+  console.log("Apect ratio of the video:",videoAspectRatio);
+  if(videoAspectRatio<1){
+     zoomScale = 1.2;
+  }
+  else{
     isZoomedIn = !isZoomedIn;
 
     
@@ -2008,7 +2013,7 @@ const toggleZoom = () => {
         }
 
         canvas.calcOffset();
-    }
+    }}
 };
 function zoomOut2x() { 
     if (window.innerWidth > 520) {
@@ -2017,16 +2022,19 @@ function zoomOut2x() {
     const videoContainer = document.getElementById('video-container');
     videoContainer.style.backgroundColor='black';
     videoContainer.style.height='445px';
-    fabricCanvas.width = video.clientWidth;
-    fabricCanvas.height = video.clientHeight;
+    videoContainer.style.margin = '55px 0px'; // Update bottom margin to 100px
+    const canvases = document.getElementById('canvas');
+    canvases.style.top='-28px';
+    // fabricCanvas.width = video.clientWidth;
+    // fabricCanvas.height = video.clientHeight;
     
-    canvas.setWidth(video.clientWidth);
-    canvas.setHeight(video.clientHeight);
+    // canvas.setWidth(video.clientWidth);
+    // canvas.setHeight(video.clientHeight);
     
     
-    canvas.wrapperEl.style.position = 'absolute';
-    canvas.wrapperEl.style.left = '3px';
-    canvas.wrapperEl.style.top = '-25px';
+    // canvas.wrapperEl.style.position = 'absolute';
+    // canvas.wrapperEl.style.left = '3px';
+    // canvas.wrapperEl.style.top = '-25px';
     
     // const upperCanvas = document.querySelector('upper-canvas');
     // const lowerCanvas = document.querySelector('lower-canvas');
