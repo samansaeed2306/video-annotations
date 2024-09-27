@@ -1,7 +1,7 @@
 // Fetch media files from the server
 
-const apiUrl = 'http://174.138.56.121:8080/api/media'; 
-// const apiUrl = 'http://localhost:8080/api/media'; 
+// const apiUrl = 'http://174.138.56.121:8080/api/media'; 
+const apiUrl = 'http://localhost:8080/api/media'; 
 fetch(`${apiUrl}/getmediafiles`)
   .then(response => response.json())
   .then(files => {
@@ -66,11 +66,14 @@ fileInput.addEventListener('change', function(e) {
             console.log('Video originalName:', data.media.originalName);
             if (data.media && data.media.fileUrl && data.media.originalName) {
                 
-                addVideoCard(data.media.fileUrl, data.media.originalName);
+                
+               
                 console.log("Inside if condition");
                 
             }
-            window.location.reload();
+            addVideoCard(data.media.fileUrl, data.media.originalName);
+            // window.location.reload();
+            refreshVideoGallery();
         })
         .catch(error => console.error('Error uploading video:', error));
     }
@@ -108,7 +111,8 @@ imageFileInput.addEventListener('change', function(e) {
                 console.log("Inside if condition of image");
                 
             }
-            window.location.reload();
+            // window.location.reload();
+            refreshImageGallery();
         })
         .catch(error => console.error('Error uploading image:', error));
     }
@@ -199,3 +203,41 @@ document.getElementById("backtoindex").addEventListener("click", function() {
 
 // addVideoCard('../sampleVideos/burning-planet.mp4', 'burning-planet.mp4');
 // addImageCard('../sampleVideos/dolphin.jfif', 'Dolphin');
+
+function refreshVideoGallery() {
+    fetch(`${apiUrl}/getmediafiles`)
+        .then(response => response.json())
+        .then(files => {
+          
+            gallery.innerHTML = ''; 
+
+         
+            files.forEach(file => {
+                const fileExtension = file.fileName.split('.').pop().toLowerCase();
+                const filePath = `../uploads/${file.fileName}`;
+               if (['mp4', 'webm'].includes(fileExtension)) {
+                    addVideoCard(filePath, file.originalName);
+                }
+            });
+        })
+        .catch(error => console.error('Error fetching media files:', error));
+}
+
+function refreshImageGallery() {
+    fetch(`${apiUrl}/getmediafiles`)
+        .then(response => response.json())
+        .then(files => {
+           
+            imageGallery.innerHTML = '';
+
+        
+            files.forEach(file => {
+                const fileExtension = file.fileName.split('.').pop().toLowerCase();
+                const filePath = `../uploads/${file.fileName}`;
+                if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
+                    addImageCard(filePath, file.originalName);
+                }
+            });
+        })
+        .catch(error => console.error('Error fetching media files:', error));
+}

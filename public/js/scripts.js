@@ -2,13 +2,15 @@
 let annotations = [];
 let currentColorIndex = 0;
 const colors = ['#FF5733', '#33FF57', '#5733FF', '#FFFF33', '#FF33FF', '#33FFFF'];
-
+let videoAspectRatio='';
 let selectedMediaType='';
+let svgMarkup;
 const canvas = new fabric.Canvas('canvas', {
     selection: false,
     isDrawingMode: false
     });
 window.onload = () => {
+    
 
     selectedMediaType = localStorage.getItem('selectedMediaType') || '';
     localStorage.removeItem('selectedMediaType'); 
@@ -69,6 +71,9 @@ window.onload = () => {
 
             img.onload = () => {
                 console.log('Image has been successfully loaded');
+                const aspectRatio = img.naturalWidth / img.naturalHeight;
+                console.log(`Image Aspect Ratio: ${aspectRatio.toFixed(2)} (Width: ${img.naturalWidth}, Height: ${img.naturalHeight})`);
+
                 fabricCanvas.width = img.clientWidth;
                 fabricCanvas.height = img.clientHeight;
                 canvas.setWidth(img.clientWidth);
@@ -88,6 +93,7 @@ window.onload = () => {
         }
     } else {
         mediaElement = document.getElementById('video');
+        
     }
 
     
@@ -96,20 +102,19 @@ window.onload = () => {
 
 document.addEventListener('DOMContentLoaded', function() {
 
-
+    
     setTimeout(() => {
     const video = document.getElementById('video');
-    
+   
     if (selectedMediaType === '' || selectedMediaType === 'video') {
     if(video){
     const player = new shaka.Player(video);
     const storedVideoSrc = localStorage.getItem('selectedVideoSrc');
     const manifestUri = storedVideoSrc || 'https://storage.googleapis.com/shaka-demo-assets/angel-one/dash.mpd';
-
+    
     function loadVideo(manifestUri) {
         player.load(manifestUri).then(function() {
             console.log('The video has now been loaded!');
-            // toggleZoom(); 
             setupTimeline(video);
         }).catch(function(error) {
             console.error('Error code', error.code, 'object', error);
@@ -126,6 +131,28 @@ function setupTimeline(video) {
     const duration = Math.floor(video.duration);
     timeline.style.setProperty('--duration', duration);
     console.log(duration);
+    video.currentTime = 3;
+    console.log("Video's current Time: ",video.currentTime);
+    svgMarkup = `<?xml version="1.0" ?>
+    <svg id="pencil-svg" height="24" version="1.1" width="24" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+        <g transform="translate(0 -1028.4)">
+            <g transform="matrix(1.0607 1.0607 -1.0607 1.0607 1146.8 34.926)">
+                <path d="m-63 1003.4v11.3 0.7 1l2 2 2-2v-1-0.7-11.3h-4z" fill="#ecf0f1"/>
+                <path d="m-61 1003.4v15l2-2v-1-0.7-11.3h-2z" fill="#bdc3c7"/>
+                <rect fill="blue" height="11" width="4" x="-63" y="1004.4"/>
+                <path d="m-61 1000.4c-1.105 0-2 0.9-2 2v1h4v-1c0-1.1-0.895-2-2-2z" fill="#7f8c8d"/>
+                <g transform="translate(-7,1)">
+                    <path d="m-55.406 1016 1.406 1.4 1.406-1.4h-1.406-1.406z" fill="#34495e"/>
+                    <path d="m-54 1016v1.4l1.406-1.4h-1.406z" fill="#2c3e50"/>
+                </g>
+                <path d="m-61 1000.4c-1.105 0-2 0.9-2 2v1h2v-3z" fill="#95a5a6"/>
+                <rect fill="blue" height="11" width="2" x="-61" y="1004.4"/>
+            </g>
+        </g>
+    </svg>`;
+
+
+    const svgDataUrl = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgMarkup);
     for (let i = 0; i < duration; i++) {
                 const tick = document.createElement('div');
                 tick.classList.add('tick');
@@ -135,7 +162,8 @@ function setupTimeline(video) {
                 const icon = document.createElement('div');
                 icon.classList.add('icon');
                 const img = document.createElement('img');
-                img.src = 'icons/pencil.png';
+                // img.src = 'icons/pencil.png';
+                img.src = svgDataUrl;
                 img.alt = 'Pencil';
                 icon.appendChild(img);
                 tick.appendChild(icon);
@@ -537,11 +565,12 @@ function activateCircleMode() {
     }
     canvas.isDrawingMode = false;
     drawingMode = 'circle';
-   
+   if(videoAspectRatio<1){
+    console.log('Oops!! This is portrait circle');
     const circle = new fabric.Circle({
         left: 100,
 
-        top: 170,
+        top: 350,
 
         radius: 30,
         fill: 'transparent',
@@ -549,6 +578,23 @@ function activateCircleMode() {
         strokeWidth: 2
     });
     canvas.add(circle).setActiveObject(circle);
+   }
+   else{
+
+    const circle = new fabric.Circle({
+        left: 230,
+
+        top: 470,
+
+        radius: 30,
+        fill: 'transparent',
+        stroke: selectedColor,
+        strokeWidth: 2
+    });
+    canvas.add(circle).setActiveObject(circle);
+   }
+    
+   
 }
 function activateRectangleMode() {
     if (eraserListener) {
@@ -557,11 +603,11 @@ function activateRectangleMode() {
     }
     canvas.isDrawingMode = false;
     drawingMode = 'rectangle';
-   
-    const rect = new fabric.Rect({
+    if(videoAspectRatio<1){
+        const rect = new fabric.Rect({
 
-            left: 90,
-            top: 150,
+            left: 120,
+            top: 350,
 
             width: 60,
             height: 60,
@@ -570,6 +616,21 @@ function activateRectangleMode() {
             strokeWidth: 2
         });
         canvas.add(rect).setActiveObject(rect);
+    }else{
+        const rect = new fabric.Rect({
+
+            left: 250,
+            top: 470,
+
+            width: 60,
+            height: 60,
+            fill: 'transparent',
+            stroke: selectedColor,
+            strokeWidth: 2
+        });
+        canvas.add(rect).setActiveObject(rect);
+    }
+    
 }
 
 function activateTextMode() {
@@ -579,18 +640,35 @@ function activateTextMode() {
     }
     canvas.isDrawingMode = false;
     drawingMode = 'text';
-    const text = new fabric.Textbox('Type here', {
+    if(videoAspectRatio<1){
+        const text = new fabric.Textbox('Type here', {
 
-        left: 150,
-        top: 350,
+            left: 150,
+            top: 350,
+    
+            fontSize: 20,
+            fontFamily: 'Arial',
+            fill: selectedColor,
+            width: 200
+        });
+        currentColorIndex++;
+        canvas.add(text).setActiveObject(text);
+    }
+    else{
+        const text = new fabric.Textbox('Type here', {
 
-        fontSize: 20,
-        fontFamily: 'Arial',
-        fill: selectedColor,
-        width: 200
-    });
-    currentColorIndex++;
-    canvas.add(text).setActiveObject(text);
+            left: 250,
+            top: 450,
+    
+            fontSize: 20,
+            fontFamily: 'Arial',
+            fill: selectedColor,
+            width: 200
+        });
+        currentColorIndex++;
+        canvas.add(text).setActiveObject(text);
+    }
+    
 }
 
 function activateNoteMode() {
@@ -601,19 +679,37 @@ function activateNoteMode() {
     console.log("Activate Note function")
     canvas.isDrawingMode = false;
     drawingMode = 'note';
-    const note = new fabric.Textbox('Note here', {
+    if(videoAspectRatio<1){
+        const note = new fabric.Textbox('Note here', {
 
-        left: 50,
-        top: 250,
+            left: 150,
+            top: 550,
+    
+            fontSize: 14,
+            fontFamily: 'Arial',
+            fill: selectedColor,
+            backgroundColor: '#ffffcc',
+            width: 200
+        });
+        currentColorIndex++;
+        canvas.add(note).setActiveObject(note);
+    }
+    else{
+        const note = new fabric.Textbox('Note here', {
 
-        fontSize: 14,
-        fontFamily: 'Arial',
-        fill: selectedColor,
-        backgroundColor: '#ffffcc',
-        width: 200
-    });
-    currentColorIndex++;
-    canvas.add(note).setActiveObject(note);
+            left: 250,
+            top: 500,
+    
+            fontSize: 14,
+            fontFamily: 'Arial',
+            fill: selectedColor,
+            backgroundColor: '#ffffcc',
+            width: 200
+        });
+        currentColorIndex++;
+        canvas.add(note).setActiveObject(note);
+    }
+   
 }
 let eraserListener = null;
 
@@ -773,16 +869,27 @@ function activateLineMode() {
     }
     drawingMode = 'line';
     canvas.isDrawingMode = false; 
+    if(videoAspectRatio<1){
+        const line = new fabric.Line([50, 50, 200, 200], {
+            left: 100,
+            top: 300,
+            stroke: selectedColor,
+            strokeWidth: 2
+        });
+        canvas.add(line);
+        canvas.setActiveObject(line)
+    }
+    else{
+        const line = new fabric.Line([50, 50, 200, 200], {
+            left: 230,
+            top: 400,
+            stroke: selectedColor,
+            strokeWidth: 2
+        });
+        canvas.add(line);
+        canvas.setActiveObject(line)
+    }
     
-
-    const line = new fabric.Line([50, 50, 200, 200], {
-        left: 100,
-        top: 100,
-        stroke: selectedColor,
-        strokeWidth: 2
-    });
-    canvas.add(line);
-    canvas.setActiveObject(line)
 }
 
 function activateImage() {
@@ -925,13 +1032,67 @@ const video = document.getElementById('video');
 const fabricCanvas = document.getElementById('canvas');
 
 video.addEventListener('loadedmetadata', () => {
-   
+    
+
     fabricCanvas.width = video.clientWidth;
     fabricCanvas.height = video.clientHeight;
     canvas.setWidth(video.clientWidth);
     canvas.setHeight(video.clientHeight);
+    videoAspectRatio = video.videoWidth / video.videoHeight;
+    console.log(`Video Aspect Ratio: ${video.videoWidth}/${video.videoHeight}`);
+
+    if (videoAspectRatio < 1) {
+        console.log("This is a portrait video.");
+        //resetCanvasStyles();
+        const lowerCanvas = document.getElementById('canvas'); 
+        const upperCanvas = document.querySelector('.upper-canvas'); 
+        const canvasContainer = document.querySelector('.canvas-container'); 
+
+    if (upperCanvas) {
+        upperCanvas.style.height = '450px';
+        upperCanvas.style.top = '19px';
+        console.log("DONE")
+    } else {
+        console.error("upperCanvas element not found");
+    }
+
+    if (lowerCanvas) {
+        lowerCanvas.style.height = '503px';
+        console.log("DONE LOWER")
+    } else {
+        console.error("lowerCanvas element not found");
+    }
+
+    if (canvasContainer) {
+        canvasContainer.style.height = '503px';
+        console.log("DONE CONTAINER")
+    } else {
+        console.error("canvasContainer element not found");
+    }
+        zoomOut2x();
+    } else if (videoAspectRatio > 1) {
+        console.log("This is a landscape video.");
+        // fabricCanvas.width = video.clientWidth;
+        // fabricCanvas.height = video.clientHeight;
+        // canvas.setWidth(video.clientWidth);
+        // canvas.setHeight(video.clientHeight);
+        toggleZoom();
+        
+    } else {
+        console.log("This is a square video.");
+        // fabricCanvas.width = video.clientWidth;
+        // fabricCanvas.height = video.clientHeight;
+        // canvas.setWidth(video.clientWidth);
+        // canvas.setHeight(video.clientHeight);
+        toggleZoom();
+    }
+    console.log('Video Aspect Ratio Recorded: ',videoAspectRatio);
+    if (videoAspectRatio < 1) {
+        console.log("Hello");
+    }
     console.log("Canvas Resizing!");
-    toggleZoom();
+   
+    
 });
 
 
@@ -1780,10 +1941,15 @@ const captureArea = document.getElementById('video-container');
 
 
 let isZoomedIn = false;
-const zoomScale = 1.6;
+let zoomScale = 1.6;
 
 const toggleZoom = () => {
   console.log("Inside toggle Zoom function");
+  console.log("Apect ratio of the video:",videoAspectRatio);
+  if(videoAspectRatio<1){
+     zoomScale = 1.2;
+  }
+  else{
     isZoomedIn = !isZoomedIn;
 
     
@@ -1847,9 +2013,69 @@ const toggleZoom = () => {
         }
 
         canvas.calcOffset();
-    }
+    }}
 };
+function zoomOut2x() { 
+    if (window.innerWidth > 520) {
+    video.style.transform = 'scale(0.5)';
+    video.style.marginTop = '-220px';
+    const videoContainer = document.getElementById('video-container');
+    videoContainer.style.backgroundColor='black';
+    videoContainer.style.height='445px';
+    videoContainer.style.margin = '55px 0px'; // Update bottom margin to 100px
+    const canvases = document.getElementById('canvas');
+    canvases.style.top='-28px';
+    // fabricCanvas.width = video.clientWidth;
+    // fabricCanvas.height = video.clientHeight;
+    
+    // canvas.setWidth(video.clientWidth);
+    // canvas.setHeight(video.clientHeight);
+    
+    
+    // canvas.wrapperEl.style.position = 'absolute';
+    // canvas.wrapperEl.style.left = '3px';
+    // canvas.wrapperEl.style.top = '-25px';
+    
+    // const upperCanvas = document.querySelector('upper-canvas');
+    // const lowerCanvas = document.querySelector('lower-canvas');
+    // const canvasContainer = document.querySelector('canvas-container');
+    
+    // upperCanvas.height = '450px';
+    // upperCanvas.top = '19px';
 
+    // lowerCanvas.style.height = '503px';
+    
+    // canvasContainer.style.height = '503px';
+
+    // if (upperCanvas) {
+    //     upperCanvas.style.height = '450px';
+    //     upperCanvas.style.top = '19px';
+    // } else {
+    //     console.error("upperCanvas element not found");
+    // }
+
+    // if (lowerCanvas) {
+    //     lowerCanvas.style.height = '503px';
+    // } else {
+    //     console.error("lowerCanvas element not found");
+    // }
+
+    // if (canvasContainer) {
+    //     canvasContainer.style.height = '503px';
+    // } else {
+    //     console.error("canvasContainer element not found");
+    // }
+
+    const canvasonSwitch = document.getElementById('toggle-icon');
+    if (canvasonSwitch.style.display == 'block') {
+        canvasonSwitch.style.left = '150px';
+        canvasonSwitch.style.top = '500px';
+    }
+    
+    canvas.calcOffset();
+}
+    
+    }
 function zoomOut() { 
 video.style.transform = 'scale(1)';
 
@@ -2000,3 +2226,17 @@ video.addEventListener('timeupdate', () => {
 });
 
 
+function updatePencilColor(svgMarkup, selectedColor) {
+    // Set the default color to blue if no color is provided
+    console.log("Inside update pencil color");
+    const color = selectedColor || 'blue';
+
+    // Update the fill color of the rect elements in the SVG markup
+    const updatedSvgMarkup = svgMarkup.replace(/(<rect[^>]*fill=")[^"]*"/g, (match, p1) => {
+        console.log("Rects color changed");
+        return `${p1}${color}"`;
+    });
+
+    // Return the updated SVG markup
+    return updatedSvgMarkup;
+}
