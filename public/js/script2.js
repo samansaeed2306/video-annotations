@@ -21,7 +21,7 @@ document.getElementById('previous-button').addEventListener('click', function() 
 });
 
 
-let selectedColor = '#7FFF00';
+let selectedColor = 'yellow';
 function selectColor() {
     console.log('Color Selected variable before setting: ', selectedColor);
     const colorPickerContainer = document.getElementById("color-picker-container");
@@ -106,4 +106,54 @@ function selectColor() {
     buttonsWithSvg.forEach((svg) => {
         svg.style.fill = color;  
     });
+
+    updatePencilColor(svgMarkup, color);
+
 }
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    const fullscreenBtn = document.getElementById('fullscreen-btn');
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+    document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+    document.addEventListener('MSFullscreenChange', handleFullscreenChange);
+    fullscreenBtn.addEventListener('click', toggleFullScreen);
+
+    function toggleFullScreen() {
+        if (!document.fullscreenElement) {
+            fullscreenBtn.title="Exit Full Screen";
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen();
+            } else if (document.documentElement.mozRequestFullScreen) { // Firefox
+                document.documentElement.mozRequestFullScreen();
+            } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari and Opera
+                document.documentElement.webkitRequestFullscreen();
+            } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
+                document.documentElement.msRequestFullscreen();
+            }
+        } else {
+            fullscreenBtn.title="Enter Full Screen";
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.mozCancelFullScreen) { // Firefox
+                document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) { // Chrome, Safari and Opera
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) { // IE/Edge
+                document.msExitFullscreen();
+            }
+        }
+    }
+
+    function handleFullscreenChange() {
+        const parentBtnContainer = document.getElementById('timeline-wrapper');
+        if (document.fullscreenElement ||
+            document.webkitFullscreenElement ||
+            document.mozFullScreenElement ||
+            document.msFullscreenElement) {
+            parentBtnContainer.classList.add('fullscreen-controls');
+        } else {
+            parentBtnContainer.classList.remove('fullscreen-controls');
+        }
+    }
+});

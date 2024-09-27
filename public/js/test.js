@@ -2203,3 +2203,33 @@ async function captureScreenshot(video, canvas, timestamp, annotations) {
 
    
 // });
+
+// Function to refresh the gallery by fetching media files
+function refreshGallery() {
+    fetch(`${apiUrl}/getmediafiles`)
+        .then(response => response.json())
+        .then(files => {
+            // Clear the current gallery
+            gallery.innerHTML = ''; // or imageGallery.innerHTML = '' for images
+
+            // Loop through each file and add it to the gallery
+            files.forEach(file => {
+                const fileExtension = file.fileName.split('.').pop().toLowerCase();
+                const filePath = `../uploads/${file.fileName}`;
+                if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
+                    addImageCard(filePath, file.originalName);
+                } else if (['mp4', 'webm'].includes(fileExtension)) {
+                    addVideoCard(filePath, file.originalName);
+                }
+            });
+        })
+        .catch(error => console.error('Error fetching media files:', error));
+}
+
+// Call refreshGallery() after successfully uploading a video/image
+// .then(data => {
+//     if (data.media && data.media.fileUrl && data.media.originalName) {
+//         // Optionally refresh the entire gallery
+//         refreshGallery(); // Uncomment this line to refresh the gallery
+//     }
+// });
