@@ -1097,13 +1097,13 @@ video.addEventListener('loadedmetadata', () => {
 
 
 video.addEventListener('pause', () => {
-    canvas.isDrawingMode = true; 
+    // canvas.isDrawingMode = true; 
     fabricCanvas.style.pointerEvents = 'none'; 
 });
 
 
 video.addEventListener('play', () => {
-    canvas.isDrawingMode = false; 
+    // canvas.isDrawingMode = false; 
     fabricCanvas.style.pointerEvents = 'none'; 
 });
 
