@@ -773,7 +773,7 @@ body::before {
 }
 
 #loop {
-    fill: var(--icon-color);
+    fill: #abb0c4;
 }
 
 #loop.active-loop,#loop:hover{
@@ -784,7 +784,7 @@ body::before {
     background-color: var(--icon-color); /* Default color */
 }
 #resize-video .icon path {
-    fill: var(--icon-color); /* Default path color */
+    fill: #abb0c4; /* Default path color */
 }
 
 
