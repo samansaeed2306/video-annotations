@@ -135,10 +135,11 @@
         
         <!-- <button onclick="activatePolylineMode()"><img src="icons/polyline.png" alt="Polyline"></button>  -->
         <button id="polyline" onclick="activatePolylineMode()" data-color-change="true">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="pink">
+            <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="pink">
                 <title>polyline</title>
                 <path d="M22.89,7.06l-.64-.64a.8.8,0,0,0-1.13,0l-6.77,6.77L10.23,9.07A1.66,1.66,0,0,0,9,8.58a1.69,1.69,0,0,0-1.2.49L1.11,15.8a.83.83,0,0,0-.23.57.79.79,0,0,0,.23.57l.64.64a.81.81,0,0,0,1.13,0L9,11.42l4.12,4.12a1.69,1.69,0,0,0,2.39,0L22.89,8.2a.83.83,0,0,0,.23-.57A.79.79,0,0,0,22.89,7.06Z"></path>
-            </svg>
+            </svg> -->
+            <svg fill="pink" height="28" viewBox="0 0 18 18" width="28" xmlns="http://www.w3.org/2000/svg"><title>angled line</title><path clip-rule="evenodd" d="M8.8914 2.1937C9.1158 2.35464 9.16725 2.66701 9.00631 2.89141L2.47388 12H13.5C13.7761 12 14 12.2239 14 12.5C14 12.7762 13.7761 13 13.5 13H1.5C1.31254 13 1.14082 12.8952 1.0552 12.7284C0.969578 12.5616 0.984438 12.361 1.09369 12.2086L8.19369 2.30862C8.35462 2.08422 8.667 2.03277 8.8914 2.1937ZM11.1 6.50001C11.1 6.22387 11.3238 6.00001 11.6 6.00001C11.8761 6.00001 12.1 6.22387 12.1 6.50001C12.1 6.77615 11.8761 7.00001 11.6 7.00001C11.3238 7.00001 11.1 6.77615 11.1 6.50001ZM10.4 4.00001C10.1239 4.00001 9.90003 4.22387 9.90003 4.50001C9.90003 4.77615 10.1239 5.00001 10.4 5.00001C10.6762 5.00001 10.9 4.77615 10.9 4.50001C10.9 4.22387 10.6762 4.00001 10.4 4.00001ZM12.1 8.50001C12.1 8.22387 12.3238 8.00001 12.6 8.00001C12.8761 8.00001 13.1 8.22387 13.1 8.50001C13.1 8.77615 12.8761 9.00001 12.6 9.00001C12.3238 9.00001 12.1 8.77615 12.1 8.50001ZM13.4 10C13.1239 10 12.9 10.2239 12.9 10.5C12.9 10.7761 13.1239 11 13.4 11C13.6762 11 13.9 10.7761 13.9 10.5C13.9 10.2239 13.6762 10 13.4 10Z" fill-rule="evenodd"/></svg>
         </button>
         
         <!-- <button onclick="activateTextMode()"><img src="icons/text.png" alt="Text"></button> -->
@@ -215,6 +216,11 @@
                 <path stroke="transparent" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.5 8H4m0-2v13a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1h-5.032a1 1 0 0 1-.768-.36l-1.9-2.28a1 1 0 0 0-.768-.36H5a1 1 0 0 0-1 1Z"/>
             </svg>
         </button>
+        <button id="fullscreen-btn" class="header-icon" title="Enter Full Screen">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#abb0c4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+            </svg>
+        </button>
         <!-- <button onclick="unpickTool()"><img src="icons/unpick.png" alt="Unpick"></button> -->
        
         <!-- <button id="export-button" background-color="none"><img src="icons/export.png" alt="Export Annotated Video"></button> -->
@@ -239,6 +245,7 @@
                 <path d="M7 2v19l5-5.5L17 21V2z" />
             </svg>
         </button>
+        
         
         
     </div> 
@@ -266,7 +273,7 @@
   
     <div id="container-wrapper">
     <div id="video-container">
-        <video id="video"></video>
+        <video id="video" playsinline></video>
         <canvas id="canvas"></canvas>
         <div id="zoom-icon"></div>
        
@@ -390,7 +397,7 @@
                         <input type="text" id="ex-current-time-input" class="current-time-input" value="0:01" color="white">
                     </span>
                     <span>
-                        <span>&nbsp;/&nbsp;1:00</span>
+                        <span style="color: #abb0c4;">&nbsp;/&nbsp;1:00</span>
                         <span class="formatted-timeframe-icon" display="none">
                             <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#868E96" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" display="none">
                                 <polyline points="6 9 12 15 18 9"></polyline>
@@ -408,20 +415,20 @@
             <button class="video-button" title="Previous" id="previous-button">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
                     <path d="M0 0h24v24H0z" fill="none"></path>
-                    <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"></path>
+                    <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z" fill="#abb0c4"></path>
                 </svg>
             </button>
             <button class="video-button" title="Play video" id="play-pause-button">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" background-color="#343a40">
                     <path d="M0 0h24v24H0z" fill="none"></path>
-                    <path id="play-icon" d="M8 5v14l11-7z"></path>
-                    <path id="pause-icon" d="M6 6h2v12H6zm3.5 0h2v12h-2z" style="display: none;"></path>
+                    <path id="play-icon" d="M8 5v14l11-7z"  fill="#abb0c4"></path>
+                    <path id="pause-icon" d="M6 6h2v12H6zm3.5 0h2v12h-2z" style="display: none;" fill="#abb0c4"></path>
                 </svg>
             </button>
             <button class="video-button" title="Next" id="next-button">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
                     <path d="M0 0h24v24H0z" fill="none"></path>
-                    <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"></path>
+                    <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"  fill="#abb0c4"></path>
                 </svg>
             </button>
             <button class="video-button" title="Audio Visualizer" id="audio-visualizer-button" display="none">
@@ -462,18 +469,18 @@
             <div class="volume-button-container">
                 <!-- <button class="volume-button"> -->
                     <svg id="volume-icon" class="volume_black_20px-18px_svg__icon" width="20" height="18" data-state="visible" xmlns="http://www.w3.org/2000/svg" alt="Mute Volume">
-                        <path d="M15.6 3.3c-.4-.4-1-.4-1.4 0-.4.4-.4 1 0 1.4C15.4 5.9 16 7.4 16 9c0 1.6-.6 3.1-1.8 4.3-.4.4-.4 1 0 1.4.2.2.5.3.7.3.3 0 .5-.1.7-.3C17.1 13.2 18 11.2 18 9s-.9-4.2-2.4-5.7z"></path>
-                        <path d="M11.282 5.282a.909.909 0 000 1.316c.735.735.995 1.458.995 2.402 0 .936-.425 1.917-.995 2.487a.909.909 0 000 1.316c.145.145.636.262 1.018.156a.725.725 0 00.298-.156C13.773 11.733 14.13 10.16 14.13 9c0-.17-.002-.34-.011-.51-.053-.992-.319-2.005-1.522-3.208a.909.909 0 00-1.316 0zm-7.496.726H.714C.286 6.008 0 6.31 0 6.76v4.512c0 .452.286.752.714.752h3.072l4.071 3.858c.5.3 1.143 0 1.143-.602V2.752c0-.601-.643-.977-1.143-.601L3.786 6.008z"></path>
+                        <path d="M15.6 3.3c-.4-.4-1-.4-1.4 0-.4.4-.4 1 0 1.4C15.4 5.9 16 7.4 16 9c0 1.6-.6 3.1-1.8 4.3-.4.4-.4 1 0 1.4.2.2.5.3.7.3.3 0 .5-.1.7-.3C17.1 13.2 18 11.2 18 9s-.9-4.2-2.4-5.7z" fill="#abb0c4"></path>
+                        <path d="M11.282 5.282a.909.909 0 000 1.316c.735.735.995 1.458.995 2.402 0 .936-.425 1.917-.995 2.487a.909.909 0 000 1.316c.145.145.636.262 1.018.156a.725.725 0 00.298-.156C13.773 11.733 14.13 10.16 14.13 9c0-.17-.002-.34-.011-.51-.053-.992-.319-2.005-1.522-3.208a.909.909 0 00-1.316 0zm-7.496.726H.714C.286 6.008 0 6.31 0 6.76v4.512c0 .452.286.752.714.752h3.072l4.071 3.858c.5.3 1.143 0 1.143-.602V2.752c0-.601-.643-.977-1.143-.601L3.786 6.008z" fill="#abb0c4"></path>
                     </svg>
                     <!-- <svg id="mute-icon" class="icon" viewBox="0 0 24 24" style="display: none;">
                         <path d="M3 9v6h4l5 5V4L7 9H3zm15.5 1.5l-1.5 1.5 1.5 1.5 1.5-1.5-1.5-1.5zM21 12c0-1.5-.5-2.9-1.5-4l-1.4 1.4C19.5 10.3 20 11.1 20 12s-.5 1.7-1.2 2.6l1.4 1.4C20.5 14.9 21 13.5 21 12z" fill="var(--icon-color)"></path>
                     </svg> -->
                     <svg id="mute-icon" class="volume_black_20px-18px_svg__icon" width="20" height="18" xmlns="http://www.w3.org/2000/svg" alt="Mute Volume" display="none">
-                        <path d="M15.6 3.3c-.4-.4-1-.4-1.4 0-.4.4-.4 1 0 1.4C15.4 5.9 16 7.4 16 9c0 1.6-.6 3.1-1.8 4.3-.4.4-.4 1 0 1.4.2.2.5.3.7.3.3 0 .5-.1.7-.3C17.1 13.2 18 11.2 18 9s-.9-4.2-2.4-5.7z"></path>
-                        <path d="M11.282 5.282a.909.909 0 000 1.316c.735.735.995 1.458.995 2.402 0 .936-.425 1.917-.995 2.487a.909.909 0 000 1.316c.145.145.636.262 1.018.156a.725.725 0 00.298-.156C13.773 11.733 14.13 10.16 14.13 9c0-.17-.002-.34-.011-.51-.053-.992-.319-2.005-1.522-3.208a.909.909 0 00-1.316 0zm-7.496.726H.714C.286 6.008 0 6.31 0 6.76v4.512c0 .452.286.752.714.752h3.072l4.071 3.858c.5.3 1.143 0 1.143-.602V2.752c0-.601-.643-.977-1.143-.601L3.786 6.008z"></path>
+                        <path d="M15.6 3.3c-.4-.4-1-.4-1.4 0-.4.4-.4 1 0 1.4C15.4 5.9 16 7.4 16 9c0 1.6-.6 3.1-1.8 4.3-.4.4-.4 1 0 1.4.2.2.5.3.7.3.3 0 .5-.1.7-.3C17.1 13.2 18 11.2 18 9s-.9-4.2-2.4-5.7z" fill="#abb0c4"></path>
+                        <path d="M11.282 5.282a.909.909 0 000 1.316c.735.735.995 1.458.995 2.402 0 .936-.425 1.917-.995 2.487a.909.909 0 000 1.316c.145.145.636.262 1.018.156a.725.725 0 00.298-.156C13.773 11.733 14.13 10.16 14.13 9c0-.17-.002-.34-.011-.51-.053-.992-.319-2.005-1.522-3.208a.909.909 0 00-1.316 0zm-7.496.726H.714C.286 6.008 0 6.31 0 6.76v4.512c0 .452.286.752.714.752h3.072l4.071 3.858c.5.3 1.143 0 1.143-.602V2.752c0-.601-.643-.977-1.143-.601L3.786 6.008z" fill="#abb0c4"></path>
                         
                         <!-- Cross line -->
-                        <line x1="3" y1="2" x2="17" y2="16" stroke="black" stroke-width="2" />
+                        <line x1="3" y1="2" x2="17" y2="16" stroke="#abb0c4" stroke-width="2"/>
                     </svg>
                 <!-- </button> -->
                 <input class="volume-slider" type="range" min="0" max="100" value="50">
@@ -482,11 +489,11 @@
                 <div class="video-buttons-container">
                     <button class="video-button video-setting-button">
                         <svg id="loop" class="icon" viewBox="0 0 19 15" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M14.75 2.5H11V4H14V10.75H2V4H5.75V6.25L9.5 3.25L5.75 0.25V2.5H1.25C0.83525 2.5 0.5 2.83525 0.5 3.25V11.5C0.5 11.9148 0.83525 12.25 1.25 12.25H14.75C15.1648 12.25 15.5 11.9148 15.5 11.5V3.25C15.5 2.83525 15.1648 2.5 14.75 2.5Z" fill="var(--icon-color)"></path>
+                            <path d="M14.75 2.5H11V4H14V10.75H2V4H5.75V6.25L9.5 3.25L5.75 0.25V2.5H1.25C0.83525 2.5 0.5 2.83525 0.5 3.25V11.5C0.5 11.9148 0.83525 12.25 1.25 12.25H14.75C15.1648 12.25 15.5 11.9148 15.5 11.5V3.25C15.5 2.83525 15.1648 2.5 14.75 2.5Z"></path>
                         </svg>
                     </button>
-                    <div class="button-with-menu video-setting-button" display="none">
-                        <button class="video-setting-button video-setting-button-with-text" display="none">1x</button>
+                    <div class="button-with-menu video-setting-button" display="none" color="#abb0c4">
+                        <button class="video-setting-button video-setting-button-with-text" style="display: none;" color="#abb0c4">1x</button>
                         <ul hidden="" class="menu-popup-container">
                             <li data="0.25" class="menu-popup-option">0.25x</li>
                             <li data="0.5" class="menu-popup-option">0.5x</li>
@@ -500,12 +507,13 @@
                     </div>
                     <div  class="button-with-menu">
                         <button id="resize-video" class="video-setting-button">
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" alt="Show aspect ratio guide" class="icon">
-                                <path d="M18 12H17.5C17.2239 12 17 12.2239 17 12.5V15H14.5C14.2239 15 14 15.2239 14 15.5V16C14 16.2761 14.2239 16.5 14.5 16.5H18C18.2761 16.5 18.5 16.2761 18.5 16V12.5C18.5 12.2239 18.2761 12 18 12Z" fill="var(--icon-color)"></path>
-                                <path d="M6 12H6.5C6.7761 12 7 11.7761 7 11.5V9H9.5C9.7761 9 10 8.7761 10 8.5V8C10 7.7239 9.7761 7.5 9.5 7.5H6C5.7239 7.5 5.5 7.7239 5.5 8V11.5C5.5 11.7761 5.7239 12 6 12Z" fill="var(--icon-color)"></path>
-                                <path d="M20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4ZM20 18.01H4V5.99H20V18.01Z" fill="var(--icon-color)"></path>
+                            <svg width="22" height="22" viewBox="0 0 24 24" style="fill: #abb0c4;" xmlns="http://www.w3.org/2000/svg" alt="Show aspect ratio guide" class="icon">
+                                <path d="M18 12H17.5C17.2239 12 17 12.2239 17 12.5V15H14.5C14.2239 15 14 15.2239 14 15.5V16C14 16.2761 14.2239 16.5 14.5 16.5H18C18.2761 16.5 18.5 16.2761 18.5 16V12.5C18.5 12.2239 18.2761 12 18 12Z"></path>
+                                <path d="M6 12H6.5C6.7761 12 7 11.7761 7 11.5V9H9.5C9.7761 9 10 8.7761 10 8.5V8C10 7.7239 9.7761 7.5 9.5 7.5H6C5.7239 7.5 5.5 7.7239 5.5 8V11.5C5.5 11.7761 5.7239 12 6 12Z"></path>
+                                <path d="M20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4ZM20 18.01H4V5.99H20V18.01Z"></path>
                             </svg>
                         </button>
+                        
                         <ul hidden="" class="menu-popup-container">
                             <li class="menu-popup-option">2.35</li>
                             <li class="menu-popup-option">1.85</li>
