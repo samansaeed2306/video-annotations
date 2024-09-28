@@ -5,6 +5,7 @@ const colors = ['#FF5733', '#33FF57', '#5733FF', '#FFFF33', '#FF33FF', '#33FFFF'
 let videoAspectRatio='';
 let selectedMediaType='';
 let svgMarkup;
+let isInteracting = false;
 const canvas = new fabric.Canvas('canvas', {
     selection: false,
     isDrawingMode: false
@@ -559,6 +560,7 @@ function drawFreehand() {
 
   
 function activateCircleMode() {
+    isInteracting = true;
     if (eraserListener) {
         canvas.off('mouse:down', eraserListener);
         eraserListener = null; 
@@ -593,10 +595,11 @@ function activateCircleMode() {
     });
     canvas.add(circle).setActiveObject(circle);
    }
-    
+   isInteracting = false; 
    
 }
 function activateRectangleMode() {
+    isInteracting = true;
     if (eraserListener) {
         canvas.off('mouse:down', eraserListener);
         eraserListener = null;  
@@ -630,10 +633,11 @@ function activateRectangleMode() {
         });
         canvas.add(rect).setActiveObject(rect);
     }
-    
+    isInteracting = false;
 }
 
 function activateTextMode() {
+    isInteracting = true;
     if (eraserListener) {
         canvas.off('mouse:down', eraserListener);
         eraserListener = null; 
@@ -668,10 +672,12 @@ function activateTextMode() {
         currentColorIndex++;
         canvas.add(text).setActiveObject(text);
     }
+    isInteracting = false;
     
 }
 
 function activateNoteMode() {
+    isInteracting = true;
     if (eraserListener) {
         canvas.off('mouse:down', eraserListener);
         eraserListener = null;  
@@ -709,6 +715,7 @@ function activateNoteMode() {
         currentColorIndex++;
         canvas.add(note).setActiveObject(note);
     }
+    isInteracting = false;
    
 }
 let eraserListener = null;
@@ -782,8 +789,9 @@ function useEraser() {
             console.log("No object found under the pointer.");
         }
     };
-
+    
     canvas.on('mouse:down', eraserListener);
+    
 }
 function findAssociatedAngleText(lineObj, allObjects, objectsToRemove) {
     const linePoints = [
@@ -863,6 +871,7 @@ function activatePolylineMode() {
 }
 
 function activateLineMode() {
+    isInteracting = true;
     if (eraserListener) {
         canvas.off('mouse:down', eraserListener);
         eraserListener = null; 
@@ -889,10 +898,11 @@ function activateLineMode() {
         canvas.add(line);
         canvas.setActiveObject(line)
     }
-    
+    isInteracting = false;
 }
 
 function activateImage() {
+    isInteracting = true;
     if (eraserListener) {
         canvas.off('mouse:down', eraserListener);
         eraserListener = null;  
@@ -932,8 +942,11 @@ function handleImageUpload(event) {
        
         reader.readAsDataURL(file);
     }
+    isInteracting = false;
 }
 canvas.on('mouse:down', function(options) {
+    isInteracting = true;
+    console.log("Inside mouse:down event",isInteracting);
     const pointer = canvas.getPointer(options.e);
     if (drawingMode === 'line') {
         
@@ -978,9 +991,15 @@ canvas.on('mouse:move', function(options) {
 });
 
 canvas.on('mouse:up', function() {
+    console.log("Inside mouse:up event",isInteracting);
     if (drawingMode === 'line') {
     isDrawing = false;
     currentShape = null;
+    }
+    if (isInteracting) {
+        saveState(); // Only save if a real interaction happened
+        recordAnnotation(video.currentTime);
+        isInteracting = false; // Reset interaction flag
     }
 });
 
@@ -996,9 +1015,29 @@ function calculateAngle(p1, p2, p3) {
 
 const state = [];
 let mods = 0;
-canvas.on('object:added', ()=>{saveState(); recordAnnotation(video.currentTime)});
-canvas.on('object:removed', ()=>{saveState(); recordAnnotation(video.currentTime)});
-canvas.on('object:modified', ()=>{saveState(); recordAnnotation(video.currentTime)});
+canvas.on('object:added', () => {
+    if (isInteracting) {
+        saveState();
+        recordAnnotation(video.currentTime);
+    }
+});
+
+canvas.on('object:removed', () => {
+    if (isInteracting) {
+        saveState();
+        recordAnnotation(video.currentTime);
+}
+});
+
+canvas.on('object:modified', () => {
+    if (isInteracting) {
+        saveState();
+        recordAnnotation(video.currentTime);
+    }
+});
+// canvas.on('object:added', ()=>{saveState(); recordAnnotation(video.currentTime)});
+// canvas.on('object:removed', ()=>{saveState(); recordAnnotation(video.currentTime)});
+// canvas.on('object:modified', ()=>{saveState(); recordAnnotation(video.currentTime)});
 
 function saveState() {
     mods += 1;
@@ -1097,18 +1136,21 @@ video.addEventListener('loadedmetadata', () => {
 
 
 video.addEventListener('pause', () => {
+    isInteracting = false;
     canvas.isDrawingMode = true; 
     fabricCanvas.style.pointerEvents = 'none'; 
 });
 
 
 video.addEventListener('play', () => {
+    isInteracting = false;
     canvas.isDrawingMode = false; 
     fabricCanvas.style.pointerEvents = 'none'; 
 });
 
 
 video.addEventListener('timeupdate', () => {
+    isInteracting = false;
     showAnnotationsAtCurrentTime(video.currentTime);
     if (!video.paused) { // Check if the video is playing
         playAudioAnnotationIfExists(video.currentTime);
