@@ -1584,7 +1584,7 @@ function renderAnnotationsForCurrentTime(currentTime) {
 //     });
 // }
 
-function showAnnotationsAtCurrentTime(currentTime) {
+// function showAnnotationsAtCurrentTime(currentTime) {
     // console.log("Show Annotations at Current time");
     // canvas.clear();
     // annotations.forEach((annotation, index) => {
@@ -1630,7 +1630,7 @@ function showAnnotationsAtCurrentTime(currentTime) {
     //         });
     //     }
     // });
-}
+// }
 
 
 function updateTimelineIcon(time) {
