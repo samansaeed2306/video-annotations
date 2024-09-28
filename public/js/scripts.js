@@ -996,11 +996,13 @@ canvas.on('mouse:up', function() {
     isDrawing = false;
     currentShape = null;
     }
-    if (isInteracting) {
+    if (isInteracting && drawingMode !== '') {
         saveState(); // Only save if a real interaction happened
         recordAnnotation(video.currentTime);
-        isInteracting = false; // Reset interaction flag
+       
     }
+    isInteracting = false;
+    drawingMode = '';
 });
 
 function calculateAngle(p1, p2, p3) {
@@ -1151,7 +1153,9 @@ video.addEventListener('play', () => {
 
 video.addEventListener('timeupdate', () => {
     isInteracting = false;
-    showAnnotationsAtCurrentTime(video.currentTime);
+    // removeAnnotationsBeforeTime();
+     renderAnnotationsForCurrentTime(video.currentTime);
+    // showAnnotationsAtCurrentTime(video.currentTime);
     if (!video.paused) { // Check if the video is playing
         playAudioAnnotationIfExists(video.currentTime);
     }
@@ -1519,16 +1523,115 @@ function showAnnotations(annotation,time) {
         });
   
 }
-function showAnnotationsAtCurrentTime(currentTime) {
+// function showAnnotationsAtCurrentTime(currentTime) {
+//     console.log("Show Annotations at Current time");
+//     canvas.clear();
+//     annotations.forEach(annotation => {
+//         if (Math.abs(annotation.time - currentTime) < 0.5 && annotation.type!='audio') { 
+//             canvas.loadFromJSON(annotation.content, () => {
+//                 canvas.renderAll();
+//             });
+//         }
+//     });
+// }
+function renderAnnotationsForCurrentTime(currentTime) {
+    console.log("Rendering annotations for time:", currentTime);
+    
+    // Clear the canvas initially
     canvas.clear();
-    annotations.forEach(annotation => {
-        if (Math.abs(annotation.time - currentTime) < 0.5 && annotation.type!='audio') { 
+    
+    annotations.forEach((annotation, index) => {
+        if (annotation.time <= currentTime && annotation.type !== 'audio') {
+            console.log(`Rendering Annotation ${index + 1} as its time ${annotation.time} <= current time ${currentTime}`);
+
+            // Load annotation content onto the canvas only if it matches the current time or after
             canvas.loadFromJSON(annotation.content, () => {
-                canvas.renderAll();
+                canvas.renderAll(); // Render the canvas after loading
             });
+        } else {
+            console.log(`Skipping Annotation ${index + 1} as its time ${annotation.time} is after the current time ${currentTime}`);
         }
     });
 }
+
+// function removeAnnotationsBeforeTime() {
+//     // Sort annotations by time in chronological order
+//     annotations.sort((a, b) => a.time - b.time);
+
+//     // Iterate over the annotations array
+//     annotations.forEach((currentAnnotation, currentIndex) => {
+//         console.log(`Processing Annotation ${currentIndex + 1} at time ${currentAnnotation.time}`);
+
+//         // Clear the canvas for the current annotation
+//         canvas.clear();
+
+//         // // Iterate through annotations up to the current annotation's time
+//         // annotations.forEach((annotation, index) => {
+//         //     if (annotation.time <= currentAnnotation.time && annotation.type !== 'audio') {
+//         //         console.log(`Rendering Annotation ${index + 1} as its time ${annotation.time} <= current time ${currentAnnotation.time}`);
+
+//         //         // Load annotation content onto the canvas using loadFromJSON
+//         //         canvas.loadFromJSON(annotation.content, () => {
+//         //             canvas.renderAll(); // Render the canvas after loading
+//         //         });
+//         //     } else {
+//         //         console.log(`Skipping Annotation ${index + 1} as its time ${annotation.time} is after the current time ${currentAnnotation.time}`);
+//         //     }
+//         // });
+
+//         // Optional: Save the state after rendering the annotations up to this point
+//         saveState();
+//     });
+// }
+
+function showAnnotationsAtCurrentTime(currentTime) {
+    // console.log("Show Annotations at Current time");
+    // canvas.clear();
+    // annotations.forEach((annotation, index) => {
+    //     console.log(`Annotation ${index + 1}:`);
+    //     console.log(annotation.content);
+    //     console.log("Annotation's time:",annotation.time);
+    //     console.log("Current time:",currentTime);
+    // });
+    // annotations.forEach(annotation => {
+    //     // Check if the annotation's time matches the current time and it's not audio
+    //     if (Math.abs(annotation.time - currentTime) < 0.5 && annotation.type != 'audio') {
+    //         console.log("Found an annotation");
+
+    //         // Parse the annotation content and get all objects
+    //         let objects = JSON.parse(annotation.content).objects;
+
+    //         // Loop through each object and add it to the canvas
+    //         objects.forEach(obj => {
+    //             // Enliven each object (to convert it from plain JSON to a fabric.js object)
+    //             fabric.util.enlivenObjects([obj], function (enlivenedObjects) {
+    //                 enlivenedObjects.forEach(enlivenedObj => {
+    //                     canvas.add(enlivenedObj); // Add the enlivened object to the canvas
+    //                 });
+    //                 canvas.renderAll(); // Render the canvas after adding all objects
+    //             });
+    //         });
+    //     }
+    //     if (Math.abs(annotation.time - currentTime) <= 0.05 && annotation.type != 'audio') {
+    //         console.log("Found an annotation 2");
+
+    //         // Parse the annotation content and get all objects
+    //         let objects = JSON.parse(annotation.content).objects;
+
+    //         // Loop through each object and add it to the canvas
+    //         objects.forEach(obj => {
+    //             // Enliven each object (to convert it from plain JSON to a fabric.js object)
+    //             fabric.util.enlivenObjects([obj], function (enlivenedObjects) {
+    //                 enlivenedObjects.forEach(enlivenedObj => {
+    //                     canvas.add(enlivenedObj); // Add the enlivened object to the canvas
+    //                 });
+    //                 canvas.renderAll(); // Render the canvas after adding all objects
+    //             });
+    //         });
+    //     }
+    // });
+}
+
 
 function updateTimelineIcon(time) {
     const timeline = document.getElementById('timeline');
