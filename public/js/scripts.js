@@ -1376,7 +1376,10 @@ annotations.forEach((annotation, index) => {
         const parsedContent = JSON.parse(annotation.content);
         const annotationType = parsedContent.objects[parsedContent.objects.length - 1].type;
         console.log(annotationType);
-    if(annotationType=='rect'){
+    if(annotationType=='text'){
+            listItem.textContent = `polyline ${formatTime(annotation.time)}`;
+        }    
+    else if(annotationType=='rect'){
         listItem.textContent = `rectangle ${formatTime(annotation.time)}`;
     }
   
