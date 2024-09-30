@@ -7,17 +7,46 @@ let newVideo;
 let newCanvas;
 let newFabricCanvas;
 
+// document.addEventListener('DOMContentLoaded', () => {
+//     const uploadSvg = document.getElementById('upload-svg');
+//     const uploadButton = document.getElementById('upload-button');
+  
+//     uploadSvg.addEventListener('click', () => {
+//       uploadButton.click();
+//     });
+  
+//     uploadButton.addEventListener('change', handleVideoUpload);
+//   });
+  
 document.addEventListener('DOMContentLoaded', () => {
-    const uploadSvg = document.getElementById('upload-svg');
-    const uploadButton = document.getElementById('upload-button');
+  const uploadSvg = document.getElementById('upload-svg');
+  const uploadButton = document.getElementById('upload-button');
+  let uploadedVideoCount = 0; // Counter to track uploaded videos
+  const maxVideoUpload = 1; // Maximum number of videos allowed
   
-    uploadSvg.addEventListener('click', () => {
+  uploadSvg.addEventListener('click', () => {
+    if (uploadedVideoCount < maxVideoUpload) {
       uploadButton.click();
-    });
-  
-    uploadButton.addEventListener('change', handleVideoUpload);
+    } else {
+      alert(`You can only upload a maximum of ${maxVideoUpload} videos.`);
+    }
   });
-  
+
+  uploadButton.addEventListener('change', (event) => {
+    handleVideoUpload(event);
+    
+    if (uploadedVideoCount < maxVideoUpload) {
+      uploadedVideoCount++;
+    }
+
+    if (uploadedVideoCount >= maxVideoUpload) {
+      // Optionally, disable the upload button once the limit is reached
+      uploadSvg.style.pointerEvents = 'none'; // Disable further uploads
+      console.log("Maximum limit reached!")
+    }
+  });
+});
+
   
 
 
