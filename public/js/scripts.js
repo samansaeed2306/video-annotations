@@ -1002,7 +1002,7 @@ canvas.on('mouse:up', function() {
        
     }
     isInteracting = false;
-    drawingMode = '';
+    // drawingMode = '';
 });
 
 function calculateAngle(p1, p2, p3) {
