@@ -1374,7 +1374,7 @@ annotations.forEach((annotation, index) => {
    
     if(annotation.type!= 'audio'){
         const parsedContent = JSON.parse(annotation.content);
-        const annotationType = parsedContent.objects[0].type;
+        const annotationType = parsedContent.objects[parsedContent.objects.length - 1].type;
         console.log(annotationType);
     if(annotationType=='rect'){
         listItem.textContent = `rectangle ${formatTime(annotation.time)}`;
