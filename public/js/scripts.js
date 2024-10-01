@@ -911,6 +911,7 @@ function activateImage() {
 }
 
 function handleImageUpload(event) {
+    isInteracting = true;
     const file = event.target.files[0];
     if (file) {
         const reader = new FileReader();
@@ -941,8 +942,9 @@ function handleImageUpload(event) {
 
        
         reader.readAsDataURL(file);
+        isInteracting = false;
     }
-    isInteracting = false;
+    
 }
 canvas.on('mouse:down', function(options) {
     isInteracting = true;
@@ -951,6 +953,7 @@ canvas.on('mouse:down', function(options) {
     if (drawingMode === 'line') {
         
     }else if (drawingMode === 'polyline') {
+        drawingMode = 'polyline';
         polylinePoints.push({ x: pointer.x, y: pointer.y });
         if (polylinePoints.length > 1) {
             const line = new fabric.Line([
@@ -986,6 +989,9 @@ canvas.on('mouse:move', function(options) {
             x2: pointer.x,
             y2: pointer.y
         });
+    // if(drawingMode === 'polyline'){
+
+    // }
         canvas.renderAll();
     }
 });
@@ -1002,7 +1008,10 @@ canvas.on('mouse:up', function() {
        
     }
     isInteracting = false;
-    // drawingMode = '';
+    if(drawingMode !== 'polyline'){
+        drawingMode = '';
+    }
+    
 });
 
 function calculateAngle(p1, p2, p3) {
@@ -1014,6 +1023,23 @@ function calculateAngle(p1, p2, p3) {
     return Math.abs((angle * 180) / Math.PI); // Convert radians to degrees
 }
 
+function simulateCanvasClick(x, y) {
+    const eventData = {
+        clientX: x,
+        clientY: y,
+        target: canvas.upperCanvasEl, // The canvas element to trigger the event
+    };
+
+    // Simulate mousedown
+    const mouseDownEvent = new MouseEvent('mousedown', eventData);
+    canvas.upperCanvasEl.dispatchEvent(mouseDownEvent);
+
+    // Simulate mouseup
+    const mouseUpEvent = new MouseEvent('mouseup', eventData);
+    canvas.upperCanvasEl.dispatchEvent(mouseUpEvent);
+
+    console.log(`Simulated click at (${x}, ${y}) on the canvas.`);
+}
 
 const state = [];
 let mods = 0;
@@ -1021,7 +1047,9 @@ canvas.on('object:added', () => {
     if (isInteracting) {
         saveState();
         recordAnnotation(video.currentTime);
+        simulateCanvasClick(0, 0);
     }
+    
 });
 
 canvas.on('object:removed', () => {
