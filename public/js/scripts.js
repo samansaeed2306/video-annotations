@@ -1539,23 +1539,91 @@ function showAnnotations(annotation,time) {
 // }
 function renderAnnotationsForCurrentTime(currentTime) {
     console.log("Rendering annotations for time:", currentTime);
-    
-    // Clear the canvas initially
+
+    // Clear the canvas initially, but we will re-add all annotations that are supposed to remain visible
     canvas.clear();
-    
+
+    // Array to keep track of objects that will be added to the canvas
+    let allObjectsToRender = [];
+
+    // Loop through all annotations and render those that need to stay on the canvas
     annotations.forEach((annotation, index) => {
-        if (annotation.time <= currentTime && annotation.type !== 'audio') {
+        if (annotation.type !== 'audio' && annotation.time <= currentTime) {
             console.log(`Rendering Annotation ${index + 1} as its time ${annotation.time} <= current time ${currentTime}`);
 
-            // Load annotation content onto the canvas only if it matches the current time or after
-            canvas.loadFromJSON(annotation.content, () => {
-                canvas.renderAll(); // Render the canvas after loading
+            // Parse the annotation content
+            let parsedContent = JSON.parse(annotation.content);
+
+            // Collect all objects from the annotation
+            parsedContent.objects.forEach(obj => {
+                allObjectsToRender.push(obj); // Add each object to the list of objects to render
             });
         } else {
             console.log(`Skipping Annotation ${index + 1} as its time ${annotation.time} is after the current time ${currentTime}`);
         }
     });
+
+    // Add all objects to the canvas in one go
+    fabric.util.enlivenObjects(allObjectsToRender, function(enlivenedObjects) {
+        enlivenedObjects.forEach(object => {
+            canvas.add(object); // Add each object to the canvas
+        });
+
+        // After adding all objects, render the canvas
+        canvas.renderAll();
+        console.log("Finished rendering annotations.");
+    });
 }
+//Annotation at 3 second will remain till 5 seconds by this
+// function renderAnnotationsForCurrentTime(currentTime) {
+//     console.log("Rendering annotations for time:", currentTime);
+
+//     // Clear the canvas initially
+//     canvas.clear();
+
+//     // Array to hold all annotations that need to be rendered (including those in the past)
+//     let annotationsToRender = [];
+
+//     // First loop to collect annotations that should persist (those before or at the current time)
+//     annotations.forEach((annotation) => {
+//         if (annotation.time <= currentTime && annotation.type !== 'audio') {
+//             annotationsToRender.push(annotation);  // Collect annotations to render
+//         }
+//     });
+
+//     // Now we sort annotations by time to ensure proper rendering order
+//     annotationsToRender.sort((a, b) => a.time - b.time);
+
+//     // Loop through the sorted annotations and render them in sequence
+//     annotationsToRender.forEach((annotation, index) => {
+//         canvas.loadFromJSON(annotation.content, () => {
+//             canvas.renderAll();  // Render each annotation on the canvas in order
+//             console.log(`Rendered annotation ${index + 1} at time ${annotation.time}`);
+//         });
+//     });
+
+//     console.log("Finished rendering annotations.");
+// }
+//annotation at 3 seconds will remove existing annotation at 5 seconds 
+// function renderAnnotationsForCurrentTime(currentTime) {
+//     console.log("Rendering annotations for time:", currentTime);
+    
+//     // Clear the canvas initially
+//     canvas.clear();
+    
+//     annotations.forEach((annotation, index) => {
+//         if (annotation.time <= currentTime && annotation.type !== 'audio') {
+//             console.log(`Rendering Annotation ${index + 1} as its time ${annotation.time} <= current time ${currentTime}`);
+
+//             // Load annotation content onto the canvas only if it matches the current time or after
+//             canvas.loadFromJSON(annotation.content, () => {
+//                 canvas.renderAll(); // Render the canvas after loading
+//             });
+//         } else {
+//             console.log(`Skipping Annotation ${index + 1} as its time ${annotation.time} is after the current time ${currentTime}`);
+//         }
+//     });
+// }
 
 // function removeAnnotationsBeforeTime() {
 //     // Sort annotations by time in chronological order
