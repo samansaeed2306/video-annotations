@@ -1480,6 +1480,7 @@ buttonsContainer.appendChild(saveButton);
 listItem.appendChild(deleteIcon);
 listItem.appendChild(buttonsContainer);
 listItem.addEventListener('click', () => {
+    video.currentTime = annotation.time;
     commentInput.style.display = 'block'; 
     cancelButton.style.marginTop = '5px'; 
     saveButton.style.marginTop = '5px'; 
