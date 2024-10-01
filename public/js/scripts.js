@@ -937,6 +937,17 @@ function activateLineMode() {
     }
     drawingMode = 'line';
     canvas.isDrawingMode = false; 
+    if (selectedMediaType === 'image') {
+        const line = new fabric.Line([50, 50, 200, 200], {
+            left: 160,
+            top: 100,
+            stroke: selectedColor,
+            strokeWidth: 2
+        });
+        canvas.add(line);
+        canvas.setActiveObject(line)
+    }
+    else{
     if(videoAspectRatio<1){
         const line = new fabric.Line([50, 50, 200, 200], {
             left: 100,
@@ -950,13 +961,13 @@ function activateLineMode() {
     else{
         const line = new fabric.Line([50, 50, 200, 200], {
             left: 230,
-            top: 400,
+            top: 200,
             stroke: selectedColor,
             strokeWidth: 2
         });
         canvas.add(line);
         canvas.setActiveObject(line)
-    }
+    }}
     isInteracting = false;
 }
 
