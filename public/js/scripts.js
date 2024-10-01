@@ -1047,7 +1047,12 @@ canvas.on('object:added', () => {
     if (isInteracting) {
         saveState();
         recordAnnotation(video.currentTime);
-        simulateCanvasClick(0, 0);
+        if(drawingMode === 'polyline'){
+            console.log('This is a polyline');
+        }else{
+            simulateCanvasClick(0, 0);
+       }
+        
     }
     
 });
