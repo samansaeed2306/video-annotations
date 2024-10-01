@@ -567,7 +567,22 @@ function activateCircleMode() {
     }
     canvas.isDrawingMode = false;
     drawingMode = 'circle';
-   if(videoAspectRatio<1){
+    if (selectedMediaType === 'image') {
+        const circle = new fabric.Circle({
+            left: 230,
+    
+            top: 170,
+    
+            radius: 30,
+            fill: 'transparent',
+            stroke: selectedColor,
+            strokeWidth: 2
+        });
+        canvas.add(circle).setActiveObject(circle);
+
+    }
+    else{
+    if(videoAspectRatio<1){
     console.log('Oops!! This is portrait circle');
     const circle = new fabric.Circle({
         left: 100,
@@ -586,7 +601,7 @@ function activateCircleMode() {
     const circle = new fabric.Circle({
         left: 230,
 
-        top: 470,
+        top: 270,
 
         radius: 30,
         fill: 'transparent',
@@ -597,7 +612,7 @@ function activateCircleMode() {
    }
    isInteracting = false; 
    
-}
+}}
 function activateRectangleMode() {
     isInteracting = true;
     if (eraserListener) {
@@ -606,6 +621,21 @@ function activateRectangleMode() {
     }
     canvas.isDrawingMode = false;
     drawingMode = 'rectangle';
+    if (selectedMediaType === 'image') {
+        const rect = new fabric.Rect({
+
+            left: 250,
+            top: 170,
+
+            width: 60,
+            height: 60,
+            fill: 'transparent',
+            stroke: selectedColor,
+            strokeWidth: 2
+        });
+        canvas.add(rect).setActiveObject(rect);
+    
+    }else{
     if(videoAspectRatio<1){
         const rect = new fabric.Rect({
 
@@ -623,7 +653,7 @@ function activateRectangleMode() {
         const rect = new fabric.Rect({
 
             left: 250,
-            top: 470,
+            top: 370,
 
             width: 60,
             height: 60,
@@ -632,7 +662,7 @@ function activateRectangleMode() {
             strokeWidth: 2
         });
         canvas.add(rect).setActiveObject(rect);
-    }
+    }}
     isInteracting = false;
 }
 
