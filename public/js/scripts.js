@@ -601,7 +601,7 @@ function activateCircleMode() {
     const circle = new fabric.Circle({
         left: 230,
 
-        top: 270,
+        top: 350,
 
         radius: 30,
         fill: 'transparent',
@@ -706,7 +706,7 @@ function activateTextMode() {
         const text = new fabric.Textbox('Type here', {
 
             left: 250,
-            top: 350,
+            top: 380,
     
             fontSize: 20,
             fontFamily: 'Arial',
@@ -763,7 +763,7 @@ function activateNoteMode() {
         const note = new fabric.Textbox('Note here', {
 
             left: 250,
-            top: 200,
+            top: 380,
     
             fontSize: 14,
             fontFamily: 'Arial',
@@ -961,7 +961,7 @@ function activateLineMode() {
     else{
         const line = new fabric.Line([50, 50, 200, 200], {
             left: 230,
-            top: 200,
+            top: 350,
             stroke: selectedColor,
             strokeWidth: 2
         });
