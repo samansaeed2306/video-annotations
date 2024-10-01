@@ -674,6 +674,20 @@ function activateTextMode() {
     }
     canvas.isDrawingMode = false;
     drawingMode = 'text';
+    if (selectedMediaType === 'image') {
+        const text = new fabric.Textbox('Type here', {
+
+            left: 150,
+            top: 250,
+    
+            fontSize: 20,
+            fontFamily: 'Arial',
+            fill: selectedColor,
+            width: 200
+        });
+        currentColorIndex++;
+        canvas.add(text).setActiveObject(text);
+    }else{
     if(videoAspectRatio<1){
         const text = new fabric.Textbox('Type here', {
 
@@ -692,7 +706,7 @@ function activateTextMode() {
         const text = new fabric.Textbox('Type here', {
 
             left: 250,
-            top: 450,
+            top: 350,
     
             fontSize: 20,
             fontFamily: 'Arial',
@@ -703,7 +717,7 @@ function activateTextMode() {
         canvas.add(text).setActiveObject(text);
     }
     isInteracting = false;
-    
+}
 }
 
 function activateNoteMode() {
@@ -715,6 +729,21 @@ function activateNoteMode() {
     console.log("Activate Note function")
     canvas.isDrawingMode = false;
     drawingMode = 'note';
+    if (selectedMediaType === 'image') {
+        const note = new fabric.Textbox('Note here', {
+
+            left: 150,
+            top: 100,
+    
+            fontSize: 14,
+            fontFamily: 'Arial',
+            fill: selectedColor,
+            backgroundColor: '#ffffcc',
+            width: 200
+        });
+        currentColorIndex++;
+        canvas.add(note).setActiveObject(note);
+    }else{
     if(videoAspectRatio<1){
         const note = new fabric.Textbox('Note here', {
 
@@ -734,7 +763,7 @@ function activateNoteMode() {
         const note = new fabric.Textbox('Note here', {
 
             left: 250,
-            top: 500,
+            top: 200,
     
             fontSize: 14,
             fontFamily: 'Arial',
@@ -744,7 +773,7 @@ function activateNoteMode() {
         });
         currentColorIndex++;
         canvas.add(note).setActiveObject(note);
-    }
+    }}
     isInteracting = false;
    
 }
