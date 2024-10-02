@@ -977,11 +977,12 @@ function activateImage() {
         canvas.off('mouse:down', eraserListener);
         eraserListener = null;  
     }
+    drawingMode = 'image';
     document.getElementById('imageInput').click();
 }
 
 function handleImageUpload(event) {
-    isInteracting = true;
+    // isInteracting = true;
     const file = event.target.files[0];
     if (file) {
         const reader = new FileReader();
@@ -1007,12 +1008,14 @@ function handleImageUpload(event) {
                 canvas.add(img);
                 canvas.centerObject(img);
                 canvas.renderAll();
+                isInteracting = false;
             });
+            
         };
 
        
         reader.readAsDataURL(file);
-        isInteracting = false;
+      //  isInteracting = false;
     }
     
 }
