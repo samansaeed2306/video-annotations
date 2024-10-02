@@ -24,9 +24,13 @@ app.use(cors({
   credentials: true
 }));
 
+app.use(express.static(path.join(__dirname, '../public'), {
+  etag: true,          // Enable ETag generation (enabled by default)
+  maxAge: '1d'         // Cache files for 1 day (adjust as needed)
+}));
 
 // Serve static files from the 'public' directory
-app.use(express.static(path.join(__dirname, '../public')));
+// app.use(express.static(path.join(__dirname, '../public')));
 app.use(express.static(path.join(__dirname, '../public/uploads')));
 
 connectToDb();
