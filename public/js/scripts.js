@@ -1488,6 +1488,16 @@ annotations.forEach((annotation, index) => {
     else if(annotationType=='rect'){
         listItem.textContent = `rectangle ${formatTime(annotation.time)}`;
     }
+    else if(annotationType=='textbox'){
+        const bgcolor = parsedContent.objects[parsedContent.objects.length - 1].backgroundColor;
+        if(bgcolor=='#ffffcc'){
+            listItem.textContent = `note ${formatTime(annotation.time)}`;
+        }
+        else{
+            listItem.textContent = `text box ${formatTime(annotation.time)}`;
+        }
+
+    }
   
     else {
         listItem.textContent = `${annotationType} ${formatTime(annotation.time)}`;
