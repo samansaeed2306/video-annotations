@@ -241,3 +241,28 @@ function refreshImageGallery() {
         })
         .catch(error => console.error('Error fetching media files:', error));
 }
+
+document.getElementById('fileInput').addEventListener('change', simulateUpload);
+document.getElementById('imageFileInput').addEventListener('change', simulateUpload);
+
+function simulateUpload() {
+    document.getElementById('progress-bar').style.display='block';
+    const progressBar = document.getElementById('progress');
+    let progress = 0;
+
+   
+    progressBar.style.width = '0%';
+
+    const interval = setInterval(() => {
+        if (progress < 100) {
+            progress += 10; 
+            progressBar.style.width = progress + '%'; 
+        } else {
+            clearInterval(interval); 
+            alert('Upload complete!');
+            document.getElementById('progress-bar').style.display='none';
+        }
+
+    }, 100); 
+    
+}

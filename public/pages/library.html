@@ -38,6 +38,10 @@
         <div class="panel-selector">
             <button id="videosButton" class="panel-button active">Videos</button>
             <button id="imagesButton" class="panel-button inactive">Images</button>
+            
+        </div>
+        <div id="progress-bar" style="width: 100%; background-color: #f3f3f3; border: 1px solid #ccc; margin-top: 10px; display:none;">
+            <div id="progress" style="width: 0%; height: 5px; background-color: #c13b6f;"></div>
         </div>
         <div id="videosPanel" class="panel active">
             <input type="file" id="fileInput" accept="video/*">
@@ -55,7 +59,7 @@
         <input type="file" id="fileInput" accept="video/*">
         <a href="#" class="load-more" id="loadMore">Upload Video</a> -->
     </main>
-   
+    
       <script src="../js/library.js"></script>
       <script>
         const videosButton = document.getElementById('videosButton');
