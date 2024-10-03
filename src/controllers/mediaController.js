@@ -25,7 +25,7 @@ export async function addMedia(req, res) {
       fileName: filename,
       size: size,
       uploadDate: new Date(),
-      // userId: userId ? new ObjectId(userId) : undefined // Add userId if provided
+      
     };
 
     const createdMedia = await model.createMediaDocument(media);
@@ -34,7 +34,7 @@ export async function addMedia(req, res) {
       media: createdMedia
     });
   } catch (error) {
-    console.error('Error:', error); // Log the error for debugging
+    console.error('Error:', error); 
     res.status(500).json({ error: 'Failed to upload media' });
   }
 }
@@ -53,18 +53,18 @@ export async function getMediaFiles(req, res) {
   const directoryPath = path.join(__dirname, '../../public/uploads/');
 
   try {
-    // Read file names in the 'uploads' folder
+    
     const files = await fs.promises.readdir(directoryPath);
 
-    // Get media metadata from the database
-    const mediaRecords = await model.getAllMedia(); // Assuming this gets media from the database
+    
+    const mediaRecords = await model.getAllMedia(); 
 
-    // Map the files to their original names using the media records from the database
+   
     const fileDetails = files.map(fileName => {
       const media = mediaRecords.find(m => m.fileName === fileName);
       return {
         fileName: fileName,
-        originalName: media ? media.originalName : fileName  // Fall back to fileName if not found
+        originalName: media ? media.originalName : fileName  
       };
     });
 
@@ -101,11 +101,11 @@ export async function deleteMedia(req, res) {
       return res.status(404).json({ error: 'Media not found' });
     }
     
-    // Delete file from the file system
+    
     const filePath = path.join(__dirname, '..', 'uploads', media.fileName);
     fs.unlinkSync(filePath);
 
-    // Delete media document from the database
+   
     await model.deleteMedia(id);
 
     res.status(200).json({ message: 'Media deleted successfully!' });
@@ -114,3 +114,36 @@ export async function deleteMedia(req, res) {
   }
 }
 
+export async function updateMedia(req, res) {
+  try {
+    const { id } = req.params;
+    const { originalName } = req.body; 
+    console.log('Updating media with ID:', req.params.id);
+    console.log('Updated data:', req.body);
+    
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).json({ error: 'Invalid ID format' });
+    }
+
+    
+    const media = await model.getMediaById(id);
+    if (!media) {
+      return res.status(404).json({ error: 'Media not found' });
+    }
+
+    
+    const updatedData = {};
+    if (originalName) updatedData.originalName = originalName;
+    
+    
+    const updatedMedia = await model.updateMedia(id, updatedData);
+
+    res.status(200).json({
+      message: 'Media updated successfully!',
+      media: updatedMedia
+    });
+  } catch (error) {
+    console.error('Error updating media:', error);
+    res.status(500).json({ error: 'Failed to update media' });
+  }
+}
