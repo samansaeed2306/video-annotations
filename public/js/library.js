@@ -145,6 +145,40 @@ function addVideoCard(videoSrc, title) {
     icon.alt = 'Edit';
     editButton.appendChild(icon);
     
+
+    heading.addEventListener('click', function () {
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.value = heading.textContent;
+        heading.style.display= 'none';
+        cardContent.insertBefore(input, editButton);
+
+
+
+        // Handle when the user clicks outside or presses Enter to save the new title
+        input.addEventListener('blur', () => {
+            saveTitle(input.value);
+            cardContent.removeChild(input);
+        });
+
+        input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                saveTitle(input.value);
+                cardContent.removeChild(input);
+            }
+        });
+
+        input.focus(); // Focus on the input field so the user can start typing immediately
+    });
+
+    // Save and update the title
+    function saveTitle(newTitle) {
+        heading.textContent = newTitle;
+        heading.style.display= 'block';
+        // Optionally, store the updated title (e.g., in localStorage or backend)
+        console.log('New title saved:', newTitle);
+    }
+    
     editButton.addEventListener('click', function() {
         localStorage.setItem('selectedMediaType', 'video');
         localStorage.setItem('selectedVideoSrc', videoSrc);
@@ -183,6 +217,39 @@ function addImageCard(imageSrc, title) {
     icon.alt = 'Edit';
     editButton.appendChild(icon);
 
+    heading.addEventListener('click', function () {
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.value = heading.textContent;
+        heading.style.display= 'none';
+        cardContent.insertBefore(input, editButton);
+
+
+
+        // Handle when the user clicks outside or presses Enter to save the new title
+        input.addEventListener('blur', () => {
+            saveimgTitle(input.value);
+            cardContent.removeChild(input);
+        });
+
+        input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                saveimgTitle(input.value);
+                cardContent.removeChild(input);
+            }
+        });
+
+        input.focus(); // Focus on the input field so the user can start typing immediately
+    });
+
+    // Save and update the title
+    function saveimgTitle(newTitle) {
+        heading.textContent = newTitle;
+        heading.style.display= 'block';
+        // Optionally, store the updated title (e.g., in localStorage or backend)
+        console.log('New title saved:', newTitle);
+    }
+    
     editButton.addEventListener('click', function() {
         localStorage.setItem('selectedMediaType', 'image');
         localStorage.setItem('selectedImageSrc', imageSrc);
