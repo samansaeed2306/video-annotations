@@ -35,3 +35,33 @@ export async function deleteMedia(id) {
 
   return await collection.deleteOne({ _id: new ObjectId(id) });
 }
+
+
+export async function updateMedia(id, updatedData) {
+  try {
+    const db = await connectToDb();
+    
+  
+    if (!ObjectId.isValid(id)) {
+      throw new Error('Invalid ID format');
+    }
+
+    const objectId = new ObjectId(id);
+
+   
+    const result = await db.collection('media').findOneAndUpdate(
+      { _id: objectId },
+      { $set: updatedData },
+      { returnDocument: 'after' } 
+    );
+
+    // if (!result.value) {
+    //   throw new Error('Document not found');
+    // }
+
+    return result.value;
+  } catch (error) {
+    console.error('Error updating media:', error);
+    throw error; 
+  }
+}
