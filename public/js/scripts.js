@@ -1245,7 +1245,7 @@ video.addEventListener('loadedmetadata', () => {
 
 video.addEventListener('pause', () => {
     isInteracting = false;
-    canvas.isDrawingMode = true; 
+    //canvas.isDrawingMode = true; 
     fabricCanvas.style.pointerEvents = 'none'; 
 });
 
