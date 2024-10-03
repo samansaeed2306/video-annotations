@@ -195,6 +195,26 @@ function setupTimeline(video) {
             console.log(`Clicked on tick at ${i} seconds.`);
             video.currentTime = i;
         });
+
+        tick2.addEventListener('mousedown', (event) => {
+            event.preventDefault();
+
+            const startDraggingTick = (e) => {
+                const rect = timeline.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const percentage = (x / rect.width) * 100;
+                const newTime = (percentage / 100) * duration;
+                video.currentTime = Math.min(Math.max(newTime, 0), duration);
+            };
+
+            const stopDraggingTick = () => {
+                document.removeEventListener('mousemove', startDraggingTick);
+                document.removeEventListener('mouseup', stopDraggingTick);
+            };
+
+            document.addEventListener('mousemove', startDraggingTick);
+            document.addEventListener('mouseup', stopDraggingTick);
+        });
     }
 
     
