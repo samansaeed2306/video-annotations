@@ -27,7 +27,10 @@ router.get('/getmediafiles', (req, res, next) => {
 router.get('/getall', controller.getAllMedia);
 router.get('/getmediabyid/:id', controller.getMediaById);
 // router.delete('/:id', controller.deleteMedia);
-router.put('/update/:id', controller.updateMedia);
+router.put('/update/:id', (req,res,next) =>{
+  console.log("Request made to /update/:id");
+  next(); 
+},controller.updateMedia);
 
 
 export default router;
