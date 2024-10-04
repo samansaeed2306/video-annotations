@@ -177,6 +177,38 @@ function addVideoCard(videoSrc, title) {
         heading.style.display= 'block';
         // Optionally, store the updated title (e.g., in localStorage or backend)
         console.log('New title saved:', newTitle);
+
+
+        fetch(`${apiUrl}/getall`)
+        .then(response => response.json())
+        .then(files => {
+            // Find the media object based on the video source (filename)
+            const media = files.find(file => file.fileName === videoSrc.split('/').pop());
+
+            if (media) {
+                const mediaId = media._id; // Assuming _id is the field that stores the media ID
+
+                // Prepare the payload to update the media title
+                const payload = { title: newTitle };
+
+                // Send update request to the server
+                fetch(`${apiUrl}/update/${mediaId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Media updated successfully:', data);
+                })
+                .catch(error => console.error('Error updating media:', error));
+            } else {
+                console.error('Media not found with the given filename.');
+            }
+        })
+        .catch(error => console.error('Error fetching media files:', error));
     }
     
     editButton.addEventListener('click', function() {
