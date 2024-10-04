@@ -119,7 +119,7 @@ export async function updateMedia(req, res) {
     const { id } = req.params;
     const { originalName } = req.body; 
     console.log('Updating media with ID:', req.params.id);
-    console.log('Updated data:', req.body);
+    console.log('Updated data body:', req.body);
     
     if (!ObjectId.isValid(id)) {
       return res.status(400).json({ error: 'Invalid ID format' });
