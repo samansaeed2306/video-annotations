@@ -158,40 +158,44 @@ function addVideoCard(videoSrc, title) {
         // Handle when the user clicks outside or presses Enter to save the new title
         input.addEventListener('blur', () => {
             saveTitle(input.value);
-            cardContent.removeChild(input);
+            if (input.parentNode) {  
+                cardContent.removeChild(input);
+            }
         });
 
         input.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 saveTitle(input.value);
-                cardContent.removeChild(input);
+                if (input.parentNode) {  
+                    cardContent.removeChild(input);
+                }
             }
         });
 
-        input.focus(); // Focus on the input field so the user can start typing immediately
+        input.focus(); 
     });
 
-    // Save and update the title
+   
     function saveTitle(newTitle) {
         heading.textContent = newTitle;
         heading.style.display= 'block';
-        // Optionally, store the updated title (e.g., in localStorage or backend)
+        
         console.log('New title saved:', newTitle);
 
 
         fetch(`${apiUrl}/getall`)
         .then(response => response.json())
         .then(files => {
-            // Find the media object based on the video source (filename)
+            
             const media = files.find(file => file.fileName === videoSrc.split('/').pop());
 
             if (media) {
-                const mediaId = media._id; // Assuming _id is the field that stores the media ID
+                const mediaId = media._id;
 
-                // Prepare the payload to update the media title
+              
                 const payload = { originalName: newTitle };
 
-                // Send update request to the server
+               
                 fetch(`${apiUrl}/update/${mediaId}`, {
                     method: 'PUT',
                     headers: {
@@ -252,6 +256,7 @@ function addImageCard(imageSrc, title) {
 
     heading.addEventListener('click', function () {
         const input = document.createElement('input');
+        input.id = 'titleInput'; 
         input.type = 'text';
         input.value = heading.textContent;
         heading.style.display= 'none';
@@ -259,7 +264,7 @@ function addImageCard(imageSrc, title) {
 
 
 
-        // Handle when the user clicks outside or presses Enter to save the new title
+      
         input.addEventListener('blur', () => {
             saveimgTitle(input.value);
             cardContent.removeChild(input);
@@ -272,15 +277,47 @@ function addImageCard(imageSrc, title) {
             }
         });
 
-        input.focus(); // Focus on the input field so the user can start typing immediately
+        input.focus(); 
     });
 
-    // Save and update the title
+    
     function saveimgTitle(newTitle) {
         heading.textContent = newTitle;
         heading.style.display= 'block';
-        // Optionally, store the updated title (e.g., in localStorage or backend)
-        console.log('New title saved:', newTitle);
+     
+        console.log('New title saved image:', newTitle);
+
+        fetch(`${apiUrl}/getall`)
+        .then(response => response.json())
+        .then(files => {
+            
+            const media = files.find(file => file.fileName === imageSrc.split('/').pop());
+
+            if (media) {
+                const mediaId = media._id;
+
+              
+                const payload = { originalName: newTitle };
+
+               
+                fetch(`${apiUrl}/update/${mediaId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Media id (frontend):', mediaId);
+                    console.log('Media updated successfully (frontend):', data);
+                })
+                .catch(error => console.error('Error updating media:', error));
+            } else {
+                console.error('Media not found with the given filename.');
+            }
+        })
+        .catch(error => console.error('Error fetching media files:', error));
     }
     
     editButton.addEventListener('click', function() {
@@ -297,7 +334,7 @@ function addImageCard(imageSrc, title) {
     imageGallery.appendChild(card);
 }
 document.getElementById("backtoindex").addEventListener("click", function() {
-    window.location.href = "../index.html"; // Redirect to index.html
+    window.location.href = "../index.html"; 
 });
 // // Example calls
 
@@ -365,4 +402,11 @@ function simulateUpload() {
 
     }, 100); 
     
+}
+
+function removeInput() {
+    const inputElement = document.getElementById('titleInput');
+    if (inputElement) {
+        cardContent.removeChild(inputElement);
+    }
 }
