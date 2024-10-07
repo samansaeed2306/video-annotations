@@ -189,7 +189,7 @@ function addVideoCard(videoSrc, title) {
                 const mediaId = media._id; // Assuming _id is the field that stores the media ID
 
                 // Prepare the payload to update the media title
-                const payload = { title: newTitle };
+                const payload = { originalName: newTitle };
 
                 // Send update request to the server
                 fetch(`${apiUrl}/update/${mediaId}`, {
@@ -201,7 +201,8 @@ function addVideoCard(videoSrc, title) {
                 })
                 .then(response => response.json())
                 .then(data => {
-                    console.log('Media updated successfully:', data);
+                    console.log('Media id (frontend):', mediaId);
+                    console.log('Media updated successfully (frontend):', data);
                 })
                 .catch(error => console.error('Error updating media:', error));
             } else {
