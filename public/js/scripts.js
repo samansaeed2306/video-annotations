@@ -92,8 +92,25 @@ window.onload = () => {
 
             console.log("Video Container after insertion:", videoContainer);
         }
-    } else {
+    } 
+    else {
         mediaElement = document.getElementById('video');
+        console.log("This is a video element")
+        // video.onload = () => {
+        //     console.log('Video has been successfully loaded');
+        //     const aspectRatio = video.naturalWidth / video.naturalHeight;
+        //     console.log(`Video Aspect Ratio: ${aspectRatio.toFixed(2)} (Width: ${video.naturalWidth}, Height: ${video.naturalHeight})`);
+
+        //     fabricCanvas.width = video.clientWidth;
+        //     fabricCanvas.height = video.clientHeight;
+        //     canvas.setWidth(video.clientWidth);
+        //     canvas.setHeight(video.clientHeight);
+
+        //     console.log(`Canvas resized to: ${video.clientWidth}x${video.clientHeight}`);
+        // };
+        // video.onerror = (e) => {
+        //     console.error('Failed to load video', e);
+        // };
         
     }
 
@@ -1207,7 +1224,7 @@ video.addEventListener('loadedmetadata', () => {
     canvas.setHeight(video.clientHeight);
     videoAspectRatio = video.videoWidth / video.videoHeight;
     console.log(`Video Aspect Ratio: ${video.videoWidth}/${video.videoHeight}`);
-
+    if (window.innerWidth > 520) {
     if (videoAspectRatio < 1) {
         console.log("This is a portrait video.");
         //resetCanvasStyles();
@@ -1252,7 +1269,7 @@ video.addEventListener('loadedmetadata', () => {
         // canvas.setWidth(video.clientWidth);
         // canvas.setHeight(video.clientHeight);
         toggleZoom();
-    }
+    }}
     console.log('Video Aspect Ratio Recorded: ',videoAspectRatio);
     if (videoAspectRatio < 1) {
         console.log("Hello");
