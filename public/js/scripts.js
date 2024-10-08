@@ -1180,6 +1180,38 @@ canvas.on('object:modified', () => {
         recordAnnotation(video.currentTime);
     }
 });
+
+canvas.on('text:changed', function(e) {
+    let changedObject = e.target;
+    if (changedObject && changedObject.type === 'textbox') {
+        let time = video.currentTime; // Use the current video time
+        let annotationIndex = annotations.findIndex(ann => Math.floor(ann.time) === Math.floor(time));
+        
+        if (annotationIndex !== -1) {
+            // Parse the existing content
+            let annotationContent = JSON.parse(annotations[annotationIndex].content);
+            
+            // Find the textbox in the parsed content and update it
+            annotationContent.objects = annotationContent.objects.map(obj => {
+                if (obj.type === 'textbox' && obj.left === changedObject.left && obj.top === changedObject.top) {
+                    return {
+                        ...obj,
+                        text: changedObject.text
+                    };
+                }
+                return obj;
+            });
+            
+            // Update the annotation content
+            annotations[annotationIndex].content = JSON.stringify(annotationContent);
+            
+            // Save the updated state
+            saveState();
+            
+            console.log('Text annotation updated:', annotations[annotationIndex]);
+        }
+    }
+});
 // canvas.on('object:added', ()=>{saveState(); recordAnnotation(video.currentTime)});
 // canvas.on('object:removed', ()=>{saveState(); recordAnnotation(video.currentTime)});
 // canvas.on('object:modified', ()=>{saveState(); recordAnnotation(video.currentTime)});
