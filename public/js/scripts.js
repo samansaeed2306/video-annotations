@@ -1530,6 +1530,15 @@ removePointerForPencilIcon(removeTime);
     updateAnnotationsList();
     updateTimelineIcons();
 }
+function toggleClearAllIcon() {
+    const clearAllIcon = document.getElementById('clear-all');
+    
+    if (annotations.length > 0) {
+        clearAllIcon.style.display = 'block'; 
+    } else {
+        clearAllIcon.style.display = 'none'; 
+    }
+}
 function updateAnnotationsList() {
 annotations = Array.from(new Set(annotations.map(a => a.time))).map(time => annotations.find(a => a.time === time));
 
@@ -1683,7 +1692,7 @@ listItem.addEventListener('click', () => {
     console.log('Skipping empty annotation:', annotation);
 }});
     console.log('Inside list update 2:', annotations);
-
+    toggleClearAllIcon();
 }
 
 
@@ -1712,6 +1721,15 @@ function showAnnotations(annotation,time) {
         });
   
 }
+const clearAllIcon = document.getElementById('clear-all');
+clearAllIcon.addEventListener('click', function() {
+    annotations = [];
+    
+    updateAnnotationsList();
+    updateTimelineIcons();
+
+    console.log('All annotations have been cleared.');
+});
 // function showAnnotationsAtCurrentTime(currentTime) {
 //     console.log("Show Annotations at Current time");
 //     canvas.clear();

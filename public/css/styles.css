@@ -278,6 +278,25 @@ video,#media-element {
     margin-left: 5px;
 
 }
+
+#Annotations-heading {
+    display: flex;
+    align-items: center; 
+}
+
+#Annotations-heading h3 {
+    margin-right: 30px; 
+}
+
+#Annotations-heading svg {
+    cursor: pointer; 
+    
+}
+#clear-all{
+    margin-top: 20px;
+}
+
+
 #timeline-wrapper {
   
     position: relative;
