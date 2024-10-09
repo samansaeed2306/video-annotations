@@ -1177,10 +1177,30 @@ canvas.on('object:removed', () => {
 canvas.on('object:modified', () => {
     if (isInteracting) {
         saveState();
-        recordAnnotation(video.currentTime);
+        //recordAnnotation(video.currentTime);
+        
     }
 });
+canvas.on('object:modified', updateAnnotation);
+canvas.on('object:moving', updateAnnotation);
+canvas.on('object:scaling', updateAnnotation);
+canvas.on('object:rotating', updateAnnotation);
 
+function updateAnnotation(e) {
+    const obj = e.target;
+    const currentTime = Math.floor(video.currentTime);
+    
+    const annotationIndex = annotations.findIndex(ann => 
+        Math.floor(ann.time) === currentTime
+    );
+
+    if (annotationIndex !== -1) {
+        annotations[annotationIndex].content = JSON.stringify(canvas);
+        updateAnnotationsList();
+    }
+
+    canvas.renderAll();
+}
 canvas.on('text:changed', function(e) {
     let changedObject = e.target;
     if (changedObject && changedObject.type === 'textbox') {
