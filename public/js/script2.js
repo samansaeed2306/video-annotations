@@ -157,3 +157,15 @@ document.addEventListener('DOMContentLoaded', (event) => {
         }
     }
 });
+
+
+function showConfirmModal() {
+    document.getElementById('modalOverlay').style.display = 'block';
+    document.getElementById('confirmModal').style.display = 'block';
+  }
+
+  function closeModal() {
+    document.getElementById('modalOverlay').style.display = 'none';
+    document.getElementById('confirmModal').style.display = 'none';
+  }
+

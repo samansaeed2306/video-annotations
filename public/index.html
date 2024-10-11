@@ -259,11 +259,16 @@
 </div> -->
 <div id="color-picker-container"></div>
 <!-- <p>Selected Color: <span id="selected-color">None</span></p> -->
-
+<div id="modalOverlay" style="display: none;"></div>
+<div id="confirmModal" style="display: none;">
+  <p>Are you sure you want to clear all annotations?</p>
+  <button class="modal-button" onclick="clearAll()">Yes</button>
+  <button class="modal-button" onclick="closeModal()">No</button>
+</div>
 
 <div class="bottom-right-sidebar">
     <!-- <button ><img src="icons/delete2.png" alt="Delete"></button> -->
-    <button ><svg version="1.1" id="clear" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="15px" height="17px" viewBox="0 0 111.16 122.88" style="enable-background:new 0 0 111.16 122.88;" xml:space="preserve">
+    <button onclick="showConfirmModal()"><svg version="1.1" id="clear" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="15px" height="17px" viewBox="0 0 111.16 122.88" style="enable-background:new 0 0 111.16 122.88;" xml:space="preserve">
         <title>Clear all annotations</title>
         <style type="text/css">
           .st0 { fill-rule:evenodd; clip-rule:evenodd; fill: white; }
