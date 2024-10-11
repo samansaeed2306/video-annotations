@@ -1741,6 +1741,22 @@ function showAnnotations(annotation,time) {
         });
   
 }
+function confirmClearAll() {
+    if (confirm("Are you sure you want to clear all annotations?")) {
+      clearAll();
+    }
+  }
+
+  function clearAll() {
+    annotations = [];
+    
+    updateAnnotationsList();
+    updateTimelineIcons();
+
+    console.log('All annotations have been cleared.');
+    closeModal();
+
+  }
 const clearAllIcon = document.getElementById('clear-all');
 clearAllIcon.addEventListener('click', function() {
     annotations = [];
