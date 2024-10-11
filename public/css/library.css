@@ -74,7 +74,7 @@ body {
     width: 200px;
     margin: 20px auto;
     padding: 10px;
-    background-color: #ea4c89; /* Vibrant button color */
+    background-color: #a88732; /* Vibrant button color */
     color: #ffffff;
     text-align: center;
     text-decoration: none;
@@ -84,7 +84,7 @@ body {
 }
 
 .load-more:hover {
-    background-color: #c13b6f; /* Darker hover state */
+    background-color: #a88732; /* Darker hover state */
 }
 
 #fileInput {
@@ -125,7 +125,7 @@ nav {
     align-items: center;
     font-size: 1.2rem;
     font-weight: bold;
-    color: #ea4c89; /* Highlight color */
+    color: #a88732; /* Highlight color */
     margin-bottom: 0.5rem;
 }
 
@@ -144,7 +144,7 @@ nav {
 }
 
 .nav-links a:hover {
-    color: #ea4c89; /* Highlight color on hover */
+    color: #a88732; /* Highlight color on hover */
 }
 
 main {
@@ -178,8 +178,8 @@ h1 {
 
 .panel-button.active {
     font-weight: bold;
-    border-bottom: 2px solid #ea4c89; /* Active color */
-    color: #ea4c89;
+    border-bottom: 2px solid #a88732; /* Active color */
+    color: #a88732;
 }
 
 .panel-button.inactive {
@@ -223,13 +223,13 @@ form button {
     border-radius: 4px;
     border: none;
     margin-left: 10px;
-    background-color: #ea4c89; /* Same accent color */
+    background-color: #a88732; /* Same accent color */
     color: white;
     cursor: pointer;
 }
 
 form button:hover {
-    background-color: #c13b6f;
+    background-color: #a88732;
 }
 
 
