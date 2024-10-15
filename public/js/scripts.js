@@ -505,7 +505,8 @@ canvas.forEachObject(obj => {
 annotations.forEach(ann => {
     if (Math.floor(ann.time) === newTime) {
         canvas.loadFromJSON(ann.content, () => {
-            canvas.renderAll();
+            // canvas.renderAll();
+            canvas.requestRenderAll();
         });
     }
 });
@@ -882,7 +883,8 @@ function useEraser() {
                 updateTimelineIcons();
             });
            
-            canvas.renderAll();
+            // canvas.renderAll();
+            canvas.requestRenderAll();
             console.log(`Removed ${objectsToRemove.size} objects`);
         } else {
             console.log("No object found under the pointer.");
@@ -1047,7 +1049,8 @@ function handleImageUpload(event) {
                 
                 canvas.add(img);
                 canvas.centerObject(img);
-                canvas.renderAll();
+                // canvas.renderAll();
+                canvas.requestRenderAll();
                 isInteracting = false;
             });
             
@@ -1105,7 +1108,8 @@ canvas.on('mouse:move', function(options) {
     // if(drawingMode === 'polyline'){
 
     // }
-        canvas.renderAll();
+        // canvas.renderAll();
+        canvas.requestRenderAll();
     }
 });
 
@@ -1202,7 +1206,8 @@ function updateAnnotation(e) {
         updateAnnotationsList();
     }
 
-    canvas.renderAll();
+    // canvas.renderAll();
+    canvas.requestRenderAll();
 }
 canvas.on('text:changed', function(e) {
     let changedObject = e.target;
@@ -1253,7 +1258,8 @@ function undo() {
     if (mods > 0) {
         mods -= 1;
         canvas.loadFromJSON(state[mods]);
-        canvas.renderAll();
+        // canvas.renderAll();
+        canvas.requestRenderAll();
     }
 }
 
@@ -1261,7 +1267,8 @@ function redo() {
     if (mods < state.length - 1) {
         mods += 1;
         canvas.loadFromJSON(state[mods]);
-        canvas.renderAll();
+        // canvas.renderAll();
+        canvas.requestRenderAll();
     }
 }
 
@@ -1503,7 +1510,8 @@ function displayOnCanvas(annotation, startTime, endTime) {
         if (currentTime >= startTime && currentTime <= endTime) {
             canvas.clear();
             canvas.loadFromJSON(annotation.content, () => {
-                canvas.renderAll();
+                // canvas.renderAll();
+                canvas.requestRenderAll();
             });
         } else {
            
@@ -1723,7 +1731,8 @@ function loadAnnotation(index) {
     const annotation = annotations[index];
     video.currentTime = annotation.time;
     canvas.loadFromJSON(annotation.content, () => {
-        canvas.renderAll();
+        // canvas.renderAll();
+        canvas.requestRenderAll();
     });
 }
 function showAnnotations(annotation,time) {
@@ -1739,7 +1748,8 @@ function showAnnotations(annotation,time) {
             console.log('Annotation content:', annotation.content);
 
             console.log('Loading content')
-            canvas.renderAll();
+            // canvas.renderAll();
+            canvas.requestRenderAll();
             console.log('Loaded')
         });
   
@@ -1813,7 +1823,8 @@ function renderAnnotationsForCurrentTime(currentTime) {
         });
 
         // After adding all objects, render the canvas
-        canvas.renderAll();
+        // canvas.renderAll();
+        canvas.requestRenderAll();
         console.log("Finished rendering annotations.");
     });
 }
@@ -2268,7 +2279,7 @@ async function captureScreenshot(video, canvas, timestamp, annotations) {
                 console.log('Annotation time',annotation.time);
                 
                 canvas.clear();
-                canvas.loadFromJSON(annotation.content, canvas.renderAll.bind(canvas));
+                canvas.loadFromJSON(annotation.content, canvas.requestRenderAll.bind(canvas));
                 
                
                 const canvasElement = canvas.getElement();
