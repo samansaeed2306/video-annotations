@@ -169,3 +169,7 @@ function showConfirmModal() {
     document.getElementById('confirmModal').style.display = 'none';
   }
 
+  function isMobileDevice() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+        || (navigator.maxTouchPoints && navigator.maxTouchPoints > 2);
+}
