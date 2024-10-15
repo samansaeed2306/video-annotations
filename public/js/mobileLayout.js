@@ -121,6 +121,11 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 document.getElementById('save-button-mobile').addEventListener('click', function() {
+    if (isMobileDevice()) {
+        console.log('Mobile device found');
+    }else{
+        console.log('Mobile device not found');
+    }
     handleSaveButtonClick(this);  
 });
 
