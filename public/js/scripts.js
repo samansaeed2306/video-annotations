@@ -450,10 +450,13 @@ document.addEventListener('DOMContentLoaded', function() {
     
     
 
-    video.addEventListener('timeupdate', function() {
+    // video.addEventListener('timeupdate', function() {
+    //     currentTimeInput.value = formatTime(video.currentTime);
+    // });
+    video.addEventListener('timeupdate', debounce(function() {
         currentTimeInput.value = formatTime(video.currentTime);
-    });
-
+    }, 200));
+    
     video.addEventListener('loadedmetadata', function() {
         totalTimeSpan.textContent = ` / ${formatTime(video.duration)}`;
     });
