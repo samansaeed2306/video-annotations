@@ -2698,12 +2698,12 @@ timeInput.addEventListener('change', () => {
 });
 
 // Optional: Update input field when video current time changes
-// video.addEventListener('timeupdate', () => {
-//     timeInput.value = secondsToTimeString(video.currentTime);
-// });
-video.addEventListener('timeupdate', debounce(() => {
+video.addEventListener('timeupdate', () => {
     timeInput.value = secondsToTimeString(video.currentTime);
-}, 200));
+});
+// video.addEventListener('timeupdate', debounce(() => {
+//     timeInput.value = secondsToTimeString(video.currentTime);
+// }, 200));
 
 function updatePencilColor(svgMarkup, selectedColor) {
     // Set the default color to blue if no color is provided
