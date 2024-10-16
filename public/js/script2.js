@@ -174,14 +174,10 @@ function showConfirmModal() {
         || (navigator.maxTouchPoints && navigator.maxTouchPoints > 2);
 }
 
-function debounce(func, wait) {
+function debounce(func, delay) {
     let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
+    return function(...args) {
         clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
+        timeout = setTimeout(() => func.apply(this, args), delay);
     };
 }
