@@ -264,7 +264,8 @@ function setupTimeline(video) {
         });
     }
 
-    video.addEventListener('timeupdate', updatePointerAndTicks);
+    //video.addEventListener('timeupdate', updatePointerAndTicks);
+    video.addEventListener('timeupdate', debounce(updatePointerAndTicks, 200));
 
    
     pointer2.addEventListener('mousedown', (e) => {
