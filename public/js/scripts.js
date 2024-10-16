@@ -1515,19 +1515,16 @@ function updateAnnotationDuration(startTime, endTime, duration) {
 }
 
 function displayOnCanvas(annotation, startTime, endTime) {
-    video.addEventListener('timeupdate', () => {
+    video.addEventListener('timeupdate', debounce(() => {
         const currentTime = video.currentTime;
         if (currentTime >= startTime && currentTime <= endTime) {
             canvas.clear();
             canvas.loadFromJSON(annotation.content, () => {
-                // canvas.renderAll();
                 canvas.requestRenderAll();
             });
-        } else {
-           
-           // canvas.clear();
         }
-    });
+    }, 200)
+    );
 }
 
 function handleTimeUpdate() {
@@ -2701,10 +2698,12 @@ timeInput.addEventListener('change', () => {
 });
 
 // Optional: Update input field when video current time changes
-video.addEventListener('timeupdate', () => {
+// video.addEventListener('timeupdate', () => {
+//     timeInput.value = secondsToTimeString(video.currentTime);
+// });
+video.addEventListener('timeupdate', debounce(() => {
     timeInput.value = secondsToTimeString(video.currentTime);
-});
-
+}, 200));
 
 function updatePencilColor(svgMarkup, selectedColor) {
     // Set the default color to blue if no color is provided
