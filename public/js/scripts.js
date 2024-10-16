@@ -1360,22 +1360,22 @@ video.addEventListener('play', () => {
 });
 
 
-// video.addEventListener('timeupdate', () => {
-//     isInteracting = false;
-//     // removeAnnotationsBeforeTime();
-//      renderAnnotationsForCurrentTime(video.currentTime);
-//     // showAnnotationsAtCurrentTime(video.currentTime);
-//     if (!video.paused) { // Check if the video is playing
-//         playAudioAnnotationIfExists(video.currentTime);
-//     }
-// });
-video.addEventListener('timeupdate', debounce(() => {
+video.addEventListener('timeupdate', () => {
     isInteracting = false;
-    renderAnnotationsForCurrentTime(video.currentTime);
-    if (!video.paused) {
+    // removeAnnotationsBeforeTime();
+     renderAnnotationsForCurrentTime(video.currentTime);
+    // showAnnotationsAtCurrentTime(video.currentTime);
+    if (!video.paused) { // Check if the video is playing
         playAudioAnnotationIfExists(video.currentTime);
     }
-}, 200));
+});
+// video.addEventListener('timeupdate', debounce(() => {
+//     isInteracting = false;
+//     renderAnnotationsForCurrentTime(video.currentTime);
+//     if (!video.paused) {
+//         playAudioAnnotationIfExists(video.currentTime);
+//     }
+// }, 200));
 
 function recordAnnotation(time) {
     if(video.paused){
