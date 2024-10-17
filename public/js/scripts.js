@@ -518,7 +518,8 @@ function view() {
 
     // Set the innerHTML of the div to your SVG
     exitDiv.innerHTML = `
-        <svg height="40px" width="40px" viewBox="0 0 304.588 304.588" xmlns="http://www.w3.org/2000/svg">
+        <svg height="20px" width="20px" viewBox="0 0 304.588 304.588" xmlns="http://www.w3.org/2000/svg">
+        <title>Back to Annotate mode</title>
             <g>
                 <g>
                     <g>
