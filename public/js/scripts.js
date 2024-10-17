@@ -1867,6 +1867,7 @@ clearAllIcon.addEventListener('click', function() {
     updateTimelineIcons();
 
     console.log('All annotations have been cleared.');
+    renderAnnotationsForCurrentTime(video.currentTime);
 });
 // function showAnnotationsAtCurrentTime(currentTime) {
 //     console.log("Show Annotations at Current time");
