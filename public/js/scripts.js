@@ -509,26 +509,42 @@ function view() {
     toolsDiv.style.display = 'none'; 
 
     
-    const exitButton = document.createElement('button');
-    exitButton.id = 'exit-view-mode';
-    exitButton.innerHTML = 'Exit View Mode';
-    exitButton.style.position = 'absolute';
-    exitButton.style.top = '10px';
-    exitButton.style.left = '10px';
-    exitButton.style.zIndex = '1000';
+    const exitDiv = document.createElement('div');
+    exitDiv.id = 'exit-view-mode';
+    exitDiv.style.position = 'absolute';
+    exitDiv.style.top = '10px';
+    exitDiv.style.left = '10px';
+    exitDiv.style.zIndex = '1000';
+
+    // Set the innerHTML of the div to your SVG
+    exitDiv.innerHTML = `
+        <svg height="40px" width="40px" viewBox="0 0 304.588 304.588" xmlns="http://www.w3.org/2000/svg">
+            <g>
+                <g>
+                    <g>
+                        <polygon style="fill:#010002;" points="134.921,34.204 134.921,54.399 284.398,54.399 284.398,250.183 134.921,250.183 
+                            134.921,270.384 304.588,270.384 304.588,34.204 "/>
+                    </g>
+                    <g>
+                        <polygon style="fill:#010002;" points="150.27,223.581 166.615,239.931 254.26,152.286 166.615,64.651 150.27,80.979 
+                            210.013,140.733 0,140.733 0,163.838 210.008,163.838 "/>
+                    </g>
+                </g>
+            </g>
+        </svg>`;
 
    
-    document.body.appendChild(exitButton);
+    document.body.appendChild(exitDiv);
 
    
-    exitButton.addEventListener('click', () => {
+    exitDiv.addEventListener('click', () => {
         
         document.querySelectorAll('button').forEach(button => {
             button.disabled = false;
         });
 
        
-        document.body.removeChild(exitButton);
+        document.body.removeChild(exitDiv);
 
        
         video.pause();
