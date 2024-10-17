@@ -414,8 +414,62 @@ function formatTime(seconds) {
     return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
 }
 
-function view() {
+// function view() {
    
+//     const buttons = document.querySelectorAll('button');
+//     buttons.forEach(button => {
+//         button.disabled = true;
+//     });
+
+//     const playIcon = document.getElementById('play-icon');
+//     const pauseIcon = document.getElementById('pause-icon');
+    
+//     video.currentTime=0;
+//     video.play();
+
+//     playIcon.style.display = 'none';
+//     pauseIcon.style.display = 'block';
+
+
+//     video.onended = function() {
+//         playIcon.style.display = 'block';
+//         pauseIcon.style.display = 'none';
+//     };
+
+//     const toolsDiv = document.querySelector('.tools');
+//     toolsDiv.style.display = 'none'; 
+
+//     const exitButton = document.createElement('button');
+//     exitButton.id = 'exit-view-mode';
+//     exitButton.innerHTML = 'Exit View Mode';
+//     exitButton.style.position = 'absolute';
+//     exitButton.style.top = '10px';
+//     exitButton.style.left = '10px';
+//     exitButton.style.zIndex = '1000';  // Make sure it stays above other elements
+
+//     // Add exit button to the body
+//     document.body.appendChild(exitButton);
+
+//     exitButton.addEventListener('click', () => {
+//         // Re-enable all the buttons
+//         document.querySelectorAll('button').forEach(button => {
+//             button.disabled = false;
+//         });
+//         // Remove the exit button
+//        // document.body.removeChild(exitButton);
+//         // Pause the video
+//         video.pause();
+
+//         // Show the tools div again
+//         toolsDiv.style.display = 'block';
+
+        
+//     });
+   
+
+// }
+
+function view() {
     const buttons = document.querySelectorAll('button');
     buttons.forEach(button => {
         button.disabled = true;
@@ -424,8 +478,9 @@ function view() {
     const playIcon = document.getElementById('play-icon');
     const pauseIcon = document.getElementById('pause-icon');
     
-    video.currentTime=0;
+    video.currentTime = 0;
     video.play();
+
     playIcon.style.display = 'none';
     pauseIcon.style.display = 'block';
 
@@ -433,8 +488,55 @@ function view() {
         playIcon.style.display = 'block';
         pauseIcon.style.display = 'none';
     };
-   
 
+   
+    const toolsDiv = document.querySelector('.tools');
+
+   
+    const toolsStyles = {
+        display: toolsDiv.style.display,
+        position: toolsDiv.style.position,
+        top: toolsDiv.style.top,
+        left: toolsDiv.style.left,
+        right: toolsDiv.style.right,
+        bottom: toolsDiv.style.bottom,
+        width: toolsDiv.style.width,
+        height: toolsDiv.style.height,
+        zIndex: toolsDiv.style.zIndex
+    };
+
+    
+    toolsDiv.style.display = 'none'; 
+
+    
+    const exitButton = document.createElement('button');
+    exitButton.id = 'exit-view-mode';
+    exitButton.innerHTML = 'Exit View Mode';
+    exitButton.style.position = 'absolute';
+    exitButton.style.top = '10px';
+    exitButton.style.left = '10px';
+    exitButton.style.zIndex = '1000';
+
+   
+    document.body.appendChild(exitButton);
+
+   
+    exitButton.addEventListener('click', () => {
+        
+        document.querySelectorAll('button').forEach(button => {
+            button.disabled = false;
+        });
+
+       
+        document.body.removeChild(exitButton);
+
+       
+        video.pause();
+        playIcon.style.display = 'block';
+        pauseIcon.style.display = 'none';
+        
+        Object.assign(toolsDiv.style, toolsStyles);
+    });
 }
 
 document.addEventListener('DOMContentLoaded', function() {
