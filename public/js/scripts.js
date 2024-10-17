@@ -8,10 +8,7 @@ let svgMarkup;
 let isInteracting = false;
 const canvas = new fabric.Canvas('canvas', {
     selection: false,
-    isDrawingMode: false,
-    renderOnAddRemove: false,
-    enableRetinaScaling: false,
-    webgl: true
+    isDrawingMode: false
     });
 window.onload = () => {
     
@@ -265,7 +262,6 @@ function setupTimeline(video) {
     }
 
     video.addEventListener('timeupdate', updatePointerAndTicks);
-    // video.addEventListener('timeupdate', debounce(updatePointerAndTicks, 200));
 
    
     pointer2.addEventListener('mousedown', (e) => {
@@ -453,9 +449,6 @@ document.addEventListener('DOMContentLoaded', function() {
     video.addEventListener('timeupdate', function() {
         currentTimeInput.value = formatTime(video.currentTime);
     });
-    // video.addEventListener('timeupdate', debounce(function() {
-    //     currentTimeInput.value = formatTime(video.currentTime);
-    // }, 200));
 
     video.addEventListener('loadedmetadata', function() {
         totalTimeSpan.textContent = ` / ${formatTime(video.duration)}`;
@@ -509,8 +502,7 @@ canvas.forEachObject(obj => {
 annotations.forEach(ann => {
     if (Math.floor(ann.time) === newTime) {
         canvas.loadFromJSON(ann.content, () => {
-            // canvas.renderAll();
-            canvas.requestRenderAll();
+            canvas.renderAll();
         });
     }
 });
@@ -887,8 +879,7 @@ function useEraser() {
                 updateTimelineIcons();
             });
            
-            // canvas.renderAll();
-            canvas.requestRenderAll();
+            canvas.renderAll();
             console.log(`Removed ${objectsToRemove.size} objects`);
         } else {
             console.log("No object found under the pointer.");
@@ -1053,8 +1044,7 @@ function handleImageUpload(event) {
                 
                 canvas.add(img);
                 canvas.centerObject(img);
-                // canvas.renderAll();
-                canvas.requestRenderAll();
+                canvas.renderAll();
                 isInteracting = false;
             });
             
@@ -1112,8 +1102,7 @@ canvas.on('mouse:move', function(options) {
     // if(drawingMode === 'polyline'){
 
     // }
-        // canvas.renderAll();
-        canvas.requestRenderAll();
+        canvas.renderAll();
     }
 });
 
@@ -1210,8 +1199,7 @@ function updateAnnotation(e) {
         updateAnnotationsList();
     }
 
-    // canvas.renderAll();
-    canvas.requestRenderAll();
+    canvas.renderAll();
 }
 canvas.on('text:changed', function(e) {
     let changedObject = e.target;
@@ -1262,8 +1250,7 @@ function undo() {
     if (mods > 0) {
         mods -= 1;
         canvas.loadFromJSON(state[mods]);
-        // canvas.renderAll();
-        canvas.requestRenderAll();
+        canvas.renderAll();
     }
 }
 
@@ -1271,8 +1258,7 @@ function redo() {
     if (mods < state.length - 1) {
         mods += 1;
         canvas.loadFromJSON(state[mods]);
-        // canvas.renderAll();
-        canvas.requestRenderAll();
+        canvas.renderAll();
     }
 }
 
@@ -1369,13 +1355,7 @@ video.addEventListener('timeupdate', () => {
         playAudioAnnotationIfExists(video.currentTime);
     }
 });
-// video.addEventListener('timeupdate', debounce(() => {
-//     isInteracting = false;
-//     renderAnnotationsForCurrentTime(video.currentTime);
-//     if (!video.paused) {
-//         playAudioAnnotationIfExists(video.currentTime);
-//     }
-// }, 200));
+
 
 function recordAnnotation(time) {
     if(video.paused){
@@ -1515,16 +1495,18 @@ function updateAnnotationDuration(startTime, endTime, duration) {
 }
 
 function displayOnCanvas(annotation, startTime, endTime) {
-    video.addEventListener('timeupdate', debounce(() => {
+    video.addEventListener('timeupdate', () => {
         const currentTime = video.currentTime;
         if (currentTime >= startTime && currentTime <= endTime) {
             canvas.clear();
             canvas.loadFromJSON(annotation.content, () => {
-                canvas.requestRenderAll();
+                canvas.renderAll();
             });
+        } else {
+           
+           // canvas.clear();
         }
-    }, 200)
-    );
+    });
 }
 
 function handleTimeUpdate() {
@@ -1738,8 +1720,7 @@ function loadAnnotation(index) {
     const annotation = annotations[index];
     video.currentTime = annotation.time;
     canvas.loadFromJSON(annotation.content, () => {
-        // canvas.renderAll();
-        canvas.requestRenderAll();
+        canvas.renderAll();
     });
 }
 function showAnnotations(annotation,time) {
@@ -1755,8 +1736,7 @@ function showAnnotations(annotation,time) {
             console.log('Annotation content:', annotation.content);
 
             console.log('Loading content')
-            // canvas.renderAll();
-            canvas.requestRenderAll();
+            canvas.renderAll();
             console.log('Loaded')
         });
   
@@ -1830,8 +1810,7 @@ function renderAnnotationsForCurrentTime(currentTime) {
         });
 
         // After adding all objects, render the canvas
-        // canvas.renderAll();
-        canvas.requestRenderAll();
+        canvas.renderAll();
         console.log("Finished rendering annotations.");
     });
 }
@@ -2286,7 +2265,7 @@ async function captureScreenshot(video, canvas, timestamp, annotations) {
                 console.log('Annotation time',annotation.time);
                 
                 canvas.clear();
-                canvas.loadFromJSON(annotation.content, canvas.requestRenderAll.bind(canvas));
+                canvas.loadFromJSON(annotation.content, canvas.renderAll.bind(canvas));
                 
                
                 const canvasElement = canvas.getElement();
@@ -2701,9 +2680,7 @@ timeInput.addEventListener('change', () => {
 video.addEventListener('timeupdate', () => {
     timeInput.value = secondsToTimeString(video.currentTime);
 });
-// video.addEventListener('timeupdate', debounce(() => {
-//     timeInput.value = secondsToTimeString(video.currentTime);
-// }, 200));
+
 
 function updatePencilColor(svgMarkup, selectedColor) {
     // Set the default color to blue if no color is provided
