@@ -17,7 +17,7 @@ fetch(`${apiUrl}/getmediafiles`)
 
         addImageCard(`${filePath}/${file.fileName}`, file.originalName);
         // addImageCard('../../uploads/test.mp4', 'test');
-      } else if (['mp4', 'webm'].includes(fileExtension)) {
+      } else if (['mp4', 'webm', 'mov', 'hevc'].includes(fileExtension)) {
         // const videoURL = filePath;
         // addVideoCard(videoURL, file);
         addVideoCard(`${filePath}/${file.fileName}`, file.originalName);
