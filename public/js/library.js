@@ -62,7 +62,7 @@ fileInput.addEventListener('change', function(e) {
         .then(response => response.json())
         .then(data => {
             console.log('Video uploaded:', data);
-            // refreshVideoGallery();
+            refreshVideoGallery();
             // Optionally update the video src with the new path
             // video.src = `/uploads/${data.media.fileName}`;
             console.log('Video originalName:', data.media.originalName);
