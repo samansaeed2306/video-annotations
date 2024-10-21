@@ -21,6 +21,7 @@ fetch(`${apiUrl}/getmediafiles`)
         // const videoURL = filePath;
         // addVideoCard(videoURL, file);
         addVideoCard(`${filePath}/${file.fileName}`, file.originalName);
+        
         // addVideoCard('../../uploads/test.mp4', 'test.mp4');
       }
     });
@@ -54,7 +55,7 @@ fileInput.addEventListener('change', function(e) {
         const formData = new FormData();
         formData.append('file', file);
 
-        fetch(`${apiUrl}/upload`, {
+        fetch(`${apiUrl}/upload?nocache=${new Date().getTime()}`, {
             method: 'POST',
             body: formData
         })
