@@ -134,6 +134,11 @@ function addVideoCard(videoSrc, title) {
     video.src = videoSrc;
     video.controls = true;
     video.playsInline = true;
+    video.loop = true;
+    video.muted = true;
+
+
+
 
     const cardContent = document.createElement('div');
     cardContent.className = 'card-content';
