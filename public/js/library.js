@@ -62,6 +62,7 @@ fileInput.addEventListener('change', function(e) {
         .then(response => response.json())
         .then(data => {
             console.log('Video uploaded:', data);
+            // refreshVideoGallery();
             // Optionally update the video src with the new path
             // video.src = `/uploads/${data.media.fileName}`;
             console.log('Video originalName:', data.media.originalName);
@@ -132,6 +133,7 @@ function addVideoCard(videoSrc, title) {
    
     video.src = videoSrc;
     video.controls = true;
+    video.playsInline = true;
 
     const cardContent = document.createElement('div');
     cardContent.className = 'card-content';
