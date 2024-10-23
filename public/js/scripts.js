@@ -8,7 +8,10 @@ let svgMarkup;
 let isInteracting = false;
 const canvas = new fabric.Canvas('canvas', {
     selection: false,
-    isDrawingMode: false
+    isDrawingMode: false,
+    objectCaching:true,
+    statefulCache:true,
+    dirty:true
     });
 window.onload = () => {
     
