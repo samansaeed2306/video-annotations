@@ -367,7 +367,8 @@ canvas.forEachObject(obj => {
     if (obj.time === oldTime) {
         canvas.remove(obj);
     }
-});}
+});
+canvas.dispose();}
 }else{
     if (oldTick) {
         oldTick.style.display = 'none';
@@ -618,7 +619,7 @@ canvas.forEachObject(obj => {
     if (obj.time === oldTime) {
         canvas.remove(obj);
     }
-});
+});canvas.dispose();
 
 
 annotations.forEach(ann => {
