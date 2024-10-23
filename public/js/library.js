@@ -343,6 +343,14 @@ function addImageCard(imageSrc, title) {
     imageGallery.appendChild(card);
 }
 document.getElementById("backtoindex").addEventListener("click", function() {
+    console.log('Going back to index.html');
+   
+    
+    if (sessionStorage.getItem("lastMediaType")) {
+        console.log('Setting local storage on session storage');
+        localStorage.setItem("selectedMediaType", sessionStorage.getItem("lastMediaType"));
+       
+    }
     window.location.href = "../index.html"; 
 });
 // // Example calls
