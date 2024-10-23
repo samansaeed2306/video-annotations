@@ -1000,7 +1000,7 @@ function useEraser() {
                 canvas.remove(obj);
                 updateTimelineIcons();
             });
-           
+            canvas.dispose();
             canvas.renderAll();
             console.log(`Removed ${objectsToRemove.size} objects`);
         } else {
