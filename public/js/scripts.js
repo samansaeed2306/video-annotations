@@ -377,7 +377,8 @@ canvas.forEachObject(obj => {
         canvas.remove(obj);
     }
 });
-canvas.dispose();}
+//canvas.dispose();
+}
 }else{
     if (oldTick) {
         oldTick.style.display = 'none';
@@ -628,7 +629,8 @@ canvas.forEachObject(obj => {
     if (obj.time === oldTime) {
         canvas.remove(obj);
     }
-});canvas.dispose();
+});
+//canvas.dispose();
 
 
 annotations.forEach(ann => {
@@ -1010,7 +1012,7 @@ function useEraser() {
                 canvas.remove(obj);
                 updateTimelineIcons();
             });
-            canvas.dispose();
+           // canvas.dispose();
             canvas.renderAll();
             console.log(`Removed ${objectsToRemove.size} objects`);
         } else {
