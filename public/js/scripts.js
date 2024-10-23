@@ -15,9 +15,18 @@ const canvas = new fabric.Canvas('canvas', {
     });
 window.onload = () => {
     
-
+    console.log('Local Storage initially: ',localStorage.getItem('selectedMediaType'));
     selectedMediaType = localStorage.getItem('selectedMediaType') || '';
-    localStorage.removeItem('selectedMediaType'); 
+    console.log('Selected media element: ',selectedMediaType);
+    // if (selectedMediaType=='') {
+
+    //     selectedMediaType = sessionStorage.getItem('lastMediaType') || '';
+    // } else {
+        // if (selectedMediaType!='') {
+        sessionStorage.setItem('lastMediaType', selectedMediaType);
+        console.log("Session storage: ",sessionStorage.getItem('lastMediaType'));
+        // }
+    //localStorage.removeItem('selectedMediaType'); 
 
     const videoContainer = document.getElementById('video-container');
     const canvas2 = document.getElementById('canvas');
