@@ -4,6 +4,7 @@ import { fileURLToPath } from 'url';
 import annotationRoutes from './routes/annotationRoutes.js';
 import videoRoutes from './routes/videoRoutes.js';
 import mediaRoutes from './routes/mediaRoutes.js';
+import recordingRoutes from './routes/recordingRoutes.js';
 import { connectToDb } from './db/connect.js';
 import cors from 'cors'; 
 import dotenv from 'dotenv';
@@ -37,6 +38,7 @@ connectToDb();
 
 app.use('/api', annotationRoutes);
 app.use('/api/media', mediaRoutes);
+app.use('/api/recordings', recordingRoutes);
 
 // Handle 404 errors
 app.use((req, res, next) => {
