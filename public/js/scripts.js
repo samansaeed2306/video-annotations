@@ -8,25 +8,13 @@ let svgMarkup;
 let isInteracting = false;
 const canvas = new fabric.Canvas('canvas', {
     selection: false,
-    isDrawingMode: false,
-    objectCaching:true,
-    statefulCache:true,
-    dirty:true
+    isDrawingMode: false
     });
 window.onload = () => {
     
-    console.log('Local Storage initially: ',localStorage.getItem('selectedMediaType'));
-    selectedMediaType = localStorage.getItem('selectedMediaType') || '';
-    console.log('Selected media element: ',selectedMediaType);
-    // if (selectedMediaType=='') {
 
-    //     selectedMediaType = sessionStorage.getItem('lastMediaType') || '';
-    // } else {
-        // if (selectedMediaType!='') {
-        sessionStorage.setItem('lastMediaType', selectedMediaType);
-        console.log("Session storage: ",sessionStorage.getItem('lastMediaType'));
-        // }
-    //localStorage.removeItem('selectedMediaType'); 
+    selectedMediaType = localStorage.getItem('selectedMediaType') || '';
+    localStorage.removeItem('selectedMediaType'); 
 
     const videoContainer = document.getElementById('video-container');
     const canvas2 = document.getElementById('canvas');
@@ -376,9 +364,7 @@ canvas.forEachObject(obj => {
     if (obj.time === oldTime) {
         canvas.remove(obj);
     }
-});
-//canvas.dispose();
-}
+});}
 }else{
     if (oldTick) {
         oldTick.style.display = 'none';
@@ -630,7 +616,6 @@ canvas.forEachObject(obj => {
         canvas.remove(obj);
     }
 });
-//canvas.dispose();
 
 
 annotations.forEach(ann => {
@@ -1012,7 +997,7 @@ function useEraser() {
                 canvas.remove(obj);
                 updateTimelineIcons();
             });
-           // canvas.dispose();
+           
             canvas.renderAll();
             console.log(`Removed ${objectsToRemove.size} objects`);
         } else {
