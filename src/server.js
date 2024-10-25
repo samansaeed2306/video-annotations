@@ -38,7 +38,7 @@ connectToDb();
 
 app.use('/api', annotationRoutes);
 app.use('/api/media', mediaRoutes);
-app.use('/api/recordings', recordingRoutes);
+app.use('/api/rec/', recordingRoutes);
 
 // Handle 404 errors
 app.use((req, res, next) => {
