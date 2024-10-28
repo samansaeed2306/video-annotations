@@ -69,3 +69,30 @@ export const getRecordingsByUserId = async (req, res) => {
         res.status(500).json({ error: 'Error fetching recordings' });
     }
 };
+
+
+export const getAllRecordings = async (req, res) => {
+    try {
+        
+        const recordings = await Recording.find();
+
+        if (!recordings.length) {
+            return res.status(404).json({ message: 'No recordings found' });
+        }
+
+        
+        const recordingsWithUrls = recordings.map(recording => ({
+            _id: recording._id,
+            userId: recording.userId,
+            videoId: recording.videoId,
+            lessonId: recording.lessonId,
+            videoUrl: recording.videoUrl,
+            videoMimeType: recording.videoMimeType
+        }));
+
+        res.status(200).json(recordingsWithUrls);
+    } catch (error) {
+        console.error('Error fetching all recordings:', error);
+        res.status(500).json({ error: 'Error fetching all recordings' });
+    }
+};
