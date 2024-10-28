@@ -2731,7 +2731,7 @@ document.getElementById('canvas').addEventListener('click', (event) => {
   loopButton.addEventListener('click', function() {
       isLooping = !isLooping; 
       video.loop = isLooping; 
-
+      
       if (isLooping) {
           loopButton.classList.add('active-loop'); 
       } else {
