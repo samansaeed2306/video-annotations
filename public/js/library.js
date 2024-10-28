@@ -25,6 +25,9 @@ fetch(`${apiUrl}/getmediafiles`)
         
         // addVideoCard('../../uploads/test.mp4', 'test.mp4');
       }
+
+      addRecording();
+
     });
   })
   .catch(error => console.error('Error fetching media files:', error));
@@ -439,12 +442,27 @@ function createVideoCard(videoUrl, title) {
     return card;
 }
 
+async function addRecording() {
+    try {
+        const response = await fetch('http://localhost:8080/api/rec/recordings/getAll'); 
+        const recordings = await response.json();
 
+        // Check for errors in the response
+        if (response.status === 404) {
+            console.log(recordings.message); // No recordings found
+            return;
+        }
+
+        // Display the recordings
+        displayRecordings(recordings);
+    } catch (error) {
+        console.error('Error fetching recordings:', error);
+    }
+}
 
 function displayRecordings(recordings) {
     const gallery = document.getElementById('recordings-gallery');
-    gallery.innerHTML = ''; // Clear the gallery
-
+    gallery.innerHTML = ''; 
     recordings.forEach(recording => {
         let card;
         
@@ -496,3 +514,4 @@ document.getElementById('hello').addEventListener('click', () => {
         }
     };
 });
+
