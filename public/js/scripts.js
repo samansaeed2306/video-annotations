@@ -2470,7 +2470,7 @@ const displayMediaOptions = {
                 }
             };
 
-            mediaRecorder2.onstop = () => {
+            mediaRecorder2.onstop = async () => {
                 const blob = new Blob(chunks, { type: 'video/webm' });
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
@@ -2478,6 +2478,36 @@ const displayMediaOptions = {
                 a.download = 'screen-recording.webm';
                 a.click();
                 chunks = [];
+
+                const urlParams = new URLSearchParams(window.location.search);
+                const userId = urlParams.get('userid');
+
+                if (userId) {
+                    
+                    const formData = new FormData();
+                    formData.append('video', blob, 'screen-recording.webm');
+                   // formData.append('videoId', 'optional-video-id'); 
+                    //formData.append('lessonId', 'optional-lesson-id'); 
+
+                    // Send the video file to your server
+                    try {
+                        const response = await fetch(`http://localhost:8080/api/rec/recordings/${userId}`, {
+                            method: 'POST',
+                            body: formData,
+                        });
+
+                        if (response.ok) {
+                            console.log('Recording uploaded successfully');
+                        } else {
+                            console.error('Error uploading recording:', await response.json());
+                        }
+                    } catch (uploadError) {
+                        console.error('Error during upload:', uploadError);
+                    }
+                } else {
+                    console.error('User ID not found in URL');
+                }
+
             };
 
             mediaRecorder2.start();
