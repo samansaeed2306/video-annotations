@@ -419,3 +419,80 @@ function removeInput() {
         cardContent.removeChild(inputElement);
     }
 }
+
+
+
+function createVideoCard(videoUrl, title) {
+    const card = document.createElement('div');
+    card.classList.add('recording-card');
+
+    const videoElement = document.createElement('video');
+    videoElement.src = videoUrl;
+    videoElement.controls = true; 
+
+    const titleElement = document.createElement('h3');
+    titleElement.innerText = title;
+
+    card.appendChild(videoElement);
+    card.appendChild(titleElement);
+
+    return card;
+}
+
+
+
+function displayRecordings(recordings) {
+    const gallery = document.getElementById('recordings-gallery');
+    gallery.innerHTML = ''; // Clear the gallery
+
+    recordings.forEach(recording => {
+        let card;
+        
+        card = createVideoCard(recording.videoUrl, "hello");
+       
+
+        if (card) {
+            gallery.appendChild(card);
+        }
+    });
+}
+
+// Function to fetch recordings from the API based on user ID
+async function fetchRecordingsByUserId(userId) {
+    try {
+        const response = await fetch(`http://localhost:8080/api/rec/recordings/user/${userId}`);
+        if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+        }
+        const recordings = await response.json(); // Assuming the API returns a JSON array
+        return recordings; // Return the fetched recordings
+    } catch (error) {
+        console.error('Error fetching recordings:', error);
+        alert('Failed to fetch recordings. Please try again.');
+        return [];
+    }
+}
+
+
+
+// Event listener for the button click
+document.getElementById('hello').addEventListener('click', () => {
+    const input = document.getElementById('userIdInput');
+    input.style.display = 'block'; // Show the input box
+    input.focus(); // Focus the input box
+
+    // Add an event listener to capture the Enter key
+    input.onkeypress = async function(event) {
+        if (event.key === 'Enter') {
+            const userId = input.value.trim();
+            if (userId) {
+                const recordings = await fetchRecordingsByUserId(userId); // Fetch recordings from the API
+                displayRecordings(recordings); // Display the fetched recordings
+            } else {
+                alert("Please enter a valid User ID.");
+            }
+            input.value = ''; // Clear the input
+            input.style.display = 'none'; // Hide the input box after submission
+        }
+    };
+});

@@ -38,11 +38,13 @@
         <div class="panel-selector">
             <button id="videosButton" class="panel-button active">Videos</button>
             <button id="imagesButton" class="panel-button inactive">Images</button>
+            <button id="recordingsButton" class="panel-button inactive">Recordings</button>
             
         </div>
         <div id="progress-bar" style="width: 100%; background-color: #f3f3f3; border: 1px solid #ccc; margin-top: 10px; display:none;">
             <div id="progress" style="width: 0%; height: 5px; background-color: #a88732;"></div>
         </div>
+       
         <div id="videosPanel" class="panel active">
             <input type="file" id="fileInput" accept="video/*">
             <a href="#" class="load-more" id="loadMore">Upload Video</a>
@@ -55,6 +57,12 @@
             <div class="gallery" id="imageGallery"></div>
             
         </div>
+        <div id="recordingsPanel" class="panel">
+            <button id="hello">Display</button>
+            <input type="text" id="userIdInput" placeholder="Enter User ID" style="display:none;">
+            <div id="recordings-gallery" class="recordings-gallery"></div>
+                
+        </div>
         <!-- <div class="gallery" id="gallery"></div>
         <input type="file" id="fileInput" accept="video/*">
         <a href="#" class="load-more" id="loadMore">Upload Video</a> -->
@@ -66,6 +74,8 @@
         const imagesButton = document.getElementById('imagesButton');
         const videosPanel = document.getElementById('videosPanel');
         const imagesPanel = document.getElementById('imagesPanel');
+        const recordingsPanel = document.getElementById('recordingsPanel');
+        const recordingsButton = document.getElementById('recordingsButton');
 
         videosButton.addEventListener('click', () => {
             videosButton.classList.add('active');
@@ -74,6 +84,9 @@
             imagesButton.classList.remove('active');
             videosPanel.classList.add('active');
             imagesPanel.classList.remove('active');
+            recordingsButton.classList.remove('active');
+            recordingsPanel.classList.remove('active');
+
         });
 
         imagesButton.addEventListener('click', () => {
@@ -83,7 +96,23 @@
             videosButton.classList.remove('active');
             imagesPanel.classList.add('active');
             videosPanel.classList.remove('active');
+            recordingsButton.classList.remove('active');
+            recordingsPanel.classList.remove('active');
         });
+
+        recordingsButton.addEventListener('click', () => {
+            imagesButton.classList.remove('active');
+           // imagesButton.classList.remove('inactive');
+            videosButton.classList.add('inactive');
+            videosButton.classList.remove('active');
+            imagesPanel.classList.add('inactive');
+            imagesPanel.classList.remove('active');
+            videosPanel.classList.remove('active');
+            recordingsButton.classList.remove('inactive');
+            recordingsButton.classList.add('active');
+            recordingsPanel.classList.add('active');
+        });
+
 
         searchForm.addEventListener('submit', function(event) {
             event.preventDefault();

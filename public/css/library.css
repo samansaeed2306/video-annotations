@@ -232,4 +232,28 @@ form button:hover {
     background-color: #a88732;
 }
 
+.recordings-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px; /* space between cards */
+    padding: 20px;
+}
+
+.recording-card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    width: 200px; /* adjust width as needed */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.recording-card img,
+.recording-card video {
+    width: 100%; /* make the media fill the card */
+}
+
+.recording-card h3 {
+    font-size: 1.2em;
+    padding: 10px;
+}
 
