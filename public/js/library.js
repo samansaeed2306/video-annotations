@@ -466,7 +466,7 @@ function displayRecordings(recordings) {
     recordings.forEach(recording => {
         let card;
         
-        card = createVideoCard(recording.videoUrl, "hello");
+        card = createVideoCard(recording.videoUrl, recording.title);
        
 
         if (card) {
