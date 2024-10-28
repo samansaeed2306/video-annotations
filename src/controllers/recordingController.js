@@ -24,13 +24,22 @@ export const uploadRecording = async (req, res) => {
 
       
         const videoUrl = `${req.protocol}://${req.get('host')}/recordings/${videoFile.filename}`;
+        const lastRecording = await Recording.findOne().sort({ createdAt: -1 });
+
+        
+        let title = 'Recording 1'; 
+        if (lastRecording) {
+            const lastTitleNumber = parseInt(lastRecording.title.split(' ')[1]); 
+            title = `Recording ${lastTitleNumber + 1}`; 
+        }
 
        
         const newRecording = new Recording({
             userId,             
             videoId,            
             lessonId,          
-            videoUrl,         
+            videoUrl,
+            title,         
             videoMimeType: videoFile.mimetype
         });
 
@@ -38,7 +47,8 @@ export const uploadRecording = async (req, res) => {
         await newRecording.save();
 
         
-        res.status(201).json({ message: 'Recording uploaded successfully', recordingId: newRecording._id });
+        // res.status(201).json({ message: 'Recording uploaded successfully', recordingId: newRecording._id });
+        res.status(201).json({ message: 'Recording uploaded successfully', newRecording});
     } catch (error) {
         console.error('Error uploading recording:', error);
         res.status(500).json({ error: 'Error uploading recording' });
@@ -87,7 +97,8 @@ export const getAllRecordings = async (req, res) => {
             videoId: recording.videoId,
             lessonId: recording.lessonId,
             videoUrl: recording.videoUrl,
-            videoMimeType: recording.videoMimeType
+            videoMimeType: recording.videoMimeType,
+            title: recording.title
         }));
 
         res.status(200).json(recordingsWithUrls);
