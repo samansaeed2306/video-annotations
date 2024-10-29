@@ -102,7 +102,7 @@ imageFileInput.addEventListener('change', function(e) {
         const formData = new FormData();
         formData.append('file', file);
 
-        fetch(`${apiUrl}/upload`, {
+        fetch(`${apiUrl}/upload/${userId}`, {
             method: 'POST',
             body: formData
         })
@@ -375,7 +375,7 @@ function refreshVideoGallery() {
 }
 
 function refreshImageGallery() {
-    fetch(`${apiUrl}/getmediafiles`)
+    fetch(`${apiUrl}/mediabyuser/${userId}`)
         .then(response => response.json())
         .then(files => {
            
