@@ -61,14 +61,14 @@ fileInput.addEventListener('change', function(e) {
         const formData = new FormData();
         formData.append('file', file);
 
-        fetch(`${apiUrl}/upload?nocache=${new Date().getTime()}`, {
+        fetch(`${apiUrl}/upload/${userId}`, {
             method: 'POST',
             body: formData
         })
         .then(response => response.json())
         .then(data => {
             console.log('Video uploaded:', data);
-            refreshVideoGallery();
+            //refreshVideoGallery();
             // Optionally update the video src with the new path
             // video.src = `/uploads/${data.media.fileName}`;
             console.log('Video originalName:', data.media.originalName);
@@ -356,7 +356,7 @@ document.getElementById("backtoindex").addEventListener("click", function() {
 // addImageCard('../sampleVideos/dolphin.jfif', 'Dolphin');
 
 function refreshVideoGallery() {
-    fetch(`${apiUrl}/getmediafiles`)
+    fetch(`${apiUrl}/mediabyuser/${userId}`)
         .then(response => response.json())
         .then(files => {
           
@@ -456,18 +456,25 @@ async function addRecording() {
 
         // Check for errors in the response
         if (response.status === 404) {
-            console.log(recordings.message); // No recordings found
+            //console.log(recordings.message); // No recordings found
+            console.log("There isnt any recordings for this user");
+            displayNoRecordingsMessage(userId);
             return;
         }
-
+        else{
         // Display the recordings
-        displayRecordings(recordings);
+        displayRecordings(recordings);}
     } catch (error) {
         console.error('Error fetching recordings:', error);
     }
 }else{
     console.log("unable to find userId");
 }}
+function displayNoRecordingsMessage(userId) {
+    const messageContainer = document.getElementById('message-container'); 
+    messageContainer.innerHTML = `<p>No recordings found for user ID: <strong>${userId}</strong>.</p>`;
+    messageContainer.style.color = 'red'; 
+}
 
 function displayRecordings(recordings) {
     const gallery = document.getElementById('recordings-gallery');
