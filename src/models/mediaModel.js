@@ -65,3 +65,16 @@ export async function updateMedia(id, updatedData) {
     throw error; 
   }
 }
+
+
+// export async function getMediaByUserId(userId) {
+//   return await Media.find({ userId: userId });
+// }
+
+export async function getMediaByUserId(userId) {
+  const db = await connectToDb();
+  const collection = db.collection('media');
+
+  
+  return await collection.find({ userId: userId }).toArray();
+}

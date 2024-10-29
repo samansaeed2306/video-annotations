@@ -11,23 +11,19 @@ const __dirname = path.dirname(__filename);
 export async function addMedia(req, res) {
   try {
     const { originalname, mimetype, filename, size } = req.file;
-    // Comment out userId handling for now
-    // const userId = req.body.userId; // Assuming userId is sent in the request body
+   
+    const { userId } = req.params;
 
-    // Validate userId (commented out)
-    // if (userId && !ObjectId.isValid(userId)) {
-    //   return res.status(400).json({ error: 'Invalid user ID format' });
-    // }
 
     const media = {
       originalName: originalname,
       mimeType: mimetype,
       fileName: filename,
       size: size,
+      userId: userId, 
       uploadDate: new Date(),
       
     };
-
     const createdMedia = await model.createMediaDocument(media);
     res.status(201).json({
       message: 'Media uploaded successfully!',
@@ -145,5 +141,25 @@ export async function updateMedia(req, res) {
   } catch (error) {
     console.error('Error updating media:', error);
     res.status(500).json({ error: 'Failed to update media' });
+  }
+}
+
+export async function getMediaByUserId(req, res) {
+  try {
+    const { userId } = req.params;
+
+ 
+
+    // Fetch media records associated with the userId
+    const mediaList = await model.getMediaByUserId(userId);
+
+    if (!mediaList || mediaList.length === 0) {
+      return res.status(404).json({ error: 'No media found for this user' });
+    }
+
+    res.status(200).json(mediaList);
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Failed to retrieve media by user ID' });
   }
 }
