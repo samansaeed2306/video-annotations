@@ -15,8 +15,9 @@ const storage = multer.diskStorage({
   }
 });
 
+
 const upload = multer({ storage: storage });
-router.post('/upload', upload.single('file'), controller.addMedia);
+router.post('/upload/:userId', upload.single('file'), controller.addMedia);
 
 
 router.get('/getmediafiles', (req, res, next) => {
@@ -31,6 +32,9 @@ router.put('/update/:id', (req,res,next) =>{
   console.log("Request made to /update/:id");
   next(); 
 },controller.updateMedia);
+
+router.get('/mediabyuser/:userId', controller.getMediaByUserId);
+
 
 
 export default router;
