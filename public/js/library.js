@@ -3,7 +3,9 @@
 // const apiUrl = 'http://174.138.56.121:8080/api/media'; 
 // const apiUrl = 'http://192.168.100.191:8080/api/media'; 
 const apiUrl = 'http://localhost:8080/api/media'; 
-fetch(`${apiUrl}/getmediafiles`)
+const urlParams = new URLSearchParams(window.location.search);
+const userId = urlParams.get('userid');
+fetch(`${apiUrl}/mediabyuser/${userId}`)
   .then(response => response.json())
   .then(files => {
     // Loop through each file and call addImageCard or addVideoCard based on file extension
@@ -443,8 +445,13 @@ function createVideoCard(videoUrl, title) {
 }
 
 async function addRecording() {
+    const urlParams = new URLSearchParams(window.location.search);
+                const userId = urlParams.get('userid');
+
+                if (userId) {
+                   console.log("userId found");
     try {
-        const response = await fetch('http://localhost:8080/api/rec/recordings/getAll'); 
+        const response = await fetch(`http://localhost:8080/api/rec/recordings/user/${userId}`);
         const recordings = await response.json();
 
         // Check for errors in the response
@@ -458,7 +465,9 @@ async function addRecording() {
     } catch (error) {
         console.error('Error fetching recordings:', error);
     }
-}
+}else{
+    console.log("unable to find userId");
+}}
 
 function displayRecordings(recordings) {
     const gallery = document.getElementById('recordings-gallery');
@@ -493,25 +502,24 @@ async function fetchRecordingsByUserId(userId) {
 
 
 
-// Event listener for the button click
-document.getElementById('hello').addEventListener('click', () => {
-    const input = document.getElementById('userIdInput');
-    input.style.display = 'block'; // Show the input box
-    input.focus(); // Focus the input box
+// document.getElementById('hello').addEventListener('click', () => {
+//     const input = document.getElementById('userIdInput');
+//     input.style.display = 'block'; 
+//     input.focus(); 
 
-    // Add an event listener to capture the Enter key
-    input.onkeypress = async function(event) {
-        if (event.key === 'Enter') {
-            const userId = input.value.trim();
-            if (userId) {
-                const recordings = await fetchRecordingsByUserId(userId); // Fetch recordings from the API
-                displayRecordings(recordings); // Display the fetched recordings
-            } else {
-                alert("Please enter a valid User ID.");
-            }
-            input.value = ''; // Clear the input
-            input.style.display = 'none'; // Hide the input box after submission
-        }
-    };
-});
+    
+//     input.onkeypress = async function(event) {
+//         if (event.key === 'Enter') {
+//             const userId = input.value.trim();
+//             if (userId) {
+//                 const recordings = await fetchRecordingsByUserId(userId); 
+//                 displayRecordings(recordings);
+//             } else {
+//                 alert("Please enter a valid User ID.");
+//             }
+//             input.value = '';
+//             input.style.display = 'none'; 
+//         }
+//     };
+// });
 
