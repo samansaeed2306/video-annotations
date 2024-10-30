@@ -69,7 +69,7 @@ export const getRecordingsByUserId = async (req, res) => {
 
        
         if (!recordings.length) {
-            return res.status(404).json({ message: 'No recordings found for this user' });
+            return res.status(200).json([]);
         }
 
        
@@ -87,7 +87,7 @@ export const getAllRecordings = async (req, res) => {
         const recordings = await Recording.find();
 
         if (!recordings.length) {
-            return res.status(404).json({ message: 'No recordings found' });
+            return res.status(200).json([]);
         }
 
         
