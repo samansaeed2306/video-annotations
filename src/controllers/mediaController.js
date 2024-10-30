@@ -154,7 +154,7 @@ export async function getMediaByUserId(req, res) {
     const mediaList = await model.getMediaByUserId(userId);
 
     if (!mediaList || mediaList.length === 0) {
-      return res.status(404).json({ error: 'No media found for this user' });
+      return res.status(200).json([]);
     }
 
     res.status(200).json(mediaList);
