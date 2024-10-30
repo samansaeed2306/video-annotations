@@ -34,6 +34,11 @@ fetch(`${apiUrl}/mediabyuser/${userId}`)
   })
   .catch(error => console.error('Error fetching media files:', error));
 
+
+
+
+
+
 // DOM Elements
 const gallery = document.getElementById('gallery');
 const loadMore = document.getElementById('loadMore');
@@ -75,11 +80,11 @@ fileInput.addEventListener('change', function(e) {
             if (data.media && data.media.fileUrl && data.media.originalName) {
                 
                 
-               
+                addVideoCard(data.media.fileUrl, data.media.originalName);
                 console.log("Inside if condition");
                 
             }
-            addVideoCard(data.media.fileUrl, data.media.originalName);
+           
             // window.location.reload();
             refreshVideoGallery();
         })
