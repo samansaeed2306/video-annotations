@@ -213,37 +213,39 @@ function setupTimeline(video) {
             video.currentTime = i;
         });
 
-        tick2.addEventListener('mousedown', (event) => {
-            event.preventDefault();
+        // tick2.addEventListener('mousedown', (event) => {
+        //     event.preventDefault();
 
-            const startDraggingTick = (e) => {
-                const rect = timeline.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const percentage = (x / rect.width) * 100;
-                const newTime = (percentage / 100) * duration;
-                video.currentTime = Math.min(Math.max(newTime, 0), duration);
-            };
+        //     const startDraggingTick = (e) => {
+        //         const rect = timeline.getBoundingClientRect();
+        //         const x = e.clientX - rect.left;
+        //         const percentage = (x / rect.width) * 100;
+        //         const newTime = (percentage / 100) * duration;
+        //         video.currentTime = Math.min(Math.max(newTime, 0), duration);
+        //     };
 
-            const stopDraggingTick = () => {
-                document.removeEventListener('mousemove', startDraggingTick);
-                document.removeEventListener('mouseup', stopDraggingTick);
-            };
+        //     const stopDraggingTick = () => {
+        //         document.removeEventListener('mousemove', startDraggingTick);
+        //         document.removeEventListener('mouseup', stopDraggingTick);
+        //     };
 
-            document.addEventListener('mousemove', startDraggingTick);
-            document.addEventListener('mouseup', stopDraggingTick);
-        });
+        //     document.addEventListener('mousemove', startDraggingTick);
+        //     document.addEventListener('mouseup', stopDraggingTick);
+        // });
+        
+        
     }
 
     
     const pointer2 = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    pointer2.setAttribute('width', '13');
-    pointer2.setAttribute('height', '21');
-    pointer2.setAttribute('fill', 'none');
+    pointer2.setAttribute('width', '23');
+    pointer2.setAttribute('height', '25');
+    pointer2.setAttribute('fill', 'black');
     pointer2.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
     pointer2.setAttribute('alt', 'draggable icon for progress bar');
     pointer2.classList.add('pointer2');
     pointer2.innerHTML = '<path d="M13 14.726C13 18.19 10.09 21 6.5 21S0 18.19 0 14.726C0 8.812 4.345 8 6.5 0 8 7.725 13 8.5 13 14.726z" fill="#CED0D1"></path><circle cx="6.5" cy="14.5" r="2.5" fill="#31373D"></circle>';
-    pointer2.style.display = 'none';
+    // pointer2.style.display = 'none';
     timeline.appendChild(pointer2);
 
    
@@ -268,6 +270,7 @@ function setupTimeline(video) {
         e.preventDefault();
 
         const movePointer = (e) => {
+            console.log("Pointer being moved!")
             const rect = timeline.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const percentage = (x / rect.width) * 100;
@@ -288,6 +291,31 @@ function setupTimeline(video) {
     video.addEventListener('ended', () => {
         pointer2.style.left = `calc(100% - 29.5px)`; 
     });
+
+
+    pointer2.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        startPointerDrag(e.touches[0].clientX);
+    });
+    function startPointerDrag(initialPosition) {
+        const movePointer = (e) => {
+            const clientX = e.clientX || e.touches[0].clientX;
+            const rect = timeline.getBoundingClientRect();
+            const x = clientX - rect.left;
+            const percentage = (x / rect.width) * 100;
+            const newTime = (percentage / 100) * duration;
+            video.currentTime = Math.min(Math.max(newTime, 0), duration); 
+        };
+        const stopDragging = () => {
+            document.removeEventListener('mousemove', movePointer);
+            document.removeEventListener('mouseup', stopDragging);
+            document.removeEventListener('touchmove', movePointer);
+            document.removeEventListener('touchend', stopDragging);
+            updatePointerAndTicks();
+        };
+        document.addEventListener('touchmove', movePointer);
+        document.addEventListener('touchend', stopDragging);
+    }
 }
 
 

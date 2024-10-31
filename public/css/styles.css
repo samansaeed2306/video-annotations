@@ -381,6 +381,17 @@ video,#media-element {
     opacity: 0.7;
 }
 
+.pointer2 {
+    position: absolute;
+     top: 45px;
+     margin-left: 10px;
+    transform: translateX(0%);  
+    left: 0px; 
+    transform: translateX(0%);
+    cursor: pointer;
+    z-index: 10;
+}
+
 /* .pointer2 {
     position: absolute;
      top: 88px;
@@ -1246,12 +1257,14 @@ display: block;
     /* outline: 1px solid red; */
 }
 
-
-
-
-
-
-
+.pointer2 {
+    top: -10px;  /* Adjusts position above timeline */
+    left: 0;
+    transform: translateX(0%);  /* Centers over ticks */
+    width: 25px;
+    height: 25px;  
+    z-index: 20;
+}
 
 .bottom-right-sidebar button {
     margin: 2px;
@@ -1461,4 +1474,9 @@ display: block;
   .cancel-button:hover {
     background-color: #c82333;
   }
+  
+  #multiple-video-btn{
+    display: none;
+  }
+
 }
