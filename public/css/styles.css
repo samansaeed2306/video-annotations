@@ -1363,6 +1363,10 @@ display: block;
     background-color: rgba(52, 58, 64, 0.9); /* Further darken background on click */
 }
 
+#multiple-video-btn{
+    display: none;
+  } 
+  
 /* Specific styles for the save button icon to ensure color is set */
 #save-button-mobile svg path {
     fill: #abb0c4; /* Specific color for save button icon */
