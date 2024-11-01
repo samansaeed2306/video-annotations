@@ -384,7 +384,7 @@ video,#media-element {
 .pointer2 {
     position: absolute;
      top: 45px;
-     margin-left: 10px;
+     margin-left: 32px;
     transform: translateX(0%);  
     left: 0px; 
     transform: translateX(0%);
