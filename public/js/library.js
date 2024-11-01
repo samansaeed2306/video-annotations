@@ -3,6 +3,7 @@
 // const apiUrl = 'http://174.138.56.121:8080/api/media'; 
 // const apiUrl = 'http://192.168.100.191:8080/api/media'; 
 const apiUrl = 'http://localhost:8080/api/media'; 
+const api='http://localhost:8080/api';
 const urlParams = new URLSearchParams(window.location.search);
 const userId = urlParams.get('userid');
 fetch(`${apiUrl}/mediabyuser/${userId}`)
@@ -456,7 +457,7 @@ async function addRecording() {
                 if (userId) {
                    console.log("userId found");
     try {
-        const response = await fetch(`http://localhost:8080/api/rec/recordings/user/${userId}`);
+        const response = await fetch(`${api}/rec/recordings/user/${userId}`);
         const recordings = await response.json();
 
         // Check for errors in the response
@@ -499,7 +500,7 @@ function displayRecordings(recordings) {
 // Function to fetch recordings from the API based on user ID
 async function fetchRecordingsByUserId(userId) {
     try {
-        const response = await fetch(`http://localhost:8080/api/rec/recordings/user/${userId}`);
+        const response = await fetch(`${api}/api/rec/recordings/user/${userId}`);
         if (!response.ok) {
             throw new Error('Network response was not ok ' + response.statusText);
         }
