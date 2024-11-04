@@ -1165,7 +1165,7 @@ background-color: transparent;
     position: absolute;
     bottom: 10%; /* Stick to the bottom */
     width: 100%;
-    height: 1%;
+    height: 10%;
     background-color: transparent; /* Temporary background color for visibility */
     z-index: 10000;
     padding: 0;
