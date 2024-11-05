@@ -25,7 +25,7 @@ body {
 
 .tools {
     position: fixed;           /* Keeps the tools bar fixed to the top */
-    top: 5%;                  /* Set top to 5% of the viewport height */
+    top: 0%;                  /* Set top to 5% of the viewport height */
     z-index: 1000;           /* Ensure it is above other elements */
     background-color: #17181a; /* Background color */
     padding: 5px;            /* Padding around the content */
@@ -65,8 +65,9 @@ body {
 }
 
 #right-tools{
+    margin-left: auto;
     display: flex;
-    justify-content: flex-end; 
+    align-items: center; 
     margin-top: 10px; 
 }
 /* #right-tools button{
@@ -746,6 +747,7 @@ canvas4:nth-of-type(2) {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-right: auto;
     /* visibility: hidden; */
 }
 
@@ -753,6 +755,12 @@ canvas4:nth-of-type(2) {
     width: 24px;
     height: 24px;
     fill: #fafbfc; 
+}
+
+#shapes {
+    flex-grow: 1; /* This allows the shapes div to grow and take up available space */
+    display: flex; /* Optional: Allows internal elements to be arranged horizontally */
+    justify-content: center; /* Centers internal elements */
 }
 /*  
 body::before {
