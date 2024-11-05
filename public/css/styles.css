@@ -64,12 +64,19 @@ body {
     
 }
 
-#right-tools{
-    margin-left: auto;
-    display: flex;
-    align-items: center; 
-    margin-top: 10px; 
-}
+#right-tools {
+        display: flex;
+        align-items: center;
+        justify-content: space-around; /* Evenly distributes space around the items */
+        margin-left: auto;
+        margin-top: 10px;
+        gap: 10px; /* Optional: Adds space between buttons */
+    }
+    #multiple-video-btn, #screen-recording, .save-container {
+        width: auto; /* Ensures they adapt to content */
+        height: auto;
+    }
+    
 /* #right-tools button{
     margin-left: 0px; 
 } */
@@ -307,7 +314,7 @@ video,#media-element {
     position: relative;
     width: 100%; 
     overflow: hidden;
-    margin-bottom: -2%;
+    margin-bottom: -0.5%;
    
 }
 
