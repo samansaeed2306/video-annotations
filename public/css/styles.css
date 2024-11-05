@@ -24,25 +24,24 @@ body {
 }
 
 .tools {
-    position: fixed;
-    top: 0px;
-    /* left: -60px; */
-    z-index: 1000;
-    background-color:#17181a;
-    padding: 5px;
-    /* border: 1px solid #ccc; */
-    border-radius: 0px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    position: fixed;          /* Keep it fixed to the viewport */
+    top: 0%;                 /* Set top to 5% of the viewport height */
+    z-index: 1000;          /* Ensure it is above other elements */
+    background-color: #17181a; /* Background color */
+    padding: 5px;           /* Padding around the content */
+    border-radius: 0;       /* No border radius */
+    width: 100%;            /* Full width of the viewport */
+    display: flex;          /* Use flexbox for layout */
+    justify-content: center; /* Center items horizontally */
+    align-items: center;    /* Center items vertically */
    
 }
 .tools button {
     margin: 5px;
     cursor: pointer;
     background-color: #17181a;
-    transform: translateX(-65px);
+    /* transform: translateX(-65px); */
+     
     border: none; /* Remove border */
     border-radius: 50%; /* Make the buttons round */
     /* color: #fff; Text color inside the button */
