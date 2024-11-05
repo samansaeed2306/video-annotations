@@ -7,6 +7,10 @@ h3{
 .bottom-right-sidebar {
     display: none;
 }
+html, body {
+    overflow: hidden;
+}
+
 body {
     display: flex;
     flex-direction: column;
