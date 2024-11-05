@@ -925,6 +925,17 @@ background-color: transparent;
     /* :root {
         --duration: 60; 
     } */
+    #video::-webkit-media-controls {
+        display: none !important;
+    }
+
+    #video::-webkit-media-controls-enclosure {
+        display: none !important;
+    }
+
+    #video::-moz-media-controls {
+        display: none !important;
+    }
     .tools button,
     .video-buttons .video-button,
     .bottom-right-sidebar button,
