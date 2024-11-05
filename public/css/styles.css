@@ -24,30 +24,29 @@ body {
 }
 
 .tools {
-    position: fixed;          /* Keep it fixed to the viewport */
-    top: 0%;                 /* Set top to 5% of the viewport height */
-    z-index: 1000;          /* Ensure it is above other elements */
+    position: fixed;           /* Keeps the tools bar fixed to the top */
+    top: 5%;                  /* Set top to 5% of the viewport height */
+    z-index: 1000;           /* Ensure it is above other elements */
     background-color: #17181a; /* Background color */
-    padding: 5px;           /* Padding around the content */
-    border-radius: 0;       /* No border radius */
-    width: 100%;            /* Full width of the viewport */
-    display: flex;          /* Use flexbox for layout */
-    justify-content: center; /* Center items horizontally */
-    align-items: center;    /* Center items vertically */
-   
+    padding: 5px;            /* Padding around the content */
+    border-radius: 0;        /* No border radius */
+    width: 100%;             /* Full width of the viewport */
+    display: flex;           /* Use flexbox for layout */
+    justify-content: flex-end; /* Align items to the right */
+    align-items: center;     /* Center items vertically */
 }
+
 .tools button {
-    margin: 5px;
-    cursor: pointer;
-    background-color: #17181a;
-    /* transform: translateX(-65px); */
-     
-    border: none; /* Remove border */
-    border-radius: 50%; /* Make the buttons round */
+    margin: 0 5px;           /* Horizontal margin to space buttons */
+    cursor: pointer;         /* Pointer cursor on hover */
+    background-color: #17181a; /* Button background color */
+    border: none;            /* Remove border */
+    border-radius: 50%;      /* Make the buttons round */
     /* color: #fff; Text color inside the button */
-    
-    
 }
+
+/* Additional styles for other elements may be required */
+
 
 
 .tools button:hover {
