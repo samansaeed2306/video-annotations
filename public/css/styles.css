@@ -65,6 +65,16 @@ body {
     
     
 }
+
+#right-tools{
+    display: flex;
+    justify-content: flex-end; 
+    margin-top: 10px; 
+}
+/* #right-tools button{
+    margin-left: 0px; 
+} */
+
 #library svg{
 
     width: 25px; /* Icon size */
@@ -78,7 +88,7 @@ body {
     height: 40px;
     position: absolute;
     right: 0;
-    top: 07px; /* You can adjust this to position it vertically */
+    top: 10px; /* You can adjust this to position it vertically */
     margin-right: 100px; /* Optional: Adjust the margin as needed */  
 }
 #container-wrapper {
@@ -639,7 +649,7 @@ canvas4:nth-of-type(2) {
 
 .save-btn {
     position: absolute;
-    top: 10px; 
+    top: 12px; 
     right: -90px; 
     background: none;
     border: none;
