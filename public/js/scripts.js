@@ -128,7 +128,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if(video){
     const player = new shaka.Player(video);
     const storedVideoSrc = localStorage.getItem('selectedVideoSrc');
-    const manifestUri = storedVideoSrc || 'https://storage.googleapis.com/shaka-demo-assets/angel-one/dash.mpd';
+    const manifestUri = storedVideoSrc || 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8';
     
     function loadVideo(manifestUri) {
         player.load(manifestUri).then(function() {
