@@ -25,7 +25,7 @@ body {
 
 .tools {
     position: fixed;           /* Keeps the tools bar fixed to the top */
-    top: 0%;                  /* Set top to 5% of the viewport height */
+    top: 5%;                  /* Set top to 5% of the viewport height */
     z-index: 1000;           /* Ensure it is above other elements */
     background-color: #17181a; /* Background color */
     padding: 5px;            /* Padding around the content */
@@ -64,19 +64,11 @@ body {
     
 }
 
-#right-tools {
-        display: flex;
-        align-items: center;
-        justify-content: space-around; /* Evenly distributes space around the items */
-        margin-left: auto;
-        margin-top: 10px;
-        gap: 10px; /* Optional: Adds space between buttons */
-    }
-    #multiple-video-btn, #screen-recording, .save-container {
-        width: auto; /* Ensures they adapt to content */
-        height: auto;
-    }
-    
+#right-tools{
+    display: flex;
+    justify-content: flex-end; 
+    margin-top: 10px; 
+}
 /* #right-tools button{
     margin-left: 0px; 
 } */
@@ -314,7 +306,7 @@ video,#media-element {
     position: relative;
     width: 100%; 
     overflow: hidden;
-    margin-bottom: -0.5%;
+    margin-bottom: -2%;
    
 }
 
@@ -754,7 +746,6 @@ canvas4:nth-of-type(2) {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-right: auto;
     /* visibility: hidden; */
 }
 
@@ -762,12 +753,6 @@ canvas4:nth-of-type(2) {
     width: 24px;
     height: 24px;
     fill: #fafbfc; 
-}
-
-#shapes {
-    flex-grow: 1; /* This allows the shapes div to grow and take up available space */
-    display: flex; /* Optional: Allows internal elements to be arranged horizontally */
-    justify-content: center; /* Centers internal elements */
 }
 /*  
 body::before {
