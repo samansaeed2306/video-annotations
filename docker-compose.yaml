@@ -4,6 +4,7 @@ services:
     build: .
     ports:
       - "8080:8080"
+      - "3000:3000"
     volumes:
       - media-files-volume:/usr/src/app/public/uploads
 volumes:
