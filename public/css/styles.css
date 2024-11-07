@@ -32,7 +32,7 @@ body {
     border-radius: 0;        /* No border radius */
     width: 100%;             /* Full width of the viewport */
     display: flex;           /* Use flexbox for layout */
-    justify-content: flex-end; /* Align items to the right */
+    justify-content: flex-start; /* Align items to the right */
     align-items: center;     /* Center items vertically */
 }
 
@@ -644,11 +644,14 @@ canvas4:nth-of-type(2) {
     margin-bottom: 4px;
     opacity: 0.8;
 }
+.save-container{
+    background: transparent;
 
+}
 .save-btn {
     position: absolute;
     top: 12px; 
-    right: -90px; 
+    right: 0px; 
     background: none;
     border: none;
     cursor: pointer;
@@ -774,7 +777,7 @@ body::before {
     height: 20px;
    
     position: relative;
-    right: -300px; 
+    right: -590px 
   }
   
   .upload-another-video-icon path {
