@@ -25,7 +25,7 @@ body {
 
 .tools {
     position: fixed;           /* Keeps the tools bar fixed to the top */
-    top: 5%;                  /* Set top to 5% of the viewport height */
+    top: 0%;                  /* Set top to 5% of the viewport height */
     z-index: 1000;           /* Ensure it is above other elements */
     background-color: #17181a; /* Background color */
     padding: 5px;            /* Padding around the content */
