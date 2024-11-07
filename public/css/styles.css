@@ -63,7 +63,10 @@ body {
     
     
 }
-
+#shapes{ 
+    /* left: 50%; */
+    margin: auto; 
+}
 #right-tools{
     display: flex;
     justify-content: flex-end; 
