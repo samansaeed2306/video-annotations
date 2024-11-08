@@ -104,7 +104,7 @@ body {
 #video-container {
     position: relative;
     width: auto;
-    height: 80vh;
+    height: 55vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -116,6 +116,7 @@ video,#media-element {
     width: auto;
     height: auto;
     object-fit: contain;
+    
     
 }
 
