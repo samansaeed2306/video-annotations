@@ -104,7 +104,7 @@ body {
 #video-container {
     position: relative;
     width: auto;
-    height: 55vh;
+    height: 60vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -311,7 +311,7 @@ video,#media-element {
     position: relative;
     width: 100%; 
     overflow: hidden;
-    margin-bottom: -2%;
+    margin-bottom: -0%;
    
 }
 
@@ -429,7 +429,7 @@ video,#media-element {
     z-index: 3;
 }
 .buttons-container {
-    display: flex;
+    display: none;
     justify-content: space-between; 
     align-items: center;
     padding: 15px;
