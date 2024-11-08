@@ -116,6 +116,7 @@ video,#media-element {
     width: auto;
     height: auto;
     object-fit: contain;
+    z-index: 0;
     
     
 }
