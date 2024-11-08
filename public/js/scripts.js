@@ -251,20 +251,36 @@ function setupTimeline(video) {
     timeline.appendChild(pointer2);
 
    
+    // function updatePointerAndTicks() {
+    //     const percentage = (video.currentTime / duration) * 100;
+    //     pointer2.style.left = `calc(${percentage}% - 6.5px)`; 
+        
+    //     const ticks2 = document.querySelectorAll('.tick2');
+    //     ticks2.forEach((tick2, index) => {
+    //         if (index <= Math.floor(video.currentTime)) {
+    //             tick2.style.backgroundColor = 'red'; 
+    //         } else {
+    //             tick2.style.backgroundColor = 'white'; 
+    //         }
+    //     });
+    // }
     function updatePointerAndTicks() {
         const percentage = (video.currentTime / duration) * 100;
-        pointer2.style.left = `calc(${percentage}% - 6.5px)`; 
-        
+        pointer2.style.left = `calc(${percentage}% - 30.5px)`; 
+    
         const ticks2 = document.querySelectorAll('.tick2');
         ticks2.forEach((tick2, index) => {
+            // Set ticks before or at pointer position to red
             if (index <= Math.floor(video.currentTime)) {
                 tick2.style.backgroundColor = 'red'; 
-            } else {
+            } 
+            // Set ticks after pointer position to white
+            else {
                 tick2.style.backgroundColor = 'white'; 
             }
         });
     }
-
+    
     video.addEventListener('timeupdate', updatePointerAndTicks);
 
    
