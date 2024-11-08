@@ -953,6 +953,11 @@ background-color: transparent;
         display: none !important;
 
     }
+
+    .buttons-container {
+        display: flex;
+    }
+
     .tools button,
     .video-buttons .video-button,
     .bottom-right-sidebar button,
