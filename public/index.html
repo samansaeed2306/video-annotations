@@ -8,7 +8,9 @@
     <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
     <link rel="manifest" href="images/site.webmanifest">
-    
+    <link href="https://vjs.zencdn.net/8.16.1/video-js.css" rel="stylesheet" />
+    <script src="https://vjs.zencdn.net/8.16.1/video.min.js"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.5.0/fabric.min.js"></script>
     
      
@@ -296,7 +298,20 @@
   
     <div id="container-wrapper">
     <div id="video-container">
-        <video id="video" playsinline controls></video>
+        <video 
+    id="video"
+    class="video-js"
+    controls
+    preload="auto"
+    width="640"
+    height="360"
+    data-setup="{}"
+>
+    <p class="vjs-no-js">
+        To view this video please enable JavaScript, and consider upgrading to a
+        web browser that supports HTML5 video
+    </p>
+</video>
         <canvas id="canvas"></canvas>
         <div id="zoom-icon"></div>
        
