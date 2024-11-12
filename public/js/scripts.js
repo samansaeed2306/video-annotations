@@ -2513,6 +2513,17 @@ const toggleZoom = () => {
         canvas.wrapperEl.style.top = `${-offsetY}px`;
         
         canvas.calcOffset();
+
+        const controlBar = document.querySelector('.vjs-custom-theme .vjs-control-bar');
+
+        if (controlBar) {
+        
+            controlBar.style.backgroundColor = 'red';
+            controlBar.style.bottom = '-85px';
+            controlBar.style.width = '1183px';
+            controlBar.style.left =  `${-offsetX}px`;
+        }
+
     } 
     
     else {
