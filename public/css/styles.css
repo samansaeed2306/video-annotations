@@ -23,6 +23,7 @@ body {
     /* background-color: #000; */
 }
 
+
 .tools {
     position: fixed;           /* Keeps the tools bar fixed to the top */
     top: 0%;                  /* Set top to 5% of the viewport height */
@@ -119,6 +120,10 @@ video,#media-element {
     
 }
 
+/* .vjs-custom-theme .vjs-control-bar{
+    background-color: rgb(161, 138, 232) !important;
+
+} */
 #toggle-icon {
     position: absolute;
     /* bottom: 10px;  */
