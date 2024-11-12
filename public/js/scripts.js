@@ -2521,7 +2521,7 @@ const toggleZoom = () => {
             //controlBar.style.backgroundColor = 'transparent';
             controlBar.style.border = 'none';
            
-            controlBar.style.bottom = '-80px';
+            controlBar.style.bottom = '-70px';
             controlBar.style.width = '1490px';
             controlBar.style.left =  `${-offsetX}px`;
             controlBar.style.left =  `-286px`;
