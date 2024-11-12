@@ -2518,10 +2518,14 @@ const toggleZoom = () => {
 
         if (controlBar) {
         
-            controlBar.style.backgroundColor = 'red';
+            //controlBar.style.backgroundColor = 'transparent';
+            controlBar.style.border = 'none';
+           
             controlBar.style.bottom = '-85px';
-            controlBar.style.width = '1183px';
+            controlBar.style.width = '1490px';
             controlBar.style.left =  `${-offsetX}px`;
+            controlBar.style.left =  `-390px`;
+            controlBar.style.zIndex= '4';
         }
 
     } 
@@ -2550,6 +2554,22 @@ const toggleZoom = () => {
         }
 
         canvas.calcOffset();
+
+        const videoElement = document.getElementById('video');
+
+
+        if (videoElement) {
+            videoElement.classList.remove('vjs-custom-theme');
+        }
+        const controlBar = document.querySelector('.vjs-control-bar');
+        if (controlBar) {
+            
+            controlBar.style.backgroundColor = ''; 
+            controlBar.style.bottom = '';
+            controlBar.style.width = '';
+            controlBar.style.left = '';
+        }
+    
     }}
 };
 function zoomOut2x() { 
