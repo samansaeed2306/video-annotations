@@ -61,7 +61,8 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function setupTimeline(video, player) {
-    const timeline = document.getElementById('timeline');
+   
+        const stopDragging = () => { const timeline = document.getElementById('timeline');
     const duration = Math.floor(player.duration());
     timeline.style.setProperty('--duration', duration);
     console.log(duration);
@@ -198,7 +199,6 @@ function setupTimeline(video, player) {
             player.currentTime(Math.min(Math.max(newTime, 0), duration));
         };
 
-        const stopDragging = () => {
             document.removeEventListener('mousemove', movePointer);
             document.removeEventListener('mouseup', stopDragging);
             document.removeEventListener('touchmove', movePointer);
