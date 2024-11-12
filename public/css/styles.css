@@ -432,7 +432,7 @@ video,#media-element {
     z-index: 3;
 }
 .buttons-container {
-    display: flex;
+    display: none;
     justify-content: space-between; 
     align-items: center;
     padding: 15px;
@@ -1104,6 +1104,10 @@ background-color: transparent;
         display:none;
     }
 
+    .buttons-container {
+        display: flex;
+
+    }
     .button-with-menu{
         display:none;
     }
