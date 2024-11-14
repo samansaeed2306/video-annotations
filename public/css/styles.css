@@ -120,10 +120,10 @@ video,#media-element {
     
 }
 
-/* .vjs-custom-theme .vjs-control-bar{
-    background-color: rgb(161, 138, 232) !important;
+.vjs-custom-theme .vjs-control-bar{
+    z-index: 5 !important;
 
-} */
+}
 #toggle-icon {
     position: absolute;
     /* bottom: 10px;  */
@@ -1027,7 +1027,11 @@ background-color: transparent;
         padding: 0;
         cursor: pointer; 
     }
-
+/* 
+    .vjs-custom-theme .vjs-control-bar{
+        z-index: 1 !important;
+    
+    } */
     .tools {
         opacity: 0.8;
         position: absolute;
