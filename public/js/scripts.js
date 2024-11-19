@@ -10,7 +10,7 @@ const canvas = new fabric.Canvas('canvas', {
     selection: false,
     isDrawingMode: false
     });
-// ... (keep all your existing variables and initial setup code until the DOMContentLoaded event)
+
 
 document.addEventListener('DOMContentLoaded', function() {
     setTimeout(() => {
