@@ -1043,6 +1043,10 @@ background-color: transparent;
 
     }
 
+    .canvas-container{
+        width: 593px !important;
+        height: 695px !important;    
+    }
 /* 
  
 
