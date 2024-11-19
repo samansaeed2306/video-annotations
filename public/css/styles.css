@@ -927,6 +927,11 @@ body::before {
 #multiple-video-btn:hover{
 background-color: transparent;
 }
+
+.vjs-has-started.vjs-user-inactive.vjs-playing .vjs-control-bar {
+    opacity: 1;
+
+}
 /* #upload-svg{
    mright: 10px;
 } */
@@ -1028,16 +1033,14 @@ background-color: transparent;
         cursor: pointer; 
     }
 
-    #canvas, 
-    .lower-canvas, 
-    .upper-canvas, 
-    .canvas-container {
-        position: absolute;
-        top: 80px; /* Move the canvas down */
-        left: 90px; /* Move the canvas to the right */
-        margin: 0;
-        padding: 0;
-        z-index: 2;
+    .vjs-has-started.vjs-user-inactive.vjs-playing .vjs-control-bar {
+        opacity: 1;
+    
+    }
+
+    .vjs-theme-sea .vjs-control-bar {
+        height: 4.5em;
+
     }
 
 /* 
