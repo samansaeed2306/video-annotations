@@ -1,4 +1,3 @@
-
 let annotations = [];
 let currentColorIndex = 0;
 const colors = ['#FF5733', '#33FF57', '#5733FF', '#FFFF33', '#FF33FF', '#33FFFF'];
@@ -18,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (selectedMediaType === '' || selectedMediaType === 'video') {
             if(video) {
-                // Initialize Video.js player
+                
                 const player = videojs('video', {
                     controls: true,
                     fluid: true,
