@@ -237,6 +237,12 @@ function addVideoCard(videoSrc, title) {
     }
     
     editButton.addEventListener('click', function() {
+        
+        
+        // if (player) {
+        //     player.pause();
+        //     player.dispose();
+        // }
         localStorage.setItem('selectedMediaType', 'video');
         localStorage.setItem('selectedVideoSrc', videoSrc);
         window.location.href = '../index.html';

@@ -10,54 +10,66 @@ const canvas = new fabric.Canvas('canvas', {
     isDrawingMode: false
     });
 
-
+let player;
 document.addEventListener('DOMContentLoaded', function() {
     setTimeout(() => {
         const video = document.getElementById('video');
-        
+        if(player){
+            player.dispose();
+        }
         if (selectedMediaType === '' || selectedMediaType === 'video') {
             if(video) {
                 
-                const player = videojs('video', {
+                player = videojs('video', {
                     controls: true,
                     fluid: true,
                     html5: {
-                        hls: {
-                            enableLowInitialPlaylist: true,
-                            smoothQualityChange: true,
-                            overrideNative: true
-                        }
+                        nativeVideoTracks: false,
+                        nativeAudioTracks: false,
+                        nativeTextTracks: false
                     }
                 });
+
+                
+                // player.textTracks()[0]='disabled'
                 console.log("Player:",player);
+
                 const storedVideoSrc = localStorage.getItem('selectedVideoSrc');
-                const manifestUri = storedVideoSrc || 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8';
+                const defaultVideo = 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8';
+                const videoSrc = storedVideoSrc || defaultVideo;
 
-                function loadVideo(manifestUri) {
-                    player.src({
-                        src: manifestUri,
-                        type: 'application/x-mpegURL'
-                    });
+                loadVideo(videoSrc);
 
-                    player.ready(function() {
-                        console.log('The video has now been loaded!');
-                        // Wait for metadata to load before setting up timeline
-                        player.on('loadedmetadata', function() {
-                            setupTimeline(video, player);
-                        });
-                    });
-
-                    player.on('error', function(error) {
-                        console.error('Error:', player.error());
+                // Clear localStorage only after successful load
+                if (storedVideoSrc) {
+                    player.one('loadeddata', function() {
+                        localStorage.removeItem('selectedVideoSrc');
                     });
                 }
-
-                loadVideo(manifestUri);
-                localStorage.removeItem('selectedVideoSrc');
             }
         }
     }, 1000);
+    function loadVideo(videoSrc) {
+        const isHLS = videoSrc.includes('.m3u8');
+        
+        player.src({
+            src: videoSrc,
+            type: isHLS ? 'application/x-mpegURL' : 'video/mp4'
+        });
+    
+        player.ready(function() {
+            console.log('The video has now been loaded!');
+            player.on('loadedmetadata', function() {
+                setupTimeline(video, player);
+            });
+        });
+    
+        player.on('error', function(error) {
+            console.error('Error:', player.error());
+        });
+    }     
 });
+        
 
 function setupTimeline(video, player) {
    
