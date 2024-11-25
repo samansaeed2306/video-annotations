@@ -2669,10 +2669,10 @@ if (canvasonSwitch.style.display == 'block') {
 canvas.calcOffset();
 
 }
-    videoContainer.addEventListener('dblclick',() => {
-        toggleZoom(); 
-        resizeVideoButton.classList.toggle('active');
-    });
+    // videoContainer.addEventListener('dblclick',() => {
+    //     toggleZoom(); 
+    //     resizeVideoButton.classList.toggle('active');
+    // });
 
 const resizeVideoButton = document.getElementById('resize-video');
 
