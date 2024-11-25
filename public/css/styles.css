@@ -1019,7 +1019,7 @@ background-color: transparent;
     }
 
     #canvas {
-        width: 100%;        
+        width:100vw;        
         height: 100vh;       
         position: absolute;
         top: 0;             
@@ -1032,7 +1032,7 @@ background-color: transparent;
         padding: 0;
         cursor: pointer;
     }
-
+   
     .vjs-has-started.vjs-user-inactive.vjs-playing .vjs-control-bar {
         opacity: 1;
     
