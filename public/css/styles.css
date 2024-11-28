@@ -122,6 +122,8 @@ video,#media-element {
 
 .vjs-custom-theme .vjs-control-bar{
     z-index: 5 !important;
+    position: fixed;
+    bottom: 0;
 
 }
 #toggle-icon {
