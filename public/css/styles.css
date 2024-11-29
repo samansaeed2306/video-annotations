@@ -25,49 +25,92 @@ body {
 
 
 .tools {
-    position: fixed;           /* Keeps the tools bar fixed to the top */
-    top: 0%;                  /* Set top to 5% of the viewport height */
-    z-index: 1000;           /* Ensure it is above other elements */
-    background-color: #17181a; /* Background color */
-    padding: 0.5vw;            /* Padding around the content */
-    border-radius: 0;        /* No border radius */
-    width: 100%;             /* Full width of the viewport */
-    display: flex;           /* Use flexbox for layout */
-    justify-content: flex-start; /* Align items to the right */
-    align-items: center;     /* Center items vertically */
+    display: flex;
+    justify-content: center; /* Center buttons horizontally */
+    
+    gap: 2vw; /* Space between buttons */
+    width: 100%; /* Full width of the screen */
+    height: 5vh; /* Height relative to viewport */
+    background-color: #f9f9f9; /* Navbar background */
+    border-bottom: 0.2vh solid #ddd; /* Subtle border at the bottom */
+    box-shadow: 0 0.5vh 1vh rgba(0, 0, 0, 0.1); /* Soft shadow */
+    position: fixed; /* Fixed at the top */
+    top: 0;
+    left: 0;
+    z-index: 1000; /* Ensure it's above other elements */
+    padding: 1vh 2vw; /* Add some padding */
 }
 
+/* Ensure buttons/icons adjust flexibly */
 .tools button {
-    margin: 0 0.5vw;           /* Horizontal margin to space buttons */
-    cursor: pointer;         /* Pointer cursor on hover */
-    background-color: #17181a; /* Button background color */
-    border: none;            /* Remove border */
-    border-radius: 50%;      /* Make the buttons round */
-    /* color: #fff; Text color inside the button */
+    width: 5vh; /* Square buttons, height-driven */
+    height: 5vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
 }
 
-/* Additional styles for other elements may be required */
+/* Icons within buttons */
+.tools button img,
+.tools button svg {
+    width: 3vh; /* Scale icons relative to height */
+    height: 3vh;
+    max-width: 100%;
+    max-height: 100%;
+}
 
-
-
+/* Responsive Hover Effects */
 .tools button:hover {
-    background-color: #485056 ;
+    background-color: #e0e0e0; /* Subtle background color change on hover */
+    border-radius: 0.5vh; /* Rounded corners */
 }
-.tools button:clicked {
-    background-color:#1A4971 ;
+
+/* View Button */
+.view-icon {
+    width: 6vh; /* Slightly larger for emphasis */
+    height: 6vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.view-icon svg {
+    width: 4vh;
+    height: 4vh;
+    fill: #abb0c4;
+    transition: transform 0.3s ease-in-out, fill 0.3s ease-in-out;
+}
+
+.view-icon svg:hover {
+    fill: #555;
+    transform: scale(1.1);
 }
 
 
-.tools button img {
-    width: 20px;
-    height: 20px;
-    
-    
+#shapes {
+    display: flex;           /* Use flexbox for horizontal alignment */
+    gap: 10px;               /* Add spacing between buttons */
+    justify-content: center; /* Center the buttons horizontally */
+    align-items: center;     /* Center the buttons vertically */
+    padding: 10px;           /* Optional padding around the container */
 }
-#shapes{ 
-    /* left: 50%; */
-    margin: auto; 
+
+#shapes button {
+    background: none;
+    border: none;
+    cursor: pointer;
 }
+
+#shapes svg {
+    width: 24px;
+    height: 24px;
+}
+
 #right-tools{
     display: flex;
     justify-content: flex-end; 
