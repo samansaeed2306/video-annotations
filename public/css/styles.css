@@ -109,11 +109,7 @@ body {
     height: 24px;
 }
 
-#right-tools{
-    display: flex;
-    justify-content: flex-end; 
-    margin-top: 10px; 
-}
+
 /* #right-tools button{
     margin-left: 0px; 
 } */
@@ -125,15 +121,67 @@ body {
 
     fill: #abb0c4; /* Icon color */
 }
-#screen-recording{
+#right-tools {
+    display: flex;
+    justify-content: flex-end; /* Aligns items to the right */
+    align-items: center;      /* Vertically aligns items */
+    gap: 10px;                /* Adds spacing between buttons */
+    margin-top: 10px;
+    position: relative;       /* Ensures relative positioning for child elements */
+}
+
+#screen-recording {
     cursor: pointer;
     width: 40px;
     height: 40px;
-    position: absolute;
-    right: 0;
-    top: 06px;
-    margin-right: 85px;
 }
+
+#save-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+#save-button svg {
+    fill: #ffffff;
+    width: 25px;  /* Ensure appropriate width */
+    height: 25px; /* Ensure appropriate height */
+}
+
+#save-button:hover svg {
+    fill: #FFD700;
+}
+
+#multiple-video-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;            /* Center align the SVG within the button */
+    justify-content: center;
+    align-items: center;
+    width: 40px;              /* Ensure button has visible size */
+    height: 40px;
+}
+
+#multiple-video-btn svg {
+    width: 30px;
+    height: 30px;
+}
+
+.save-container {
+    background: transparent;
+}
+
+.save-label {
+    margin-left: 10px;
+    color: white;
+    font-size: 16px;
+    position: absolute;
+    top: 23px;
+    right: 76px;
+    background: none;
+}
+
 #container-wrapper {
     display: flex;
     justify-content: center;
@@ -694,39 +742,6 @@ canvas4:nth-of-type(2) {
     padding: 5px;
     margin-bottom: 4px;
     opacity: 0.8;
-}
-.save-container{
-    background: transparent;
-
-}
-.save-btn {
-    position: absolute;
-    top: 12px; 
-    right: 0px; 
-    background: none;
-    border: none;
-    cursor: pointer;
-}
-
-.save-btn svg {
-    fill: #ffffff; 
-}
-
-.save-btn.active svg {
-    fill: #FFD700; 
-}
-
-#save-button:hover {
-    background-color: transparent; 
-}
-.save-label {
-    margin-left: 10px; 
-    color: white; 
-    font-size: 16px; 
-    position: absolute;
-    top: 23px; 
-    right: 76px;
-    background: none;
 }
 
 .blur {
