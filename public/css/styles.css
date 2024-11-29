@@ -31,7 +31,7 @@ body {
     gap: 2vw; /* Space between buttons */
     width: 100%; /* Full width of the screen */
     height: 5vh; /* Height relative to viewport */
-    background-color: #f9f9f9; /* Navbar background */
+    background-color: #151111; /* Navbar background */
     border-bottom: 0.2vh solid #ddd; /* Subtle border at the bottom */
     box-shadow: 0 0.5vh 1vh rgba(0, 0, 0, 0.1); /* Soft shadow */
     position: fixed; /* Fixed at the top */
@@ -71,8 +71,6 @@ body {
 
 /* View Button */
 .view-icon {
-    width: 6vh; /* Slightly larger for emphasis */
-    height: 6vh;
     display: flex;
     justify-content: center;
     align-items: center;
