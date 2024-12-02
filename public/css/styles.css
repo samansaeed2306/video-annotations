@@ -26,9 +26,8 @@ body {
 
 .tools {
     display: flex;
-    justify-content: center; /* Center buttons horizontally */
-    
-    gap: 2vw; /* Space between buttons */
+    justify-content: space-between; 
+    gap: 3vw; /* Space between buttons */
     width: 100%; /* Full width of the screen */
     height: 5vh; /* Height relative to viewport */
     background-color: #151111; /* Navbar background */
@@ -38,7 +37,7 @@ body {
     top: 0;
     left: 0;
     z-index: 1000; /* Ensure it's above other elements */
-    padding: 1vh 2vw; /* Add some padding */
+    padding: 1vh 0vw; /* Add some padding */
 }
 
 /* Ensure buttons/icons adjust flexibly */
@@ -54,6 +53,24 @@ body {
     cursor: pointer;
 }
 
+.tools div {
+    flex: 1; /* Make the divs take up equal width */
+    text-align: center; /* Center the content within each div */
+}
+
+
+
+.tools div:first-child {
+    margin-right: auto; /* Push the first div to the left */
+}
+
+.tools div:nth-child(2) {
+    margin: 0 auto; /* Center the middle div horizontally */
+}
+
+.tools div:last-child {
+    margin-left: auto; /* Push the last div to the right */
+}
 /* Icons within buttons */
 .tools button img,
 .tools button svg {
@@ -127,7 +144,7 @@ body {
     align-items: center;      /* Vertically aligns items */
     gap: 10px;                /* Adds spacing between buttons */
     margin-top: 10px;
-    position: relative;       /* Ensures relative positioning for child elements */
+    
 }
 
 #screen-recording {
@@ -153,20 +170,30 @@ body {
 }
 
 #multiple-video-btn {
-    background: none;
+    background: whitesmoke;
+    color: #000;
     border: none;
     cursor: pointer;
-    display: flex;            /* Center align the SVG within the button */
+    display: flex;              /* Ensure proper layout for SVG inside */
     justify-content: center;
     align-items: center;
-    width: 40px;              /* Ensure button has visible size */
-    height: 40px;
+    width: 50px;                /* Set a visible width */
+    height: 50px; 
+    opacity: 0.5;
+    z-index: 10;              /* Set a visible height */
 }
 
 #multiple-video-btn svg {
-    width: 30px;
+    width: 30px;                /* Ensure the SVG is scaled correctly */
     height: 30px;
+    stroke: #ffffff;            /* Ensure visible stroke color */
+    fill: none;                 /* If applicable, set to none for transparency */
 }
+
+#multiple-video-btn:hover svg {
+    stroke: #FFD700;            /* Highlight effect on hover */
+}
+
 
 .save-container {
     background: transparent;
