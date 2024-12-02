@@ -1067,57 +1067,41 @@ background-color: transparent;
     }
 
 
+        /* Ensure full height and width for mobile */
     #video-container {
-        position: fixed; /* Fixed to cover the entire viewport */
+        position: fixed; /* Covers the entire viewport */
         top: 0;
         left: 0;
         width: 100%;
-        height: 100vh; /* Full viewport height */
+        height: 100%; /* Use 100% to ensure it fits mobile screens */
         margin: 0;
         padding: 0;
         z-index: 1; /* Place behind floating elements */
     }
 
-
-    video, #canvas ,#media-element{
-
-        width: 100%;
-        height: 100vh; /* Full viewport height */
+    video, #canvas, #media-element {
+        width: 100% !important;
+        height: 100vh !important;/* Fill the full screen height */
         margin: 0;
         padding: 0;
-        object-fit: cover; /* Ensure the video covers the entire area */
-    }
-
-
-    video ,#media-element{
-
-        width: 100%;
-        height: 100vh;
+        object-fit: cover; /* Ensures the video fills the area proportionally */
         position: absolute;
         top: 0;
         left: 0;
-        z-index: 1;
-        pointer-events: none;
-        object-fit: cover;
-        margin: 0;
-        padding: 0;
+    }
+
+    video {
+        z-index: 1; /* Place video below the canvas */
+        pointer-events: none; /* Prevent interactions with the video */
     }
 
     #canvas {
-        width:100vw;        
-        height: 100vh;       
-        position: absolute;
-        top: 0;             
-        left: 0;           
-        z-index: 2;
-        pointer-events: none;
-        background-color: transparent;
-        object-fit: cover;
-        margin: 0;
-        padding: 0;
+        z-index: 2; /* Place canvas above the video */
+        background-color: transparent; /* Transparent background for canvas */
+        pointer-events: none; /* Allow interactions only if needed */
         cursor: pointer;
     }
-   
+
     .vjs-has-started.vjs-user-inactive.vjs-playing .vjs-control-bar {
         opacity: 1;
     
@@ -1174,7 +1158,7 @@ background-color: transparent;
      }  */
      #shapes {
         flex-direction: column; /* Stack items vertically */
-        gap: 0.5vh; /* Adjust the spacing between items */
+        gap: 0.07vh; /* Adjust the spacing between items */
         justify-content: center; /* Center items vertically */
         align-items: center; /* Center items horizontally */
         margin: 0 auto; /* Center the shapes div on the screen */
@@ -1185,7 +1169,7 @@ background-color: transparent;
     #shapes button {
         width: 40px; /* Adjust button size for mobile */
         height: 40px;
-        margin: 0.05vh 0; /* Add vertical margin between buttons */
+        margin: 0vh 0; /* Add vertical margin between buttons */
         background-color: rgba(52, 58, 64, 0.9); /* Background for buttons */
         border-radius: 25px; /* Rounded corners */
     }
@@ -1663,5 +1647,7 @@ display: block;
     display: none;
   } */
 
- 
+  .video-dimensions {
+    width: 960px;
+    height: 90vh;}
 }
