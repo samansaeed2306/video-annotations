@@ -1090,10 +1090,10 @@ background-color: transparent;
         left: 0;
     }
 
-    video {
-        z-index: 1; /* Place video below the canvas */
-        pointer-events: none; /* Prevent interactions with the video */
-    }
+    /* video {
+        z-index: 1; 
+    pointer-events: none; 
+    } */
 
     #canvas {
         z-index: 2; /* Place canvas above the video */
@@ -1109,11 +1109,14 @@ background-color: transparent;
 
     .vjs-theme-sea .vjs-control-bar {
         height: 4.5em;
+        z-index: 5000 !important;
 
     }
 
    
-   
+    #parentbtncontainer {
+        display: none;
+    }
 /* 
  
 
