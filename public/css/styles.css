@@ -1172,7 +1172,32 @@ background-color: transparent;
      #freehand{
         background-color: #b03e2a;
      }  */
+     #shapes {
+        flex-direction: column; /* Stack items vertically */
+        gap: 0.5vh; /* Adjust the spacing between items */
+        justify-content: center; /* Center items vertically */
+        align-items: center; /* Center items horizontally */
+        margin: 0 auto; /* Center the shapes div on the screen */
+        padding: 2px; /* Add some padding */
+        padding-top: 0 !important;
+    }
 
+    #shapes button {
+        width: 40px; /* Adjust button size for mobile */
+        height: 40px;
+        margin: 0.05vh 0; /* Add vertical margin between buttons */
+        background-color: rgba(52, 58, 64, 0.9); /* Background for buttons */
+        border-radius: 25px; /* Rounded corners */
+    }
+
+    #shapes svg {
+        width: 24px; /* Adjust icon size */
+        height: 24px;
+    }
+
+    #right-tools{
+        display: none;
+    }
      .video-buttons {
         position: absolute;
         bottom: 20px;
