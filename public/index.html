@@ -85,7 +85,7 @@
         <!-- onclick="view()" -->
         <!-- <button id="freehand" onclick="drawFreehand()"><img src="icons/freehand.png" alt="Freehand"> </button> -->
 
-        <div id="shapes">
+        <div id="shapes" style="margin-left: 25%;">
         <button id="colorWheel" onclick="selectColor()">
             <img src="icons/color-wheel.svg" alt="color-wheel" title="Color Palette"> 
         </button>
@@ -238,13 +238,14 @@
     <div id="right-tools">
 
         <button id="multiple-video-btn">
-        <svg id="upload-svg" class="upload-another-video-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-labelledby="title" aria-describedby="desc" role="img" xmlns:xlink="http://www.w3.org/1999/xlink">
-            <title>Upload another video</title>
-            <desc>For multiple videos</desc>
-            <path d="M31 48V3M16 20L31 3l15 16" stroke-width="6" stroke-miterlimit="10" stroke-linecap="round" stroke="#abb0c4" fill="none" data-name="layer2" stroke-linejoin="round"></path>
-            <path d="M8 46v16h46V46" stroke-width="6" stroke-miterlimit="10" stroke-linecap="round" stroke="#abb0c4" fill="none" data-name="layer1" stroke-linejoin="round"></path>
+            <svg id="upload-svg" class="upload-another-video-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-labelledby="title" aria-describedby="desc" role="img" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <title>Upload another video</title>
+                <desc>For multiple videos</desc>
+                <path d="M31 48V3M16 20L31 3l15 16" stroke-width="4" stroke-miterlimit="10" stroke-linecap="round" stroke="red" fill="none" stroke-linejoin="round"></path>
+                <path d="M8 46v16h46V46" stroke-width="4" stroke-miterlimit="10" stroke-linecap="round" stroke="red" fill="none" stroke-linejoin="round"></path>
             </svg>
-        </button> 
+        </button>
+        
               
         <img id="screen-recording" class="start-recording" src="icons/screenrecorder.png" alt="Start Recording" title="Record Screen">
         <!-- <div class="save-container">
