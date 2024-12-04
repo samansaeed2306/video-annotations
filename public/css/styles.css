@@ -112,7 +112,7 @@ body {
     gap: 10px;               /* Add spacing between buttons */
     justify-content: center; /* Center the buttons horizontally */
     align-items: center;     /* Center the buttons vertically */
-    padding: 10px;           /* Optional padding around the container */
+    padding: 0vh 3vw;           /* Optional padding around the container */
 }
 
 #shapes button {
@@ -1667,4 +1667,30 @@ display: block;
     height: 90vh;}
 
  
+}
+@media (min-width: 521px) and (max-width: 1024px) {
+    #shapes{
+        gap: 0vw;
+        padding: 0vh 0.01vw;  
+        margin-left: 7% !important;
+    }
+    .tools {
+        gap: 0.05vw;
+        padding: 0.05vh 0.05vw;
+    }
+
+    .tools button {
+        width: 4vh;
+        height: 4vh;
+    }
+
+    .tools svg {
+        width: 2vh;
+        height: 2vh;
+    }
+    #right-tools {
+        gap: 0vw;          
+      
+        
+    }
 }
