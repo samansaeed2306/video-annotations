@@ -1670,7 +1670,7 @@ display: block;
 }
 @media (min-width: 521px) and (max-width: 1024px) {
     #shapes{
-        gap: 0vw;
+        gap: 1vw;
         padding: 0vh 0.01vw;  
         margin-left: 20% !important;
         width: 50%; 
