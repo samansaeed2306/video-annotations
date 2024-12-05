@@ -1668,7 +1668,7 @@ display: block;
 
  
 }
-@media (min-width: 521px) and (max-width: 1024px) {
+@media (min-width: 521px) and (max-width: 1100px) {
     #shapes{
         gap: 1vw;
         padding: 0vh 0.01vw;  
