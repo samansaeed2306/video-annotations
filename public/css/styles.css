@@ -1672,7 +1672,8 @@ display: block;
     #shapes{
         gap: 0vw;
         padding: 0vh 0.01vw;  
-        margin-left: 7% !important;
+        margin-left: 20% !important;
+        width: 50%; 
     }
     .tools {
         gap: 0.05vw;
@@ -1693,4 +1694,8 @@ display: block;
       
         
     }
+
+    .video-dimensions {
+        width: 860px;
+        height: 90vh;}
 }
