@@ -1711,7 +1711,6 @@ display: block;
                 z-index: 4;
             }
             .lower-canvas{
-        
                 position: absolute !important; 
                 top: 0 !important;
                 left: 0 !important;
