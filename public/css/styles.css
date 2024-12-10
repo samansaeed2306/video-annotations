@@ -1081,7 +1081,7 @@ background-color: transparent;
 
     video, #canvas, #media-element {
         width: 100vw !important;
-        height: 80vh !important;/* Fill the full screen height */
+        height: 84vh !important;/* Fill the full screen height */
         margin: 0;
         padding: 0;
         object-fit: cover; /* Ensures the video fills the area proportionally */
