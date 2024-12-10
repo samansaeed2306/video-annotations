@@ -645,7 +645,7 @@ function drawFreehand() {
    
 }
 
-  
+
 function activateCircleMode() {
     isInteracting = true;
     if (eraserListener) {
@@ -669,7 +669,7 @@ function activateCircleMode() {
 
     }
     else{
-    if(videoAspectRatio<1){
+       if (videoAspectRatio < 1) {
     console.log('Oops!! This is portrait circle');
     const circle = new fabric.Circle({
         left: 100,
@@ -697,6 +697,7 @@ function activateCircleMode() {
     });
     canvas.add(circle).setActiveObject(circle);
    }
+
    isInteracting = false; 
    
 }}
