@@ -170,7 +170,7 @@ body {
 }
 
 #multiple-video-btn {
-    background: whitesmoke;
+    background: transparent;
     color: #000;
     border: none;
     cursor: pointer;
