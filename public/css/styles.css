@@ -1162,7 +1162,7 @@ background-color: transparent;
      }  */
      #shapes {
         flex-direction: column; /* Stack items vertically */
-        gap: 0.5vh; /* Adjust the spacing between items */
+        gap: 0.07vh; /* Adjust the spacing between items */
         justify-content: center; /* Center items vertically */
         align-items: center; /* Center items horizontally */
         margin: 0 auto; /* Center the shapes div on the screen */
