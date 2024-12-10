@@ -1166,7 +1166,7 @@ background-color: transparent;
         justify-content: center; /* Center items vertically */
         align-items: center; /* Center items horizontally */
         margin: 0 auto; /* Center the shapes div on the screen */
-        padding: 2px; /* Add some padding */
+        padding: 0vh 3vw;  
         padding-top: 0 !important;
     }
 
@@ -1655,4 +1655,34 @@ display: block;
     width: 960px;
     height: 80vh;}
 
+}
+
+@media (min-width: 521px) and (max-width: 1024px) {
+    #shapes{
+        gap: 0vw;
+        padding: 0vh 0.01vw;  
+        margin-left: 7% !important;
+        margin-left: 20% !important;
+        width: 50%; 
+    }
+    .tools {
+        gap: 0.05vw;
+        padding: 0.05vh 0.05vw;
+    }
+    .tools button {
+        width: 4vh;
+        height: 4vh;
+    }
+    .tools svg {
+        width: 2vh;
+        height: 2vh;
+    }
+    #right-tools {
+        gap: 0vw;          
+      
+        
+    }
+    .video-dimensions {
+        width: 860px;
+        height: 90vh;}
 }
