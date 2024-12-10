@@ -1740,7 +1740,7 @@ display: block;
     .vjs-custom-theme .vjs-control-bar {
         width: 100%;
         position: absolute;
-        bottom: 0vh !important;
+        bottom: 0.05vh !important;
         left: 0;
         right: 0;
         height: 3em;
