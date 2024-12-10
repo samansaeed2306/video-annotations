@@ -1168,6 +1168,7 @@ background-color: transparent;
         margin: 0 auto; /* Center the shapes div on the screen */
         padding: 0vh 3vw;  
         padding-top: 0 !important;
+        margin-left: 0 !important;
     }
 
     #shapes button {
