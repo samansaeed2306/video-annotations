@@ -112,7 +112,7 @@ body {
     gap: 10px;               /* Add spacing between buttons */
     justify-content: center; /* Center the buttons horizontally */
     align-items: center;     /* Center the buttons vertically */
-    padding: 0vh 3vw;           /* Optional padding around the container */
+    padding: 10px;           /* Optional padding around the container */
 }
 
 #shapes button {
@@ -170,7 +170,7 @@ body {
 }
 
 #multiple-video-btn {
-    background: transparent;
+    background: whitesmoke;
     color: #000;
     border: none;
     cursor: pointer;
@@ -1068,44 +1068,32 @@ background-color: transparent;
 
 
     #video-container {
-        position: fixed; /* Covers the entire viewport */
+        position: fixed; /* Fixed to cover the entire viewport */
         top: 0;
         left: 0;
-        width: 100%;
-        height: 100%; /* Use 100% to ensure it fits mobile screens */
-        margin: 0;
-        padding: 0;
-        z-index: 1; /* Place behind floating elements */
-    }
-
-
-    video, #canvas ,#media-element{
-
         width: 100%;
         height: 100vh; /* Full viewport height */
         margin: 0;
         padding: 0;
-        object-fit: cover; /* Ensure the video covers the entire area */
+        /* z-index: 1;  */
     }
 
 
-    video ,#media-element{
-
-        width: 100%;
-        height: 100vh;
+    video, #canvas, #media-element {
+        width: 100vw !important;
+        height: 80vh !important;/* Fill the full screen height */
+        margin: 0;
+        padding: 0;
+        object-fit: cover; /* Ensures the video fills the area proportionally */
         position: absolute;
         top: 0;
         left: 0;
-        z-index: 1;
-        pointer-events: none;
-        object-fit: cover;
-        margin: 0;
-        padding: 0;
     }
-
     #canvas {
-        width:100vw;        
-        height: 100vh;       
+        z-index: 2; /* Place canvas above the video */
+        background-color: transparent; /* Transparent background for canvas */
+        pointer-events: none; /* Allow interactions only if needed */
+        cursor: pointer;
         position: absolute;
         top: 0;             
         left: 0;           
@@ -1117,15 +1105,15 @@ background-color: transparent;
         padding: 0;
         cursor: pointer;
     }
-   
+
     .vjs-has-started.vjs-user-inactive.vjs-playing .vjs-control-bar {
         opacity: 1;
-    
+        z-index: 5;
     }
 
     .vjs-theme-sea .vjs-control-bar {
         height: 4.5em;
-
+        z-index: 15 !important;
     }
 
    
@@ -1662,90 +1650,9 @@ display: block;
   /* #multiple-video-btn{
     display: none;
   } */
+
   .video-dimensions {
     width: 960px;
-    height: 90vh;}
+    height: 80vh;}
 
- 
-}
-@media (min-width: 521px) and (max-width: 1100px) {
-    #shapes{
-        gap: 1vw;
-        padding: 0vh 0.01vw;  
-        margin-left: 20% !important;
-        width: 50%; 
-    }
-    .tools {
-        gap: 0.05vw;
-        padding: 0.05vh 0.05vw;
-    }
-
-    .tools button {
-        width: 4vh;
-        height: 4vh;
-    }
-
-    .tools svg {
-        width: 2vh;
-        height: 2vh;
-    }
-    #right-tools {
-        gap: 0vw;          
-      
-        
-    }
-
-    .video-dimensions {
-        width: 860px;
-        height: 90vh;}
-
-    #video-container {
-        position: relative;
-        width: 860px; 
-        height: 90vh; 
-    }
-
-    .canvas-container {
-        position: absolute !important; 
-        top: 0 !important;
-        left: 0 !important;
-        width: 860px !important;
-        height: 90vh !important; 
-        pointer-events: none; 
-        z-index: 4;
-    }
-    .upper-canvas{
-    
-            position: absolute !important; 
-            top: 0 !important;
-            left: 0 !important;
-            width: 860px !important;
-            height: 90vh !important; 
-            pointer-events: none; 
-            z-index: 4;
-        }
-    .lower-canvas{
-
-        position: absolute !important; 
-        top: 0 !important;
-        left: 0 !important;
-        width: 860px !important;
-        height: 90vh !important; 
-        pointer-events: none; 
-        z-index: 4;
-    }
-
-    #canvas{
-        
-            position: absolute !important; 
-            top: 0 !important;
-            left: 0 !important;
-            width: 860px !important;
-            height: 90vh !important; 
-            pointer-events: none; 
-            z-index: 4;
-        
-    }
-    
-    
 }
