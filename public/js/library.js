@@ -10,6 +10,7 @@ fetch(`${apiUrl}/mediabyuser/${userId}`)
   .then(response => response.json())
   .then(files => {
     // Loop through each file and call addImageCard or addVideoCard based on file extension
+    files.sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate));
     files.forEach(file => {
         console.log('File: ', file.fileName);
       // Check the file extension to decide if it's an image or video
