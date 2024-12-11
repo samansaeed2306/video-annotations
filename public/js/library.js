@@ -371,7 +371,7 @@ function refreshVideoGallery() {
     fetch(`${apiUrl}/mediabyuser/${userId}`)
         .then(response => response.json())
         .then(files => {
-          
+            files.sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate));
             gallery.innerHTML = ''; 
 
          
@@ -390,7 +390,7 @@ function refreshImageGallery() {
     fetch(`${apiUrl}/mediabyuser/${userId}`)
         .then(response => response.json())
         .then(files => {
-           
+            files.sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate));
             imageGallery.innerHTML = '';
 
         
