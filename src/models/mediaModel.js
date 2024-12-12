@@ -71,10 +71,13 @@ export async function updateMedia(id, updatedData) {
 //   return await Media.find({ userId: userId });
 // }
 
-export async function getMediaByUserId(userId) {
+export async function getMediaByUserId(userId, options = {}) {
   const db = await connectToDb();
   const collection = db.collection('media');
 
   
-  return await collection.find({ userId: userId }).toArray();
+  return await collection
+    .find({ userId: userId })
+    .sort(options.sort || { uploadDate: -1 }) 
+    .toArray();
 }
