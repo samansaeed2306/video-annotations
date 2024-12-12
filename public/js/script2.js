@@ -181,3 +181,11 @@ function debounce(func, delay) {
         timeout = setTimeout(() => func.apply(this, args), delay);
     };
 }
+
+
+document.getElementById("video-controls-btn").addEventListener("click", function() {
+    const mediaElement = document.getElementById("video");
+    if(mediaElement){
+    mediaElement.style.zIndex = mediaElement.style.zIndex === "2" ? "0" : "2";
+    }
+});
