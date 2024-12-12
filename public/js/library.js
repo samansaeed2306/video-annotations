@@ -10,6 +10,7 @@ fetch(`${apiUrl}/mediabyuser/${userId}`)
   .then(response => response.json())
   .then(files => {
     // Loop through each file and call addImageCard or addVideoCard based on file extension
+    files.sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate));
     files.forEach(file => {
         console.log('File: ', file.fileName);
       // Check the file extension to decide if it's an image or video
@@ -237,6 +238,12 @@ function addVideoCard(videoSrc, title) {
     }
     
     editButton.addEventListener('click', function() {
+        
+        
+        // if (player) {
+        //     player.pause();
+        //     player.dispose();
+        // }
         localStorage.setItem('selectedMediaType', 'video');
         localStorage.setItem('selectedVideoSrc', videoSrc);
         window.location.href = '../index.html';
@@ -365,7 +372,7 @@ function refreshVideoGallery() {
     fetch(`${apiUrl}/mediabyuser/${userId}`)
         .then(response => response.json())
         .then(files => {
-          
+            files.sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate));
             gallery.innerHTML = ''; 
 
          
@@ -384,7 +391,7 @@ function refreshImageGallery() {
     fetch(`${apiUrl}/mediabyuser/${userId}`)
         .then(response => response.json())
         .then(files => {
-           
+            files.sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate));
             imageGallery.innerHTML = '';
 
         

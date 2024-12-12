@@ -151,7 +151,7 @@ export async function getMediaByUserId(req, res) {
  
 
     // Fetch media records associated with the userId
-    const mediaList = await model.getMediaByUserId(userId);
+    const mediaList = await model.getMediaByUserId(userId, { sort: { uploadDate: -1 } });;
 
     if (!mediaList || mediaList.length === 0) {
       return res.status(200).json([]);

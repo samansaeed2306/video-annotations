@@ -23,55 +23,110 @@ body {
     /* background-color: #000; */
 }
 
+
 .tools {
-    position: fixed;           /* Keeps the tools bar fixed to the top */
-    top: 0%;                  /* Set top to 5% of the viewport height */
-    z-index: 1000;           /* Ensure it is above other elements */
-    background-color: #17181a; /* Background color */
-    padding: 5px;            /* Padding around the content */
-    border-radius: 0;        /* No border radius */
-    width: 100%;             /* Full width of the viewport */
-    display: flex;           /* Use flexbox for layout */
-    justify-content: flex-start; /* Align items to the right */
-    align-items: center;     /* Center items vertically */
-}
-
-.tools button {
-    margin: 0 5px;           /* Horizontal margin to space buttons */
-    cursor: pointer;         /* Pointer cursor on hover */
-    background-color: #17181a; /* Button background color */
-    border: none;            /* Remove border */
-    border-radius: 50%;      /* Make the buttons round */
-    /* color: #fff; Text color inside the button */
-}
-
-/* Additional styles for other elements may be required */
-
-
-
-.tools button:hover {
-    background-color: #485056 ;
-}
-.tools button:clicked {
-    background-color:#1A4971 ;
-}
-
-
-.tools button img {
-    width: 20px;
-    height: 20px;
-    
-    
-}
-#shapes{ 
-    /* left: 50%; */
-    margin: auto; 
-}
-#right-tools{
     display: flex;
-    justify-content: flex-end; 
-    margin-top: 10px; 
+    justify-content: space-between; 
+    gap: 3vw; /* Space between buttons */
+    width: 100%; /* Full width of the screen */
+    height: 5vh; /* Height relative to viewport */
+    background-color: #151111; /* Navbar background */
+    border-bottom: 0.2vh solid #ddd; /* Subtle border at the bottom */
+    box-shadow: 0 0.5vh 1vh rgba(0, 0, 0, 0.1); /* Soft shadow */
+    position: fixed; /* Fixed at the top */
+    top: 0;
+    left: 0;
+    z-index: 1000; /* Ensure it's above other elements */
+    padding: 1vh 0vw; /* Add some padding */
 }
+
+/* Ensure buttons/icons adjust flexibly */
+.tools button {
+    width: 5vh; /* Square buttons, height-driven */
+    height: 5vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.tools div {
+    flex: 1; /* Make the divs take up equal width */
+    text-align: center; /* Center the content within each div */
+}
+
+
+
+.tools div:first-child {
+    margin-right: auto; /* Push the first div to the left */
+}
+
+.tools div:nth-child(2) {
+    margin: 0 auto; /* Center the middle div horizontally */
+}
+
+.tools div:last-child {
+    margin-left: auto; /* Push the last div to the right */
+}
+/* Icons within buttons */
+.tools button img,
+.tools button svg {
+    width: 3vh; /* Scale icons relative to height */
+    height: 3vh;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+/* Responsive Hover Effects */
+.tools button:hover {
+    background-color: #e0e0e0; /* Subtle background color change on hover */
+    border-radius: 0.5vh; /* Rounded corners */
+}
+
+/* View Button */
+.view-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.view-icon svg {
+    width: 4vh;
+    height: 4vh;
+    fill: #abb0c4;
+    transition: transform 0.3s ease-in-out, fill 0.3s ease-in-out;
+}
+
+.view-icon svg:hover {
+    fill: #555;
+    transform: scale(1.1);
+}
+
+
+#shapes {
+    display: flex;           /* Use flexbox for horizontal alignment */
+    gap: 10px;               /* Add spacing between buttons */
+    justify-content: center; /* Center the buttons horizontally */
+    align-items: center;     /* Center the buttons vertically */
+    padding: 10px;           /* Optional padding around the container */
+}
+
+#shapes button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+#shapes svg {
+    width: 24px;
+    height: 24px;
+}
+
+
 /* #right-tools button{
     margin-left: 0px; 
 } */
@@ -83,15 +138,77 @@ body {
 
     fill: #abb0c4; /* Icon color */
 }
-#screen-recording{
+#right-tools {
+    display: flex;
+    justify-content: flex-end; /* Aligns items to the right */
+    align-items: center;      /* Vertically aligns items */
+    gap: 10px;                /* Adds spacing between buttons */
+    margin-top: 10px;
+    
+}
+
+#screen-recording {
     cursor: pointer;
     width: 40px;
     height: 40px;
-    position: absolute;
-    right: 0;
-    top: 06px;
-    margin-right: 85px;
 }
+
+#save-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+#save-button svg {
+    fill: #ffffff;
+    width: 25px;  /* Ensure appropriate width */
+    height: 25px; /* Ensure appropriate height */
+}
+
+#save-button:hover svg {
+    fill: #FFD700;
+}
+
+#multiple-video-btn {
+    background: transparent;
+    color: #000;
+    border: none;
+    cursor: pointer;
+    display: flex;              /* Ensure proper layout for SVG inside */
+    justify-content: center;
+    align-items: center;
+    width: 50px;                /* Set a visible width */
+    height: 50px; 
+    opacity: 0.5;
+    z-index: 10;              /* Set a visible height */
+}
+
+#multiple-video-btn svg {
+    width: 30px;                /* Ensure the SVG is scaled correctly */
+    height: 30px;
+    stroke: #ffffff;            /* Ensure visible stroke color */
+    fill: none;                 /* If applicable, set to none for transparency */
+}
+
+#multiple-video-btn:hover svg {
+    stroke: #FFD700;            /* Highlight effect on hover */
+}
+
+
+.save-container {
+    background: transparent;
+}
+
+.save-label {
+    margin-left: 10px;
+    color: white;
+    font-size: 16px;
+    position: absolute;
+    top: 23px;
+    right: 76px;
+    background: none;
+}
+
 #container-wrapper {
     display: flex;
     justify-content: center;
@@ -121,6 +238,12 @@ video,#media-element {
     
 }
 
+.vjs-custom-theme .vjs-control-bar{
+    z-index: 5 !important;
+    position: fixed;
+    bottom: 0;
+
+}
 #toggle-icon {
     position: absolute;
     /* bottom: 10px;  */
@@ -219,7 +342,7 @@ video,#media-element {
     padding-right: 35px;
     height: 100%;
     overflow-y: auto;
-    z-index: 4;
+    z-index: 5;
 }
 
 .annotations.collapsed {
@@ -649,39 +772,6 @@ canvas4:nth-of-type(2) {
     margin-bottom: 4px;
     opacity: 0.8;
 }
-.save-container{
-    background: transparent;
-
-}
-.save-btn {
-    position: absolute;
-    top: 12px; 
-    right: 0px; 
-    background: none;
-    border: none;
-    cursor: pointer;
-}
-
-.save-btn svg {
-    fill: #ffffff; 
-}
-
-.save-btn.active svg {
-    fill: #FFD700; 
-}
-
-#save-button:hover {
-    background-color: transparent; 
-}
-.save-label {
-    margin-left: 10px; 
-    color: white; 
-    font-size: 16px; 
-    position: absolute;
-    top: 23px; 
-    right: 76px;
-    background: none;
-}
 
 .blur {
     filter: blur(5px);
@@ -924,6 +1014,11 @@ body::before {
 #multiple-video-btn:hover{
 background-color: transparent;
 }
+
+.vjs-has-started.vjs-user-inactive.vjs-playing .vjs-control-bar {
+    opacity: 1;
+
+}
 /* #upload-svg{
    mright: 10px;
 } */
@@ -987,49 +1082,56 @@ background-color: transparent;
         height: 100vh; /* Full viewport height */
         margin: 0;
         padding: 0;
-        z-index: 1; /* Place behind floating elements */
+        /* z-index: 1;  */
     }
 
 
-    video, #canvas ,#media-element{
-
-        width: 100%;
-        height: 100vh; /* Full viewport height */
+    video, #canvas, #media-element {
+        width: 100vw !important;
+        height: 84vh !important;/* Fill the full screen height */
         margin: 0;
         padding: 0;
-        object-fit: cover; /* Ensure the video covers the entire area */
-    }
-
-
-    video ,#media-element{
-
-        width: 100%;
-        height: 100vh;
+        object-fit: cover; /* Ensures the video fills the area proportionally */
         position: absolute;
         top: 0;
         left: 0;
-        z-index: 1;
-        pointer-events: none;
-        object-fit: cover;
-        margin: 0;
-        padding: 0;
     }
-
     #canvas {
-        width: 100%;
-        height: 100vh;
+        z-index: 2; /* Place canvas above the video */
+        background-color: transparent; /* Transparent background for canvas */
+        pointer-events: none; /* Allow interactions only if needed */
+        cursor: pointer;
         position: absolute;
-        top: 0;
-        left: 0;
+        top: 0;             
+        left: 0;           
         z-index: 2;
         pointer-events: none;
         background-color: transparent;
         object-fit: cover;
         margin: 0;
         padding: 0;
-        cursor: pointer; 
+        cursor: pointer;
     }
 
+    .vjs-has-started.vjs-user-inactive.vjs-playing .vjs-control-bar {
+        opacity: 1;
+        z-index: 5;
+    }
+
+    .vjs-theme-sea .vjs-control-bar {
+        height: 4.5em;
+        z-index: 15 !important;
+    }
+
+   
+   
+/* 
+ 
+
+    .vjs-custom-theme .vjs-control-bar{
+        z-index: 1 !important;
+    
+    } */
     .tools {
         opacity: 0.8;
         position: absolute;
@@ -1065,7 +1167,33 @@ background-color: transparent;
      #freehand{
         background-color: #b03e2a;
      }  */
+     #shapes {
+        flex-direction: column; /* Stack items vertically */
+        gap: 0.07vh; /* Adjust the spacing between items */
+        justify-content: center; /* Center items vertically */
+        align-items: center; /* Center items horizontally */
+        margin: 0 auto; /* Center the shapes div on the screen */
+        padding: 0vh 3vw;  
+        padding-top: 0 !important;
+        margin-left: 0 !important;
+    }
 
+    #shapes button {
+        width: 40px; /* Adjust button size for mobile */
+        height: 40px;
+        margin: 0.05vh 0; /* Add vertical margin between buttons */
+        background-color: rgba(52, 58, 64, 0.9); /* Background for buttons */
+        border-radius: 25px; /* Rounded corners */
+    }
+
+    #shapes svg {
+        width: 24px; /* Adjust icon size */
+        height: 24px;
+    }
+
+    #right-tools{
+        display: none;
+    }
      .video-buttons {
         position: absolute;
         bottom: 20px;
@@ -1106,6 +1234,10 @@ background-color: transparent;
         display:none;
     }
 
+    .buttons-container {
+        display: none;
+
+    }
     .button-with-menu{
         display:none;
     }
@@ -1184,6 +1316,7 @@ background-color: transparent;
     bottom: 0;
 } */
 #timeline-wrapper {
+    display: none;
     position: relative;
     width: 100%;
     height: 100%; /* Ensure wrapper has full height */
@@ -1191,6 +1324,7 @@ background-color: transparent;
 }
 
 .timeline {
+    display: none;
     position: absolute;
     bottom: 10%; /* Stick to the bottom */
     width: 100%;
@@ -1205,14 +1339,14 @@ background-color: transparent;
 
 @media (max-width: 520px) and (min-width: 320px) and (-webkit-device-pixel-ratio: 3){
     .timeline {
-        height: 30%;
+       display: none;
     }
 } 
 
 @media not all and (min-resolution:.001dpcm) { 
     @supports (-webkit-appearance:none) {
       .timeline {
-          height: 30%; 
+          display: none;
       }
     }
   }
@@ -1525,4 +1659,99 @@ display: block;
     display: none;
   } */
 
+  .video-dimensions {
+    width: 960px;
+    height: 80vh;}
+
+}
+
+@media (min-width: 521px) and (max-width: 1100px) {
+    #shapes{
+        gap: 1.5vw;
+        padding: 0vh 0.01vw;  
+        margin-left: 7% !important;
+        margin-left: 20% !important;
+        width: 50%; 
+    }
+    .tools {
+        gap: 0.05vw;
+        padding: 0.05vh 0.05vw;
+    }
+    .tools button {
+        width: 4vh;
+        height: 4vh;
+    }
+    .tools svg {
+        width: 2vh;
+        height: 2vh;
+    }
+    #right-tools {
+        gap: 0vw;          
+      
+        
+    }
+    .video-dimensions {
+        width: 860px;
+        height: 80vh;}
+
+    #video-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        margin: 0;
+        padding: 0;
+    }
+    #canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 3;
+        pointer-events: none; 
+    
+    }
+
+    .canvas-container{
+        position: absolute !important;
+        top: 0;
+        left: 0;
+        width: 100% !important;
+        height: 80% !important;
+        z-index: 3;
+    }
+
+    .upper-canvas{
+        width: 100% !important;
+        height: 100% !important;
+    }
+    
+    .lower-canvas{
+        width: 100% !important;
+        height: 100% !important;
+    }
+    video, #media-element {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+    }
+
+    #canvas, #video-container {
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+    }
+    
+    .vjs-custom-theme .vjs-control-bar {
+        width: 100%;
+        position: absolute;
+        bottom: 0.05vh !important;
+        left: 0;
+        right: 0;
+        height: 3em;
+        background-color: #2B333F;
+        background-color: rgba(43, 51, 63, 0.7);
+    }
 }
