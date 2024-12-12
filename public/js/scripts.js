@@ -1,4 +1,3 @@
-
 let annotations = [];
 let currentColorIndex = 0;
 const colors = ['#FF5733', '#33FF57', '#5733FF', '#FFFF33', '#FF33FF', '#33FFFF'];
@@ -10,147 +9,78 @@ const canvas = new fabric.Canvas('canvas', {
     selection: false,
     isDrawingMode: false
     });
-window.onload = () => {
-    
 
-    selectedMediaType = localStorage.getItem('selectedMediaType') || '';
-    localStorage.removeItem('selectedMediaType'); 
-
-    const videoContainer = document.getElementById('video-container');
-    const canvas2 = document.getElementById('canvas');
-    const buttonsContainer = document.querySelector('.buttons-container');
-    console.log("Selected Media Type: ",selectedMediaType);
-    if (selectedMediaType === 'image') {
-        const storedImageSrc = localStorage.getItem('selectedImageSrc');
-        if (storedImageSrc) {
-            const video = document.getElementById('video');
-            if (video) {
-                console.log('The video element has been removed');
-                video.remove();
-            }
-            console.log("Video Container:", videoContainer);
-
-            const img = document.createElement('img');
-            img.id = 'media-element';
-            img.src = storedImageSrc;
-            img.style.display = 'block';
-            console.log("Created img element:", img);
-          
-            
-
-            
-
-            img.style.position = 'absolute'; 
-            img.style.top = '0';  
-            img.style.left = '0'; 
-            img.style.width = '100%';
-            img.style.height = '100%';
-            img.style.objectFit = 'contain';
-            
-            if(videoContainer.contains(canvas2)) {
-            videoContainer.appendChild(img); }
-            console.log('videoContainer.contains(canvas): ',videoContainer.contains(canvas2));
-           
-            const observer = new MutationObserver((mutations) => {
-                console.log('Observer alert!');
-                if (videoContainer.contains(canvas)) {
-                   
-                        console.log("Inserting img element:", img);
-                        videoContainer.insertBefore(img, canvas2);
-                        console.log("Image element inserted after delay.");
-                        console.log("Image element after delay insertion:", document.getElementById('media-element'));
-                        observer.disconnect(); 
-                 
-                }
-            });
-
-            observer.observe(videoContainer, { childList: true });
-            mediaElement = img;
-            console.log("Removed Local Storage");
-            localStorage.removeItem('selectedImageSrc');
-            console.log("Image element after insertion:", document.getElementById('media-element'));
-
-            img.onload = () => {
-                console.log('Image has been successfully loaded');
-                const aspectRatio = img.naturalWidth / img.naturalHeight;
-                console.log(`Image Aspect Ratio: ${aspectRatio.toFixed(2)} (Width: ${img.naturalWidth}, Height: ${img.naturalHeight})`);
-
-                fabricCanvas.width = img.clientWidth;
-                fabricCanvas.height = img.clientHeight;
-                canvas.setWidth(img.clientWidth);
-                canvas.setHeight(img.clientHeight);
-
-                console.log(`Canvas resized to: ${img.clientWidth}x${img.clientHeight}`);
-            };
-            img.onerror = (e) => {
-                console.error('Failed to load image', e);
-            };
-            if (buttonsContainer) {
-                buttonsContainer.style.display = 'none'; 
-                console.log("Buttons container hidden.");
-            }
-
-            console.log("Video Container after insertion:", videoContainer);
-        }
-    } 
-    else {
-        mediaElement = document.getElementById('video');
-        console.log("This is a video element")
-        // video.onload = () => {
-        //     console.log('Video has been successfully loaded');
-        //     const aspectRatio = video.naturalWidth / video.naturalHeight;
-        //     console.log(`Video Aspect Ratio: ${aspectRatio.toFixed(2)} (Width: ${video.naturalWidth}, Height: ${video.naturalHeight})`);
-
-        //     fabricCanvas.width = video.clientWidth;
-        //     fabricCanvas.height = video.clientHeight;
-        //     canvas.setWidth(video.clientWidth);
-        //     canvas.setHeight(video.clientHeight);
-
-        //     console.log(`Canvas resized to: ${video.clientWidth}x${video.clientHeight}`);
-        // };
-        // video.onerror = (e) => {
-        //     console.error('Failed to load video', e);
-        // };
-        
-    }
-
-    
-};
-
-
+let player;
 document.addEventListener('DOMContentLoaded', function() {
-
-    
     setTimeout(() => {
-    const video = document.getElementById('video');
-   
-    if (selectedMediaType === '' || selectedMediaType === 'video') {
-    if(video){
-    const player = new shaka.Player(video);
-    const storedVideoSrc = localStorage.getItem('selectedVideoSrc');
-    const manifestUri = storedVideoSrc || 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8';
-    
-    function loadVideo(manifestUri) {
-        player.load(manifestUri).then(function() {
-            console.log('The video has now been loaded!');
-            setupTimeline(video);
-        }).catch(function(error) {
-            console.error('Error code', error.code, 'object', error);
+        const video = document.getElementById('video');
+        if(player){
+            player.dispose();
+        }
+        if (selectedMediaType === '' || selectedMediaType === 'video') {
+            if(video) {
+                
+                player = videojs('video', {
+                    controls: true,
+                    fluid: true,
+                    html5: {
+                        nativeVideoTracks: false,
+                        nativeAudioTracks: false,
+                        nativeTextTracks: false
+                    }
+                });
+
+                
+                // player.textTracks()[0]='disabled'
+                console.log("Player:",player);
+
+                const storedVideoSrc = localStorage.getItem('selectedVideoSrc');
+                const defaultVideo = 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8';
+                const videoSrc = storedVideoSrc || defaultVideo;
+
+                loadVideo(videoSrc);
+
+                // Clear localStorage only after successful load
+                if (storedVideoSrc) {
+                    player.one('loadeddata', function() {
+                        localStorage.removeItem('selectedVideoSrc');
+                    });
+                }
+            }
+        }
+    }, 1000);
+    function loadVideo(videoSrc) {
+        const isHLS = videoSrc.includes('.m3u8');
+        
+        player.src({
+            src: videoSrc,
+            type: isHLS ? 'application/x-mpegURL' : 'video/mp4'
         });
-    }
-    loadVideo(manifestUri);}
-    localStorage.removeItem('selectedVideoSrc');}
-
-}, 1000);
-
+    
+        player.ready(function() {
+            console.log('The video has now been loaded!');
+            player.on('loadedmetadata', function() {
+                setupTimeline(video, player);
+            });
+        });
+    
+        player.on('error', function(error) {
+            console.error('Error:', player.error());
+        });
+    }     
 });
-function setupTimeline(video) {
-    const timeline = document.getElementById('timeline');
-    const duration = Math.floor(video.duration);
+        
+
+function setupTimeline(video, player) {
+   
+        const stopDragging = () => { const timeline = document.getElementById('timeline');
+    const duration = Math.floor(player.duration());
     timeline.style.setProperty('--duration', duration);
     console.log(duration);
-    video.currentTime = 3;
-    console.log("Video's current Time: ",video.currentTime);
+    
+    player.currentTime(3);
+    console.log("Video's current Time: ", player.currentTime());
+
     svgMarkup = `<?xml version="1.0" ?>
     <svg id="pencil-svg" height="24" version="1.1" width="24" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
         <g transform="translate(0 -1028.4)">
@@ -169,74 +99,49 @@ function setupTimeline(video) {
         </g>
     </svg>`;
 
-
     const svgDataUrl = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgMarkup);
+
+    // Create ticks with icons
     for (let i = 0; i < duration; i++) {
-                const tick = document.createElement('div');
-                tick.classList.add('tick');
-                tick.dataset.time = i; 
-        
-                
-                const icon = document.createElement('div');
-                icon.classList.add('icon');
-                const img = document.createElement('img');
-                // img.src = 'icons/pencil.png';
-                img.src = svgDataUrl;
-                img.alt = 'Pencil';
-                icon.appendChild(img);
-                tick.appendChild(icon);
-        
-               
-        
-                
-                img.addEventListener('dragstart', handleDragStart);
-                tick.addEventListener('dragover', handleDragOver);
-                tick.addEventListener('drop', handleDrop);
-                img.setAttribute('draggable', true);
-            
-                timeline.appendChild(tick);
-            }
-   
+        const tick = document.createElement('div');
+        tick.classList.add('tick');
+        tick.dataset.time = i;
+
+        const icon = document.createElement('div');
+        icon.classList.add('icon');
+        const img = document.createElement('img');
+        img.src = svgDataUrl;
+        img.alt = 'Pencil';
+        icon.appendChild(img);
+        tick.appendChild(icon);
+
+        img.addEventListener('dragstart', handleDragStart);
+        tick.addEventListener('dragover', handleDragOver);
+        tick.addEventListener('drop', handleDrop);
+        img.setAttribute('draggable', true);
+
+        timeline.appendChild(tick);
+    }
+
+    // Create timeline ticks
     for (let i = 0; i < duration; i++) {
         const tick2 = document.createElement('div');
         tick2.classList.add('tick2');
         tick2.dataset.time = i;
         timeline.appendChild(tick2);
 
-        tick2.addEventListener('click', function (event) {
+        tick2.addEventListener('click', function(event) {
             if (tick2.classList.contains('blocked')) {
                 console.log(`Tick at ${i} seconds is blocked.`);
                 event.stopPropagation();
                 return;
             }
             console.log(`Clicked on tick at ${i} seconds.`);
-            video.currentTime = i;
+            player.currentTime(i);
         });
-
-        // tick2.addEventListener('mousedown', (event) => {
-        //     event.preventDefault();
-
-        //     const startDraggingTick = (e) => {
-        //         const rect = timeline.getBoundingClientRect();
-        //         const x = e.clientX - rect.left;
-        //         const percentage = (x / rect.width) * 100;
-        //         const newTime = (percentage / 100) * duration;
-        //         video.currentTime = Math.min(Math.max(newTime, 0), duration);
-        //     };
-
-        //     const stopDraggingTick = () => {
-        //         document.removeEventListener('mousemove', startDraggingTick);
-        //         document.removeEventListener('mouseup', stopDraggingTick);
-        //     };
-
-        //     document.addEventListener('mousemove', startDraggingTick);
-        //     document.addEventListener('mouseup', stopDraggingTick);
-        // });
-        
-        
     }
 
-    
+    // Create and setup pointer
     const pointer2 = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     pointer2.setAttribute('width', '10');  // Adjust the size as needed
     pointer2.setAttribute('height', '12'); // Adjust the size as needed
@@ -245,55 +150,37 @@ function setupTimeline(video) {
     pointer2.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
     pointer2.setAttribute('alt', 'draggable icon for progress bar');
     pointer2.classList.add('pointer2');
-    pointer2.innerHTML = '<circle cx="5" cy="6" r="6" fill="red"></circle>';
-    pointer2.style.zIndex = '1000';
-    // pointer2.style.display = 'none';
+
+    pointer2.innerHTML = '<path d="M13 14.726C13 18.19 10.09 21 6.5 21S0 18.19 0 14.726C0 8.812 4.345 8 6.5 0 8 7.725 13 8.5 13 14.726z" fill="#CED0D1"></path><circle cx="6.5" cy="14.5" r="2.5" fill="#31373D"></circle>';
     timeline.appendChild(pointer2);
 
-   
-    // function updatePointerAndTicks() {
-    //     const percentage = (video.currentTime / duration) * 100;
-    //     pointer2.style.left = `calc(${percentage}% - 6.5px)`; 
-        
-    //     const ticks2 = document.querySelectorAll('.tick2');
-    //     ticks2.forEach((tick2, index) => {
-    //         if (index <= Math.floor(video.currentTime)) {
-    //             tick2.style.backgroundColor = 'red'; 
-    //         } else {
-    //             tick2.style.backgroundColor = 'white'; 
-    //         }
-    //     });
-    // }
     function updatePointerAndTicks() {
-        const percentage = (video.currentTime / duration) * 100;
-        pointer2.style.left = `calc(${percentage}% - 30.5px)`; 
-    
+        const percentage = (player.currentTime() / duration) * 100;
+        pointer2.style.left = `calc(${percentage}% - 6.5px)`;
+
         const ticks2 = document.querySelectorAll('.tick2');
         ticks2.forEach((tick2, index) => {
-            // Set ticks before or at pointer position to red
-            if (index <= Math.floor(video.currentTime)) {
-                tick2.style.backgroundColor = 'red'; 
-            } 
-            // Set ticks after pointer position to white
-            else {
-                tick2.style.backgroundColor = 'white'; 
+            if (index <= Math.floor(player.currentTime())) {
+                tick2.style.backgroundColor = 'red';
+            } else {
+                tick2.style.backgroundColor = 'white';
             }
         });
     }
-    
-    video.addEventListener('timeupdate', updatePointerAndTicks);
 
-   
+    player.on('timeupdate', updatePointerAndTicks);
+
+
+    // Pointer drag functionality
     pointer2.addEventListener('mousedown', (e) => {
         e.preventDefault();
 
         const movePointer = (e) => {
-            console.log("Pointer being moved!")
             const rect = timeline.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const percentage = (x / rect.width) * 100;
             const newTime = (percentage / 100) * duration;
-            video.currentTime = Math.min(Math.max(newTime, 0), duration); 
+            player.currentTime(Math.min(Math.max(newTime, 0), duration));
         };
 
         const stopDragging = () => {
@@ -306,15 +193,16 @@ function setupTimeline(video) {
         document.addEventListener('mouseup', stopDragging);
     });
 
-    video.addEventListener('ended', () => {
-        pointer2.style.left = `calc(100% - 29.5px)`; 
+    player.on('ended', () => {
+        pointer2.style.left = `calc(100% - 29.5px)`;
     });
 
-
+    // Touch support
     pointer2.addEventListener('touchstart', (e) => {
         e.preventDefault();
         startPointerDrag(e.touches[0].clientX);
     });
+
     function startPointerDrag(initialPosition) {
         const movePointer = (e) => {
             const clientX = e.clientX || e.touches[0].clientX;
@@ -322,20 +210,20 @@ function setupTimeline(video) {
             const x = clientX - rect.left;
             const percentage = (x / rect.width) * 100;
             const newTime = (percentage / 100) * duration;
-            video.currentTime = Math.min(Math.max(newTime, 0), duration); 
+            player.currentTime(Math.min(Math.max(newTime, 0), duration));
         };
-        const stopDragging = () => {
+
             document.removeEventListener('mousemove', movePointer);
             document.removeEventListener('mouseup', stopDragging);
             document.removeEventListener('touchmove', movePointer);
             document.removeEventListener('touchend', stopDragging);
             updatePointerAndTicks();
         };
+
         document.addEventListener('touchmove', movePointer);
         document.addEventListener('touchend', stopDragging);
     }
 }
-
 
 
 function addClassToTicks(startTime, endTime) {
@@ -760,7 +648,7 @@ function drawFreehand() {
    
 }
 
-  
+
 function activateCircleMode() {
     isInteracting = true;
     if (eraserListener) {
@@ -784,7 +672,7 @@ function activateCircleMode() {
 
     }
     else{
-    if(videoAspectRatio<1){
+       if (videoAspectRatio < 1) {
     console.log('Oops!! This is portrait circle');
     const circle = new fabric.Circle({
         left: 100,
@@ -812,6 +700,7 @@ function activateCircleMode() {
     });
     canvas.add(circle).setActiveObject(circle);
    }
+
    isInteracting = false; 
    
 }}
@@ -1443,34 +1332,34 @@ video.addEventListener('loadedmetadata', () => {
     console.log(`Video Aspect Ratio: ${video.videoWidth}/${video.videoHeight}`);
     if (window.innerWidth > 520) {
     if (videoAspectRatio < 1) {
-        console.log("This is a portrait video.");
-        //resetCanvasStyles();
-        const lowerCanvas = document.getElementById('canvas'); 
-        const upperCanvas = document.querySelector('.upper-canvas'); 
-        const canvasContainer = document.querySelector('.canvas-container'); 
+                console.log("This is a portrait video.");
+                adjustForPortrait();
+                // const lowerCanvas = document.getElementById('canvas'); 
+                // const upperCanvas = document.querySelector('.upper-canvas'); 
+                // const canvasContainer = document.querySelector('.canvas-container'); 
 
-    if (upperCanvas) {
-        upperCanvas.style.height = '450px';
-        upperCanvas.style.top = '19px';
-        console.log("DONE")
-    } else {
-        console.error("upperCanvas element not found");
-    }
+                // if (upperCanvas) {
+                //     upperCanvas.style.height = '450px';
+                //     upperCanvas.style.top = '19px';
+                //     console.log("DONE")
+                // } else {
+                //     console.error("upperCanvas element not found");
+                // }
 
-    if (lowerCanvas) {
-        lowerCanvas.style.height = '503px';
-        console.log("DONE LOWER")
-    } else {
-        console.error("lowerCanvas element not found");
-    }
+                // if (lowerCanvas) {
+                //     lowerCanvas.style.height = '503px';
+                //     console.log("DONE LOWER")
+                // } else {
+                //     console.error("lowerCanvas element not found");
+                // }
 
-    if (canvasContainer) {
-        canvasContainer.style.height = '503px';
-        console.log("DONE CONTAINER")
-    } else {
-        console.error("canvasContainer element not found");
-    }
-        zoomOut2x();
+                // if (canvasContainer) {
+                //     canvasContainer.style.height = '503px';
+                //     console.log("DONE CONTAINER")
+                // } else {
+                //     console.error("canvasContainer element not found");
+                // }
+                //     zoomOut2x();
     } else if (videoAspectRatio > 1) {
         console.log("This is a landscape video.");
         // fabricCanvas.width = video.clientWidth;
@@ -1521,6 +1410,55 @@ video.addEventListener('timeupdate', () => {
     }
 });
 
+function adjustForPortrait() {
+    // Reset any inline styles
+    const video = document.getElementById('video');
+    const container = document.getElementById('video-container');
+    const canvas = document.getElementById('canvas');
+    
+    container.style.height = 'auto';
+    container.style.width = 'auto';
+    
+    // Get video dimensions
+    const videoWidth = video.style.width;
+    const videoHeight = video.style.height;
+    
+    if (videoWidth < videoHeight) { // Portrait video
+        // Adjust container to fit height
+        const windowHeight = window.innerHeight;
+        const newHeight = Math.min(videoHeight, windowHeight * 0.8); // 80% of window height
+        container.style.height = newHeight + 'px';
+        container.style.width = (newHeight * videoWidth / videoHeight) + 'px';
+        const videojs = document.getElementsByClassName('.video-js .vjs-tech');
+        videojs.style.top = '10%';
+        // Shift the video to the right and canvas to the left
+        video.style.position = 'absolute';
+        video.style.left = '20px'; // Adjust this value as needed
+        video.style.top = '20%';
+
+        // Adjust canvas to match the new dimensions and position it on the left
+        canvas.style.position = 'absolute';
+        canvas.style.left = '0';
+        canvas.style.top = '0';
+        canvas.style.width = container.style.width;
+        canvas.style.height = container.style.height;
+    } else { // Landscape or square video
+        // For landscape, use the original CSS settings
+        container.style.height = '80vh';
+        container.style.width = 'auto';
+        canvas.style.width = '100%';
+        canvas.style.height = '100%';
+
+        // Shift the video to the right and canvas to the left
+        video.style.position = 'absolute';
+        video.style.left = '20px'; // Adjust this value as needed
+        video.style.top = '0';
+        
+        canvas.style.position = 'absolute';
+        canvas.style.left = '0';
+        canvas.style.top = '0';
+    }
+}
 
 function recordAnnotation(time) {
     if(video.paused){
@@ -2639,6 +2577,21 @@ const toggleZoom = () => {
         canvas.wrapperEl.style.top = `${-offsetY}px`;
         
         canvas.calcOffset();
+
+        const controlBar = document.querySelector('.vjs-custom-theme .vjs-control-bar');
+
+        if (controlBar) {
+        
+            // //controlBar.style.backgroundColor = 'transparent';
+            // controlBar.style.border = 'none';
+           
+            // controlBar.style.bottom = '-70px';
+            // controlBar.style.width = '1490px';
+            // controlBar.style.left =  `${-offsetX}px`;
+            // controlBar.style.left =  `-286px`;
+            controlBar.style.zIndex= '4';
+        }
+
     } 
     
     else {
@@ -2665,6 +2618,22 @@ const toggleZoom = () => {
         }
 
         canvas.calcOffset();
+
+        const videoElement = document.getElementById('video');
+
+
+        if (videoElement) {
+            videoElement.classList.remove('vjs-custom-theme');
+        }
+        const controlBar = document.querySelector('.vjs-control-bar');
+        if (controlBar) {
+            
+            controlBar.style.backgroundColor = ''; 
+            controlBar.style.bottom = '';
+            controlBar.style.width = '';
+            controlBar.style.left = '';
+        }
+    
     }}
 };
 function zoomOut2x() { 
@@ -2753,10 +2722,10 @@ if (canvasonSwitch.style.display == 'block') {
 canvas.calcOffset();
 
 }
-    videoContainer.addEventListener('dblclick',() => {
-        toggleZoom(); 
-        resizeVideoButton.classList.toggle('active');
-    });
+    // videoContainer.addEventListener('dblclick',() => {
+    //     toggleZoom(); 
+    //     resizeVideoButton.classList.toggle('active');
+    // });
 
 const resizeVideoButton = document.getElementById('resize-video');
 

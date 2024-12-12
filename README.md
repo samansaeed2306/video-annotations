@@ -1,6 +1,6 @@
 
 # Quick Start
-Install [Docker](https://www.docker.com/ "Docker") , then:
+Install [Git](https://git-scm.com/) and [Docker](https://www.docker.com/ "Docker"), then:
   
   **Clone repository:**
      
