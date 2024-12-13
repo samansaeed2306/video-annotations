@@ -88,27 +88,34 @@ export async function getMediaById(req, res) {
 
 export async function deleteMedia(req, res) {
   try {
-    const { id } = req.params;
-    if (!ObjectId.isValid(id)) {
-      return res.status(400).json({ error: 'Invalid ID format' });
-    }
-    const media = await model.getMediaById(id);
-    if (!media) {
-      return res.status(404).json({ error: 'Media not found' });
-    }
-    
-    
-    const filePath = path.join(__dirname, '..', 'uploads', media.fileName);
-    fs.unlinkSync(filePath);
+      const { id } = req.params;
+      console.log('Deleting media with ID:', id);
 
-   
-    await model.deleteMedia(id);
+      if (!ObjectId.isValid(id)) {
+          return res.status(400).json({ error: 'Invalid ID format' });
+      }
 
-    res.status(200).json({ message: 'Media deleted successfully!' });
+      const media = await model.getMediaById(id);
+      console.log('Found media:', media);
+
+      if (!media) {
+          return res.status(404).json({ error: 'Media not found' });
+      }
+
+      await model.deleteMedia(id);
+      console.log('Media deleted successfully:', id);
+
+      res.status(200).json({
+          message: 'Media deleted successfully!',
+          mediaId: id,
+      });
   } catch (error) {
-    res.status(500).json({ error: 'Failed to delete media' });
+      console.error('Error deleting media:', error);
+      res.status(500).json({ error: 'Failed to delete media' });
   }
 }
+
+
 
 export async function updateMedia(req, res) {
   try {
