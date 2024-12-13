@@ -271,6 +271,27 @@ function addVideoCard(videoSrc, title) {
         window.location.href = '../index.html';
     });
 
+    deleteIcon.addEventListener('click', function () {
+        fetch(`${apiUrl}/getall`)
+          .then((response) => response.json())
+          .then((files) => {
+            const media = files.find(file => file.fileName === videoSrc.split('/').pop());
+      
+            if (media) {
+              const mediaId = media._id;
+      
+              // Confirm before deleting
+              if (confirm('Are you sure you want to delete this media?')) {
+                deleteMedia(mediaId, card);
+              }
+            } else {
+              console.error('Media not found with the given filename.');
+            }
+          })
+          .catch(error => console.error('Error fetching media files:', error));
+      });
+
+      
     cardContent.appendChild(heading);
     cardContent.appendChild(editButton);
     cardContent.appendChild(deleteIcon);
@@ -390,7 +411,30 @@ document.getElementById("backtoindex").addEventListener("click", function() {
 
 // addVideoCard('../sampleVideos/burning-planet.mp4', 'burning-planet.mp4');
 // addImageCard('../sampleVideos/dolphin.jfif', 'Dolphin');
-
+function deleteMedia(mediaId, videoCard) {
+    if (!mediaId) {
+      console.error('No media ID provided for deletion');
+      return;
+    }
+    console.log("Media id:",mediaId);
+    // Send DELETE request to the backend
+    fetch(`${apiUrl}/delete/${mediaId}`, {
+      method: 'DELETE',
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.message === 'Media deleted successfully!') {
+          console.log('Media deleted successfully:', data);
+          
+          // Remove the video card from the gallery
+          videoCard.remove();
+        } else {
+          console.error('Failed to delete media:', data.error);
+        }
+      })
+      .catch((error) => console.error('Error deleting media:', error));
+  }
+  
 function refreshVideoGallery() {
     fetch(`${apiUrl}/mediabyuser/${userId}`)
         .then(response => response.json())
