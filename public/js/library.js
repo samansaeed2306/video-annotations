@@ -166,6 +166,28 @@ function addVideoCard(videoSrc, title) {
     icon.alt = 'Edit';
     editButton.appendChild(icon);
     
+    const deleteIcon = document.createElement('img');
+    deleteIcon.src = '../icons/delete2.png'; // Path to your delete icon
+    deleteIcon.alt = 'Delete';
+    deleteIcon.style.width = '16px'; // Set the width as needed
+    deleteIcon.style.height = '20px'; // Set the height as needed
+    deleteIcon.style.bottom = '25px'
+    deleteIcon.style.marginLeft = '5px'
+    deleteIcon.style.backgroundColor='none';
+
+    // deleteButton.addEventListener('click', function () {
+    //     if (confirm('Are you sure you want to delete this video?')) {
+    //         // Call backend API to delete the video
+    //         deleteVideo(videoSrc)
+    //             .then(() => {
+    //                 card.remove(); // Remove the card from the DOM
+    //             })
+    //             .catch((error) => {
+    //                 console.error('Error deleting video:', error);
+    //             });
+    //     }
+    // });
+
 
     heading.addEventListener('click', function () {
         const input = document.createElement('input');
@@ -251,6 +273,7 @@ function addVideoCard(videoSrc, title) {
 
     cardContent.appendChild(heading);
     cardContent.appendChild(editButton);
+    cardContent.appendChild(deleteIcon);
 
     card.appendChild(video);
     card.appendChild(cardContent);
