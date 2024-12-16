@@ -143,12 +143,14 @@ function setupTimeline(video, player) {
 
     // Create and setup pointer
     const pointer2 = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    pointer2.setAttribute('width', '23');
-    pointer2.setAttribute('height', '25');
+    pointer2.setAttribute('width', '10');  // Adjust the size as needed
+    pointer2.setAttribute('height', '12'); // Adjust the size as needed
+    pointer2.setAttribute('viewBox', '0 0 16 16');
     pointer2.setAttribute('fill', 'black');
     pointer2.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
     pointer2.setAttribute('alt', 'draggable icon for progress bar');
     pointer2.classList.add('pointer2');
+
     pointer2.innerHTML = '<path d="M13 14.726C13 18.19 10.09 21 6.5 21S0 18.19 0 14.726C0 8.812 4.345 8 6.5 0 8 7.725 13 8.5 13 14.726z" fill="#CED0D1"></path><circle cx="6.5" cy="14.5" r="2.5" fill="#31373D"></circle>';
     timeline.appendChild(pointer2);
 
@@ -167,6 +169,7 @@ function setupTimeline(video, player) {
     }
 
     player.on('timeupdate', updatePointerAndTicks);
+
 
     // Pointer drag functionality
     pointer2.addEventListener('mousedown', (e) => {
