@@ -221,7 +221,7 @@ body {
 #video-container {
     position: relative;
     width: auto;
-    height: 80vh;
+    height: 60vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -233,6 +233,8 @@ video,#media-element {
     width: auto;
     height: auto;
     object-fit: contain;
+    z-index: 0;
+    
     
 }
 
@@ -432,7 +434,7 @@ video,#media-element {
     position: relative;
     width: 100%; 
     overflow: hidden;
-    margin-bottom: -2%;
+    margin-bottom: -0%;
    
 }
 
@@ -1051,6 +1053,11 @@ background-color: transparent;
         display: none !important;
 
     }
+
+    .buttons-container {
+        display: flex;
+    }
+
     .tools button,
     .video-buttons .video-button,
     .bottom-right-sidebar button,
