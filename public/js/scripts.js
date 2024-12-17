@@ -2419,116 +2419,137 @@ async function captureScreenshot(video, canvas, timestamp, annotations) {
 }
 
 
-
-
-const startBtnRight = document.getElementById('screen-recording'); 
+const startBtnRight = document.getElementById('screen-recording');
 const startBtnHeader = document.getElementById('screen-recording2');
 
 let mediaRecorder2;
 let chunks = [];
+let stream; // Persisting the stream object
 const displayMediaOptions = {
     video: {
-      displaySurface: "browser",
+        displaySurface: "browser",
     },
     audio: {
-      suppressLocalAudioPlayback: false,
+        suppressLocalAudioPlayback: false,
     },
     preferCurrentTab: true,
     selfBrowserSurface: "include",
     systemAudio: "include",
     surfaceSwitching: "include",
     monitorTypeSurfaces: "include",
-  };
-  
-  async function screenRecorder(){
+};
+
+async function screenRecorder(event) {
     try {
-        // const icon = startBtn;
         const icon = event.target.id === 'screen-recording' ? startBtnRight : startBtnHeader;
+
         if (icon.classList.contains('start-recording')) {
-            
-            const stream = await navigator.mediaDevices.getDisplayMedia(displayMediaOptions);
+            console.log('Starting screen recording...');
+            if (!stream) {
+                stream = await navigator.mediaDevices.getDisplayMedia(displayMediaOptions);
+            }
 
             mediaRecorder2 = new MediaRecorder(stream);
 
             mediaRecorder2.ondataavailable = event => {
                 if (event.data.size > 0) {
                     chunks.push(event.data);
+                    console.log('Data available from MediaRecorder.');
                 }
             };
 
             mediaRecorder2.onstop = async () => {
-                const blob = new Blob(chunks, { type: 'video/webm' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'screen-recording.webm';
-                a.click();
-                chunks = [];
-
-                const urlParams = new URLSearchParams(window.location.search);
-                const userId = urlParams.get('userid');
-
-                if (userId) {
-                    
-                    const formData = new FormData();
-                    formData.append('video', blob, 'screen-recording.webm');
-                   // formData.append('videoId', 'optional-video-id'); 
-                    //formData.append('lessonId', 'optional-lesson-id'); 
-
-                    // Send the video file to your server
-                    try {
-                        const response = await fetch(`${apirecUrl}/recordings/${userId}`, {
-                            method: 'POST',
-                            body: formData,
-                        });
-
-                        if (response.ok) {
-                            console.log('Recording uploaded successfully');
-                        } else {
-                            console.error('Error uploading recording:', await response.json());
-                        }
-                    } catch (uploadError) {
-                        console.error('Error during upload:', uploadError);
-                    }
-                } else {
-                    console.error('User ID not found in URL');
+                console.log('MediaRecorder stopped. Processing data...');
+                if (chunks.length === 0) {
+                    console.error('No data recorded. Check MediaRecorder or stream setup.');
+                    return;
                 }
 
+                const blob = new Blob(chunks, { type: 'video/webm' });
+                chunks = []; // Clear chunks for the next recording
+
+                // Log the Blob size for debugging
+                console.log(`Recording size: ${blob.size} bytes`);
+
+                // Upload video file to server
+                await uploadRecording(blob);
+
+                // Stop all tracks after processing and uploading
+                stopStreamTracks(stream);
+                stream = null;
             };
 
             mediaRecorder2.start();
-            console.log('Screen recording started');
+            console.log('Screen recording started.');
 
-            
             icon.classList.remove('start-recording');
             icon.classList.add('stop-recording');
-           
+
             icon.src = 'icons/stop-record.png';
             icon.alt = 'Stop Recording';
-            icon.title='Stop Recording'
+            icon.title = 'Stop Recording';
         } else if (icon.classList.contains('stop-recording')) {
-           
             if (mediaRecorder2) {
                 mediaRecorder2.stop();
-                console.log('Screen recording stopped');
+                console.log('Screen recording stopped.');
 
-                
                 icon.classList.remove('stop-recording');
                 icon.classList.add('start-recording');
-                
+
                 icon.src = 'icons/screenrecorder.png';
                 icon.alt = 'Start Recording';
-                icon.title='Record Screen'
+                icon.title = 'Record Screen';
             }
         }
     } catch (error) {
         console.error('Error during recording:', error);
     }
-  }
+}
 
-// startBtn.addEventListener('click', screenRecorder);
+// Utility to upload the recording
+async function uploadRecording(blob) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const userId = urlParams.get('userid');
+
+    if (!userId) {
+        console.error('User ID not found in URL.');
+        return;
+    }
+
+    console.log('Uploading recording...');
+
+    const formData = new FormData();
+    formData.append('video', blob, 'screen-recording.webm');
+
+    try {
+        const response = await fetch(`${apirecUrl}/recordings/${userId}`, {
+            method: 'POST',
+            body: formData,
+        });
+
+        if (response.ok) {
+            console.log('Recording uploaded successfully.');
+        } else {
+            const errorData = await response.json();
+            console.error('Error uploading recording:', errorData);
+        }
+    } catch (uploadError) {
+        console.error('Error during upload:', uploadError);
+    }
+}
+
+// Utility to stop all tracks of a MediaStream
+function stopStreamTracks(stream) {
+    if (stream) {
+        const tracks = stream.getTracks();
+        tracks.forEach(track => track.stop());
+        console.log('Stopped all MediaStream tracks.');
+    }
+}
+
 startBtnRight.addEventListener('click', screenRecorder);
 startBtnHeader.addEventListener('click', screenRecorder);
+
        
 const captureArea = document.getElementById('video-container');
 
