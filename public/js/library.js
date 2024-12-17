@@ -166,6 +166,28 @@ function addVideoCard(videoSrc, title) {
     icon.alt = 'Edit';
     editButton.appendChild(icon);
     
+    const deleteIcon = document.createElement('img');
+    deleteIcon.src = '../icons/delete2.png'; // Path to your delete icon
+    deleteIcon.alt = 'Delete';
+    deleteIcon.style.width = '16px'; // Set the width as needed
+    deleteIcon.style.height = '20px'; // Set the height as needed
+    deleteIcon.style.bottom = '25px'
+    deleteIcon.style.marginLeft = '5px'
+    deleteIcon.style.backgroundColor='none';
+
+    // deleteButton.addEventListener('click', function () {
+    //     if (confirm('Are you sure you want to delete this video?')) {
+    //         // Call backend API to delete the video
+    //         deleteVideo(videoSrc)
+    //             .then(() => {
+    //                 card.remove(); // Remove the card from the DOM
+    //             })
+    //             .catch((error) => {
+    //                 console.error('Error deleting video:', error);
+    //             });
+    //     }
+    // });
+
 
     heading.addEventListener('click', function () {
         const input = document.createElement('input');
@@ -249,8 +271,30 @@ function addVideoCard(videoSrc, title) {
         window.location.href = '../index.html';
     });
 
+    deleteIcon.addEventListener('click', function () {
+        fetch(`${apiUrl}/getall`)
+          .then((response) => response.json())
+          .then((files) => {
+            const media = files.find(file => file.fileName === videoSrc.split('/').pop());
+      
+            if (media) {
+              const mediaId = media._id;
+      
+              // Confirm before deleting
+              if (confirm('Are you sure you want to delete this media?')) {
+                deleteMedia(mediaId, card);
+              }
+            } else {
+              console.error('Media not found with the given filename.');
+            }
+          })
+          .catch(error => console.error('Error fetching media files:', error));
+      });
+
+      
     cardContent.appendChild(heading);
     cardContent.appendChild(editButton);
+    cardContent.appendChild(deleteIcon);
 
     card.appendChild(video);
     card.appendChild(cardContent);
@@ -367,7 +411,30 @@ document.getElementById("backtoindex").addEventListener("click", function() {
 
 // addVideoCard('../sampleVideos/burning-planet.mp4', 'burning-planet.mp4');
 // addImageCard('../sampleVideos/dolphin.jfif', 'Dolphin');
-
+function deleteMedia(mediaId, videoCard) {
+    if (!mediaId) {
+      console.error('No media ID provided for deletion');
+      return;
+    }
+    console.log("Media id:",mediaId);
+    // Send DELETE request to the backend
+    fetch(`${apiUrl}/delete/${mediaId}`, {
+      method: 'DELETE',
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.message === 'Media deleted successfully!') {
+          console.log('Media deleted successfully:', data);
+          
+          // Remove the video card from the gallery
+          videoCard.remove();
+        } else {
+          console.error('Failed to delete media:', data.error);
+        }
+      })
+      .catch((error) => console.error('Error deleting media:', error));
+  }
+  
 function refreshVideoGallery() {
     fetch(`${apiUrl}/mediabyuser/${userId}`)
         .then(response => response.json())
