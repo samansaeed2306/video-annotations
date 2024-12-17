@@ -9,7 +9,7 @@ const canvas = new fabric.Canvas('canvas', {
     selection: false,
     isDrawingMode: false
     });
-
+const apirecUrl = 'http://localhost:8080/api/rec/'; 
 let player;
 document.addEventListener('DOMContentLoaded', function() {
     setTimeout(() => {
@@ -2420,7 +2420,9 @@ async function captureScreenshot(video, canvas, timestamp, annotations) {
 
 
 
-const startBtn = document.getElementById('screen-recording');
+
+const startBtnRight = document.getElementById('screen-recording'); 
+const startBtnHeader = document.getElementById('screen-recording2');
 
 let mediaRecorder2;
 let chunks = [];
@@ -2440,8 +2442,8 @@ const displayMediaOptions = {
   
   async function screenRecorder(){
     try {
-        const icon = startBtn;
-
+        // const icon = startBtn;
+        const icon = event.target.id === 'screen-recording' ? startBtnRight : startBtnHeader;
         if (icon.classList.contains('start-recording')) {
             
             const stream = await navigator.mediaDevices.getDisplayMedia(displayMediaOptions);
@@ -2475,7 +2477,7 @@ const displayMediaOptions = {
 
                     // Send the video file to your server
                     try {
-                        const response = await fetch(`http://localhost:8080/api/rec/recordings/${userId}`, {
+                        const response = await fetch(`${apiUrl}/recordings/${userId}`, {
                             method: 'POST',
                             body: formData,
                         });
@@ -2524,8 +2526,9 @@ const displayMediaOptions = {
     }
   }
 
-startBtn.addEventListener('click', screenRecorder);
-
+// startBtn.addEventListener('click', screenRecorder);
+startBtnRight.addEventListener('click', screenRecorder);
+startBtnHeader.addEventListener('click', screenRecorder);
        
 const captureArea = document.getElementById('video-container');
 
