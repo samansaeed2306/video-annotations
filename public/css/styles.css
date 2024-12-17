@@ -430,7 +430,7 @@ video,#media-element {
 
 
 #timeline-wrapper {
-  
+    display: none;
     position: relative;
     width: 100%; 
     overflow: hidden;
@@ -1019,6 +1019,11 @@ background-color: transparent;
     opacity: 1;
 
 }
+
+
+
+
+
 /* #upload-svg{
    mright: 10px;
 } */
