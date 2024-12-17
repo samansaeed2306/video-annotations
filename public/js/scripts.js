@@ -2477,7 +2477,7 @@ const displayMediaOptions = {
 
                     // Send the video file to your server
                     try {
-                        const response = await fetch(`${apiUrl}/recordings/${userId}`, {
+                        const response = await fetch(`${apirecUrl}/recordings/${userId}`, {
                             method: 'POST',
                             body: formData,
                         });
