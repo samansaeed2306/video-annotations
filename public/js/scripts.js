@@ -2509,7 +2509,7 @@ async function screenRecorder(event) {
 // Utility to upload the recording
 async function uploadRecording(blob) {
     const urlParams = new URLSearchParams(window.location.search);
-    const userId = urlParams.get('userid');
+    const userId = urlParams.get('userid')
 
     if (!userId) {
         console.error('User ID not found in URL.');
