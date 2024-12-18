@@ -508,6 +508,7 @@ function removeInput() {
 
 
 function createVideoCard(videoUrl, title) {
+    console.log("Create Video Card");
     const card = document.createElement('div');
     card.classList.add('recording-card');
 
@@ -559,6 +560,7 @@ function displayNoRecordingsMessage(userId) {
 function displayRecordings(recordings) {
     const gallery = document.getElementById('recordings-gallery');
     gallery.innerHTML = ''; 
+    console.log('Hello I am inside display rec');
     recordings.forEach(recording => {
         let card;
         
