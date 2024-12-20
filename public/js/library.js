@@ -6,6 +6,8 @@ const apiUrl = 'http://localhost:8080/api/media';
 const api='http://localhost:8080/api';
 const urlParams = new URLSearchParams(window.location.search);
 const userId = urlParams.get('userid');
+
+addRecording();
 fetch(`${apiUrl}/mediabyuser/${userId}`)
   .then(response => response.json())
   .then(files => {
@@ -30,7 +32,7 @@ fetch(`${apiUrl}/mediabyuser/${userId}`)
         // addVideoCard('../../uploads/test.mp4', 'test.mp4');
       }
 
-      addRecording();
+      //addRecording();
 
     });
   })
