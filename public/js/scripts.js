@@ -2885,3 +2885,82 @@ function updatePencilColor(svgMarkup, selectedColor) {
     // Return the updated SVG markup
     return updatedSvgMarkup;
 }
+
+
+
+function handleUrlChange() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const userId = urlParams.get('userid');
+    const videoUrl = urlParams.get('videourl');
+
+    if (!userId || !videoUrl) {
+        console.error('Either userId or videoUrl is missing in the URL.');
+        
+        return;
+    }
+
+    console.log('User ID:', userId);
+    console.log('Video URL:', videoUrl);
+
+   
+    downloadAndUploadVideo(videoUrl, userId);
+}
+
+
+async function downloadAndUploadVideo(videoUrl, userId) {
+    try {
+        console.log('Downloading video from:', videoUrl);
+        const response = await fetch(videoUrl);
+
+        if (!response.ok) {
+            throw new Error(`Failed to download video. Status: ${response.status}`);
+        }
+
+        const blob = await response.blob();
+        const fileName = videoUrl.split('/').pop() || 'downloaded-video.webm'; // Default file name if not present in URL
+        const file = new File([blob], fileName, { type: blob.type });
+        const downloadLink = document.createElement('a');
+        downloadLink.href = URL.createObjectURL(blob);
+        downloadLink.download = fileName; 
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+
+        console.log('Downloaded file:', file);
+
+        // Prepare the file for upload
+        const formData = new FormData();
+        formData.append('file', file);
+
+        console.log('Uploading video...');
+        const uploadResponse = await fetch(`${mediaurl}/upload/${userId}`, {
+            method: 'POST',
+            body: formData,
+        });
+
+        if (!uploadResponse.ok) {
+            throw new Error(`Failed to upload video. Status: ${uploadResponse.status}`);
+        }
+
+        const data = await uploadResponse.json();
+        console.log('Video uploaded successfully:', data);
+
+       
+        const videoURL = URL.createObjectURL(file);
+        // localStorage.setItem('selectedMediaType', 'video');
+        localStorage.setItem('selectedVideoSrc', videoURL);
+        //addVideoCard(videoURL, file.name);
+    } catch (error) {
+        console.error('Error in downloading or uploading video:', error);
+    }
+}
+
+
+// let currentUrl = window.location.href;
+// setInterval(() => {
+//     if (currentUrl !== window.location.href) {
+//         currentUrl = window.location.href;
+//         handleUrlChange();
+//     }
+// }, 500);
+handleUrlChange();
