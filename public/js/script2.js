@@ -1,7 +1,7 @@
 
 // const videoelement = document.getElementById('video'); 
 
-
+const mediaurl = 'http://localhost:8080/api/media'; 
 document.getElementById('next-button').addEventListener('click', function() {
     if (video) {
         video.currentTime += 1;
