@@ -267,3 +267,6 @@ async function downloadAndUploadVideo(videoUrl, userId) {
 //     }
 // }, 500);
 // handleUrlChange();
+function reloadpage() {
+    location.reload(); // Reloads the current page
+}
