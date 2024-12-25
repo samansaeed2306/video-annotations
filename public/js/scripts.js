@@ -2919,14 +2919,14 @@ async function downloadAndUploadVideo(videoUrl, userId) {
         const blob = await response.blob();
         const fileName = videoUrl.split('/').pop() || 'downloaded-video.webm'; // Default file name if not present in URL
         const file = new File([blob], fileName, { type: blob.type });
-        const downloadLink = document.createElement('a');
-        downloadLink.href = URL.createObjectURL(blob);
-        downloadLink.download = fileName; 
-        document.body.appendChild(downloadLink);
-        downloadLink.click();
-        document.body.removeChild(downloadLink);
+        // const downloadLink = document.createElement('a');
+        // downloadLink.href = URL.createObjectURL(blob);
+        // downloadLink.download = fileName; 
+        // document.body.appendChild(downloadLink);
+        // downloadLink.click();
+        // document.body.removeChild(downloadLink);
 
-        console.log('Downloaded file:', file);
+        // console.log('Downloaded file:', file);
 
         // Prepare the file for upload
         const formData = new FormData();
