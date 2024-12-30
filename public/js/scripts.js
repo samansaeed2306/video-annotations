@@ -2957,6 +2957,8 @@ async function downloadAndUploadVideo(videoUrl, userId) {
         //     return; 
         // }
         //addVideoCard(videoURL, file.name);
+
+        
     } catch (error) {
         console.error('Error in downloading or uploading video:', error);
     }
@@ -2972,19 +2974,23 @@ function updateUrl() {
     // Get the 'userid' parameter value
     const userId = url.searchParams.get('userid');
 
-    if (userId) {
-        // Append '%23wee' (URL-encoded '#wee') to the 'userid' parameter
-        const updatedUserId = `${userId}%23wee`;
+    // Check if the 'userid' already contains the appended string
+    const appendString = '123wee';
+    if (userId && !userId.includes(appendString)) {
+        // Append '123wee' to the 'userid' parameter
+        const updatedUserId = `${userId}${appendString}`;
         url.searchParams.set('userid', updatedUserId);
 
         // Update the browser's URL without reloading the page
         history.replaceState(null, '', url.toString());
-        reloadpage();
-        
+
+        // Reload the page if necessary
+        reloadPage();
     } else {
-        console.log("No 'userid' parameter found in the URL.");
+        console.log("Update already applied or 'userid' not found.");
     }
 }
+
 
 
 
@@ -2996,4 +3002,4 @@ function updateUrl() {
 //     }
 // }, 500);
 handleUrlChange();
-updateUrl();
+ updateUrl();
