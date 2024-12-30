@@ -2886,7 +2886,7 @@ function updatePencilColor(svgMarkup, selectedColor) {
     return updatedSvgMarkup;
 }
 
-
+// let reloadCount = 0;
 
 function handleUrlChange() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -2902,7 +2902,7 @@ function handleUrlChange() {
     console.log('User ID:', userId);
     console.log('Video URL:', videoUrl);
 
-   
+    
     downloadAndUploadVideo(videoUrl, userId);
 }
 
@@ -2949,6 +2949,13 @@ async function downloadAndUploadVideo(videoUrl, userId) {
         const videoURL = URL.createObjectURL(file);
         // localStorage.setItem('selectedMediaType', 'video');
         localStorage.setItem('selectedVideoSrc', videoURL);
+
+        // if (reloadCount < 1) {
+        //     reloadCount++;
+        //     console.log(`Reloading the page... (${reloadCount}/3)`);
+            // window.location.reload();
+        //     return; 
+        // }
         //addVideoCard(videoURL, file.name);
     } catch (error) {
         console.error('Error in downloading or uploading video:', error);
