@@ -2949,7 +2949,7 @@ async function downloadAndUploadVideo(videoUrl, userId) {
         const videoURL = URL.createObjectURL(file);
         // localStorage.setItem('selectedMediaType', 'video');
         localStorage.setItem('selectedVideoSrc', videoURL);
-
+        
         // if (reloadCount < 1) {
         //     reloadCount++;
         //     console.log(`Reloading the page... (${reloadCount}/3)`);
@@ -2962,6 +2962,31 @@ async function downloadAndUploadVideo(videoUrl, userId) {
     }
 }
 
+function updateUrl() {
+    // Get the current URL
+    const currentUrl = window.location.href;
+
+    // Parse the URL
+    const url = new URL(currentUrl);
+
+    // Get the 'userid' parameter value
+    const userId = url.searchParams.get('userid');
+
+    if (userId) {
+        // Append '%23wee' (URL-encoded '#wee') to the 'userid' parameter
+        const updatedUserId = `${userId}%23wee`;
+        url.searchParams.set('userid', updatedUserId);
+
+        // Update the browser's URL without reloading the page
+        history.replaceState(null, '', url.toString());
+        reloadpage();
+        
+    } else {
+        console.log("No 'userid' parameter found in the URL.");
+    }
+}
+
+
 
 // let currentUrl = window.location.href;
 // setInterval(() => {
@@ -2971,3 +2996,4 @@ async function downloadAndUploadVideo(videoUrl, userId) {
 //     }
 // }, 500);
 handleUrlChange();
+updateUrl();
