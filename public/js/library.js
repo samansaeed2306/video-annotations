@@ -2,8 +2,8 @@
 
 // const apiUrl = 'http://174.138.56.121:8080/api/media'; 
 // const apiUrl = 'http://192.168.100.191:8080/api/media'; 
-const apiUrl = 'http://localhost:8080/api/media'; 
-const api='http://localhost:8080/api';
+const apiUrl = CONFIG.API_MED_URL; 
+const api=CONFIG.API_URL;
 const urlParams = new URLSearchParams(window.location.search);
 const userId = urlParams.get('userid');
 

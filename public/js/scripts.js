@@ -9,7 +9,7 @@ const canvas = new fabric.Canvas('canvas', {
     selection: false,
     isDrawingMode: false
     });
-const apirecUrl = 'http://localhost:8080/api/rec/'; 
+const apirecUrl = CONFIG.API_REC_URL;
 let player;
 document.addEventListener('DOMContentLoaded', function() {
     setTimeout(() => {
@@ -2917,7 +2917,7 @@ async function downloadAndUploadVideo(videoUrl, userId) {
         }
 
         const blob = await response.blob();
-        const fileName = videoUrl.split('/').pop() || 'downloaded-video.webm'; // Default file name if not present in URL
+        const fileName = videoUrl.split('/').pop() || 'downloaded-video.webm'; 
         const file = new File([blob], fileName, { type: blob.type });
         // const downloadLink = document.createElement('a');
         // downloadLink.href = URL.createObjectURL(blob);
@@ -2957,11 +2957,12 @@ async function downloadAndUploadVideo(videoUrl, userId) {
         //     return; 
         // }
         //addVideoCard(videoURL, file.name);
-
+       
         
     } catch (error) {
         console.error('Error in downloading or uploading video:', error);
     }
+    //reloadpage();
 }
 
 function updateUrl() {
@@ -2985,7 +2986,7 @@ function updateUrl() {
         history.replaceState(null, '', url.toString());
 
         // Reload the page if necessary
-        reloadPage();
+        //reloadpage();
     } else {
         console.log("Update already applied or 'userid' not found.");
     }
@@ -3002,4 +3003,4 @@ function updateUrl() {
 //     }
 // }, 500);
 handleUrlChange();
- updateUrl();
+updateUrl();
