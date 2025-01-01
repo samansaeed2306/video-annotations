@@ -20,11 +20,11 @@ app.use(express.json());
 const recordingsFolder = path.join(process.cwd(), 'recordings');
 
 // Enable CORS for frontend (adjust to your public IP if needed)
-app.use(cors({
-  origin: process.env.CORS_ORIGIN || '*',
-  credentials: true
-}));
-
+// app.use(cors({
+//   origin: process.env.CORS_ORIGIN || '*',
+//   credentials: true
+// }));
+app.use(cors());
 app.use(express.static(path.join(__dirname, '../public'), {
   etag: true,          // Enable ETag generation (enabled by default)
   maxAge: '1d'         // Cache files for 1 day (adjust as needed)
