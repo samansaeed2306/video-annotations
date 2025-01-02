@@ -3092,6 +3092,6 @@ function updateUrl() {
     }
 }
 
-// Monitor URL changes and trigger the `handleUrlChange` function
+
 handleUrlChange();
-updateUrl();
+//setTimeout(updateUrl, 3000);
