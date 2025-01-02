@@ -2888,6 +2888,124 @@ function updatePencilColor(svgMarkup, selectedColor) {
 
 // let reloadCount = 0;
 
+// function handleUrlChange() {
+//     const urlParams = new URLSearchParams(window.location.search);
+//     const userId = urlParams.get('userid');
+//     const videoUrl = urlParams.get('videourl');
+
+//     if (!userId || !videoUrl) {
+//         console.error('Either userId or videoUrl is missing in the URL.');
+        
+//         return;
+//     }
+
+//     console.log('User ID:', userId);
+//     console.log('Video URL:', videoUrl);
+
+    
+//     downloadAndUploadVideo(videoUrl, userId);
+// }
+
+
+// async function downloadAndUploadVideo(videoUrl, userId) {
+//     try {
+//         console.log('Downloading video from:', videoUrl);
+//         const response = await fetch(videoUrl);
+
+//         if (!response.ok) {
+//             throw new Error(`Failed to download video. Status: ${response.status}`);
+//         }
+
+//         const blob = await response.blob();
+//         const fileName = videoUrl.split('/').pop() || 'downloaded-video.webm'; 
+//         const file = new File([blob], fileName, { type: blob.type });
+//         // const downloadLink = document.createElement('a');
+//         // downloadLink.href = URL.createObjectURL(blob);
+//         // downloadLink.download = fileName; 
+//         // document.body.appendChild(downloadLink);
+//         // downloadLink.click();
+//         // document.body.removeChild(downloadLink);
+
+//         // console.log('Downloaded file:', file);
+
+//         // Prepare the file for upload
+//         const formData = new FormData();
+//         formData.append('file', file);
+
+//         console.log('Uploading video...');
+//         const uploadResponse = await fetch(`${mediaurl}/upload/${userId}`, {
+//             method: 'POST',
+//             body: formData,
+//         });
+
+//         if (!uploadResponse.ok) {
+//             throw new Error(`Failed to upload video. Status: ${uploadResponse.status}`);
+//         }
+
+//         const data = await uploadResponse.json();
+//         console.log('Video uploaded successfully:', data);
+
+       
+//         const videoURL = URL.createObjectURL(file);
+//         // localStorage.setItem('selectedMediaType', 'video');
+//         localStorage.setItem('selectedVideoSrc', videoURL);
+        
+//         // if (reloadCount < 1) {
+//         //     reloadCount++;
+//         //     console.log(`Reloading the page... (${reloadCount}/3)`);
+//             // window.location.reload();
+//         //     return; 
+//         // }
+//         //addVideoCard(videoURL, file.name);
+       
+        
+//     } catch (error) {
+//         console.error('Error in downloading or uploading video:', error);
+//     }
+//     //reloadpage();
+// }
+
+// function updateUrl() {
+//     // Get the current URL
+//     const currentUrl = window.location.href;
+
+//     // Parse the URL
+//     const url = new URL(currentUrl);
+
+//     // Get the 'userid' parameter value
+//     const userId = url.searchParams.get('userid');
+
+//     // Check if the 'userid' already contains the appended string
+//     const appendString = '123wee';
+//     if (userId && !userId.includes(appendString)) {
+//         // Append '123wee' to the 'userid' parameter
+//         const updatedUserId = `${userId}${appendString}`;
+//         url.searchParams.set('userid', updatedUserId);
+
+//         // Update the browser's URL without reloading the page
+//         history.replaceState(null, '', url.toString());
+
+//         // Reload the page if necessary
+//         //reloadpage();
+//     } else {
+//         console.log("Update already applied or 'userid' not found.");
+//     }
+// }
+
+
+
+
+// // let currentUrl = window.location.href;
+// // setInterval(() => {
+// //     if (currentUrl !== window.location.href) {
+// //         currentUrl = window.location.href;
+// //         handleUrlChange();
+// //     }
+// // }, 500);
+// handleUrlChange();
+// updateUrl();
+
+
 function handleUrlChange() {
     const urlParams = new URLSearchParams(window.location.search);
     const userId = urlParams.get('userid');
@@ -2895,17 +3013,14 @@ function handleUrlChange() {
 
     if (!userId || !videoUrl) {
         console.error('Either userId or videoUrl is missing in the URL.');
-        
         return;
     }
 
     console.log('User ID:', userId);
     console.log('Video URL:', videoUrl);
 
-    
     downloadAndUploadVideo(videoUrl, userId);
 }
-
 
 async function downloadAndUploadVideo(videoUrl, userId) {
     try {
@@ -2917,16 +3032,9 @@ async function downloadAndUploadVideo(videoUrl, userId) {
         }
 
         const blob = await response.blob();
+        console.log(blob);
         const fileName = videoUrl.split('/').pop() || 'downloaded-video.webm'; 
         const file = new File([blob], fileName, { type: blob.type });
-        // const downloadLink = document.createElement('a');
-        // downloadLink.href = URL.createObjectURL(blob);
-        // downloadLink.download = fileName; 
-        // document.body.appendChild(downloadLink);
-        // downloadLink.click();
-        // document.body.removeChild(downloadLink);
-
-        // console.log('Downloaded file:', file);
 
         // Prepare the file for upload
         const formData = new FormData();
@@ -2945,62 +3053,45 @@ async function downloadAndUploadVideo(videoUrl, userId) {
         const data = await uploadResponse.json();
         console.log('Video uploaded successfully:', data);
 
-       
+        // Save the uploaded file details in localStorage
         const videoURL = URL.createObjectURL(file);
-        // localStorage.setItem('selectedMediaType', 'video');
+        const newMedia = {
+            type: 'video',
+            title: fileName,
+            src: videoURL,
+        };
+
+        localStorage.setItem('selectedMediaType', 'video');
         localStorage.setItem('selectedVideoSrc', videoURL);
-        
-        // if (reloadCount < 1) {
-        //     reloadCount++;
-        //     console.log(`Reloading the page... (${reloadCount}/3)`);
-            // window.location.reload();
-        //     return; 
-        // }
-        //addVideoCard(videoURL, file.name);
-       
-        
+
+        // Retrieve the existing media list from localStorage
+        const mediaList = JSON.parse(localStorage.getItem('mediaList')) || [];
+        mediaList.push(newMedia);
+
+        // Update the media list in localStorage
+        localStorage.setItem('mediaList', JSON.stringify(mediaList));
+
+        console.log('Updated mediaList in localStorage:', mediaList);
     } catch (error) {
         console.error('Error in downloading or uploading video:', error);
     }
-    //reloadpage();
 }
 
 function updateUrl() {
-    // Get the current URL
     const currentUrl = window.location.href;
-
-    // Parse the URL
     const url = new URL(currentUrl);
-
-    // Get the 'userid' parameter value
     const userId = url.searchParams.get('userid');
-
-    // Check if the 'userid' already contains the appended string
     const appendString = '123wee';
+
     if (userId && !userId.includes(appendString)) {
-        // Append '123wee' to the 'userid' parameter
         const updatedUserId = `${userId}${appendString}`;
         url.searchParams.set('userid', updatedUserId);
-
-        // Update the browser's URL without reloading the page
         history.replaceState(null, '', url.toString());
-
-        // Reload the page if necessary
-        //reloadpage();
     } else {
         console.log("Update already applied or 'userid' not found.");
     }
 }
 
-
-
-
-// let currentUrl = window.location.href;
-// setInterval(() => {
-//     if (currentUrl !== window.location.href) {
-//         currentUrl = window.location.href;
-//         handleUrlChange();
-//     }
-// }, 500);
+// Monitor URL changes and trigger the `handleUrlChange` function
 handleUrlChange();
 updateUrl();
