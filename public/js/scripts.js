@@ -3050,11 +3050,11 @@ async function downloadAndUploadVideo(videoUrl, userId) {
         .then(data => {
             console.log('Video uploaded:', data);
            
-            // console.log('Video fileName:', data.media.fileUrl);
+            console.log('Video fileName:', data.media.fileUrl);
             // if (data.media && data.media.fileUrl && data.media.originalName) {
                 
-            //     localStorage.setItem('selectedMediaType', 'video');
-            //     localStorage.setItem('selectedVideoSrc', data.media.fileUrl);
+                localStorage.setItem('selectedMediaType', 'video');
+                localStorage.setItem('selectedVideoSrc', data.media.fileUrl);
               
                 
             // }
@@ -3074,39 +3074,39 @@ async function downloadAndUploadVideo(videoUrl, userId) {
         //     title: fileName,
         //     src: videoURL,
         // };
-    const getmedia = fetch(`${mediaurl}/mediabyuser/${userId}`)
-    .then(response => response.json())
-    .then(files => {
-    // Loop through each file and call addImageCard or addVideoCard based on file extension
-    files.sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate));
-    files.forEach(file => {
-        console.log('File: ', file.fileName);
-      // Check the file extension to decide if it's an image or video
-      const fileExtension = file.fileName.split('.').pop().toLowerCase();
-      const filePath = `../uploads`;
-      console.log('File Path', filePath);
-    //   const testfile = 'test.mp4';
-      if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
+//     const getmedia = fetch(`${mediaurl}/mediabyuser/${userId}`)
+//     .then(response => response.json())
+//     .then(files => {
+//     // Loop through each file and call addImageCard or addVideoCard based on file extension
+//     files.sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate));
+//     files.forEach(file => {
+//         console.log('File: ', file.fileName);
+//       // Check the file extension to decide if it's an image or video
+//       const fileExtension = file.fileName.split('.').pop().toLowerCase();
+//       const filePath = `../uploads`;
+//       console.log('File Path', filePath);
+//     //   const testfile = 'test.mp4';
+//       if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
 
-        console.log("Inisde image");
-      } else if (['mp4', 'webm', 'mov', 'hevc','MOV'].includes(fileExtension)) {
-        // const videoURL = filePath;
-        // addVideoCard(videoURL, file);
-        const fullPath = `${filePath}/${fileName}`;
-       // console.log(`Video: ${filePath}/${file.fileName}`);
-       // const fullPath = `${filePath}/${fileName}`;
-        console.log("video",fullPath);
-        // addVideoCard(`${filePath}/${file.fileName}`, file.originalName);
-        localStorage.setItem('selectedMediaType', 'video');
-        localStorage.setItem('selectedVideoSrc', fullPath);
-        window.location.href = '../index.html';
-        // addVideoCard('../../uploads/test.mp4', 'test.mp4');
-      }
+//         console.log("Inisde image");
+//       } else if (['mp4', 'webm', 'mov', 'hevc','MOV'].includes(fileExtension)) {
+//         // const videoURL = filePath;
+//         // addVideoCard(videoURL, file);
+//         const fullPath = `${filePath}/${fileName}`;
+//        // console.log(`Video: ${filePath}/${file.fileName}`);
+//        // const fullPath = `${filePath}/${fileName}`;
+//         console.log("video",fullPath);
+//         // addVideoCard(`${filePath}/${file.fileName}`, file.originalName);
+//         localStorage.setItem('selectedMediaType', 'video');
+//         localStorage.setItem('selectedVideoSrc', fullPath);
+//         window.location.href = '../index.html';
+//         // addVideoCard('../../uploads/test.mp4', 'test.mp4');
+//       }
 
-      //addRecording();
+//       //addRecording();
 
-    });
-  })
+//     });
+//   })
 
     // if(!getmedia.ok){
     //     console.log('Get response not okay!')
