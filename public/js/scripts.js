@@ -3044,34 +3044,84 @@ async function downloadAndUploadVideo(videoUrl, userId) {
         const uploadResponse = await fetch(`${mediaurl}/upload/${userId}`, {
             method: 'POST',
             body: formData,
-        });
+        })
 
-        if (!uploadResponse.ok) {
-            throw new Error(`Failed to upload video. Status: ${uploadResponse.status}`);
-        }
+        .then(response => response.json())
+        .then(data => {
+            console.log('Video uploaded:', data);
+           
+            // console.log('Video fileName:', data.media.fileUrl);
+            // if (data.media && data.media.fileUrl && data.media.originalName) {
+                
+            //     localStorage.setItem('selectedMediaType', 'video');
+            //     localStorage.setItem('selectedVideoSrc', data.media.fileUrl);
+              
+                
+            // }
+            }
+        );
+        // if (!uploadResponse.ok) {
+        //     throw new Error(`Failed to upload video. Status: ${uploadResponse.status}`);
+        // }
 
-        const data = await uploadResponse.json();
-        console.log('Video uploaded successfully:', data);
+        // const data = await uploadResponse.json();
+        // console.log('Video uploaded successfully:', data);
 
-        // Save the uploaded file details in localStorage
-        const videoURL = URL.createObjectURL(file);
-        const newMedia = {
-            type: 'video',
-            title: fileName,
-            src: videoURL,
-        };
+        // // Save the uploaded file details in localStorage
+        // const videoURL = URL.createObjectURL(file);
+        // const newMedia = {
+        //     type: 'video',
+        //     title: fileName,
+        //     src: videoURL,
+        // };
+    const getmedia = fetch(`${mediaurl}/mediabyuser/${userId}`)
+    .then(response => response.json())
+    .then(files => {
+    // Loop through each file and call addImageCard or addVideoCard based on file extension
+    files.sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate));
+    files.forEach(file => {
+        console.log('File: ', file.fileName);
+      // Check the file extension to decide if it's an image or video
+      const fileExtension = file.fileName.split('.').pop().toLowerCase();
+      const filePath = `../uploads`;
+      console.log('File Path', filePath);
+    //   const testfile = 'test.mp4';
+      if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
 
+        console.log("Inisde image");
+      } else if (['mp4', 'webm', 'mov', 'hevc','MOV'].includes(fileExtension)) {
+        // const videoURL = filePath;
+        // addVideoCard(videoURL, file);
+        const fullPath = `${filePath}/${fileName}`;
+       // console.log(`Video: ${filePath}/${file.fileName}`);
+       // const fullPath = `${filePath}/${fileName}`;
+        console.log("video",fullPath);
+        // addVideoCard(`${filePath}/${file.fileName}`, file.originalName);
         localStorage.setItem('selectedMediaType', 'video');
-        localStorage.setItem('selectedVideoSrc', videoURL);
+        localStorage.setItem('selectedVideoSrc', fullPath);
+        window.location.href = '../index.html';
+        // addVideoCard('../../uploads/test.mp4', 'test.mp4');
+      }
+
+      //addRecording();
+
+    });
+  })
+
+    // if(!getmedia.ok){
+    //     console.log('Get response not okay!')
+    // }
+        // localStorage.setItem('selectedMediaType', 'video');
+        // localStorage.setItem('selectedVideoSrc', videoURL);
 
         // Retrieve the existing media list from localStorage
-        const mediaList = JSON.parse(localStorage.getItem('mediaList')) || [];
-        mediaList.push(newMedia);
+        // const mediaList = JSON.parse(localStorage.getItem('mediaList')) || [];
+        // mediaList.push(newMedia);
 
-        // Update the media list in localStorage
-        localStorage.setItem('mediaList', JSON.stringify(mediaList));
+        // // Update the media list in localStorage
+        // localStorage.setItem('mediaList', JSON.stringify(mediaList));
 
-        console.log('Updated mediaList in localStorage:', mediaList);
+        // console.log('Updated mediaList in localStorage:', mediaList);
     } catch (error) {
         console.error('Error in downloading or uploading video:', error);
     }
