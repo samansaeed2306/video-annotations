@@ -3145,3 +3145,37 @@ function updateUrl() {
 
 handleUrlChange();
 //setTimeout(updateUrl, 3000);
+// Assuming your button has an ID 'myButton'
+// let clickCount = 0; // Track the number of clicks
+
+// const button = document.getElementById('reloadpage');
+
+// if (button) {
+//     // Function to handle the clicks
+//     const simulateClick = () => {
+//         if (clickCount < 2) { // Strictly allow only two clicks
+//             button.click();
+//             clickCount++;
+//             console.log(`Click ${clickCount} triggered`);
+//         }
+//     };
+
+//     // Simulate clicks with strict limits
+//     setTimeout(() => {
+//         simulateClick(); // First click
+
+//         setTimeout(() => {
+//             simulateClick(); // Second click
+                
+
+//         }, 0); // Immediate second click
+//     }, 3000); 
+//     // setTimeout(() => {
+//     //     location.reload(); 
+
+        
+//     // }, 2000);
+// } else {
+//     console.error('Button with ID "reloadpage" not found.');
+// }
+

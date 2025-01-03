@@ -269,5 +269,5 @@ async function downloadAndUploadVideo(videoUrl, userId) {
 // handleUrlChange();
 function reloadpage() {
     updateUrl();
-    location.reload(); // Reloads the current page
+    // location.reload(); // Reloads the current page
 }
