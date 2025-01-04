@@ -33,9 +33,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     fluid: true,
                     enableSmoothSeeking: true,
                     html5: {
-                        nativeVideoTracks: false,
-                        nativeAudioTracks: false,
-                        nativeTextTracks: false
+                        nativeVideoTracks: true,
+                        nativeAudioTracks: true,
+                        nativeTextTracks: false,
+                        nativeControlsForTouch: false
                     }
                 });
 
