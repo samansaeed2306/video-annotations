@@ -31,6 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 player = videojs('video', {
                     controls: true,
                     fluid: true,
+                    enableSmoothSeeking: true,
                     html5: {
                         nativeVideoTracks: false,
                         nativeAudioTracks: false,
