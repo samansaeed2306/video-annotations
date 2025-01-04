@@ -13,6 +13,14 @@ const apirecUrl = CONFIG.API_REC_URL;
 let player;
 document.addEventListener('DOMContentLoaded', function() {
     setTimeout(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+    const userId = urlParams.get('userid');
+    const videoUrl = urlParams.get('videourl');
+
+    
+    console.log('User ID:', userId);
+    console.log('Video URL:', videoUrl);
+
         const video = document.getElementById('video');
         if(player){
             player.dispose();
@@ -37,7 +45,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 const storedVideoSrc = localStorage.getItem('selectedVideoSrc');
                 const defaultVideo = 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8';
                 const videoSrc = storedVideoSrc || defaultVideo;
-
+                if (videoUrl) {
+        return;
+    }
                 loadVideo(videoSrc);
 
                 // Clear localStorage only after successful load
