@@ -69,7 +69,25 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }     
 });
-        
+function loadVideo(videoSrc) {
+    const isHLS = videoSrc.includes('.m3u8');
+    const video = document.getElementById('video');
+    player.src({
+        src: videoSrc,
+        type: isHLS ? 'application/x-mpegURL' : 'video/mp4'
+    });
+
+    player.ready(function() {
+        console.log('The video has now been loaded!');
+        player.on('loadedmetadata', function() {
+            setupTimeline(video, player);
+        });
+    });
+
+    player.on('error', function(error) {
+        console.error('Error:', player.error());
+    });
+}     
 
 function setupTimeline(video, player) {
    
@@ -3052,10 +3070,16 @@ async function downloadAndUploadVideo(videoUrl, userId) {
            
             console.log('Video fileName:', data.media.fileUrl);
             // if (data.media && data.media.fileUrl && data.media.originalName) {
-                
+                const fileExtension = data.media.fileName.split('.').pop().toLowerCase();
+                const filePath = `../uploads/${data.media.fileName}`;
+               if (['mp4', 'webm'].includes(fileExtension)) {
+                   // addVideoCard(filePath, file.originalName);
+                   
+                }
+                console.log('Updating Local Storage with: ', filePath);
                 localStorage.setItem('selectedMediaType', 'video');
-                localStorage.setItem('selectedVideoSrc', data.media.fileUrl);
-              
+                localStorage.setItem('selectedVideoSrc', filePath);
+                loadVideo(filePath);
                 
             // }
             }
@@ -3141,7 +3165,6 @@ function updateUrl() {
         console.log("Update already applied or 'userid' not found.");
     }
 }
-
 
 handleUrlChange();
 //setTimeout(updateUrl, 3000);
