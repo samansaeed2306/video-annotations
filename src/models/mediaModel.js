@@ -3,9 +3,11 @@ import { connectToDb } from '../db/connect.js';
 import { ObjectId } from 'mongodb';
 
 export async function createMediaDocument(media) {
+  
   const db = await connectToDb();
   const collection = db.collection('media');
-  return collection.insertOne(media);
+  const result = await collection.insertOne(media);
+  return collection.findOne({ _id: result.insertedId });
 }
 
 export async function getAllMedia() {
