@@ -2901,21 +2901,50 @@ video.addEventListener('timeupdate', () => {
     timeInput.value = secondsToTimeString(video.currentTime);
 });
 
+function updateSVGFillColor(buttonId, color) {
+    // Find the button by its ID
+    const button = document.getElementById(buttonId);
 
-function updatePencilColor(svgMarkup, selectedColor) {
-    // Set the default color to blue if no color is provided
-    console.log("Inside update pencil color");
-    const color = selectedColor || 'blue';
+    if (!button) {
+        console.error(`Button with ID ${buttonId} not found.`);
+        return;
+    }
 
-    // Update the fill color of the rect elements in the SVG markup
-    const updatedSvgMarkup = svgMarkup.replace(/(<rect[^>]*fill=")[^"]*"/g, (match, p1) => {
-        console.log("Rects color changed");
-        return `${p1}${color}"`;
-    });
+    // Find the first <svg> element inside the button
+    const svgElement = button.querySelector('svg');
 
-    // Return the updated SVG markup
-    return updatedSvgMarkup;
+    if (!svgElement) {
+        console.error(`No SVG found inside button with ID ${buttonId}.`);
+        return;
+    }
+
+    // Update the fill attribute of the main SVG element
+    svgElement.setAttribute('fill', color);
 }
+
+// function updatePencilColor(svgMarkup, selectedColor) {
+//     const color = selectedColor || 'blue';
+
+//     if (!svgMarkup) {
+//         console.error("svgMarkup is undefined or empty.");
+//         return svgMarkup; // Return as-is if invalid
+//     }
+
+//     try {
+//         // Update only the first occurrence of the fill attribute
+//         const updatedSvgMarkup = svgMarkup.replace(/(<rect[^>]*fill=")[^"]*"/g, (match, p1) => {
+//             return `${p1}${color}"`;
+//         });
+
+//         return updatedSvgMarkup;
+//     } catch (error) {
+//         console.error("Error updating SVG markup:", error, svgMarkup);
+//         return svgMarkup; // Return original if there's an error
+//     }
+// }
+
+
+
 
 // let reloadCount = 0;
 

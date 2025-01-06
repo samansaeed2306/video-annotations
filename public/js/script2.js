@@ -98,19 +98,50 @@ function selectColor() {
   }
 
 
-  function updateButtonColors(color) {
+//   function updateButtonColors(selectedColor) {
     
-    const buttonsWithSvg = document.querySelectorAll('button[data-color-change="true"] svg');
-
+//         // Select all SVG elements inside the shapes div
+//         const svgElements = document.querySelectorAll('#shapes svg');
     
-    buttonsWithSvg.forEach((svg) => {
-        svg.style.fill = color;  
-    });
+//         svgElements.forEach((svgElement) => {
+//             const svgMarkup = svgElement.outerHTML; // Get the current SVG markup
+//             const updatedMarkup = updatePencilColor(svgMarkup, selectedColor); // Update the SVG markup
+//             svgElement.outerHTML = updatedMarkup; // Replace the old SVG with the updated markup
+//         });
+//     }
+    // function updateButtonColors(color) {
+    //     const buttonsWithSvg = document.querySelectorAll('button[data-color-change="true"] svg');
 
-    updatePencilColor(svgMarkup, color);
+    //     buttonsWithSvg.forEach((svg) => {
+    //         const svgMarkup = svg.outerHTML; 
+    //         const updatedSvgMarkup = updatePencilColor(svgMarkup, color); 
+            
+            
+    //         const parser = new DOMParser();
+    //         const updatedSvg = parser.parseFromString(updatedSvgMarkup, "image/svg+xml").documentElement;
+    //         svg.parentNode.replaceChild(updatedSvg, svg);
+    //     });
+    // }
 
-}
-
+    function updateButtonColors(color) {
+        // Select all buttons with the data attribute `data-color-change="true"`
+        const buttonsWithSvg = document.querySelectorAll('button[data-color-change="true"]');
+    
+        buttonsWithSvg.forEach((button) => {
+            // Get the button's ID (optional, for debugging or direct updates)
+            const buttonId = button.id;
+    
+            // Call updateSVGFillColor for each button to update its SVG fill color
+            const svgElement = button.querySelector('svg');
+    
+            if (svgElement) {
+                svgElement.setAttribute('fill', color); // Directly update the SVG's fill
+            } else {
+                console.error(`No SVG found in button with ID ${buttonId || 'no ID'}`);
+            }
+        });
+    }
+    
 document.addEventListener('DOMContentLoaded', (event) => {
     const fullscreenBtn = document.getElementById('fullscreen-btn');
     document.addEventListener('fullscreenchange', handleFullscreenChange);
