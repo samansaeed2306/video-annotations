@@ -1888,6 +1888,7 @@ function confirmClearAll() {
 
     console.log('All annotations have been cleared.');
     closeModal();
+    renderAnnotationsForCurrentTime(video.currentTime);
 
   }
 const clearAllIcon = document.getElementById('clear-all');
