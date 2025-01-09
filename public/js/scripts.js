@@ -1481,9 +1481,9 @@ function adjustForPortrait() {
 
         // Shift the video to the right and canvas to the left
         video.style.position = 'absolute';
-        video.style.left = '20px'; // Adjust this value as needed
-        video.style.top = '0';
-        
+        video.style.left = '0px'; // Adjust this value as needed
+        // video.style.top = '30px';
+        video.style.top = '5.4%';
         canvas.style.position = 'absolute';
         canvas.style.left = '0';
         canvas.style.top = '0';
