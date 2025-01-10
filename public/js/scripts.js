@@ -8,7 +8,7 @@ let isInteracting = false;
 const canvas = new fabric.Canvas('canvas', {
     selection: false,
     isDrawingMode: false,
-    allowTouchScrolling: true,
+    // allowTouchScrolling: true,
     });
 const apirecUrl = CONFIG.API_REC_URL;
 let player;
