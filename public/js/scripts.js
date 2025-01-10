@@ -1140,6 +1140,10 @@ function handleImageUpload(event) {
     }
     
 }
+// canvas.on('object:added', function(e) {
+   
+// });
+
 canvas.on('mouse:down', function(options) {
     isInteracting = true;
     console.log("Inside mouse:down event",isInteracting);
@@ -1246,7 +1250,10 @@ canvas.on('object:added', () => {
         }else{
             simulateCanvasClick(0, 0);
        }
-        
+    e.target.lockMovementX = false;
+    e.target.lockMovementY = false;
+    e.target.lockScalingX = false;
+    e.target.lockScalingY = false;  
     }
     
 });
