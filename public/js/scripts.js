@@ -1278,6 +1278,10 @@ canvas.on('object:moving', updateAnnotation);
 canvas.on('object:scaling', updateAnnotation);
 canvas.on('object:rotating', updateAnnotation);
 
+canvas.on('touch:gesture', (e) => console.log('Gesture event:', e));
+canvas.on('touch:drag', (e) => console.log('Drag event:', e));
+canvas.on('touch:longpress', (e) => console.log('Long press event:', e));
+
 function updateAnnotation(e) {
     const obj = e.target;
     const currentTime = Math.floor(video.currentTime);
