@@ -1250,10 +1250,10 @@ canvas.on('object:added', () => {
         }else{
             simulateCanvasClick(0, 0);
        }
-    e.target.lockMovementX = false;
-    e.target.lockMovementY = false;
-    e.target.lockScalingX = false;
-    e.target.lockScalingY = false;  
+    // e.target.lockMovementX = false;
+    // e.target.lockMovementY = false;
+    // e.target.lockScalingX = false;
+    // e.target.lockScalingY = false;  
     }
     
 });
