@@ -7,7 +7,8 @@ let svgMarkup;
 let isInteracting = false;
 const canvas = new fabric.Canvas('canvas', {
     selection: false,
-    isDrawingMode: false
+    isDrawingMode: false,
+    enableRetinaScaling: false,
     });
 const apirecUrl = CONFIG.API_REC_URL;
 let player;
