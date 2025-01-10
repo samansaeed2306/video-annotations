@@ -1278,9 +1278,31 @@ canvas.on('object:moving', updateAnnotation);
 canvas.on('object:scaling', updateAnnotation);
 canvas.on('object:rotating', updateAnnotation);
 
-canvas.on('touch:gesture', (e) => console.log('Gesture event:', e));
-canvas.on('touch:drag', (e) => console.log('Drag event:', e));
-canvas.on('touch:longpress', (e) => console.log('Long press event:', e));
+// canvas.on('touch:gesture', (e) => console.log('Gesture event:', e));
+// canvas.on('touch:drag', (e) => console.log('Drag event:', e));
+// canvas.on('touch:longpress', (e) => console.log('Long press event:', e));
+// Track the start of the touch event
+canvas.on('touch:start', function(e) {
+    console.log('Touch start event:', e);
+    // Initialize a timer for long press detection
+    this.touchStartTime = Date.now();
+});
+
+// Track the touchmove event
+canvas.on('touch:move', function(e) {
+    console.log('Touch move event:', e);
+});
+
+// Track the touchend event
+canvas.on('touch:end', function(e) {
+    console.log('Touch end event:', e);
+    const touchDuration = Date.now() - this.touchStartTime;
+
+    // Detect if it's a long press (hold for 500ms or more)
+    if (touchDuration >= 500) {
+        console.log('Long press detected!');
+    }
+});
 
 function updateAnnotation(e) {
     const obj = e.target;
