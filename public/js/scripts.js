@@ -12,23 +12,25 @@ const canvas = new fabric.Canvas('canvas', {
     });
 const apirecUrl = CONFIG.API_REC_URL;
 let player;
-document.addEventListener('DOMContentLoaded', function() {
+
+document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
         const urlParams = new URLSearchParams(window.location.search);
-    const userId = urlParams.get('userid');
-    const videoUrl = urlParams.get('videourl');
+        const userId = urlParams.get('userid');
+        const videoUrl = urlParams.get('videourl');
 
-    
-    console.log('User ID:', userId);
-    console.log('Video URL:', videoUrl);
+        console.log('User ID:', userId);
+        console.log('Video URL:', videoUrl);
 
-        const video = document.getElementById('video');
-        if(player){
+        const videoElement = document.getElementById('video');
+
+        if (player) {
             player.dispose();
         }
+
+        
         if (selectedMediaType === '' || selectedMediaType === 'video') {
-            if(video) {
-                
+            if (videoElement) {
                 player = videojs('video', {
                     controls: true,
                     fluid: true,
@@ -37,70 +39,50 @@ document.addEventListener('DOMContentLoaded', function() {
                         nativeVideoTracks: true,
                         nativeAudioTracks: true,
                         nativeTextTracks: false,
-                        nativeControlsForTouch: false
+                        nativeControlsForTouch: false,
                     }
                 });
 
-                
-                // player.textTracks()[0]='disabled'
-                console.log("Player:",player);
+                console.log("Player:", player);
 
                 const storedVideoSrc = localStorage.getItem('selectedVideoSrc');
                 const defaultVideo = 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8';
-                const videoSrc = storedVideoSrc || defaultVideo;
-                if (videoUrl) {
-        return;
-    }
-                loadVideo(videoSrc);
+                const videoSrc = videoUrl || storedVideoSrc || defaultVideo;
 
-                // Clear localStorage only after successful load
+                if (!videoUrl) {
+                    loadVideo(videoSrc);
+                }
+
                 if (storedVideoSrc) {
-                    player.one('loadeddata', function() {
+                    player.one('loadeddata', () => {
                         localStorage.removeItem('selectedVideoSrc');
                     });
                 }
             }
         }
     }, 1000);
-    function loadVideo(videoSrc) {
-        const isHLS = videoSrc.includes('.m3u8');
-        
-        player.src({
-            src: videoSrc,
-            type: isHLS ? 'application/x-mpegURL' : 'video/mp4'
-        });
-    
-        player.ready(function() {
-            console.log('The video has now been loaded!');
-            player.on('loadedmetadata', function() {
-                setupTimeline(video, player);
-            });
-        });
-    
-        player.on('error', function(error) {
-            console.error('Error:', player.error());
-        });
-    }     
 });
+
 function loadVideo(videoSrc) {
     const isHLS = videoSrc.includes('.m3u8');
-    const video = document.getElementById('video');
+
     player.src({
         src: videoSrc,
-        type: isHLS ? 'application/x-mpegURL' : 'video/mp4'
+        type: isHLS ? 'application/x-mpegURL' : 'video/mp4',
     });
 
-    player.ready(function() {
+    player.ready(() => {
         console.log('The video has now been loaded!');
-        player.on('loadedmetadata', function() {
-            setupTimeline(video, player);
+        player.on('loadedmetadata', () => {
+            setupTimeline(player);
         });
     });
 
-    player.on('error', function(error) {
+    player.on('error', () => {
         console.error('Error:', player.error());
     });
-}     
+}
+
 
 function setupTimeline(video, player) {
    
