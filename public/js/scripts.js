@@ -3299,7 +3299,7 @@ handleUrlChange();
 //     // }, 2000);
 // } else {
 //     console.error('Button with ID "reloadpage" not found.');
-// }
+// } 
 
 function disableClickPlayPause(videoPlayer) {
     // Disable play/pause on click using Video.js configuration
