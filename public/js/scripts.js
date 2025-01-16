@@ -11,7 +11,7 @@ const canvas = new fabric.Canvas('canvas', {
     // allowTouchScrolling: true,
     });
 const apirecUrl = CONFIG.API_REC_URL;
-let player;
+var player;
 
 document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
@@ -31,7 +31,8 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (selectedMediaType === '' || selectedMediaType === 'video') {
             if (videoElement) {
-                player = videojs('video', {
+                player = videojs('video');
+                player.options({
                     controls: true,
                     fluid: true,
                     enableSmoothSeeking: true,
@@ -41,7 +42,19 @@ document.addEventListener('DOMContentLoaded', () => {
                         nativeTextTracks: false,
                         nativeControlsForTouch: false,
                     }
-                });
+                }
+                );
+                // player = videojs('video', {
+                //     controls: true,
+                //     fluid: true,
+                //     enableSmoothSeeking: true,
+                //     html5: {
+                //         nativeVideoTracks: true,
+                //         nativeAudioTracks: true,
+                //         nativeTextTracks: false,
+                //         nativeControlsForTouch: false,
+                //     }
+                // });
 
                 console.log("Player:", player);
 
