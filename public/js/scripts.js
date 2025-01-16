@@ -58,6 +58,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         localStorage.removeItem('selectedVideoSrc');
                     });
                 }
+                disableClickPlayPause(player);
+
             }
         }
     }, 1000);
@@ -3260,3 +3262,17 @@ handleUrlChange();
 //     console.error('Button with ID "reloadpage" not found.');
 // }
 
+function disableClickPlayPause(videoPlayer) {
+    // Disable play/pause on click using Video.js configuration
+    videoPlayer.userActive(false); // Optional: Disable user activity triggers temporarily
+    videoPlayer.on('click', (e) => {
+        e.preventDefault(); // Prevent the default play/pause behavior
+        e.stopPropagation(); // Stop the event from propagating further
+    });
+
+    // Optionally disable touch interactions
+    videoPlayer.on('touchstart', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+    });
+}
