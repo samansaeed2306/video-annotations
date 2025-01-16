@@ -1549,7 +1549,7 @@ function adjustForPortrait() {
 function recordAnnotation(time) {
     if (player.paused()) { // Use player.paused() to check if the video is paused
         console.log("Paused the video");
-
+        checkZIndex();
         const existingAnnotationIndex = annotations.findIndex(annotation => Math.floor(annotation.time) === Math.floor(time));
         const annotation = {
             time: time,
@@ -3314,4 +3314,24 @@ function disableClickPlayPause(videoPlayer) {
         e.preventDefault();
         e.stopPropagation();
     });
+}
+function checkZIndex() {
+    const videoElement = document.getElementById('video'); // Video.js element
+    const canvasElement = document.getElementById('canvas'); // Canvas element
+
+    // Get computed styles
+    const videoZIndex = window.getComputedStyle(videoElement).zIndex;
+    const canvasZIndex = window.getComputedStyle(canvasElement).zIndex;
+
+    console.log('Video.js element z-index:', videoZIndex);
+    console.log('Canvas element z-index:', canvasZIndex);
+
+    // Compare z-index values
+    if (parseInt(videoZIndex) > parseInt(canvasZIndex)) {
+        console.log('Video.js element is above the canvas.');
+    } else if (parseInt(videoZIndex) < parseInt(canvasZIndex)) {
+        console.log('Canvas is above the Video.js element.');
+    } else {
+        console.log('Video.js element and canvas have the same z-index.');
+    }
 }
