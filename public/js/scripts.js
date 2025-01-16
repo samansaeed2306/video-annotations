@@ -1508,42 +1508,81 @@ function adjustForPortrait() {
     }
 }
 
-function recordAnnotation(time) {
-    if(video.paused){
-    const existingAnnotationIndex = annotations.findIndex(annotation => Math.floor(annotation.time) === Math.floor(time));
-    const existingAnnotation = annotations.find(annotation => Math.floor(annotation.time) === Math.floor(time));
-    const annotation = {
-        time: time,
-        content: JSON.stringify(canvas.toJSON())
-    };
+// function recordAnnotation(time) {
+//     if(video.paused){
+//     console.log("Paused the video");
+//     const existingAnnotationIndex = annotations.findIndex(annotation => Math.floor(annotation.time) === Math.floor(time));
+//     const existingAnnotation = annotations.find(annotation => Math.floor(annotation.time) === Math.floor(time));
+//     const annotation = {
+//         time: time,
+//         content: JSON.stringify(canvas.toJSON())
+//     };
 
-    if (existingAnnotationIndex !== -1) {
-        annotations[existingAnnotationIndex] = annotation;
+//     if (existingAnnotationIndex !== -1) {
+//         annotations[existingAnnotationIndex] = annotation;
       
-    } else {
-        annotations.push(annotation);
-    }
+//     } else {
+//         annotations.push(annotation);
+//     }
 
-    console.log('Annotation recorded');
-    updateAnnotationsList();
-    updateTimelineIcon(time);
-    const timeline = document.getElementById('timeline');
-    const ticks = document.querySelectorAll('.timeline .tick');
-    const annotationTime = Math.floor(video.currentTime);
-    ticks.forEach(tick => {
-        if (parseInt(tick.dataset.time) === annotationTime) {
-            tick.classList.add('has-drawing');
-            const icon = tick.querySelector('.icon');
-            if(icon){
-                icon.style.display='block';
-            createPointerForPencilIcon(tick);
-            }
+//     console.log('Annotation recorded');
+//     updateAnnotationsList();
+//     updateTimelineIcon(time);
+//     const timeline = document.getElementById('timeline');
+//     const ticks = document.querySelectorAll('.timeline .tick');
+//     const annotationTime = Math.floor(video.currentTime);
+//     ticks.forEach(tick => {
+//         if (parseInt(tick.dataset.time) === annotationTime) {
+//             tick.classList.add('has-drawing');
+//             const icon = tick.querySelector('.icon');
+//             if(icon){
+//                 icon.style.display='block';
+//             createPointerForPencilIcon(tick);
+//             }
+//         }
+//     });}
+//     else {
+//     console.log('Video is playing, not adding annotation');
+// }
+//     }
+
+function recordAnnotation(time) {
+    if (player.paused()) { // Use player.paused() to check if the video is paused
+        console.log("Paused the video");
+
+        const existingAnnotationIndex = annotations.findIndex(annotation => Math.floor(annotation.time) === Math.floor(time));
+        const annotation = {
+            time: time,
+            content: JSON.stringify(canvas.toJSON())
+        };
+
+        if (existingAnnotationIndex !== -1) {
+            annotations[existingAnnotationIndex] = annotation;
+        } else {
+            annotations.push(annotation);
         }
-    });}
-    else {
-    console.log('Video is playing, not adding annotation');
-}
+
+        console.log('Annotation recorded');
+        updateAnnotationsList();
+        updateTimelineIcon(time);
+
+        const timeline = document.getElementById('timeline');
+        const ticks = document.querySelectorAll('.timeline .tick');
+        const annotationTime = Math.floor(player.currentTime()); // Use player.currentTime() for video time
+        ticks.forEach(tick => {
+            if (parseInt(tick.dataset.time) === annotationTime) {
+                tick.classList.add('has-drawing');
+                const icon = tick.querySelector('.icon');
+                if (icon) {
+                    icon.style.display = 'block';
+                    createPointerForPencilIcon(tick);
+                }
+            }
+        });
+    } else {
+        console.log('Video is playing, not adding annotation');
     }
+}
     function createPointerForPencilIcon(tick) {
         if (tick.querySelector('.pointer')) {
             return; 
