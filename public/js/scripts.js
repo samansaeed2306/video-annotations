@@ -278,83 +278,11 @@ function view() {
     });
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    const video = document.getElementById('video');
-    const currentTimeInput = document.getElementById('ex-current-time-input');
-    const totalTimeSpan = document.querySelector('.formatted-timeframe span:nth-child(2) span:first-child');
-
-   
-    
-    
-
-    video.addEventListener('timeupdate', function() {
-        currentTimeInput.value = formatTime(video.currentTime);
-    });
-
-    video.addEventListener('loadedmetadata', function() {
-        totalTimeSpan.textContent = ` / ${formatTime(video.duration)}`;
-    });
-});
 
 
-document.getElementById('play-pause-button').addEventListener('click', function() {
-    const playIcon = document.getElementById('play-icon');
-    const pauseIcon = document.getElementById('pause-icon');
-    
 
 
-    if (playIcon.style.display === 'none') {
-        playIcon.style.display = 'block';
-        pauseIcon.style.display = 'none';
-    } else {
-        playIcon.style.display = 'none';
-        pauseIcon.style.display = 'block';
-        
-    }
-    video.onended = function() {
-        playIcon.style.display = 'block';
-        pauseIcon.style.display = 'none';
-    };
 
-});
-
-
-function moveAnnotation(oldTime, newTime) {
-console.log('Moving annotation from', oldTime, 'to', newTime);
-video.currentTime=newTime;
-oldTime = parseInt(oldTime);
-newTime = parseInt(newTime);
-
-
-let annotationIndex = annotations.findIndex(annotation => Math.floor(annotation.time) === oldTime);
-if (annotationIndex !== -1) {
-const annotation = annotations[annotationIndex];
-annotation.time = newTime;
-annotations.splice(annotationIndex, 1, annotation); 
-
-if(annotation.type!='audio'){
-canvas.forEachObject(obj => {
-    if (obj.time === oldTime) {
-        canvas.remove(obj);
-    }
-});
-
-
-annotations.forEach(ann => {
-    if (Math.floor(ann.time) === newTime) {
-        canvas.loadFromJSON(ann.content, () => {
-            canvas.renderAll();
-        });
-    }
-});
-
-}
-updateAnnotationsList();
-updateTimelineIcons();
-
-}
-
-}
 function convertBase64ToBlob(base64String, mimeType) {
     const byteCharacters = atob(base64String);
     const byteArrays = [];
