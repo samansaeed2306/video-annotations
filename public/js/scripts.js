@@ -93,7 +93,7 @@ function loadVideo(videoSrc) {
     player.ready(function() {
         console.log('The video has now been loaded!');
         player.on('loadedmetadata', function() {
-            setupTimeline(video, player);
+            //setupTimeline(video, player);
         });
     });
 
@@ -102,250 +102,7 @@ function loadVideo(videoSrc) {
     });
 }     
 
-function setupTimeline(video, player) {
-   
-        const stopDragging = () => { const timeline = document.getElementById('timeline');
-    const duration = Math.floor(player.duration());
-    timeline.style.setProperty('--duration', duration);
-    console.log(duration);
-    
-    player.currentTime(3);
-    console.log("Video's current Time: ", player.currentTime());
 
-    svgMarkup = `<?xml version="1.0" ?>
-    <svg id="pencil-svg" height="24" version="1.1" width="24" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-        <g transform="translate(0 -1028.4)">
-            <g transform="matrix(1.0607 1.0607 -1.0607 1.0607 1146.8 34.926)">
-                <path d="m-63 1003.4v11.3 0.7 1l2 2 2-2v-1-0.7-11.3h-4z" fill="#ecf0f1"/>
-                <path d="m-61 1003.4v15l2-2v-1-0.7-11.3h-2z" fill="#bdc3c7"/>
-                <rect fill="blue" height="11" width="4" x="-63" y="1004.4"/>
-                <path d="m-61 1000.4c-1.105 0-2 0.9-2 2v1h4v-1c0-1.1-0.895-2-2-2z" fill="#7f8c8d"/>
-                <g transform="translate(-7,1)">
-                    <path d="m-55.406 1016 1.406 1.4 1.406-1.4h-1.406-1.406z" fill="#34495e"/>
-                    <path d="m-54 1016v1.4l1.406-1.4h-1.406z" fill="#2c3e50"/>
-                </g>
-                <path d="m-61 1000.4c-1.105 0-2 0.9-2 2v1h2v-3z" fill="#95a5a6"/>
-                <rect fill="blue" height="11" width="2" x="-61" y="1004.4"/>
-            </g>
-        </g>
-    </svg>`;
-
-    const svgDataUrl = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgMarkup);
-
-    // Create ticks with icons
-    for (let i = 0; i < duration; i++) {
-        const tick = document.createElement('div');
-        tick.classList.add('tick');
-        tick.dataset.time = i;
-
-        const icon = document.createElement('div');
-        icon.classList.add('icon');
-        const img = document.createElement('img');
-        img.src = svgDataUrl;
-        img.alt = 'Pencil';
-        icon.appendChild(img);
-        tick.appendChild(icon);
-
-        img.addEventListener('dragstart', handleDragStart);
-        tick.addEventListener('dragover', handleDragOver);
-        tick.addEventListener('drop', handleDrop);
-        img.setAttribute('draggable', true);
-
-        timeline.appendChild(tick);
-    }
-
-    // Create timeline ticks
-    for (let i = 0; i < duration; i++) {
-        const tick2 = document.createElement('div');
-        tick2.classList.add('tick2');
-        tick2.dataset.time = i;
-        timeline.appendChild(tick2);
-
-        tick2.addEventListener('click', function(event) {
-            if (tick2.classList.contains('blocked')) {
-                console.log(`Tick at ${i} seconds is blocked.`);
-                event.stopPropagation();
-                return;
-            }
-            console.log(`Clicked on tick at ${i} seconds.`);
-            player.currentTime(i);
-        });
-    }
-
-    // Create and setup pointer
-    const pointer2 = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    pointer2.setAttribute('width', '10');  // Adjust the size as needed
-    pointer2.setAttribute('height', '12'); // Adjust the size as needed
-    pointer2.setAttribute('viewBox', '0 0 16 16');
-    pointer2.setAttribute('fill', 'black');
-    pointer2.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-    pointer2.setAttribute('alt', 'draggable icon for progress bar');
-    pointer2.classList.add('pointer2');
-
-    pointer2.innerHTML = '<path d="M13 14.726C13 18.19 10.09 21 6.5 21S0 18.19 0 14.726C0 8.812 4.345 8 6.5 0 8 7.725 13 8.5 13 14.726z" fill="#CED0D1"></path><circle cx="6.5" cy="14.5" r="2.5" fill="#31373D"></circle>';
-    timeline.appendChild(pointer2);
-
-    function updatePointerAndTicks() {
-        const percentage = (player.currentTime() / duration) * 100;
-        pointer2.style.left = `calc(${percentage}% - 6.5px)`;
-
-        const ticks2 = document.querySelectorAll('.tick2');
-        ticks2.forEach((tick2, index) => {
-            if (index <= Math.floor(player.currentTime())) {
-                tick2.style.backgroundColor = 'red';
-            } else {
-                tick2.style.backgroundColor = 'white';
-            }
-        });
-    }
-
-    player.on('timeupdate', updatePointerAndTicks);
-
-
-    // Pointer drag functionality
-    pointer2.addEventListener('mousedown', (e) => {
-        e.preventDefault();
-
-        const movePointer = (e) => {
-            const rect = timeline.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const percentage = (x / rect.width) * 100;
-            const newTime = (percentage / 100) * duration;
-            player.currentTime(Math.min(Math.max(newTime, 0), duration));
-        };
-
-        const stopDragging = () => {
-            document.removeEventListener('mousemove', movePointer);
-            document.removeEventListener('mouseup', stopDragging);
-            updatePointerAndTicks();
-        };
-
-        document.addEventListener('mousemove', movePointer);
-        document.addEventListener('mouseup', stopDragging);
-    });
-
-    player.on('ended', () => {
-        pointer2.style.left = `calc(100% - 29.5px)`;
-    });
-
-    // Touch support
-    pointer2.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        startPointerDrag(e.touches[0].clientX);
-    });
-
-    function startPointerDrag(initialPosition) {
-        const movePointer = (e) => {
-            const clientX = e.clientX || e.touches[0].clientX;
-            const rect = timeline.getBoundingClientRect();
-            const x = clientX - rect.left;
-            const percentage = (x / rect.width) * 100;
-            const newTime = (percentage / 100) * duration;
-            player.currentTime(Math.min(Math.max(newTime, 0), duration));
-        };
-
-            document.removeEventListener('mousemove', movePointer);
-            document.removeEventListener('mouseup', stopDragging);
-            document.removeEventListener('touchmove', movePointer);
-            document.removeEventListener('touchend', stopDragging);
-            updatePointerAndTicks();
-        };
-
-        document.addEventListener('touchmove', movePointer);
-        document.addEventListener('touchend', stopDragging);
-    }
-}
-
-
-function addClassToTicks(startTime, endTime) {
-    for (let i = startTime; i <= endTime; i++) {
-        const tick2 = document.querySelector(`.tick2[data-time="${i}"]`);
-        if (tick2) {
-            tick2.classList.add('blocked');
-        }
-    }
-}
-function handleDragStart(event) {
-    event.dataTransfer.setData('text/plain', event.target.dataset.time);
-    event.dataTransfer.effectAllowed = 'move';
-}
-
-function handleDragOver(event) {
-    event.preventDefault();
-    event.dataTransfer.dropEffect = 'move';
-}
-
-function handleDrop(event) {
-    event.preventDefault();
-    const time = event.dataTransfer.getData('text/plain');
-    const pointer = document.querySelector('.draggable-pointer');
-    if (pointer) {
-        event.currentTarget.appendChild(pointer);
-        video.currentTime = parseInt(event.currentTarget.dataset.time, 10);
-    }}
-
-    function handleDragEnd(event) {
-        event.preventDefault();
-        const pointer = document.querySelector('.draggable-pointer');
-        if (pointer) {
-            pointer.style.left = `${event.clientX}px`;
-            pointer.style.top = `${event.clientY}px`;
-        }
-    }
-  
-  function handleDragStart(event) {
-    const dragTime = event.target.parentNode.parentNode.dataset.time;
-    console.log('Drag start:', dragTime);
-    event.dataTransfer.setData('text/plain', dragTime);
-}
-
-function handleDragOver(event) {
-    console.log('Drag over:', event.target.dataset.time);
-    event.preventDefault();
-}
-
-function handleDrop(event) {
-console.log('Drop:', event.target.dataset.time);
-event.preventDefault();
-const oldTime = event.dataTransfer.getData('text/plain');
-const newTime = event.target.dataset.time;
-moveAnnotation(oldTime, newTime);
-
-
-
-const oldTick = document.querySelector(`.tick[data-time='${oldTime}'] .icon`);
-const icon = oldTick.querySelector('.icon img');
-if(icon.alt == 'Pencil'){
-
-if (oldTick) {
-oldTick.style.display = 'none';
-removePointerForPencilIcon(oldTick);
-}
-
-const annotationIndex = annotations.findIndex(annotation => Math.floor(annotation.time) === parseInt(oldTime));
-if (annotationIndex !== -1) {
-annotations.splice(annotationIndex, 1);
-canvas.forEachObject(obj => {
-    if (obj.time === oldTime) {
-        canvas.remove(obj);
-    }
-});}
-}else{
-    if (oldTick) {
-        oldTick.style.display = 'none';
-        }
-        
-        const annotationIndex = annotations.findIndex(annotation => Math.floor(annotation.time) === parseInt(oldTime));
-        if (annotationIndex !== -1) {
-        annotations.splice(annotationIndex, 1);
-        
-        }
-}
-
-updateAnnotationsList();
-updateTimelineIcons();
-
-}
 
 
 
@@ -357,15 +114,15 @@ const playPauseImage = playPauseButton.querySelector('img');
 const audioWave = document.querySelector('.audio-wave');
 playPauseButton.addEventListener('click', () => {
     console.log('Canvas outside conditions Z index: ',document.getElementById('canvas').style.zIndex);
-if (video.paused) {
+if (player.paused) {
     console.log('inside play condition')
-    video.play();
+    player.play();
     console.log('Canvas inside if Z index: ',document.getElementById('canvas').style.zIndex);
    
     audioWave.classList.add('active');
 } else {
     console.log('inside pause condition')
-    video.pause();
+    player.pause();
     audioWave.classList.remove('active');
     console.log('Canvas inside else Z index: ',document.getElementById('canvas').style.zIndex);
 }
