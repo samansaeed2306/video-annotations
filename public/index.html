@@ -8,8 +8,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
     <link rel="manifest" href="images/site.webmanifest">
-    <link href="https://vjs.zencdn.net/8.16.1/video-js.min.css" rel="stylesheet">
-    <!-- <script src="https://vjs.zencdn.net/8.16.1/video.min.js"></script> -->
+    <link href="https://vjs.zencdn.net/8.16.1/video-js.css" rel="stylesheet" />
     <link href="https://unpkg.com/@videojs/themes@1/dist/fantasy/index.css" rel="stylesheet">
     <!-- <script src="https://vjs.zencdn.net/8.16.1/video.min.js"></script> -->
 
@@ -87,7 +86,7 @@
         <!-- <button id="freehand" onclick="drawFreehand()"><img src="icons/freehand.png" alt="Freehand"> </button> -->
 
         <div id="shapes" style="margin-left: 25%;">
-        <button id="reloadpage" onclick="reloadpage()" style="display: none;">
+        <button id="reloadpage" onclick="reloadpage()">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="80" height="80" fill="#abb0c4">
                 <path d="M18 7h-6c-1.1 0-2 .9-2 2v2H5c-1.1 0-2 .9-2 2v4c0 1.1.9 2 2 2h7c1.1 0 2-.9 2-2v-2h6c1.1 0 2-.9 2-2v-4c0-1.1-.9-2-2-2zm-6 9H5v-4h7v4zm7-6l-2-2v4l2-2zm-3.5 3H12v-2h3.5L13 9l1.5-1.5 4 4-4 4L13 14l1.5-1.5z" />
               </svg>              
@@ -325,7 +324,7 @@
   
     <div id="container-wrapper">
     <div id="video-container">
-        <!-- <video 
+        <video 
     id="video"
     class="video-js vjs-custom-theme vjs-theme-fantasy"
     controls playsinline autoplay muted
@@ -338,16 +337,7 @@
         To view this video please enable JavaScript, and consider upgrading to a
         web browser that supports HTML5 video
     </p>
-</video> -->
-<video-js id="video"
-class="video-js vjs-custom-theme vjs-theme-fantasy"
-controls playsinline autoplay muted
-preload="auto"
-width="960"
-height="540"
-data-setup="{}">
-</video-js>
-
+</video>
         <canvas id="canvas"></canvas>
         <div id="zoom-icon"></div>
        
