@@ -11,28 +11,25 @@ const canvas = new fabric.Canvas('canvas', {
     // allowTouchScrolling: true,
     });
 const apirecUrl = CONFIG.API_REC_URL;
-var player;
-
-document.addEventListener('DOMContentLoaded', () => {
+let player;
+document.addEventListener('DOMContentLoaded', function() {
     setTimeout(() => {
         const urlParams = new URLSearchParams(window.location.search);
-        const userId = urlParams.get('userid');
-        const videoUrl = urlParams.get('videourl');
+    const userId = urlParams.get('userid');
+    const videoUrl = urlParams.get('videourl');
 
-        console.log('User ID:', userId);
-        console.log('Video URL:', videoUrl);
+    
+    console.log('User ID:', userId);
+    console.log('Video URL:', videoUrl);
 
-        const videoElement = document.getElementById('video');
-
-        if (player) {
+        const video = document.getElementById('video');
+        if(player){
             player.dispose();
         }
-
-        
         if (selectedMediaType === '' || selectedMediaType === 'video') {
-            if (videoElement) {
-                player = videojs('video');
-                player.options({
+            if(video) {
+                
+                player = videojs('video', {
                     controls: true,
                     fluid: true,
                     enableSmoothSeeking: true,
@@ -40,64 +37,70 @@ document.addEventListener('DOMContentLoaded', () => {
                         nativeVideoTracks: true,
                         nativeAudioTracks: true,
                         nativeTextTracks: false,
-                        nativeControlsForTouch: false,
+                        nativeControlsForTouch: false
                     }
-                }
-                );
-                // player = videojs('video', {
-                //     controls: true,
-                //     fluid: true,
-                //     enableSmoothSeeking: true,
-                //     html5: {
-                //         nativeVideoTracks: true,
-                //         nativeAudioTracks: true,
-                //         nativeTextTracks: false,
-                //         nativeControlsForTouch: false,
-                //     }
-                // });
+                });
 
-                console.log("Player:", player);
+                
+                // player.textTracks()[0]='disabled'
+                console.log("Player:",player);
 
                 const storedVideoSrc = localStorage.getItem('selectedVideoSrc');
                 const defaultVideo = 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8';
-                const videoSrc = videoUrl || storedVideoSrc || defaultVideo;
+                const videoSrc = storedVideoSrc || defaultVideo;
+                if (videoUrl) {
+        return;
+    }
+                loadVideo(videoSrc);
 
-                if (!videoUrl) {
-                    loadVideo(videoSrc);
-                }
-
+                // Clear localStorage only after successful load
                 if (storedVideoSrc) {
-                    player.one('loadeddata', () => {
+                    player.one('loadeddata', function() {
                         localStorage.removeItem('selectedVideoSrc');
                     });
                 }
-                disableClickPlayPause(player);
-
             }
         }
     }, 1000);
+    function loadVideo(videoSrc) {
+        const isHLS = videoSrc.includes('.m3u8');
+        
+        player.src({
+            src: videoSrc,
+            type: isHLS ? 'application/x-mpegURL' : 'video/mp4'
+        });
+    
+        player.ready(function() {
+            console.log('The video has now been loaded!');
+            player.on('loadedmetadata', function() {
+                setupTimeline(video, player);
+            });
+        });
+    
+        player.on('error', function(error) {
+            console.error('Error:', player.error());
+        });
+    }     
 });
-
 function loadVideo(videoSrc) {
     const isHLS = videoSrc.includes('.m3u8');
-
+    const video = document.getElementById('video');
     player.src({
         src: videoSrc,
-        type: isHLS ? 'application/x-mpegURL' : 'video/mp4',
+        type: isHLS ? 'application/x-mpegURL' : 'video/mp4'
     });
 
-    player.ready(() => {
+    player.ready(function() {
         console.log('The video has now been loaded!');
-        player.on('loadedmetadata', () => {
-            setupTimeline(player);
+        player.on('loadedmetadata', function() {
+            setupTimeline(video, player);
         });
     });
 
-    player.on('error', () => {
+    player.on('error', function(error) {
         console.error('Error:', player.error());
     });
-}
-
+}     
 
 function setupTimeline(video, player) {
    
@@ -1521,81 +1524,42 @@ function adjustForPortrait() {
     }
 }
 
-// function recordAnnotation(time) {
-//     if(video.paused){
-//     console.log("Paused the video");
-//     const existingAnnotationIndex = annotations.findIndex(annotation => Math.floor(annotation.time) === Math.floor(time));
-//     const existingAnnotation = annotations.find(annotation => Math.floor(annotation.time) === Math.floor(time));
-//     const annotation = {
-//         time: time,
-//         content: JSON.stringify(canvas.toJSON())
-//     };
-
-//     if (existingAnnotationIndex !== -1) {
-//         annotations[existingAnnotationIndex] = annotation;
-      
-//     } else {
-//         annotations.push(annotation);
-//     }
-
-//     console.log('Annotation recorded');
-//     updateAnnotationsList();
-//     updateTimelineIcon(time);
-//     const timeline = document.getElementById('timeline');
-//     const ticks = document.querySelectorAll('.timeline .tick');
-//     const annotationTime = Math.floor(video.currentTime);
-//     ticks.forEach(tick => {
-//         if (parseInt(tick.dataset.time) === annotationTime) {
-//             tick.classList.add('has-drawing');
-//             const icon = tick.querySelector('.icon');
-//             if(icon){
-//                 icon.style.display='block';
-//             createPointerForPencilIcon(tick);
-//             }
-//         }
-//     });}
-//     else {
-//     console.log('Video is playing, not adding annotation');
-// }
-//     }
-
 function recordAnnotation(time) {
-    if (player.paused()) { // Use player.paused() to check if the video is paused
-        console.log("Paused the video");
-        checkZIndex();
-        const existingAnnotationIndex = annotations.findIndex(annotation => Math.floor(annotation.time) === Math.floor(time));
-        const annotation = {
-            time: time,
-            content: JSON.stringify(canvas.toJSON())
-        };
+    if(video.paused){
+    const existingAnnotationIndex = annotations.findIndex(annotation => Math.floor(annotation.time) === Math.floor(time));
+    const existingAnnotation = annotations.find(annotation => Math.floor(annotation.time) === Math.floor(time));
+    const annotation = {
+        time: time,
+        content: JSON.stringify(canvas.toJSON())
+    };
 
-        if (existingAnnotationIndex !== -1) {
-            annotations[existingAnnotationIndex] = annotation;
-        } else {
-            annotations.push(annotation);
-        }
-
-        console.log('Annotation recorded');
-        updateAnnotationsList();
-        updateTimelineIcon(time);
-
-        const timeline = document.getElementById('timeline');
-        const ticks = document.querySelectorAll('.timeline .tick');
-        const annotationTime = Math.floor(player.currentTime()); // Use player.currentTime() for video time
-        ticks.forEach(tick => {
-            if (parseInt(tick.dataset.time) === annotationTime) {
-                tick.classList.add('has-drawing');
-                const icon = tick.querySelector('.icon');
-                if (icon) {
-                    icon.style.display = 'block';
-                    createPointerForPencilIcon(tick);
-                }
-            }
-        });
+    if (existingAnnotationIndex !== -1) {
+        annotations[existingAnnotationIndex] = annotation;
+      
     } else {
-        console.log('Video is playing, not adding annotation');
+        annotations.push(annotation);
     }
+
+    console.log('Annotation recorded');
+    updateAnnotationsList();
+    updateTimelineIcon(time);
+    const timeline = document.getElementById('timeline');
+    const ticks = document.querySelectorAll('.timeline .tick');
+    const annotationTime = Math.floor(video.currentTime);
+    ticks.forEach(tick => {
+        if (parseInt(tick.dataset.time) === annotationTime) {
+            tick.classList.add('has-drawing');
+            const icon = tick.querySelector('.icon');
+            if(icon){
+                icon.style.display='block';
+            createPointerForPencilIcon(tick);
+            }
+        }
+    });}
+    else {
+    console.log('Video is playing, not adding annotation');
 }
+    }
     function createPointerForPencilIcon(tick) {
         if (tick.querySelector('.pointer')) {
             return; 
@@ -3312,39 +3276,4 @@ handleUrlChange();
 //     // }, 2000);
 // } else {
 //     console.error('Button with ID "reloadpage" not found.');
-// } 
-
-function disableClickPlayPause(videoPlayer) {
-    // Disable play/pause on click using Video.js configuration
-    videoPlayer.userActive(false); // Optional: Disable user activity triggers temporarily
-    videoPlayer.on('click', (e) => {
-        e.preventDefault(); // Prevent the default play/pause behavior
-        e.stopPropagation(); // Stop the event from propagating further
-    });
-
-    // Optionally disable touch interactions
-    videoPlayer.on('touchstart', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-    });
-}
-function checkZIndex() {
-    const videoElement = document.getElementById('video'); // Video.js element
-    const canvasElement = document.getElementById('canvas'); // Canvas element
-
-    // Get computed styles
-    const videoZIndex = window.getComputedStyle(videoElement).zIndex;
-    const canvasZIndex = window.getComputedStyle(canvasElement).zIndex;
-
-    console.log('Video.js element z-index:', videoZIndex);
-    console.log('Canvas element z-index:', canvasZIndex);
-
-    // Compare z-index values
-    if (parseInt(videoZIndex) > parseInt(canvasZIndex)) {
-        console.log('Video.js element is above the canvas.');
-    } else if (parseInt(videoZIndex) < parseInt(canvasZIndex)) {
-        console.log('Canvas is above the Video.js element.');
-    } else {
-        console.log('Video.js element and canvas have the same z-index.');
-    }
-}
+// }
