@@ -1291,7 +1291,7 @@ document.addEventListener('mousemove', (e) => {
             annotation = annotations.find(annotation => annotation.time === annotationStartTime);
             addClassToTicks(annotationStartTime,annotationEndTime);
             updateAnnotationDuration(annotationStartTime, annotationEndTime, annotationDuration);
-            //displayOnCanvas(annotation, annotationStartTime, annotationEndTime);
+            displayOnCanvas(annotation, annotationStartTime, annotationEndTime);
 
         }
     }
