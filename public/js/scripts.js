@@ -1235,40 +1235,6 @@ function recordAnnotation(time) {
     }
     
 
-function calculateAnnotationDuration(width) {
-const timelineWidth = timeline.offsetWidth;
-return (width / timelineWidth) * video.duration;
-}
-function calculateAnnotationWidth(duration) {
-    const timelineWidth = timeline.offsetWidth;
-    return (duration / video.duration) * timelineWidth;
-}
-
-
-function updateAnnotationDuration(startTime, endTime, duration) {
-    console.log(`Updating annotation from ${startTime} to ${endTime} with duration: ${duration} seconds`);
-
-    // Find the annotation
-    const annotation = annotations.find(a => Math.floor(a.time) === Math.floor(startTime));
-    if (annotation) {
-        annotation.duration = duration;
-        annotation.endTime = endTime;
-        annotation.startTime=startTime;
-        // Ensure the annotation is shown at all instances between start and end time
-        for (let time = startTime; time <= endTime; time += 0.01) {
-           // showAnnotations(annotation,time);
-        }
-
-
-
-        console.log('Updated annotation:', annotation);
-    } else {
-        console.log('Annotation not found for start time:', startTime);
-    }
-}
-
-
-
 function toggleClearAllIcon() {
     const clearAllIcon = document.getElementById('clear-all');
     
