@@ -1268,19 +1268,7 @@ function updateAnnotationDuration(startTime, endTime, duration) {
 }
 
 
-function removeAnnotation(time) {
-    console.log(`Removing annotation at time: ${time}`);
-    annotations = annotations.filter(annotation => annotation.time !== time);
-    console.log(`Annotations after removal:`,annotations);
-    // Remove the pencil icon from the old tick
-const removeTime = document.querySelector(`.tick[data-time='${time}'] .icon`);
-if (removeTime) {
-removeTime.style.display = 'none';
-//removePointerForPencilIcon(removeTime);
-}
-    updateAnnotationsList();
-    //updateTimelineIcons();
-}
+
 function toggleClearAllIcon() {
     const clearAllIcon = document.getElementById('clear-all');
     
