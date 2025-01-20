@@ -1433,27 +1433,27 @@ annotations.forEach((annotation, index) => {
         const annotationType = parsedContent.objects[parsedContent.objects.length - 1].type;
         console.log(annotationType);
     if(annotationType=='text'){
-            listItem.textContent = `polyline ${formatTime(annotation.time)}`;
+            listItem.textContent = `polyline`;
         }    
     else if(annotationType=='rect'){
-        listItem.textContent = `rectangle ${formatTime(annotation.time)}`;
+        listItem.textContent = `rectangle`;
     }
     else if(annotationType=='textbox'){
         const bgcolor = parsedContent.objects[parsedContent.objects.length - 1].backgroundColor;
         if(bgcolor=='#ffffcc'){
-            listItem.textContent = `note ${formatTime(annotation.time)}`;
+            listItem.textContent = `note`;
         }
         else{
-            listItem.textContent = `text box ${formatTime(annotation.time)}`;
+            listItem.textContent = `text box`;
         }
 
     }
   
     else {
-        listItem.textContent = `${annotationType} ${formatTime(annotation.time)}`;
+        listItem.textContent = `${annotationType}`;
     }
 }else{
-    listItem.textContent = `${annotation.type} ${formatTime(annotation.time)}`;
+    listItem.textContent = `${annotation.type}`;
 }
 
     
@@ -1535,6 +1535,7 @@ saveButton.addEventListener('click', function() {
                 
                 updateAnnotationsList();
                 updateTimelineIcons();
+                renderAnnotationsForCurrentTime();
             });
 const buttonsContainer = document.createElement('div');
 buttonsContainer.className = 'annotation-buttons';
@@ -1607,7 +1608,7 @@ function confirmClearAll() {
 
     console.log('All annotations have been cleared.');
     closeModal();
-    renderAnnotationsForCurrentTime(video.currentTime);
+    renderAnnotationsForCurrentTime();
 
   }
 const clearAllIcon = document.getElementById('clear-all');
@@ -1618,7 +1619,7 @@ clearAllIcon.addEventListener('click', function() {
     updateTimelineIcons();
 
     console.log('All annotations have been cleared.');
-    renderAnnotationsForCurrentTime(video.currentTime);
+    renderAnnotationsForCurrentTime();
 });
 // function showAnnotationsAtCurrentTime(currentTime) {
 //     console.log("Show Annotations at Current time");
@@ -1631,7 +1632,42 @@ clearAllIcon.addEventListener('click', function() {
 //         }
 //     });
 // }
-function renderAnnotationsForCurrentTime(currentTime) {
+function renderAnnotationsForCurrentTime() {
+    console.log("Rendering annotations");
+
+    // Maintain a set of annotation IDs currently rendered on the canvas
+    let renderedAnnotationIds = new Set();
+
+    // Filter annotations that need to be rendered
+    let relevantAnnotations = annotations.filter(annotation => 
+        annotation.type !== 'audio' 
+    );
+
+    // Collect objects to render
+    let allObjectsToRender = [];
+
+    relevantAnnotations.forEach((annotation, index) => {
+        console.log(`Processing Annotation ${index + 1} at time ${annotation.time}`);
+        
+        // Parse and cache the annotation content if not already parsed
+        annotation.parsedContent = annotation.parsedContent || JSON.parse(annotation.content);
+
+        annotation.parsedContent.objects.forEach(obj => {
+            allObjectsToRender.push(obj);
+            renderedAnnotationIds.add(annotation.id); // Track rendered annotation IDs
+        });
+    });
+
+    // Clear canvas if necessary and render new objects
+    fabric.util.enlivenObjects(allObjectsToRender, function(enlivenedObjects) {
+        canvas.clear(); // Clear canvas before adding objects
+        enlivenedObjects.forEach(object => canvas.add(object)); // Add all objects to canvas
+        canvas.renderAll(); // Render all objects
+        console.log("Finished rendering annotations.");
+    });
+}
+
+function renderAnnotationsForCurrentTime2(currentTime) {
     console.log("Rendering annotations for time:", currentTime);
 
     // Clear the canvas initially, but we will re-add all annotations that are supposed to remain visible
