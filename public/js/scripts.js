@@ -1211,19 +1211,19 @@ function adjustForPortrait() {
 
 function recordAnnotation(time) {
     if(video.paused){
-    const existingAnnotationIndex = annotations.findIndex(annotation => Math.floor(annotation.time) === Math.floor(time));
-    const existingAnnotation = annotations.find(annotation => Math.floor(annotation.time) === Math.floor(time));
+    // const existingAnnotationIndex = annotations.findIndex(annotation => Math.floor(annotation.time) === Math.floor(time));
+    // const existingAnnotation = annotations.find(annotation => Math.floor(annotation.time) === Math.floor(time));
     const annotation = {
-        time: time,
+        //time: time,
         content: JSON.stringify(canvas.toJSON())
     };
 
-    if (existingAnnotationIndex !== -1) {
-        annotations[existingAnnotationIndex] = annotation;
+    // if (existingAnnotationIndex !== -1) {
+    //     annotations[existingAnnotationIndex] = annotation;
       
-    } else {
+    // } else {
         annotations.push(annotation);
-    }
+    // }
 
     console.log('Annotation recorded');
     updateAnnotationsList();
