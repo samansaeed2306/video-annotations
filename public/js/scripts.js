@@ -128,69 +128,6 @@ if (player.paused) {
 }
 });
 
-
-
-function formatTime(seconds) {
-    const minutes = Math.floor(seconds / 60);
-    const secs = Math.floor(seconds % 60);
-    return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
-}
-
-// function view() {
-   
-//     const buttons = document.querySelectorAll('button');
-//     buttons.forEach(button => {
-//         button.disabled = true;
-//     });
-
-//     const playIcon = document.getElementById('play-icon');
-//     const pauseIcon = document.getElementById('pause-icon');
-    
-//     video.currentTime=0;
-//     video.play();
-
-//     playIcon.style.display = 'none';
-//     pauseIcon.style.display = 'block';
-
-
-//     video.onended = function() {
-//         playIcon.style.display = 'block';
-//         pauseIcon.style.display = 'none';
-//     };
-
-//     const toolsDiv = document.querySelector('.tools');
-//     toolsDiv.style.display = 'none'; 
-
-//     const exitButton = document.createElement('button');
-//     exitButton.id = 'exit-view-mode';
-//     exitButton.innerHTML = 'Exit View Mode';
-//     exitButton.style.position = 'absolute';
-//     exitButton.style.top = '10px';
-//     exitButton.style.left = '10px';
-//     exitButton.style.zIndex = '1000';  // Make sure it stays above other elements
-
-//     // Add exit button to the body
-//     document.body.appendChild(exitButton);
-
-//     exitButton.addEventListener('click', () => {
-//         // Re-enable all the buttons
-//         document.querySelectorAll('button').forEach(button => {
-//             button.disabled = false;
-//         });
-//         // Remove the exit button
-//        // document.body.removeChild(exitButton);
-//         // Pause the video
-//         video.pause();
-
-//         // Show the tools div again
-//         toolsDiv.style.display = 'block';
-
-        
-//     });
-   
-
-// }
-
 function view() {
     const buttons = document.querySelectorAll('button');
     buttons.forEach(button => {
@@ -1083,46 +1020,15 @@ video.addEventListener('loadedmetadata', () => {
     if (videoAspectRatio < 1) {
                 console.log("This is a portrait video.");
                 adjustForPortrait();
-                // const lowerCanvas = document.getElementById('canvas'); 
-                // const upperCanvas = document.querySelector('.upper-canvas'); 
-                // const canvasContainer = document.querySelector('.canvas-container'); 
-
-                // if (upperCanvas) {
-                //     upperCanvas.style.height = '450px';
-                //     upperCanvas.style.top = '19px';
-                //     console.log("DONE")
-                // } else {
-                //     console.error("upperCanvas element not found");
-                // }
-
-                // if (lowerCanvas) {
-                //     lowerCanvas.style.height = '503px';
-                //     console.log("DONE LOWER")
-                // } else {
-                //     console.error("lowerCanvas element not found");
-                // }
-
-                // if (canvasContainer) {
-                //     canvasContainer.style.height = '503px';
-                //     console.log("DONE CONTAINER")
-                // } else {
-                //     console.error("canvasContainer element not found");
-                // }
-                //     zoomOut2x();
+               
     } else if (videoAspectRatio > 1) {
         console.log("This is a landscape video.");
-        // fabricCanvas.width = video.clientWidth;
-        // fabricCanvas.height = video.clientHeight;
-        // canvas.setWidth(video.clientWidth);
-        // canvas.setHeight(video.clientHeight);
+     
         toggleZoom();
         
     } else {
         console.log("This is a square video.");
-        // fabricCanvas.width = video.clientWidth;
-        // fabricCanvas.height = video.clientHeight;
-        // canvas.setWidth(video.clientWidth);
-        // canvas.setHeight(video.clientHeight);
+   
         toggleZoom();
     }}
     console.log('Video Aspect Ratio Recorded: ',videoAspectRatio);
@@ -1137,7 +1043,7 @@ video.addEventListener('loadedmetadata', () => {
 
 video.addEventListener('pause', () => {
     isInteracting = false;
-    //canvas.isDrawingMode = true; 
+  
     fabricCanvas.style.pointerEvents = 'none'; 
 });
 
