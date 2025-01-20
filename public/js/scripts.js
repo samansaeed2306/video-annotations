@@ -646,7 +646,7 @@ function useEraser() {
             const currentTime = video.currentTime;
             objectsToRemove.forEach(obj => {
                 canvas.remove(obj);
-                updateTimelineIcons();
+                //updateTimelineIcons();
             });
            
             canvas.renderAll();
@@ -1211,23 +1211,23 @@ function adjustForPortrait() {
 
 function recordAnnotation(time) {
     if(video.paused){
-    // const existingAnnotationIndex = annotations.findIndex(annotation => Math.floor(annotation.time) === Math.floor(time));
-    // const existingAnnotation = annotations.find(annotation => Math.floor(annotation.time) === Math.floor(time));
+    const existingAnnotationIndex = annotations.findIndex(annotation => Math.floor(annotation.time) === Math.floor(time));
+    const existingAnnotation = annotations.find(annotation => Math.floor(annotation.time) === Math.floor(time));
     const annotation = {
-        //time: time,
+        time: time,
         content: JSON.stringify(canvas.toJSON())
     };
 
-    // if (existingAnnotationIndex !== -1) {
-    //     annotations[existingAnnotationIndex] = annotation;
+    if (existingAnnotationIndex !== -1) {
+        annotations[existingAnnotationIndex] = annotation;
       
-    // } else {
+    } else {
         annotations.push(annotation);
-    // }
+    }
 
     console.log('Annotation recorded');
     updateAnnotationsList();
-    updateTimelineIcon(time);
+    //updateTimelineIcon(time);
     const timeline = document.getElementById('timeline');
     const ticks = document.querySelectorAll('.timeline .tick');
     const annotationTime = Math.floor(video.currentTime);
@@ -1400,7 +1400,7 @@ removeTime.style.display = 'none';
 removePointerForPencilIcon(removeTime);
 }
     updateAnnotationsList();
-    updateTimelineIcons();
+    //updateTimelineIcons();
 }
 function toggleClearAllIcon() {
     const clearAllIcon = document.getElementById('clear-all');
@@ -1534,7 +1534,7 @@ saveButton.addEventListener('click', function() {
                 }
                 
                 updateAnnotationsList();
-                updateTimelineIcons();
+                //updateTimelineIcons();
                 renderAnnotationsForCurrentTime();
             });
 const buttonsContainer = document.createElement('div');
@@ -1604,7 +1604,7 @@ function confirmClearAll() {
     annotations = [];
     
     updateAnnotationsList();
-    updateTimelineIcons();
+    //updateTimelineIcons();
 
     console.log('All annotations have been cleared.');
     closeModal();
@@ -1616,7 +1616,7 @@ clearAllIcon.addEventListener('click', function() {
     annotations = [];
     
     updateAnnotationsList();
-    updateTimelineIcons();
+    //updateTimelineIcons();
 
     console.log('All annotations have been cleared.');
     renderAnnotationsForCurrentTime();
@@ -1704,207 +1704,7 @@ function renderAnnotationsForCurrentTime2(currentTime) {
         console.log("Finished rendering annotations.");
     });
 }
-//Annotation at 3 second will remain till 5 seconds by this
-// function renderAnnotationsForCurrentTime(currentTime) {
-//     console.log("Rendering annotations for time:", currentTime);
 
-//     // Clear the canvas initially
-//     canvas.clear();
-
-//     // Array to hold all annotations that need to be rendered (including those in the past)
-//     let annotationsToRender = [];
-
-//     // First loop to collect annotations that should persist (those before or at the current time)
-//     annotations.forEach((annotation) => {
-//         if (annotation.time <= currentTime && annotation.type !== 'audio') {
-//             annotationsToRender.push(annotation);  // Collect annotations to render
-//         }
-//     });
-
-//     // Now we sort annotations by time to ensure proper rendering order
-//     annotationsToRender.sort((a, b) => a.time - b.time);
-
-//     // Loop through the sorted annotations and render them in sequence
-//     annotationsToRender.forEach((annotation, index) => {
-//         canvas.loadFromJSON(annotation.content, () => {
-//             canvas.renderAll();  // Render each annotation on the canvas in order
-//             console.log(`Rendered annotation ${index + 1} at time ${annotation.time}`);
-//         });
-//     });
-
-//     console.log("Finished rendering annotations.");
-// }
-//annotation at 3 seconds will remove existing annotation at 5 seconds 
-// function renderAnnotationsForCurrentTime(currentTime) {
-//     console.log("Rendering annotations for time:", currentTime);
-    
-//     // Clear the canvas initially
-//     canvas.clear();
-    
-//     annotations.forEach((annotation, index) => {
-//         if (annotation.time <= currentTime && annotation.type !== 'audio') {
-//             console.log(`Rendering Annotation ${index + 1} as its time ${annotation.time} <= current time ${currentTime}`);
-
-//             // Load annotation content onto the canvas only if it matches the current time or after
-//             canvas.loadFromJSON(annotation.content, () => {
-//                 canvas.renderAll(); // Render the canvas after loading
-//             });
-//         } else {
-//             console.log(`Skipping Annotation ${index + 1} as its time ${annotation.time} is after the current time ${currentTime}`);
-//         }
-//     });
-// }
-
-// function removeAnnotationsBeforeTime() {
-//     // Sort annotations by time in chronological order
-//     annotations.sort((a, b) => a.time - b.time);
-
-//     // Iterate over the annotations array
-//     annotations.forEach((currentAnnotation, currentIndex) => {
-//         console.log(`Processing Annotation ${currentIndex + 1} at time ${currentAnnotation.time}`);
-
-//         // Clear the canvas for the current annotation
-//         canvas.clear();
-
-//         // // Iterate through annotations up to the current annotation's time
-//         // annotations.forEach((annotation, index) => {
-//         //     if (annotation.time <= currentAnnotation.time && annotation.type !== 'audio') {
-//         //         console.log(`Rendering Annotation ${index + 1} as its time ${annotation.time} <= current time ${currentAnnotation.time}`);
-
-//         //         // Load annotation content onto the canvas using loadFromJSON
-//         //         canvas.loadFromJSON(annotation.content, () => {
-//         //             canvas.renderAll(); // Render the canvas after loading
-//         //         });
-//         //     } else {
-//         //         console.log(`Skipping Annotation ${index + 1} as its time ${annotation.time} is after the current time ${currentAnnotation.time}`);
-//         //     }
-//         // });
-
-//         // Optional: Save the state after rendering the annotations up to this point
-//         saveState();
-//     });
-// }
-
-// function showAnnotationsAtCurrentTime(currentTime) {
-    // console.log("Show Annotations at Current time");
-    // canvas.clear();
-    // annotations.forEach((annotation, index) => {
-    //     console.log(`Annotation ${index + 1}:`);
-    //     console.log(annotation.content);
-    //     console.log("Annotation's time:",annotation.time);
-    //     console.log("Current time:",currentTime);
-    // });
-    // annotations.forEach(annotation => {
-    //     // Check if the annotation's time matches the current time and it's not audio
-    //     if (Math.abs(annotation.time - currentTime) < 0.5 && annotation.type != 'audio') {
-    //         console.log("Found an annotation");
-
-    //         // Parse the annotation content and get all objects
-    //         let objects = JSON.parse(annotation.content).objects;
-
-    //         // Loop through each object and add it to the canvas
-    //         objects.forEach(obj => {
-    //             // Enliven each object (to convert it from plain JSON to a fabric.js object)
-    //             fabric.util.enlivenObjects([obj], function (enlivenedObjects) {
-    //                 enlivenedObjects.forEach(enlivenedObj => {
-    //                     canvas.add(enlivenedObj); // Add the enlivened object to the canvas
-    //                 });
-    //                 canvas.renderAll(); // Render the canvas after adding all objects
-    //             });
-    //         });
-    //     }
-    //     if (Math.abs(annotation.time - currentTime) <= 0.05 && annotation.type != 'audio') {
-    //         console.log("Found an annotation 2");
-
-    //         // Parse the annotation content and get all objects
-    //         let objects = JSON.parse(annotation.content).objects;
-
-    //         // Loop through each object and add it to the canvas
-    //         objects.forEach(obj => {
-    //             // Enliven each object (to convert it from plain JSON to a fabric.js object)
-    //             fabric.util.enlivenObjects([obj], function (enlivenedObjects) {
-    //                 enlivenedObjects.forEach(enlivenedObj => {
-    //                     canvas.add(enlivenedObj); // Add the enlivened object to the canvas
-    //                 });
-    //                 canvas.renderAll(); // Render the canvas after adding all objects
-    //             });
-    //         });
-    //     }
-    // });
-// }
-
-
-function updateTimelineIcon(time) {
-    const timeline = document.getElementById('timeline');
-    const ticks = timeline.getElementsByClassName('tick');
-    for (let tick of ticks) {
-        if (parseInt(tick.dataset.time) === Math.floor(time)) {
-            tick.classList.add('has-drawing');
-            // createPointerForPencilIcon(icon);
-        }
-    }
-}
-
-function updateTimelineIcons() {
-const timeline = document.getElementById('timeline');
-const ticks = timeline.getElementsByClassName('tick');
-for (let tick of ticks) {
-    
-    tick.classList.remove('has-drawing');
-    const icon = tick.querySelector('.icon');
-    const audioElement = tick.querySelector('.audio-element');
-    console.log('Inside updateTimelineIcons function')
-    removePointerForPencilIcon(tick);
-    if (icon) {
-        icon.style.display = 'none';
-        
-        
-    }if (audioElement) {
-        audioElement.remove();
-    }
-}
-annotations.forEach(annotation => {
-    const time = Math.floor(annotation.time);
-    const tick = timeline.querySelector(`.tick[data-time='${time}']`);
-    if(annotation.type=='audio'){
-        console.log('Inside audio condition timeline icons')
-        if (tick) {
-            tick.classList.add('has-audio');
-            const icon = tick.querySelector('.icon');
-            if (icon) {
-                icon.style.display = 'block';
-                icon.querySelector('img').src = 'icons/mic.png'; 
-                icon.querySelector('img').alt = 'Mic';
-            }
-                const audioElement = document.createElement('audio');
-                audioElement.className = 'audio-element';
-                audioElement.controls = true;
-                audioElement.src = `data:audio/webm;base64,${annotation.content}`;
-                tick.appendChild(audioElement);
-
-                const timelineWidth = timeline.offsetWidth;
-                const startTimePercentage = (annotation.startTime/ video.duration)* 100;
-                const durationPercentage = (annotation.endTime - annotation.startTime) / video.duration * 100;
-               // audioElement.style.width = `${durationPercentage}%`;
-                audioElement.style.left = `${startTimePercentage}%`;
-                //audioElement.style.width = `${calculateWidthFromDuration(annotation.endTime - annotation.startTime)}px`;
-        }
-    }else{
-        if (tick) {
-            tick.classList.add('has-drawing');
-            const icon = tick.querySelector('.icon');
-            if (icon) {
-                icon.style.display = 'block';
-                console.log('Inside updateTimelineIcons function for creating pencil icon')
-                createPointerForPencilIcon(icon);
-            }
-        }
-    }
-    
-});
-
-
-}
 
 document.getElementById('microphone-icon').addEventListener('click', toggleMicrophone);
 
@@ -1976,7 +1776,7 @@ async function saveRecording() {
     };
     annotations.push(annotation);
      updateAnnotationsList();
-     updateTimelineIcons();
+     //updateTimelineIcons();
     console.log('Recording saved', annotation);
   
 }
