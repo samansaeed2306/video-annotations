@@ -1267,21 +1267,6 @@ function updateAnnotationDuration(startTime, endTime, duration) {
     }
 }
 
-function displayOnCanvas(annotation, startTime, endTime) {
-    video.addEventListener('timeupdate', () => {
-        const currentTime = video.currentTime;
-        if (currentTime >= startTime && currentTime <= endTime) {
-            canvas.clear();
-            canvas.loadFromJSON(annotation.content, () => {
-                canvas.renderAll();
-            });
-        } else {
-           
-           // canvas.clear();
-        }
-    });
-}
-
 function handleTimeUpdate() {
 const currentTime = video.currentTime;
 const canvas = document.getElementById('canvas');
