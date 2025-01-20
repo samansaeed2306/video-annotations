@@ -1402,31 +1402,7 @@ listItem.addEventListener('click', () => {
 }
 
 
-function loadAnnotation(index) {
-    const annotation = annotations[index];
-    video.currentTime = annotation.time;
-    canvas.loadFromJSON(annotation.content, () => {
-        canvas.renderAll();
-    });
-}
-function showAnnotations(annotation,time) {
-    console.log('I am inside showAnnotations function');
-    canvas.clear();
 
-    
-        console.log('Start time: ',annotation.startTime);
-        console.log('end time: ',annotation.endTime);
-        // Load the annotation content to the canvas
-        console.log('I am inside showAnnotations function if condition');
-        canvas.loadFromJSON(annotation.content, () => {
-            console.log('Annotation content:', annotation.content);
-
-            console.log('Loading content')
-            canvas.renderAll();
-            console.log('Loaded')
-        });
-  
-}
 function confirmClearAll() {
     if (confirm("Are you sure you want to clear all annotations?")) {
       clearAll();
@@ -1454,17 +1430,7 @@ clearAllIcon.addEventListener('click', function() {
     console.log('All annotations have been cleared.');
     renderAnnotationsForCurrentTime();
 });
-// function showAnnotationsAtCurrentTime(currentTime) {
-//     console.log("Show Annotations at Current time");
-//     canvas.clear();
-//     annotations.forEach(annotation => {
-//         if (Math.abs(annotation.time - currentTime) < 0.5 && annotation.type!='audio') { 
-//             canvas.loadFromJSON(annotation.content, () => {
-//                 canvas.renderAll();
-//             });
-//         }
-//     });
-// }
+
 function renderAnnotationsForCurrentTime() {
     console.log("Rendering annotations");
 
