@@ -1267,33 +1267,6 @@ function updateAnnotationDuration(startTime, endTime, duration) {
     }
 }
 
-function handleTimeUpdate() {
-const currentTime = video.currentTime;
-const canvas = document.getElementById('canvas');
-if (canvas) {
-    const ctx = canvas.getContext('2d');
-   
-    const annotation = annotations.find(a => a.time <= currentTime);
-    
-if (annotation) {
-    console.log(`Found annotation`);}
-    
-   
-
-    if (currentTime >= annotation.startTime && currentTime <= annotation.endTime) {
-        
-        console.log(`Displaying annotation: ${annotation.startTime}`);
-
-    } else {
-        
-        console.log(`Removing annotation: ${annotation.id}`);
-    
-    }
-} else {
-    console.error('Canvas element not found');
-}
-}
-
 
 function removeAnnotation(time) {
     console.log(`Removing annotation at time: ${time}`);
