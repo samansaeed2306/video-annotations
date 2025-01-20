@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function() {
         player.ready(function() {
             console.log('The video has now been loaded!');
             player.on('loadedmetadata', function() {
-                setupTimeline(video, player);
+                //setupTimeline(video, player);
             });
         });
     
