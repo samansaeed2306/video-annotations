@@ -1228,92 +1228,13 @@ function recordAnnotation(time) {
     console.log('Annotation recorded');
     updateAnnotationsList();
     //updateTimelineIcon(time);
-    const timeline = document.getElementById('timeline');
-    const ticks = document.querySelectorAll('.timeline .tick');
-    const annotationTime = Math.floor(video.currentTime);
-    ticks.forEach(tick => {
-        if (parseInt(tick.dataset.time) === annotationTime) {
-            tick.classList.add('has-drawing');
-            const icon = tick.querySelector('.icon');
-            if(icon){
-                icon.style.display='block';
-            createPointerForPencilIcon(tick);
-            }
-        }
-    });}
+    }
     else {
     console.log('Video is playing, not adding annotation');
 }
     }
-    function createPointerForPencilIcon(tick) {
-        if (tick.querySelector('.pointer')) {
-            return; 
-        }
-    const pointer = document.createElement('div');
-    pointer.classList.add('pointer');
-    pointer.style.left = '50%'; 
-    pointer.style.top = '-20px'; 
-    const colors = ['#FF5733', '#33FF57', '#5733FF', '#FFFF33', '#FF33FF', '#33FFFF'];
+    
 
-
-    const randomColor = selectedColor;
-    pointer.style.backgroundColor = randomColor;
-    tick.appendChild(pointer);
-
-
-
-let isDragging = false;
-let startX;
-let startWidth;
-
-pointer.addEventListener('mousedown', (e) => {
-    isDragging = true;
-    startX = e.pageX;
-    startWidth = pointer.offsetWidth;
-    pointer.style.cursor = 'ew-resize'; 
-
-    const tick = pointer.closest('.tick');
-    if (tick) {
-        annotationStartTime = parseFloat(tick.dataset.time);
-        console.log('Annotation found at:', annotationStartTime);}
-});
-
-document.addEventListener('mousemove', (e) => {
-    if (isDragging) {
-        let newWidth = startWidth + (e.pageX - startX);
-        if (newWidth > 0) {
-            pointer.style.width = newWidth + 'px';
-
-            
-            let annotationDuration = calculateAnnotationDuration(newWidth);
-            let annotationEndTime = annotationStartTime + annotationDuration;
-            console.log('Annotation end time:', annotationEndTime);
-            annotation = annotations.find(annotation => annotation.time === annotationStartTime);
-            addClassToTicks(annotationStartTime,annotationEndTime);
-            updateAnnotationDuration(annotationStartTime, annotationEndTime, annotationDuration);
-            displayOnCanvas(annotation, annotationStartTime, annotationEndTime);
-
-        }
-    }
-});
-
-document.addEventListener('mouseup', () => {
-    if (isDragging) {
-        isDragging = false;
-        pointer.style.cursor = 'ew-resize'; 
-    }
-});
-}
-function removePointerForPencilIcon(tick) {
-console.log("Inside remove pointer function")
-
-const pointer = tick.querySelector('.pointer');
-
-if (pointer && pointer.parentNode === tick) { 
-tick.removeChild(pointer); 
-console.log("Removed pointer")
-}
-}
 function calculateAnnotationDuration(width) {
 const timelineWidth = timeline.offsetWidth;
 return (width / timelineWidth) * video.duration;
@@ -1397,7 +1318,7 @@ function removeAnnotation(time) {
 const removeTime = document.querySelector(`.tick[data-time='${time}'] .icon`);
 if (removeTime) {
 removeTime.style.display = 'none';
-removePointerForPencilIcon(removeTime);
+//removePointerForPencilIcon(removeTime);
 }
     updateAnnotationsList();
     //updateTimelineIcons();
@@ -1526,7 +1447,7 @@ saveButton.addEventListener('click', function() {
                     
                     if (icon) {
                         icon.remove();
-                        removePointerForPencilIcon(tick)
+                        //removePointerForPencilIcon(tick)
                     }
                     
                 
