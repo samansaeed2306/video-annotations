@@ -1152,7 +1152,7 @@ video.addEventListener('play', () => {
 video.addEventListener('timeupdate', () => {
     isInteracting = false;
     // removeAnnotationsBeforeTime();
-     renderAnnotationsForCurrentTime(video.currentTime);
+     //renderAnnotationsForCurrentTime(video.currentTime);
     // showAnnotationsAtCurrentTime(video.currentTime);
     if (!video.paused) { // Check if the video is playing
         playAudioAnnotationIfExists(video.currentTime);
