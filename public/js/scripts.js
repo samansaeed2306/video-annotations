@@ -1115,31 +1115,48 @@ function adjustForPortrait() {
     }
 }
 
-function recordAnnotation(time) {
-    if(video.paused){
-    const existingAnnotationIndex = annotations.findIndex(annotation => Math.floor(annotation.time) === Math.floor(time));
-    const existingAnnotation = annotations.find(annotation => Math.floor(annotation.time) === Math.floor(time));
-    const annotation = {
-        time: time,
-        content: JSON.stringify(canvas.toJSON())
-    };
+// function recordAnnotation(time) {
+//     if(video.paused){
+//     const existingAnnotationIndex = annotations.findIndex(annotation => Math.floor(annotation.time) === Math.floor(time));
+//     const existingAnnotation = annotations.find(annotation => Math.floor(annotation.time) === Math.floor(time));
+//     const annotation = {
+//         time: time,
+//         content: JSON.stringify(canvas.toJSON())
+//     };
 
-    if (existingAnnotationIndex !== -1) {
-        annotations[existingAnnotationIndex] = annotation;
+//     if (existingAnnotationIndex !== -1) {
+//         annotations[existingAnnotationIndex] = annotation;
       
-    } else {
-        annotations.push(annotation);
-    }
+//     } else {
+//         annotations.push(annotation);
+//     }
 
-    console.log('Annotation recorded');
-    updateAnnotationsList();
-    //updateTimelineIcon(time);
-    }
-    else {
-    console.log('Video is playing, not adding annotation');
-}
-    }
+//     console.log('Annotation recorded');
+//     updateAnnotationsList();
+//     //updateTimelineIcon(time);
+//     }
+//     else {
+//     console.log('Video is playing, not adding annotation');
+// }
+//     }
     
+function recordAnnotation(time) {
+    if (video.paused) {
+        const annotation = {
+            time: time,
+            content: JSON.stringify(canvas.toJSON())
+        };
+
+        // Add the new annotation without checking for duplicates
+        annotations.push(annotation);
+
+        console.log('Annotation recorded:', annotation);
+        updateAnnotationsList();
+        // updateTimelineIcon(time);
+    } else {
+        console.log('Video is playing, not adding annotation');
+    }
+}
 
 function toggleClearAllIcon() {
     const clearAllIcon = document.getElementById('clear-all');
@@ -1150,163 +1167,279 @@ function toggleClearAllIcon() {
         clearAllIcon.style.display = 'none'; 
     }
 }
-function updateAnnotationsList() {
-annotations = Array.from(new Set(annotations.map(a => a.time))).map(time => annotations.find(a => a.time === time));
+// function updateAnnotationsList() {
+// annotations = Array.from(new Set(annotations.map(a => a.time))).map(time => annotations.find(a => a.time === time));
 
-annotations = annotations.filter(annotation => annotation.content && annotation.content !== '{"version":"4.5.0","objects":[]}');
+// annotations = annotations.filter(annotation => annotation.content && annotation.content !== '{"version":"4.5.0","objects":[]}');
 
-console.log('Inside list update:', annotations)
-const annotationsList = document.getElementById('annotations-list');
-annotationsList.innerHTML = '';
-annotations.forEach((annotation, index) => {
-    console.log('Processing annotation:', annotation);
-    if (annotation.content && annotation.content !== '{"version":"4.5.0","objects":[]}') {
-    console.log('Appending annotation to list:', annotation);
-    const listItem = document.createElement('li');
-    listItem.className = 'annotation-item';
+// console.log('Inside list update:', annotations)
+// const annotationsList = document.getElementById('annotations-list');
+// annotationsList.innerHTML = '';
+// annotations.forEach((annotation, index) => {
+//     console.log('Processing annotation:', annotation);
+//     if (annotation.content && annotation.content !== '{"version":"4.5.0","objects":[]}') {
+//     console.log('Appending annotation to list:', annotation);
+//     const listItem = document.createElement('li');
+//     listItem.className = 'annotation-item';
     
 
    
-    if(annotation.type!= 'audio'){
-        const parsedContent = JSON.parse(annotation.content);
-        const annotationType = parsedContent.objects[parsedContent.objects.length - 1].type;
-        console.log(annotationType);
-    if(annotationType=='text'){
-            listItem.textContent = `polyline`;
-        }    
-    else if(annotationType=='rect'){
-        listItem.textContent = `rectangle`;
-    }
-    else if(annotationType=='textbox'){
-        const bgcolor = parsedContent.objects[parsedContent.objects.length - 1].backgroundColor;
-        if(bgcolor=='#ffffcc'){
-            listItem.textContent = `note`;
-        }
-        else{
-            listItem.textContent = `text box`;
-        }
+//     if(annotation.type!= 'audio'){
+//         const parsedContent = JSON.parse(annotation.content);
+//         const annotationType = parsedContent.objects[parsedContent.objects.length - 1].type;
+//         console.log(annotationType);
+//     if(annotationType=='text'){
+//             listItem.textContent = `polyline`;
+//         }    
+//     else if(annotationType=='rect'){
+//         listItem.textContent = `rectangle`;
+//     }
+//     else if(annotationType=='textbox'){
+//         const bgcolor = parsedContent.objects[parsedContent.objects.length - 1].backgroundColor;
+//         if(bgcolor=='#ffffcc'){
+//             listItem.textContent = `note`;
+//         }
+//         else{
+//             listItem.textContent = `text box`;
+//         }
 
-    }
+//     }
   
-    else {
-        listItem.textContent = `${annotationType}`;
-    }
-}else{
-    listItem.textContent = `${annotation.type}`;
-}
+//     else {
+//         listItem.textContent = `${annotationType}`;
+//     }
+// }else{
+//     listItem.textContent = `${annotation.type}`;
+// }
 
     
-    const commentInput = document.createElement('input');
-    commentInput.type = 'text';
-    commentInput.placeholder = 'Add comment';
-    commentInput.value = annotation.comment || '';
-    commentInput.style.display = 'none'; 
-    commentInput.addEventListener('input', function() {
-        annotations[index].comment = commentInput.value;
-    });
-    const cancelButton = document.createElement('button');
-cancelButton.textContent = 'Cancel';
-cancelButton.style.display = 'none'; 
-cancelButton.addEventListener('click', function() {
-    commentInput.style.display = 'none';
-    cancelButton.style.display = 'none';
-    saveButton.style.display = 'none';
-    buttonsContainer.style.display='none';
-    listItem.removeChild(buttonsContainer);
-});
+//     const commentInput = document.createElement('input');
+//     commentInput.type = 'text';
+//     commentInput.placeholder = 'Add comment';
+//     commentInput.value = annotation.comment || '';
+//     commentInput.style.display = 'none'; 
+//     commentInput.addEventListener('input', function() {
+//         annotations[index].comment = commentInput.value;
+//     });
+//     const cancelButton = document.createElement('button');
+// cancelButton.textContent = 'Cancel';
+// cancelButton.style.display = 'none'; 
+// cancelButton.addEventListener('click', function() {
+//     commentInput.style.display = 'none';
+//     cancelButton.style.display = 'none';
+//     saveButton.style.display = 'none';
+//     buttonsContainer.style.display='none';
+//     listItem.removeChild(buttonsContainer);
+// });
 
-const saveButton = document.createElement('button');
-saveButton.textContent = 'Save';
-saveButton.style.display = 'none'; 
-saveButton.addEventListener('click', function() {
-    annotations[index].comment = commentInput.value;
-    commentInput.style.display = 'none';
-    cancelButton.style.display = 'none';
-    saveButton.style.display = 'none';
-    buttonsContainer.style.display='none';
-    listItem.removeChild(buttonsContainer);
-});
+// const saveButton = document.createElement('button');
+// saveButton.textContent = 'Save';
+// saveButton.style.display = 'none'; 
+// saveButton.addEventListener('click', function() {
+//     annotations[index].comment = commentInput.value;
+//     commentInput.style.display = 'none';
+//     cancelButton.style.display = 'none';
+//     saveButton.style.display = 'none';
+//     buttonsContainer.style.display='none';
+//     listItem.removeChild(buttonsContainer);
+// });
 
-            const deleteIcon = document.createElement('img');
-            deleteIcon.src = 'icons/delete2.png'; // Path to your delete icon
-            deleteIcon.alt = 'Delete';
-            deleteIcon.style.width = '14px'; // Set the width as needed
-            deleteIcon.style.height = '14px'; // Set the height as needed
-            deleteIcon.style.backgroundColor='none';
-            deleteIcon.style.marginLeft= '10px'
+//             const deleteIcon = document.createElement('img');
+//             deleteIcon.src = 'icons/delete2.png'; // Path to your delete icon
+//             deleteIcon.alt = 'Delete';
+//             deleteIcon.style.width = '14px'; // Set the width as needed
+//             deleteIcon.style.height = '14px'; // Set the height as needed
+//             deleteIcon.style.backgroundColor='none';
+//             deleteIcon.style.marginLeft= '10px'
            
            
 
-            deleteIcon.addEventListener('click', function() {
+//             deleteIcon.addEventListener('click', function() {
                 
-                annotations.splice(index, 1);
+//                 annotations.splice(index, 1);
                
-                const tick = document.querySelector(`.tick[data-time="${annotation.time}"]`);
-                const tick3= document.querySelector(`.tick[data-time="${annotation.time}"] .has-audio`);
-                if(tick3){
-                    tick3.classList.remove('has-audio');
-                    const icon = tick3.querySelector('.icon');
-                    const audioElement = tick3.querySelector('.audio-element');
+//                 const tick = document.querySelector(`.tick[data-time="${annotation.time}"]`);
+//                 const tick3= document.querySelector(`.tick[data-time="${annotation.time}"] .has-audio`);
+//                 if(tick3){
+//                     tick3.classList.remove('has-audio');
+//                     const icon = tick3.querySelector('.icon');
+//                     const audioElement = tick3.querySelector('.audio-element');
                     
-                    if (icon) {
-                        icon.remove();
+//                     if (icon) {
+//                         icon.remove();
                        
-                    }
-                    if(audioElement){
-                        audioElement.remove();
-                    }
+//                     }
+//                     if(audioElement){
+//                         audioElement.remove();
+//                     }
                     
                     
+//                 }
+//                 if (tick) {
+//                     tick.classList.remove('has-drawing');
+                    
+//                     const icon = tick.querySelector('.icon');
+                    
+//                     if (icon) {
+//                         icon.remove();
+//                         //removePointerForPencilIcon(tick)
+//                     }
+                    
+                
+                
+//                 }
+                
+//                 updateAnnotationsList();
+//                 //updateTimelineIcons();
+//                 renderAnnotationsForCurrentTime();
+//             });
+// const buttonsContainer = document.createElement('div');
+// buttonsContainer.className = 'annotation-buttons';
+// buttonsContainer.appendChild(commentInput);
+// buttonsContainer.appendChild(cancelButton);
+// buttonsContainer.appendChild(saveButton);
+
+
+// listItem.appendChild(deleteIcon);
+// listItem.appendChild(buttonsContainer);
+// listItem.addEventListener('click', () => {
+//     video.currentTime = annotation.time;
+//     commentInput.style.display = 'block'; 
+//     cancelButton.style.marginTop = '5px'; 
+//     saveButton.style.marginTop = '5px'; 
+//     cancelButton.style.display = 'inline-block'; 
+//     saveButton.style.display = 'inline-block'; 
+//     deleteIcon.style.display = 'inline-block';
+
+// });
+
+
+   
+//     annotationsList.appendChild(listItem);
+   
+//     }else {
+//     console.log('Skipping empty annotation:', annotation);
+// }});
+//     console.log('Inside list update 2:', annotations);
+//     toggleClearAllIcon();
+// }
+
+function updateAnnotationsList() {
+    // Filter out empty annotations based on their content
+    annotations = annotations.filter(annotation => annotation.content && annotation.content !== '{"version":"4.5.0","objects":[]}');
+
+    console.log('Inside list update:', annotations);
+
+    const annotationsList = document.getElementById('annotations-list');
+    annotationsList.innerHTML = ''; // Clear the current list
+
+    annotations.forEach((annotation, index) => {
+        console.log('Processing annotation:', annotation);
+
+        if (annotation.content && annotation.content !== '{"version":"4.5.0","objects":[]}') {
+            console.log('Appending annotation to list:', annotation);
+
+            const listItem = document.createElement('li');
+            listItem.className = 'annotation-item';
+
+            if (annotation.type !== 'audio') {
+                const parsedContent = JSON.parse(annotation.content);
+                const annotationType = parsedContent.objects[parsedContent.objects.length - 1].type;
+
+                console.log(annotationType);
+
+                if (annotationType === 'text') {
+                    listItem.textContent = `polyline`;
+                } else if (annotationType === 'rect') {
+                    listItem.textContent = `rectangle`;
+                } else if (annotationType === 'textbox') {
+                    const bgcolor = parsedContent.objects[parsedContent.objects.length - 1].backgroundColor;
+                    listItem.textContent = bgcolor === '#ffffcc' ? `note` : `text box`;
+                } else {
+                    listItem.textContent = `${annotationType}`;
                 }
-                if (tick) {
-                    tick.classList.remove('has-drawing');
-                    
-                    const icon = tick.querySelector('.icon');
-                    
-                    if (icon) {
-                        icon.remove();
-                        //removePointerForPencilIcon(tick)
-                    }
-                    
-                
-                
-                }
-                
+            } else {
+                listItem.textContent = `${annotation.type}`;
+            }
+
+            // Create input for comments
+            const commentInput = document.createElement('input');
+            commentInput.type = 'text';
+            commentInput.placeholder = 'Add comment';
+            commentInput.value = annotation.comment || '';
+            commentInput.style.display = 'none';
+            commentInput.addEventListener('input', function () {
+                annotations[index].comment = commentInput.value;
+            });
+
+            // Create cancel button
+            const cancelButton = document.createElement('button');
+            cancelButton.textContent = 'Cancel';
+            cancelButton.style.display = 'none';
+            cancelButton.addEventListener('click', function () {
+                commentInput.style.display = 'none';
+                cancelButton.style.display = 'none';
+                saveButton.style.display = 'none';
+                buttonsContainer.style.display = 'none';
+                listItem.removeChild(buttonsContainer);
+            });
+
+            // Create save button
+            const saveButton = document.createElement('button');
+            saveButton.textContent = 'Save';
+            saveButton.style.display = 'none';
+            saveButton.addEventListener('click', function () {
+                annotations[index].comment = commentInput.value;
+                commentInput.style.display = 'none';
+                cancelButton.style.display = 'none';
+                saveButton.style.display = 'none';
+                buttonsContainer.style.display = 'none';
+                listItem.removeChild(buttonsContainer);
+            });
+
+            // Create delete icon
+            const deleteIcon = document.createElement('img');
+            deleteIcon.src = 'icons/delete2.png';
+            deleteIcon.alt = 'Delete';
+            deleteIcon.style.width = '14px';
+            deleteIcon.style.height = '14px';
+            deleteIcon.style.backgroundColor = 'none';
+            deleteIcon.style.marginLeft = '10px';
+
+            deleteIcon.addEventListener('click', function () {
+                annotations.splice(index, 1);
                 updateAnnotationsList();
-                //updateTimelineIcons();
                 renderAnnotationsForCurrentTime();
             });
-const buttonsContainer = document.createElement('div');
-buttonsContainer.className = 'annotation-buttons';
-buttonsContainer.appendChild(commentInput);
-buttonsContainer.appendChild(cancelButton);
-buttonsContainer.appendChild(saveButton);
 
+            const buttonsContainer = document.createElement('div');
+            buttonsContainer.className = 'annotation-buttons';
+            buttonsContainer.appendChild(commentInput);
+            buttonsContainer.appendChild(cancelButton);
+            buttonsContainer.appendChild(saveButton);
 
-listItem.appendChild(deleteIcon);
-listItem.appendChild(buttonsContainer);
-listItem.addEventListener('click', () => {
-    video.currentTime = annotation.time;
-    commentInput.style.display = 'block'; 
-    cancelButton.style.marginTop = '5px'; 
-    saveButton.style.marginTop = '5px'; 
-    cancelButton.style.display = 'inline-block'; 
-    saveButton.style.display = 'inline-block'; 
-    deleteIcon.style.display = 'inline-block';
+            listItem.appendChild(deleteIcon);
+            listItem.appendChild(buttonsContainer);
 
-});
+            listItem.addEventListener('click', () => {
+                video.currentTime = annotation.time;
+                commentInput.style.display = 'block';
+                cancelButton.style.marginTop = '5px';
+                saveButton.style.marginTop = '5px';
+                cancelButton.style.display = 'inline-block';
+                saveButton.style.display = 'inline-block';
+                deleteIcon.style.display = 'inline-block';
+            });
 
+            annotationsList.appendChild(listItem);
+        } else {
+            console.log('Skipping empty annotation:', annotation);
+        }
+    });
 
-   
-    annotationsList.appendChild(listItem);
-   
-    }else {
-    console.log('Skipping empty annotation:', annotation);
-}});
     console.log('Inside list update 2:', annotations);
     toggleClearAllIcon();
 }
-
 
 
 function confirmClearAll() {
