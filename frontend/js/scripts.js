@@ -338,7 +338,29 @@ class DrawingManager {
             this.canvas.renderAll();
         });
     }
-
+    initializeShape() {
+        const fileInput = document.createElement('input');
+                fileInput.type = 'file';
+                fileInput.accept = 'image/*';
+                fileInput.style.display = 'none';
+            
+                fileInput.addEventListener('change', (event) => {
+                    const file = event.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            const imgSrc = e.target.result;
+                            this.addShape('image', null, { src: imgSrc });
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            
+                document.body.appendChild(fileInput);
+                fileInput.click();
+                document.body.removeChild(fileInput);
+    }
+   
     calculateAngle(point1, point2, point3) {
         const vector1 = {
             x: point1.x - point2.x,
@@ -410,6 +432,21 @@ class DrawingManager {
                     fill: this.state.currentColor
                 });
                 break;
+            case 'image':
+                    // Add image to the canvas
+                    fabric.Image.fromURL(options.src, (img) => {
+                        img.set({
+                            left: pointer.x,
+                            top: pointer.y,
+                            scaleX: 0.5,
+                            scaleY: 0.5,
+                        });
+                        this.canvas.add(img);
+                        this.canvas.setActiveObject(img);
+                        this.canvas.renderAll();
+                    });
+                    break;
+          
         }
 
         if (shape) {
@@ -511,6 +548,8 @@ class DrawingApp {
     }
 
     setupEventListeners() {
+
+       
         // Tool selection
         document.querySelectorAll('.toolbar .tool-btn').forEach(tool => {
             tool.addEventListener('click', () => this.handleToolSelection(tool));
@@ -535,6 +574,7 @@ class DrawingApp {
                 }
             });
         }
+        
 
         // Other UI controls
         const clearAllBtn = document.querySelector('.tool-btn.clear-all');
@@ -560,6 +600,9 @@ class DrawingApp {
                 }
             });
         }
+
+        
+        
     }
 
     handleToolSelection(toolElement) {
@@ -622,6 +665,10 @@ class DrawingApp {
                 this.drawingManager.canvas.on('mouse:down', (e) => 
                     this.drawingManager.addShape(toolName, e));
                 break;
+            case 'image':
+                this.drawingManager.initializeShape();
+                break;
+
         }
     }
 
@@ -636,6 +683,8 @@ class DrawingApp {
     }
 }
 
+ 
+ 
 // Initialize the application when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
     const app = new DrawingApp();
