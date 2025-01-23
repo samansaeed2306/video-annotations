@@ -168,14 +168,31 @@ function addVideoCard(videoSrc, title) {
     icon.alt = 'Edit';
     editButton.appendChild(icon);
     
-    const deleteIcon = document.createElement('img');
-    deleteIcon.src = '../icons/delete2.png'; // Path to your delete icon
-    deleteIcon.alt = 'Delete';
-    deleteIcon.style.width = '16px'; // Set the width as needed
-    deleteIcon.style.height = '20px'; // Set the height as needed
-    deleteIcon.style.bottom = '25px'
-    deleteIcon.style.marginLeft = '5px'
-    deleteIcon.style.backgroundColor='none';
+    // const deleteIcon = document.createElement('img');
+    // deleteIcon.src = '../icons/delete2.png'; // Path to your delete icon
+    // deleteIcon.alt = 'Delete';
+    // deleteIcon.style.width = '16px'; // Set the width as needed
+    // deleteIcon.style.height = '20px'; // Set the height as needed
+    // deleteIcon.style.bottom = '25px'
+    // deleteIcon.style.marginLeft = '5px'
+    // deleteIcon.style.backgroundColor='none';
+    const deleteIcon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    deleteIcon.setAttribute('viewBox', '0 0 24 24');
+    deleteIcon.setAttribute('fill', 'none');
+    deleteIcon.setAttribute('stroke', '#FF5252');
+    deleteIcon.setAttribute('stroke-width', '2');
+    deleteIcon.style.width = '25px'; // Adjust as needed
+    deleteIcon.style.height = '38px'; // Adjust as needed
+    deleteIcon.style.bottom = '25px';
+    deleteIcon.style.marginLeft = '5px';
+    deleteIcon.style.backgroundColor = 'none';
+
+    // Create and append the `path` element
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('d', 'M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2');
+
+    // Append the path to the SVG
+    deleteIcon.appendChild(path);
 
     // deleteButton.addEventListener('click', function () {
     //     if (confirm('Are you sure you want to delete this video?')) {
