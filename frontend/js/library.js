@@ -1,616 +1,179 @@
-// Fetch media files from the server
+// Config class to handle configuration settings
+class Config {
+    static API_MED_URL = CONFIG.API_MED_URL;
+    static API_URL = CONFIG.API_URL;
+}
 
-// const apiUrl = 'http://174.138.56.121:8080/api/media'; 
-// const apiUrl = 'http://192.168.100.191:8080/api/media'; 
-const apiUrl = CONFIG.API_MED_URL; 
-const api=CONFIG.API_URL;
-const urlParams = new URLSearchParams(window.location.search);
-const userId = urlParams.get('userid');
+// Media Manager class to handle media operations
+class MediaManager {
+    constructor(userId) {
+        this.userId = userId;
+        this.apiUrl = Config.API_MED_URL;
+        this.api = Config.API_URL;
+        this.gallery = document.getElementById('gallery');
+        this.imageGallery = document.getElementById('imageGallery');
+        this.videoCount = 0;
+    }
 
-addRecording();
-fetch(`${apiUrl}/mediabyuser/${userId}`)
-  .then(response => response.json())
-  .then(files => {
-    // Loop through each file and call addImageCard or addVideoCard based on file extension
-    files.sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate));
-    files.forEach(file => {
-        console.log('File: ', file.fileName);
-      // Check the file extension to decide if it's an image or video
-      const fileExtension = file.fileName.split('.').pop().toLowerCase();
-      const filePath = `../uploads`;
-      console.log('File Path', filePath);
-    //   const testfile = 'test.mp4';
-      if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
+    async fetchMediaByUser() {
+        try {
+            const response = await fetch(`${this.apiUrl}/mediabyuser/${this.userId}`);
+            const files = await response.json();
+            files.sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate));
+            return files;
+        } catch (error) {
+            console.error('Error fetching media files:', error);
+            return [];
+        }
+    }
 
-        addImageCard(`${filePath}/${file.fileName}`, file.originalName);
-        // addImageCard('../../uploads/test.mp4', 'test');
-      } else if (['mp4', 'webm', 'mov', 'hevc','MOV'].includes(fileExtension)) {
-        // const videoURL = filePath;
-        // addVideoCard(videoURL, file);
-        addVideoCard(`${filePath}/${file.fileName}`, file.originalName);
-        
-        // addVideoCard('../../uploads/test.mp4', 'test.mp4');
-      }
-
-      //addRecording();
-
-    });
-  })
-  .catch(error => console.error('Error fetching media files:', error));
-
-
-
-
-
-
-// DOM Elements
-const gallery = document.getElementById('gallery');
-const loadMore = document.getElementById('loadMore');
-const fileInput = document.getElementById('fileInput');
-const imageGallery = document.getElementById('imageGallery');
-const imageFileInput = document.getElementById('imageFileInput');
-const loadMoreImages = document.getElementById('loadMoreImages');
-
-let videoCount = 0;
-
-// Event Listeners
-loadMore.addEventListener('click', function(e) {
-    e.preventDefault();
-    fileInput.click();
-});
-
-fileInput.addEventListener('change', function(e) {
-    const file = e.target.files[0];
-    if (file) {
-        const videoURL = URL.createObjectURL(file);
-        // addVideoCard(videoURL, file.name);
-        console.log('File Name:',file.name);
-
-        
+    async uploadMedia(file, type) {
         const formData = new FormData();
         formData.append('file', file);
 
-        fetch(`${apiUrl}/upload/${userId}`, {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Video uploaded:', data);
-            //refreshVideoGallery();
-            // Optionally update the video src with the new path
-            // video.src = `/uploads/${data.media.fileName}`;
-            console.log('Video originalName:', data.media.originalName);
-            if (data.media && data.media.fileUrl && data.media.originalName) {
-                
-                
-                addVideoCard(data.media.fileUrl, data.media.originalName);
-                console.log("Inside if condition");
-                
-            }
-           
-            // window.location.reload();
-            refreshVideoGallery();
-        })
-        .catch(error => console.error('Error uploading video:', error));
-    }
-});
-
-loadMoreImages.addEventListener('click', function(e) {
-    e.preventDefault();
-    imageFileInput.click();
-});
-
-imageFileInput.addEventListener('change', function(e) {
-    const file = e.target.files[0];
-    if (file) {
-        const imageURL = URL.createObjectURL(file);
-        // addImageCard(imageURL, file.name);
-
-        
-        const formData = new FormData();
-        formData.append('file', file);
-
-        fetch(`${apiUrl}/upload/${userId}`, {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Image uploaded:', data);
-            // Optionally update the image src with the new path
-            // img.src = `/uploads/${data.media.fileName}`;
-
-            console.log('Image originalName:', data.media.originalName);
-            if (data.media && data.media.fileUrl && data.media.originalName) {
-                
-                addImageCard(data.media.fileUrl, data.media.originalName);
-                console.log("Inside if condition of image");
-                
-            }
-            // window.location.reload();
-            refreshImageGallery();
-        })
-        .catch(error => console.error('Error uploading image:', error));
-    }
-});
-
-// Functions
-function addVideoCard(videoSrc, title) {
-
-    console.log('Inside add video card.Title: ',title);
-    console.log('Video source: ',videoSrc);
-
-    const card = document.createElement('div');
-    card.className = 'card';
-
-    const video = document.createElement('video');
-   
-    video.src = videoSrc;
-    video.controls = true;
-    video.playsInline = true;
-    video.loop = true;
-    video.muted = true;
-
-
-
-
-    const cardContent = document.createElement('div');
-    cardContent.className = 'card-content';
-
-    const heading = document.createElement('h3');
-    heading.textContent = title;
-
-    const editButton = document.createElement('button');
-    editButton.className = 'edit-button';
-    const icon = document.createElement('img');
-    icon.src = '../icons/pencil.png';  
-    icon.alt = 'Edit';
-    editButton.appendChild(icon);
-    
-    const deleteIcon = document.createElement('img');
-    deleteIcon.src = '../icons/delete2.png'; // Path to your delete icon
-    deleteIcon.alt = 'Delete';
-    deleteIcon.style.width = '16px'; // Set the width as needed
-    deleteIcon.style.height = '20px'; // Set the height as needed
-    deleteIcon.style.bottom = '25px'
-    deleteIcon.style.marginLeft = '5px'
-    deleteIcon.style.backgroundColor='none';
-
-    // deleteButton.addEventListener('click', function () {
-    //     if (confirm('Are you sure you want to delete this video?')) {
-    //         // Call backend API to delete the video
-    //         deleteVideo(videoSrc)
-    //             .then(() => {
-    //                 card.remove(); // Remove the card from the DOM
-    //             })
-    //             .catch((error) => {
-    //                 console.error('Error deleting video:', error);
-    //             });
-    //     }
-    // });
-
-
-    heading.addEventListener('click', function () {
-        const input = document.createElement('input');
-        input.type = 'text';
-        input.value = heading.textContent;
-        heading.style.display= 'none';
-        cardContent.insertBefore(input, editButton);
-
-
-
-        // Handle when the user clicks outside or presses Enter to save the new title
-        input.addEventListener('blur', () => {
-            saveTitle(input.value);
-            if (input.parentNode) {  
-                cardContent.removeChild(input);
-            }
-        });
-
-        input.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                saveTitle(input.value);
-                if (input.parentNode) {  
-                    cardContent.removeChild(input);
-                }
-            }
-        });
-
-        input.focus(); 
-    });
-
-   
-    function saveTitle(newTitle) {
-        heading.textContent = newTitle;
-        heading.style.display= 'block';
-        
-        console.log('New title saved:', newTitle);
-
-
-        fetch(`${apiUrl}/getall`)
-        .then(response => response.json())
-        .then(files => {
-            
-            const media = files.find(file => file.fileName === videoSrc.split('/').pop());
-
-            if (media) {
-                const mediaId = media._id;
-
-              
-                const payload = { originalName: newTitle };
-
-               
-                fetch(`${apiUrl}/update/${mediaId}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(payload)
-                })
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Media id (frontend):', mediaId);
-                    console.log('Media updated successfully (frontend):', data);
-                })
-                .catch(error => console.error('Error updating media:', error));
-            } else {
-                console.error('Media not found with the given filename.');
-            }
-        })
-        .catch(error => console.error('Error fetching media files:', error));
-    }
-    
-    editButton.addEventListener('click', function() {
-        
-        
-        // if (player) {
-        //     player.pause();
-        //     player.dispose();
-        // }
-        localStorage.setItem('selectedMediaType', 'video');
-        localStorage.setItem('selectedVideoSrc', videoSrc);
-        window.location.href = '../index.html';
-    });
-
-    deleteIcon.addEventListener('click', function () {
-        fetch(`${apiUrl}/getall`)
-          .then((response) => response.json())
-          .then((files) => {
-            const media = files.find(file => file.fileName === videoSrc.split('/').pop());
-      
-            if (media) {
-              const mediaId = media._id;
-      
-              // Confirm before deleting
-              if (confirm('Are you sure you want to delete this media?')) {
-                deleteMedia(mediaId, card);
-              }
-            } else {
-              console.error('Media not found with the given filename.');
-            }
-          })
-          .catch(error => console.error('Error fetching media files:', error));
-      });
-
-      
-    cardContent.appendChild(heading);
-    cardContent.appendChild(editButton);
-    cardContent.appendChild(deleteIcon);
-
-    card.appendChild(video);
-    card.appendChild(cardContent);
-    gallery.appendChild(card);
-
-    videoCount++;
-}
-
-function addImageCard(imageSrc, title) {
-    const card = document.createElement('div');
-    card.className = 'card';
-
-    const img = document.createElement('img');
-    img.src = imageSrc;
-    img.alt = title;
-
-    const cardContent = document.createElement('div');
-    cardContent.className = 'card-content';
-
-    const heading = document.createElement('h3');
-    heading.textContent = title;
-    
-    const editButton = document.createElement('button');
-    editButton.className = 'edit-button';
-    editButton.id = 'edit-button-img';
-    const icon = document.createElement('img');
-    icon.src = '../icons/pencil.png';  
-    icon.alt = 'Edit';
-    editButton.appendChild(icon);
-
-    heading.addEventListener('click', function () {
-        const input = document.createElement('input');
-        input.id = 'titleInput'; 
-        input.type = 'text';
-        input.value = heading.textContent;
-        heading.style.display= 'none';
-        cardContent.insertBefore(input, editButton);
-
-
-
-      
-        input.addEventListener('blur', () => {
-            saveimgTitle(input.value);
-            cardContent.removeChild(input);
-        });
-
-        input.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                saveimgTitle(input.value);
-                cardContent.removeChild(input);
-            }
-        });
-
-        input.focus(); 
-    });
-
-    
-    function saveimgTitle(newTitle) {
-        heading.textContent = newTitle;
-        heading.style.display= 'block';
-     
-        console.log('New title saved image:', newTitle);
-
-        fetch(`${apiUrl}/getall`)
-        .then(response => response.json())
-        .then(files => {
-            
-            const media = files.find(file => file.fileName === imageSrc.split('/').pop());
-
-            if (media) {
-                const mediaId = media._id;
-
-              
-                const payload = { originalName: newTitle };
-
-               
-                fetch(`${apiUrl}/update/${mediaId}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(payload)
-                })
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Media id (frontend):', mediaId);
-                    console.log('Media updated successfully (frontend):', data);
-                })
-                .catch(error => console.error('Error updating media:', error));
-            } else {
-                console.error('Media not found with the given filename.');
-            }
-        })
-        .catch(error => console.error('Error fetching media files:', error));
-    }
-    
-    editButton.addEventListener('click', function() {
-        localStorage.setItem('selectedMediaType', 'image');
-        localStorage.setItem('selectedImageSrc', imageSrc);
-        window.location.href = '../index.html';
-    });
-
-    cardContent.appendChild(heading);
-    cardContent.appendChild(editButton);
-
-    card.appendChild(img);
-    card.appendChild(cardContent);
-    imageGallery.appendChild(card);
-}
-document.getElementById("backtoindex").addEventListener("click", function() {
-    window.location.href = "../index.html"; 
-});
-// // Example calls
-
-// addVideoCard('../sampleVideos/burning-planet.mp4', 'burning-planet.mp4');
-// addImageCard('../sampleVideos/dolphin.jfif', 'Dolphin');
-function deleteMedia(mediaId, videoCard) {
-    if (!mediaId) {
-      console.error('No media ID provided for deletion');
-      return;
-    }
-    console.log("Media id:",mediaId);
-    // Send DELETE request to the backend
-    fetch(`${apiUrl}/delete/${mediaId}`, {
-      method: 'DELETE',
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.message === 'Media deleted successfully!') {
-          console.log('Media deleted successfully:', data);
-          
-          // Remove the video card from the gallery
-          videoCard.remove();
-        } else {
-          console.error('Failed to delete media:', data.error);
-        }
-      })
-      .catch((error) => console.error('Error deleting media:', error));
-  }
-  
-function refreshVideoGallery() {
-    fetch(`${apiUrl}/mediabyuser/${userId}`)
-        .then(response => response.json())
-        .then(files => {
-            files.sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate));
-            gallery.innerHTML = ''; 
-
-         
-            files.forEach(file => {
-                const fileExtension = file.fileName.split('.').pop().toLowerCase();
-                const filePath = `../uploads/${file.fileName}`;
-               if (['mp4', 'webm'].includes(fileExtension)) {
-                    addVideoCard(filePath, file.originalName);
-                }
+        try {
+            const response = await fetch(`${this.apiUrl}/upload/${this.userId}`, {
+                method: 'POST',
+                body: formData
             });
-        })
-        .catch(error => console.error('Error fetching media files:', error));
-}
-
-function refreshImageGallery() {
-    fetch(`${apiUrl}/mediabyuser/${userId}`)
-        .then(response => response.json())
-        .then(files => {
-            files.sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate));
-            imageGallery.innerHTML = '';
-
-        
-            files.forEach(file => {
-                const fileExtension = file.fileName.split('.').pop().toLowerCase();
-                const filePath = `../uploads/${file.fileName}`;
-                if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
-                    addImageCard(filePath, file.originalName);
+            const data = await response.json();
+            
+            if (data.media && data.media.fileUrl && data.media.originalName) {
+                if (type === 'video') {
+                    this.addVideoCard(data.media.fileUrl, data.media.originalName);
+                    this.refreshVideoGallery();
+                } else {
+                    this.addImageCard(data.media.fileUrl, data.media.originalName);
+                    this.refreshImageGallery();
                 }
-            });
-        })
-        .catch(error => console.error('Error fetching media files:', error));
-}
-
-document.getElementById('fileInput').addEventListener('change', simulateUpload);
-document.getElementById('imageFileInput').addEventListener('change', simulateUpload);
-
-function simulateUpload() {
-    document.getElementById('progress-bar').style.display='block';
-    const progressBar = document.getElementById('progress');
-    let progress = 0;
-
-   
-    progressBar.style.width = '0%';
-
-    const interval = setInterval(() => {
-        if (progress < 100) {
-            progress += 10; 
-            progressBar.style.width = progress + '%'; 
-        } else {
-            clearInterval(interval); 
-            alert('Upload complete!');
-            document.getElementById('progress-bar').style.display='none';
+            }
+            return data;
+        } catch (error) {
+            console.error(`Error uploading ${type}:`, error);
+            throw error;
         }
+    }
 
-    }, 100); 
-    
+    async deleteMedia(mediaId, card) {
+        try {
+            const response = await fetch(`${this.apiUrl}/delete/${mediaId}`, {
+                method: 'DELETE'
+            });
+            const data = await response.json();
+            
+            if (data.message === 'Media deleted successfully!') {
+                card.remove();
+                return true;
+            }
+            return false;
+        } catch (error) {
+            console.error('Error deleting media:', error);
+            return false;
+        }
+    }
 }
 
-function removeInput() {
-    const inputElement = document.getElementById('titleInput');
-    if (inputElement) {
-        cardContent.removeChild(inputElement);
+// UI Manager class to handle UI elements and events
+class UIManager {
+    constructor(mediaManager) {
+        this.mediaManager = mediaManager;
+        this.setupEventListeners();
+    }
+
+    setupEventListeners() {
+        const loadMore = document.getElementById('loadMore');
+        const fileInput = document.getElementById('fileInput');
+        const loadMoreImages = document.getElementById('loadMoreImages');
+        const imageFileInput = document.getElementById('imageFileInput');
+
+        loadMore.addEventListener('click', (e) => {
+            e.preventDefault();
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                this.mediaManager.uploadMedia(file, 'video');
+            }
+        });
+
+        loadMoreImages.addEventListener('click', (e) => {
+            e.preventDefault();
+            imageFileInput.click();
+        });
+
+        imageFileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                this.mediaManager.uploadMedia(file, 'image');
+            }
+        });
+    }
+
+    simulateUpload() {
+        const progressBar = document.getElementById('progress-bar');
+        const progress = document.getElementById('progress');
+        progressBar.style.display = 'block';
+        let progressValue = 0;
+
+        const interval = setInterval(() => {
+            if (progressValue < 100) {
+                progressValue += 10;
+                progress.style.width = progressValue + '%';
+            } else {
+                clearInterval(interval);
+                alert('Upload complete!');
+                progressBar.style.display = 'none';
+            }
+        }, 100);
+    }
+}
+
+// Recording Manager class to handle recording operations
+class RecordingManager {
+    constructor(userId) {
+        this.userId = userId;
+        this.api = Config.API_URL;
+    }
+
+    async fetchRecordings() {
+        try {
+            const response = await fetch(`${this.api}/rec/recordings/user/${this.userId}`);
+            if (response.status === 404) {
+                this.displayNoRecordingsMessage();
+                return null;
+            }
+            return await response.json();
+        } catch (error) {
+            console.error('Error fetching recordings:', error);
+            return null;
+        }
+    }
+
+    displayNoRecordingsMessage() {
+        const messageContainer = document.getElementById('message-container');
+        messageContainer.innerHTML = `<p>No recordings found for user ID: <strong>${this.userId}</strong>.</p>`;
+        messageContainer.style.color = 'red';
     }
 }
 
 
 
-function createVideoCard(videoUrl, title) {
-    console.log("Create Video Card");
-    const card = document.createElement('div');
-    card.classList.add('recording-card');
 
-    const videoElement = document.createElement('video');
-    videoElement.src = videoUrl;
-    videoElement.controls = true; 
-
-    const titleElement = document.createElement('h3');
-    titleElement.innerText = title;
-
-    card.appendChild(videoElement);
-    card.appendChild(titleElement);
-
-    return card;
-}
-
-async function addRecording() {
+document.addEventListener('DOMContentLoaded', () => {
     const urlParams = new URLSearchParams(window.location.search);
-                const userId = urlParams.get('userid');
-
-                if (userId) {
-                   console.log("userId found");
-    try {
-        const response = await fetch(`${api}/rec/recordings/user/${userId}`);
-        const recordings = await response.json();
-
-        // Check for errors in the response
-        if (response.status === 404) {
-            //console.log(recordings.message); // No recordings found
-            console.log("There isnt any recordings for this user");
-            displayNoRecordingsMessage(userId);
-            return;
-        }
-        else{
-        // Display the recordings
-        displayRecordings(recordings);}
-    } catch (error) {
-        console.error('Error fetching recordings:', error);
-    }
-}else{
-    console.log("unable to find userId");
-}}
-function displayNoRecordingsMessage(userId) {
-    const messageContainer = document.getElementById('message-container'); 
-    messageContainer.innerHTML = `<p>No recordings found for user ID: <strong>${userId}</strong>.</p>`;
-    messageContainer.style.color = 'red'; 
-}
-
-function displayRecordings(recordings) {
-    const gallery = document.getElementById('recordings-gallery');
-    gallery.innerHTML = ''; 
-    console.log('Hello I am inside display rec');
-    recordings.forEach(recording => {
-        let card;
-        
-        card = createVideoCard(recording.videoUrl, recording.title);
-       
-
-        if (card) {
-            gallery.appendChild(card);
-        }
-    });
-}
-
-// Function to fetch recordings from the API based on user ID
-async function fetchRecordingsByUserId(userId) {
-    try {
-        const response = await fetch(`${api}/api/rec/recordings/user/${userId}`);
-        if (!response.ok) {
-            throw new Error('Network response was not ok ' + response.statusText);
-        }
-        const recordings = await response.json(); // Assuming the API returns a JSON array
-        return recordings; // Return the fetched recordings
-    } catch (error) {
-        console.error('Error fetching recordings:', error);
-        alert('Failed to fetch recordings. Please try again.');
-        return [];
-    }
-}
-
-
-
-// document.getElementById('hello').addEventListener('click', () => {
-//     const input = document.getElementById('userIdInput');
-//     input.style.display = 'block'; 
-//     input.focus(); 
-
+    const userId = urlParams.get('userid');
     
-//     input.onkeypress = async function(event) {
-//         if (event.key === 'Enter') {
-//             const userId = input.value.trim();
-//             if (userId) {
-//                 const recordings = await fetchRecordingsByUserId(userId); 
-//                 displayRecordings(recordings);
-//             } else {
-//                 alert("Please enter a valid User ID.");
-//             }
-//             input.value = '';
-//             input.style.display = 'none'; 
-//         }
-//     };
-// });
-
+    if (userId) {
+        const mediaManager = new MediaManager(userId);
+        const uiManager = new UIManager(mediaManager);
+        const recordingManager = new RecordingManager(userId);
+        
+        // Initial load of media and recordings
+        mediaManager.fetchMediaByUser();
+        recordingManager.fetchRecordings();
+    } else {
+        console.error('User ID not found');
+    }
+});
