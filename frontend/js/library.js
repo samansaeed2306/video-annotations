@@ -163,10 +163,32 @@ function addVideoCard(videoSrc, title) {
 
     const editButton = document.createElement('button');
     editButton.className = 'edit-button';
-    const icon = document.createElement('img');
-    icon.src = '../icons/pencil.png';  
-    icon.alt = 'Edit';
-    editButton.appendChild(icon);
+
+    // Create the SVG element
+    const svgIcon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svgIcon.setAttribute('viewBox', '0 0 24 24');
+    svgIcon.setAttribute('fill', 'none');
+    svgIcon.setAttribute('stroke', 'currentColor');
+    svgIcon.setAttribute('stroke-width', '2');
+    svgIcon.style.width = '18px'; // Adjust width as needed
+    svgIcon.style.height = '18px'; // Adjust height as needed
+
+    // First path
+    const path1 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path1.setAttribute('d', 'M12 19l7-7 3 3-7 7-3-3z');
+    path1.setAttribute('fill', '#2196F3'); // Set the fill color for the first path
+
+    // Second path
+    const path2 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path2.setAttribute('d', 'M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5');
+
+    // Append paths to the SVG
+    svgIcon.appendChild(path1);
+    svgIcon.appendChild(path2);
+
+    // Add the SVG to the button
+    editButton.appendChild(svgIcon);
+
     
     const deleteIcon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     deleteIcon.setAttribute('viewBox', '0 0 24 24');
