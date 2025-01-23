@@ -65,11 +65,41 @@ class VideoManager {
             }
         }, function onPlayerReady() {
             const player = this;
-            player.src({
-                type: 'video/mp4',
-                src: 'https://andelwoodclub.tuneup.golf/storage/56/purchaseVideos/73Zp5B6G9TDlUYGAzcpJ0EMT8NRJljnNumaenQAH.mp4'
-            });
-            player.dimensions(player.currentWidth(), player.currentHeight());
+            
+            try {
+                const storedVideoSrc = localStorage.getItem('selectedVideoSrc');
+                const isEditMode = localStorage.getItem('editMode') === 'true';
+                
+                if (storedVideoSrc && isEditMode) {
+                    player.src({
+                        type: 'video/mp4',
+                        src: storedVideoSrc
+                    });
+                    
+                    // Add error handling for video loading
+                    player.on('error', function() {
+                        console.error('Error loading video:', player.error());
+                        // Fallback to default video if there's an error
+                        player.src({
+                            type: 'video/mp4',
+                            src: 'https://andelwoodclub.tuneup.golf/storage/56/purchaseVideos/73Zp5B6G9TDlUYGAzcpJ0EMT8NRJljnNumaenQAH.mp4'
+                        });
+                    });
+                    
+                    localStorage.removeItem('selectedVideoSrc');
+                    localStorage.removeItem('editMode');
+                } else {
+                    // Use default video source
+                    player.src({
+                        type: 'video/mp4',
+                        src: 'https://andelwoodclub.tuneup.golf/storage/56/purchaseVideos/73Zp5B6G9TDlUYGAzcpJ0EMT8NRJljnNumaenQAH.mp4'
+                    });
+                }
+                
+                player.dimensions(player.currentWidth(), player.currentHeight());
+            } catch (error) {
+                console.error('Error initializing video player:', error);
+            }
         });
     }
 
