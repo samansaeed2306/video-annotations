@@ -1,3 +1,11 @@
+:root {
+    --primary-color: #2196F3;
+    --secondary-color: #FF5252;
+    --accent-color: #FFC107;
+    --background-color: #1a1a1a;
+    --surface-color: #2d2d2d;
+    --text-color: #e0e0e0;
+}
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -74,7 +82,7 @@ body {
     width: 200px;
     margin: 20px auto;
     padding: 10px;
-    background-color: #a88732; /* Vibrant button color */
+    background-color: #2196F3; /* Vibrant button color */
     color: #ffffff;
     text-align: center;
     text-decoration: none;
@@ -84,7 +92,7 @@ body {
 }
 
 .load-more:hover {
-    background-color: #a88732; /* Darker hover state */
+    background-color: #2196F3; /* Darker hover state */
 }
 
 #fileInput {
@@ -125,7 +133,7 @@ nav {
     align-items: center;
     font-size: 1.2rem;
     font-weight: bold;
-    color: #a88732; /* Highlight color */
+    color: #2196F3; /* Highlight color */
     margin-bottom: 0.5rem;
 }
 
@@ -144,7 +152,7 @@ nav {
 }
 
 .nav-links a:hover {
-    color: #a88732; /* Highlight color on hover */
+    color: #2196F3; /* Highlight color on hover */
 }
 
 main {
@@ -178,8 +186,8 @@ h1 {
 
 .panel-button.active {
     font-weight: bold;
-    border-bottom: 2px solid #a88732; /* Active color */
-    color: #a88732;
+    border-bottom: 2px solid #2196F3; /* Active color */
+    color: #2196F3;
 }
 
 .panel-button.inactive {
@@ -223,13 +231,13 @@ form button {
     border-radius: 4px;
     border: none;
     margin-left: 10px;
-    background-color: #a88732; /* Same accent color */
+    background-color: #2196F3; /* Same accent color */
     color: white;
     cursor: pointer;
 }
 
 form button:hover {
-    background-color: #a88732;
+    background-color: #2196F3;
 }
 
 .recordings-gallery {
