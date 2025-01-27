@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "scripts": {
     "start:backend": "node src/server.js",
+<<<<<<< HEAD
     "start:frontend": "http-server frontend -p 3000"
+=======
+    "start:frontend": "http-server public -p 3000"
+>>>>>>> origin/main
   },
   "dependencies": {
     "dotenv": "^16.4.5",
