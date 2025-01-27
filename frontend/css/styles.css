@@ -7,7 +7,7 @@
 
 body {
     background-color: #1a1a1a;
-    height: 100vh;
+    height: 100dvh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -18,7 +18,7 @@ body {
 .video-container {
     position: relative;
     width: 100%;
-    height: 100vh;
+    height: 100dvh;
     background: #000;
     overflow: hidden;
     /* Create new stacking context */
@@ -64,10 +64,8 @@ body {
 
 .video-js .vjs-control-bar {
     position: absolute;
-    bottom: 0;
+    bottom: 0px;
     width: 100%;
-
-
 }
 
 /* Keep controls on top */
@@ -220,7 +218,7 @@ body {
         padding: 4px;
         transform: translateY(-50%);
         flex-direction: column;
-        width: 56px;
+        width: 45px;
     }
 
 
@@ -232,18 +230,18 @@ body {
         border-radius: 0;
         padding: 8px 16px;
         justify-content: center;
-        gap: 16px;
-        height: 72px;
+        gap: 14px;
+        height: 65px;
     }
 
     .secondary-toolbar .secondary-btn {
-        width: 56px;
-        height: 56px;
+        width: 50px;
+        height: 50px;
     }
 
     .secondary-toolbar .secondary-btn svg {
-        width: 32px;
-        height: 32px;
+        width: 30px;
+        height: 30px;
     }
 
     .toolbar .tool-btn.clear-all {
@@ -251,8 +249,8 @@ body {
     }
 
     .toolbar .tool-btn {
-        width: 48px;
-        height: 48px;
+        width: 37px;
+        height: 37px;
     }
 
     .clear-all-container {
@@ -260,8 +258,8 @@ body {
     }
 
     .clear-all-container .mobile-clear-btn {
-        width: 48px;
-        height: 48px;
+        width: 45px;
+        height: 45px;
     }
 
     .clear-all-container .mobile-clear-btn svg {
