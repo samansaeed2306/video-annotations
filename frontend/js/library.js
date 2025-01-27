@@ -282,6 +282,7 @@ function addVideoCard(videoSrc, title) {
         
         
         localStorage.setItem('selectedVideoSrc', videoSrc);
+        localStorage.setItem('mediaType', 'video'); 
         localStorage.setItem('editMode', 'true');
         window.location.href = '../index.html';
     });
@@ -445,11 +446,12 @@ function addImageCard(imageSrc, title) {
     }
     
     editButton.addEventListener('click', function() {
-        localStorage.setItem('selectedVideoSrc', imageSrc);
+        localStorage.setItem('selectedMediaSrc', imageSrc); 
+        localStorage.setItem('mediaType', 'image'); 
         localStorage.setItem('editMode', 'true');
-
         window.location.href = '../index.html';
     });
+    
 
     deleteIcon.addEventListener('click', function () {
         fetch(`${apiUrl}/getall`)
