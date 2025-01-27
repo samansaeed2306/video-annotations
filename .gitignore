@@ -1,6 +1,3 @@
 node_modules
-<<<<<<< HEAD
+
 frontend/uploads/*.mp4
-=======
-public/uploads/*.mp4
->>>>>>> origin/main
