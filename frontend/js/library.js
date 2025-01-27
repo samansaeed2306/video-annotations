@@ -163,8 +163,6 @@ function addVideoCard(videoSrc, title) {
 
     const editButton = document.createElement('button');
     editButton.className = 'edit-button';
-<<<<<<< HEAD:frontend/js/library.js
-
     // Create the SVG element
     const svgIcon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     svgIcon.setAttribute('viewBox', '0 0 24 24');
@@ -208,35 +206,7 @@ function addVideoCard(videoSrc, title) {
 
     // Append the path to the SVG
     deleteIcon.appendChild(path);
-=======
-    const icon = document.createElement('img');
-    icon.src = '../icons/pencil.png';  
-    icon.alt = 'Edit';
-    editButton.appendChild(icon);
-    
-    const deleteIcon = document.createElement('img');
-    deleteIcon.src = '../icons/delete2.png'; // Path to your delete icon
-    deleteIcon.alt = 'Delete';
-    deleteIcon.style.width = '16px'; // Set the width as needed
-    deleteIcon.style.height = '20px'; // Set the height as needed
-    deleteIcon.style.bottom = '25px'
-    deleteIcon.style.marginLeft = '5px'
-    deleteIcon.style.backgroundColor='none';
 
-    // deleteButton.addEventListener('click', function () {
-    //     if (confirm('Are you sure you want to delete this video?')) {
-    //         // Call backend API to delete the video
-    //         deleteVideo(videoSrc)
-    //             .then(() => {
-    //                 card.remove(); // Remove the card from the DOM
-    //             })
-    //             .catch((error) => {
-    //                 console.error('Error deleting video:', error);
-    //             });
-    //     }
-    // });
-
->>>>>>> origin/main:public/js/library.js
 
     heading.addEventListener('click', function () {
         const input = document.createElement('input');
@@ -311,18 +281,11 @@ function addVideoCard(videoSrc, title) {
     editButton.addEventListener('click', function() {
         
         
-<<<<<<< HEAD:frontend/js/library.js
+
         localStorage.setItem('selectedVideoSrc', videoSrc);
         localStorage.setItem('mediaType', 'video'); 
         localStorage.setItem('editMode', 'true');
-=======
-        // if (player) {
-        //     player.pause();
-        //     player.dispose();
-        // }
-        localStorage.setItem('selectedMediaType', 'video');
-        localStorage.setItem('selectedVideoSrc', videoSrc);
->>>>>>> origin/main:public/js/library.js
+
         window.location.href = '../index.html';
     });
 
@@ -372,7 +335,7 @@ function addImageCard(imageSrc, title) {
     const heading = document.createElement('h3');
     heading.textContent = title;
     
-<<<<<<< HEAD:frontend/js/library.js
+
     const deleteIcon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     deleteIcon.setAttribute('viewBox', '0 0 24 24');
     deleteIcon.setAttribute('fill', 'none');
@@ -418,15 +381,7 @@ function addImageCard(imageSrc, title) {
 
     // Add the SVG to the button
     editButton.appendChild(svgIcon);
-=======
-    const editButton = document.createElement('button');
-    editButton.className = 'edit-button';
-    editButton.id = 'edit-button-img';
-    const icon = document.createElement('img');
-    icon.src = '../icons/pencil.png';  
-    icon.alt = 'Edit';
-    editButton.appendChild(icon);
->>>>>>> origin/main:public/js/library.js
+
 
     heading.addEventListener('click', function () {
         const input = document.createElement('input');
@@ -495,7 +450,7 @@ function addImageCard(imageSrc, title) {
     }
     
     editButton.addEventListener('click', function() {
-<<<<<<< HEAD:frontend/js/library.js
+
         localStorage.setItem('selectedMediaSrc', imageSrc); 
         localStorage.setItem('mediaType', 'image'); 
         localStorage.setItem('editMode', 'true');
@@ -526,15 +481,7 @@ function addImageCard(imageSrc, title) {
     cardContent.appendChild(heading);
     cardContent.appendChild(editButton);
     cardContent.appendChild(deleteIcon);
-=======
-        localStorage.setItem('selectedMediaType', 'image');
-        localStorage.setItem('selectedImageSrc', imageSrc);
-        window.location.href = '../index.html';
-    });
 
-    cardContent.appendChild(heading);
-    cardContent.appendChild(editButton);
->>>>>>> origin/main:public/js/library.js
 
     card.appendChild(img);
     card.appendChild(cardContent);

@@ -1,7 +1,6 @@
-<<<<<<< HEAD:frontend/config.js
+
 //For environment variables 
-=======
->>>>>>> origin/main:public/config.js
+
 const CONFIG = {
     API_REC_URL: 'http://localhost:8080/api/rec/',
     API_MED_URL:'http://localhost:8080/api/media',
