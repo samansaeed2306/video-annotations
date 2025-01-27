@@ -20,11 +20,9 @@ COPY package.json package-lock.json ./
 RUN npm install
 
 # Copy the frontend code
-<<<<<<< HEAD
+
 COPY public/ ./frontend
-=======
-COPY public/ ./public
->>>>>>> origin/main
+
 
 # Expose backend port
 EXPOSE 8080
