@@ -439,7 +439,45 @@ class DrawingManager {
         
         return angle;
     }
-
+    toggleFullScreen() {
+        const fullscreenBtn = document.querySelector('.tool-btn .fullscreen');
+    
+        // Check if the button is active (i.e., it has the 'active' class)
+        const isActive = fullscreenBtn && fullscreenBtn.classList.contains('active');
+    
+        // If not in full-screen and button is not active, enter full-screen
+        if (!document.fullscreenElement && !isActive) {
+            console.log("Entering full screen mode.");
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen();
+            } else if (document.documentElement.mozRequestFullScreen) { // Firefox
+                document.documentElement.mozRequestFullScreen();
+            } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari, and Opera
+                document.documentElement.webkitRequestFullscreen();
+            } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
+                document.documentElement.msRequestFullscreen();
+            }
+            // Set the button as active
+            //fullscreenBtn.classList.add('active');
+        } 
+        // If already in full-screen or the button is active, exit full-screen
+        // else if (document.fullscreenElement || isActive) {
+        //     console.log("Exiting full screen mode.");
+        //     if (document.exitFullscreen) {
+        //         document.exitFullscreen();
+        //     } else if (document.mozCancelFullScreen) { // Firefox
+        //         document.mozCancelFullScreen();
+        //     } else if (document.webkitExitFullscreen) { // Chrome, Safari, and Opera
+        //         document.webkitExitFullscreen();
+        //     } else if (document.msExitFullscreen) { // IE/Edge
+        //         document.msExitFullscreen();
+        //     }
+        //     // Remove the active class from the button when exiting fullscreen
+        //     fullscreenBtn.classList.remove('active');
+        // }
+    }
+    
+    
     addShape(shapeType, e, options = {}) {
         let shape;
         const pointer = e ? this.canvas.getPointer(e.e) : { x: 100, y: 100 };
@@ -704,6 +742,13 @@ class DrawingApp {
             });
         }
 
+        // const fullscreenBtn = document.querySelector('.tool-btn .fullscreen');
+        // if(fullscreenBtn){
+        //     fullscreenBtn.addEventListener('click', () => {
+        //         console.log("Full screen btn clicked!")
+        //         this.toggleFullScreen();
+        //     });
+        // }
         
         
     }
@@ -771,6 +816,8 @@ class DrawingApp {
             case 'image':
                 this.drawingManager.initializeShape();
                 break;
+            case 'fullscreen':
+                this.drawingManager.toggleFullScreen();
 
         }
     }
@@ -784,6 +831,8 @@ class DrawingApp {
         });
         input.click();
     }
+
+    
 }
 
  
