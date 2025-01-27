@@ -38,10 +38,26 @@ class VideoManager {
         this.player1 = null;
         this.player2 = null;
         this.videoElement1 = document.querySelector('#video-player-1');
-        this.videoElement2 = null;
+        this.imageElement = null; // Track the image element if mediaType is image
     }
 
     initializeMainPlayer() {
+        const mediaType = localStorage.getItem('mediaType');
+        const selectedMediaSrc = localStorage.getItem('selectedMediaSrc');
+    
+        // Check if the media is an image
+        if (mediaType === 'image' && selectedMediaSrc) {
+            console.log("Got an image");
+            this.loadImage(selectedMediaSrc); // Load the image
+            return; // Exit early; no need to initialize the video player
+        }
+    
+        // Initialize the video player only if the media type is video
+        if (!this.videoElement1) {
+            console.warn('Video player 1 is not present in the DOM. Skipping video initialization.');
+            return;
+        }
+    
         this.player1 = videojs('video-player-1', {
             controls: true,
             autoplay: 'muted',
@@ -65,43 +81,53 @@ class VideoManager {
             }
         }, function onPlayerReady() {
             const player = this;
-            
+    
             try {
-                const storedVideoSrc = localStorage.getItem('selectedVideoSrc');
-                const isEditMode = localStorage.getItem('editMode') === 'true';
-                
-                if (storedVideoSrc && isEditMode) {
+                if (selectedMediaSrc) {
                     player.src({
-                        type: 'video/mp4',
-                        src: storedVideoSrc
+                        type: 'video/mp4', // Ensure this matches the actual type of the video file
+                        src: selectedMediaSrc
                     });
-                    
-                    // Add error handling for video loading
-                    player.on('error', function() {
+    
+                    player.on('error', function () {
                         console.error('Error loading video:', player.error());
-                        // Fallback to default video if there's an error
+                        // Provide a fallback video
                         player.src({
                             type: 'video/mp4',
                             src: 'https://andelwoodclub.tuneup.golf/storage/56/purchaseVideos/73Zp5B6G9TDlUYGAzcpJ0EMT8NRJljnNumaenQAH.mp4'
                         });
                     });
-                    
-                    localStorage.removeItem('selectedVideoSrc');
-                    localStorage.removeItem('editMode');
                 } else {
-                    // Use default video source
+                    // Default video source
                     player.src({
                         type: 'video/mp4',
                         src: 'https://andelwoodclub.tuneup.golf/storage/56/purchaseVideos/73Zp5B6G9TDlUYGAzcpJ0EMT8NRJljnNumaenQAH.mp4'
                     });
                 }
-                
+    
                 player.dimensions(player.currentWidth(), player.currentHeight());
             } catch (error) {
                 console.error('Error initializing video player:', error);
             }
         });
     }
+    
+    loadImage(imageSrc) {
+        const imgElement = document.createElement('img');
+        imgElement.src = imageSrc;
+        imgElement.alt = 'Selected Image';
+        imgElement.style.width = '100%';
+        imgElement.style.height = 'auto';
+    
+        // Replace the video element with the image
+        if (this.videoElement1) {
+            this.videoElement1.replaceWith(imgElement);
+            this.videoElement1 = null; // Clear the reference to avoid future issues
+        }
+    
+        console.log('Image loaded:', imageSrc);
+    }
+   
 
     initializeSecondPlayer() {
         if (!this.player2) {
@@ -564,10 +590,11 @@ class DrawingApp {
         this.drawingManager.saveState(); // Save initial state
 
         // Video event listener for dimensions
+        if(this.videoManager.player1){
         this.videoManager.player1.on('loadedmetadata', () => {
             this.drawingManager.updateDimensions();
         });
-
+    }
         // Window resize handler
         window.addEventListener('resize', () => {
             this.videoManager.updateDimensions();
@@ -583,6 +610,43 @@ class DrawingApp {
     setupEventListeners() {
 
        
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const selectedMediaSrc = localStorage.getItem('selectedMediaSrc');
+            const mediaType = localStorage.getItem('mediaType'); // Get the type of media
+            const editMode = localStorage.getItem('editMode');
+        
+            if (editMode === 'true' && selectedMediaSrc && mediaType) {
+                if (mediaType === 'image') {
+                    // Handle image loading
+                    const imgElement = document.createElement('img');
+                    imgElement.src = selectedMediaSrc;
+                    imgElement.alt = 'Selected Image';
+                    imgElement.style.width = '100%'; // Adjust size as needed
+                    imgElement.style.height = 'auto';
+        
+                    // Replace the video player with the image
+                    const videoPlayer1 = document.getElementById('video-player-1');
+                    const videoWrapper1 = videoPlayer1.parentNode;
+                    videoWrapper1.replaceWith(imgElement);
+                } else if (mediaType === 'video') {
+                    // Handle video loading
+                    const videoPlayer1 = document.getElementById('video-player-1');
+                    const videoWrapper2 = document.getElementById('second-video-wrapper');
+        
+                    // Set the video source
+                    videoPlayer1.src = selectedMediaSrc;
+                    videoPlayer1.classList.remove('hidden'); // Ensure it's visible
+                    videoWrapper2.classList.add('hidden'); // Hide the second video wrapper
+                    videoPlayer1.load(); // Load the video source
+                    videoPlayer1.play(); // Auto-play if desired
+                }
+            }
+        
+            // Clear editMode flag after loading the media
+            localStorage.setItem('editMode', 'false');
+        });
+        
         // Tool selection
         document.querySelectorAll('.toolbar .tool-btn').forEach(tool => {
             tool.addEventListener('click', () => this.handleToolSelection(tool));
