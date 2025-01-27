@@ -163,32 +163,49 @@ function addVideoCard(videoSrc, title) {
 
     const editButton = document.createElement('button');
     editButton.className = 'edit-button';
-    const icon = document.createElement('img');
-    icon.src = '../icons/pencil.png';  
-    icon.alt = 'Edit';
-    editButton.appendChild(icon);
-    
-    const deleteIcon = document.createElement('img');
-    deleteIcon.src = '../icons/delete2.png'; // Path to your delete icon
-    deleteIcon.alt = 'Delete';
-    deleteIcon.style.width = '16px'; // Set the width as needed
-    deleteIcon.style.height = '20px'; // Set the height as needed
-    deleteIcon.style.bottom = '25px'
-    deleteIcon.style.marginLeft = '5px'
-    deleteIcon.style.backgroundColor='none';
+    // Create the SVG element
+    const svgIcon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svgIcon.setAttribute('viewBox', '0 0 24 24');
+    svgIcon.setAttribute('fill', 'none');
+    svgIcon.setAttribute('stroke', 'currentColor');
+    svgIcon.setAttribute('stroke-width', '2');
+    svgIcon.style.width = '20px'; // Adjust width as needed
+    svgIcon.style.height = '20px'; // Adjust height as needed
 
-    // deleteButton.addEventListener('click', function () {
-    //     if (confirm('Are you sure you want to delete this video?')) {
-    //         // Call backend API to delete the video
-    //         deleteVideo(videoSrc)
-    //             .then(() => {
-    //                 card.remove(); // Remove the card from the DOM
-    //             })
-    //             .catch((error) => {
-    //                 console.error('Error deleting video:', error);
-    //             });
-    //     }
-    // });
+    // First path
+    const path1 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path1.setAttribute('d', 'M12 19l7-7 3 3-7 7-3-3z');
+    path1.setAttribute('fill', '#2196F3'); // Set the fill color for the first path
+
+    // Second path
+    const path2 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path2.setAttribute('d', 'M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5');
+
+    // Append paths to the SVG
+    svgIcon.appendChild(path1);
+    svgIcon.appendChild(path2);
+
+    // Add the SVG to the button
+    editButton.appendChild(svgIcon);
+
+    
+    const deleteIcon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    deleteIcon.setAttribute('viewBox', '0 0 24 24');
+    deleteIcon.setAttribute('fill', 'none');
+    deleteIcon.setAttribute('stroke', '#FF5252');
+    deleteIcon.setAttribute('stroke-width', '2');
+    deleteIcon.style.width = '25px'; // Adjust as needed
+    deleteIcon.style.height = '38px'; // Adjust as needed
+    deleteIcon.style.bottom = '25px';
+    deleteIcon.style.marginLeft = '5px';
+    deleteIcon.style.backgroundColor = 'none';
+
+    // Create and append the `path` element
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('d', 'M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2');
+
+    // Append the path to the SVG
+    deleteIcon.appendChild(path);
 
 
     heading.addEventListener('click', function () {
@@ -264,12 +281,11 @@ function addVideoCard(videoSrc, title) {
     editButton.addEventListener('click', function() {
         
         
-        // if (player) {
-        //     player.pause();
-        //     player.dispose();
-        // }
-        localStorage.setItem('selectedMediaType', 'video');
+
         localStorage.setItem('selectedVideoSrc', videoSrc);
+        localStorage.setItem('mediaType', 'video'); 
+        localStorage.setItem('editMode', 'true');
+
         window.location.href = '../index.html';
     });
 
@@ -319,13 +335,53 @@ function addImageCard(imageSrc, title) {
     const heading = document.createElement('h3');
     heading.textContent = title;
     
+
+    const deleteIcon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    deleteIcon.setAttribute('viewBox', '0 0 24 24');
+    deleteIcon.setAttribute('fill', 'none');
+    deleteIcon.setAttribute('stroke', '#FF5252');
+    deleteIcon.setAttribute('stroke-width', '2');
+    deleteIcon.style.width = '25px'; // Adjust as needed
+    deleteIcon.style.height = '38px'; // Adjust as needed
+    deleteIcon.style.bottom = '25px';
+    deleteIcon.style.marginLeft = '5px';
+    deleteIcon.style.backgroundColor = 'none';
+
+    // Create and append the `path` element
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('d', 'M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2');
+
+    // Append the path to the SVG
+    deleteIcon.appendChild(path);
+
     const editButton = document.createElement('button');
     editButton.className = 'edit-button';
-    editButton.id = 'edit-button-img';
-    const icon = document.createElement('img');
-    icon.src = '../icons/pencil.png';  
-    icon.alt = 'Edit';
-    editButton.appendChild(icon);
+
+    // Create the SVG element
+    const svgIcon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svgIcon.setAttribute('viewBox', '0 0 24 24');
+    svgIcon.setAttribute('fill', 'none');
+    svgIcon.setAttribute('stroke', 'currentColor');
+    svgIcon.setAttribute('stroke-width', '2');
+    svgIcon.style.width = '20px'; // Adjust width as needed
+    svgIcon.style.height = '20px'; // Adjust height as needed
+
+    // First path
+    const path1 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path1.setAttribute('d', 'M12 19l7-7 3 3-7 7-3-3z');
+    path1.setAttribute('fill', '#2196F3'); // Set the fill color for the first path
+
+    // Second path
+    const path2 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path2.setAttribute('d', 'M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5');
+
+    // Append paths to the SVG
+    svgIcon.appendChild(path1);
+    svgIcon.appendChild(path2);
+
+    // Add the SVG to the button
+    editButton.appendChild(svgIcon);
+
 
     heading.addEventListener('click', function () {
         const input = document.createElement('input');
@@ -394,13 +450,38 @@ function addImageCard(imageSrc, title) {
     }
     
     editButton.addEventListener('click', function() {
-        localStorage.setItem('selectedMediaType', 'image');
-        localStorage.setItem('selectedImageSrc', imageSrc);
+
+        localStorage.setItem('selectedMediaSrc', imageSrc); 
+        localStorage.setItem('mediaType', 'image'); 
+        localStorage.setItem('editMode', 'true');
         window.location.href = '../index.html';
     });
+    
+
+    deleteIcon.addEventListener('click', function () {
+        fetch(`${apiUrl}/getall`)
+          .then((response) => response.json())
+          .then((files) => {
+            const media = files.find(file => file.fileName === imageSrc.split('/').pop());
+      
+            if (media) {
+              const mediaId = media._id;
+      
+              // Confirm before deleting
+              if (confirm('Are you sure you want to delete this media?')) {
+                deleteMedia(mediaId, card);
+              }
+            } else {
+              console.error('Media not found with the given filename.');
+            }
+          })
+          .catch(error => console.error('Error fetching media files:', error));
+      });
 
     cardContent.appendChild(heading);
     cardContent.appendChild(editButton);
+    cardContent.appendChild(deleteIcon);
+
 
     card.appendChild(img);
     card.appendChild(cardContent);

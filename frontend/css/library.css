@@ -1,3 +1,14 @@
+<<<<<<< HEAD:frontend/css/library.css
+:root {
+    --primary-color: #2196F3;
+    --secondary-color: #FF5252;
+    --accent-color: #FFC107;
+    --background-color: #1a1a1a;
+    --surface-color: #2d2d2d;
+    --text-color: #e0e0e0;
+}
+=======
+>>>>>>> origin/main:public/css/library.css
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -74,7 +85,11 @@ body {
     width: 200px;
     margin: 20px auto;
     padding: 10px;
+<<<<<<< HEAD:frontend/css/library.css
+    background-color: #2196F3; /* Vibrant button color */
+=======
     background-color: #a88732; /* Vibrant button color */
+>>>>>>> origin/main:public/css/library.css
     color: #ffffff;
     text-align: center;
     text-decoration: none;
@@ -84,7 +99,11 @@ body {
 }
 
 .load-more:hover {
+<<<<<<< HEAD:frontend/css/library.css
+    background-color: #2196F3; /* Darker hover state */
+=======
     background-color: #a88732; /* Darker hover state */
+>>>>>>> origin/main:public/css/library.css
 }
 
 #fileInput {
@@ -125,7 +144,11 @@ nav {
     align-items: center;
     font-size: 1.2rem;
     font-weight: bold;
+<<<<<<< HEAD:frontend/css/library.css
+    color: #2196F3; /* Highlight color */
+=======
     color: #a88732; /* Highlight color */
+>>>>>>> origin/main:public/css/library.css
     margin-bottom: 0.5rem;
 }
 
@@ -144,7 +167,11 @@ nav {
 }
 
 .nav-links a:hover {
+<<<<<<< HEAD:frontend/css/library.css
+    color: #2196F3; /* Highlight color on hover */
+=======
     color: #a88732; /* Highlight color on hover */
+>>>>>>> origin/main:public/css/library.css
 }
 
 main {
@@ -178,8 +205,13 @@ h1 {
 
 .panel-button.active {
     font-weight: bold;
+<<<<<<< HEAD:frontend/css/library.css
+    border-bottom: 2px solid #2196F3; /* Active color */
+    color: #2196F3;
+=======
     border-bottom: 2px solid #a88732; /* Active color */
     color: #a88732;
+>>>>>>> origin/main:public/css/library.css
 }
 
 .panel-button.inactive {
@@ -223,13 +255,21 @@ form button {
     border-radius: 4px;
     border: none;
     margin-left: 10px;
+<<<<<<< HEAD:frontend/css/library.css
+    background-color: #2196F3; /* Same accent color */
+=======
     background-color: #a88732; /* Same accent color */
+>>>>>>> origin/main:public/css/library.css
     color: white;
     cursor: pointer;
 }
 
 form button:hover {
+<<<<<<< HEAD:frontend/css/library.css
+    background-color: #2196F3;
+=======
     background-color: #a88732;
+>>>>>>> origin/main:public/css/library.css
 }
 
 .recordings-gallery {

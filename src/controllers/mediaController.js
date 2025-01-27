@@ -46,7 +46,11 @@ export async function getAllMedia(req, res) {
 }
 
 export async function getMediaFiles(req, res) {
+<<<<<<< HEAD
+  const directoryPath = path.join(__dirname, '../../frontend/uploads/');
+=======
   const directoryPath = path.join(__dirname, '../../public/uploads/');
+>>>>>>> origin/main
 
   try {
     
