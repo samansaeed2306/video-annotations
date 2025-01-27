@@ -1,4 +1,4 @@
-<<<<<<< HEAD:frontend/css/library.css
+
 :root {
     --primary-color: #2196F3;
     --secondary-color: #FF5252;
@@ -7,8 +7,7 @@
     --surface-color: #2d2d2d;
     --text-color: #e0e0e0;
 }
-=======
->>>>>>> origin/main:public/css/library.css
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
