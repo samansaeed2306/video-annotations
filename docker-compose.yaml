@@ -6,7 +6,7 @@ services:
       - "8080:8080"
       - "3000:3000"
     volumes:
-      - media-files-volume:/usr/src/app/public/uploads
+      - media-files-volume:/usr/src/app/frontend/uploads
 volumes:
   media-files-volume:
     driver: local
