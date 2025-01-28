@@ -43,7 +43,7 @@ class VideoManager {
 
     initializeMainPlayer() {
         const mediaType = localStorage.getItem('mediaType');
-        const selectedMediaSrc = localStorage.getItem('selectedMediaSrc');
+        const selectedMediaSrc = localStorage.getItem('selectedVideoSrc');
     
         // Check if the media is an image
         if (mediaType === 'image' && selectedMediaSrc) {
@@ -650,7 +650,7 @@ class DrawingApp {
        
 
         document.addEventListener('DOMContentLoaded', function () {
-            const selectedMediaSrc = localStorage.getItem('selectedMediaSrc');
+            const selectedMediaSrc = localStorage.getItem('selectedVideoSrc');
             const mediaType = localStorage.getItem('mediaType'); // Get the type of media
             const editMode = localStorage.getItem('editMode');
         
