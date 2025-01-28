@@ -717,6 +717,62 @@ class DrawingApp {
             });
         }
 
+        let mediaRecorder;
+let recordedChunks = [];
+const recordButton = document.getElementById("recordButton");
+const downloadLink = document.getElementById("downloadLink");
+
+recordButton.addEventListener("click", async () => {
+    if (mediaRecorder && mediaRecorder.state === "recording") {
+        // Stop recording
+        mediaRecorder.stop();
+        recordButton.title = "Screen Record";
+        return;
+    }
+
+    try {
+        // Request screen capture
+        const stream = await navigator.mediaDevices.getDisplayMedia({
+            video: true,
+            audio: true // Optional: capture audio
+        });
+
+        // Create MediaRecorder
+        mediaRecorder = new MediaRecorder(stream);
+
+        // Listen for dataavailable event
+        mediaRecorder.ondataavailable = (event) => {
+            if (event.data.size > 0) {
+                recordedChunks.push(event.data);
+            }
+        };
+
+        // Stop event: Save the video file
+        mediaRecorder.onstop = () => {
+            const blob = new Blob(recordedChunks, { type: "video/webm" });
+            const url = URL.createObjectURL(blob);
+
+            downloadLink.href = url;
+            downloadLink.download = "screen-recording.webm";
+            downloadLink.style.display = "block";
+            downloadLink.textContent = "Download Recording";
+        };
+
+        // Start recording
+        mediaRecorder.start();
+        recordButton.title = "Stop Recording";
+
+        // Optional: Handle stopping stream after recording
+        stream.getVideoTracks()[0].onended = () => {
+            if (mediaRecorder.state === "recording") {
+                mediaRecorder.stop();
+            }
+        };
+    } catch (err) {
+        console.error("Error: " + err);
+    }
+});
+
         // Other UI controls
         const clearAllBtn = document.querySelector('.tool-btn.clear-all');
         if (clearAllBtn) {
@@ -741,7 +797,7 @@ class DrawingApp {
                 }
             });
         }
-
+           
         // const fullscreenBtn = document.querySelector('.tool-btn .fullscreen');
         // if(fullscreenBtn){
         //     fullscreenBtn.addEventListener('click', () => {
@@ -832,7 +888,7 @@ class DrawingApp {
         input.click();
     }
 
-    
+
 }
 
  
