@@ -768,7 +768,7 @@ recordButton.addEventListener("click", async () => {
             
             recordedChunks = []; // Reset for future recordings
             await uploadRecording(blob); // Call the upload function
-
+            stream.getTracks().forEach(track => track.stop());
             // downloadLink.href = url;
             // downloadLink.download = "screen-recording.webm";
             // downloadLink.style.display = "block";
