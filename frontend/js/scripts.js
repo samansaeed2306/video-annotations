@@ -718,6 +718,21 @@ class DrawingApp {
         }
 
         let mediaRecorder;
+        const apirecUrl = CONFIG.API_REC_URL;
+        let stream;
+        const displayMediaOptions = {
+            video: {
+                displaySurface: "browser",
+            },
+            audio: {
+                suppressLocalAudioPlayback: false,
+            },
+            preferCurrentTab: true,
+            selfBrowserSurface: "include",
+            systemAudio: "include",
+            surfaceSwitching: "include",
+            monitorTypeSurfaces: "include",
+        };
 let recordedChunks = [];
 const recordButton = document.getElementById("recordButton");
 const downloadLink = document.getElementById("downloadLink");
@@ -732,10 +747,10 @@ recordButton.addEventListener("click", async () => {
 
     try {
         // Request screen capture
-        const stream = await navigator.mediaDevices.getDisplayMedia({
-            video: true,
-            audio: true // Optional: capture audio
-        });
+        stream = await navigator.mediaDevices.getDisplayMedia(displayMediaOptions);
+        //     video: true,
+        //     audio: true // Optional: capture audio
+        // });
 
         // Create MediaRecorder
         mediaRecorder = new MediaRecorder(stream);
@@ -748,17 +763,18 @@ recordButton.addEventListener("click", async () => {
         };
 
         // Stop event: Save the video file
-        mediaRecorder.onstop = () => {
+        mediaRecorder.onstop = async () => {
             const blob = new Blob(recordedChunks, { type: "video/webm" });
-            const url = URL.createObjectURL(blob);
+            
+            recordedChunks = []; // Reset for future recordings
+            await uploadRecording(blob); // Call the upload function
 
-            downloadLink.href = url;
-            downloadLink.download = "screen-recording.webm";
-            downloadLink.style.display = "block";
-            downloadLink.textContent = "Download Recording";
+            // downloadLink.href = url;
+            // downloadLink.download = "screen-recording.webm";
+            // downloadLink.style.display = "block";
+            // downloadLink.textContent = "Download Recording";
         };
 
-        // Start recording
         mediaRecorder.start();
         recordButton.title = "Stop Recording";
 
@@ -772,6 +788,37 @@ recordButton.addEventListener("click", async () => {
         console.error("Error: " + err);
     }
 });
+
+async function uploadRecording(blob) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const userId = urlParams.get('userid');
+
+    if (!userId) {
+        console.error('User ID not found in URL.');
+        return;
+    }
+
+    console.log('Uploading recording...');
+
+    const formData = new FormData();
+    formData.append('video', blob, 'screen-recording.webm');
+
+    try {
+        const response = await fetch(`${apirecUrl}/recordings/${userId}`, {
+            method: 'POST',
+            body: formData,
+        });
+
+        if (response.ok) {
+            console.log('Recording uploaded successfully.');
+        } else {
+            const errorData = await response.json();
+            console.error('Error uploading recording:', errorData);
+        }
+    } catch (uploadError) {
+        console.error('Error during upload:', uploadError);
+    }
+}
 
         // Other UI controls
         const clearAllBtn = document.querySelector('.tool-btn.clear-all');
