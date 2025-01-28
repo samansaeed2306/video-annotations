@@ -21,7 +21,7 @@ RUN npm install
 
 # Copy the frontend code
 
-COPY public/ ./frontend
+COPY frontend/ ./frontend
 
 
 # Expose backend port
