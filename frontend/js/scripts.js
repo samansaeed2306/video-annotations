@@ -1010,13 +1010,88 @@ async function uploadRecording(blob) {
     }
 
     handleColorPicker() {
-        const input = document.createElement('input');
-        input.type = 'color';
-        input.value = this.state.currentColor;
-        input.addEventListener('change', (e) => {
-            this.drawingManager.setColor(e.target.value);
-        });
-        input.click();
+        // Check if running on iOS
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    
+        if (!isIOS) {
+            // Use native color picker for non-iOS devices
+            const input = document.createElement('input');
+            input.type = 'color';
+            input.value = this.state.currentColor;
+            input.addEventListener('change', (e) => {
+                this.drawingManager.setColor(e.target.value);
+            });
+            input.click();
+        } else {
+            // Create iOS fallback color picker
+            const colors = [
+                '#FF0000', '#FF4500', '#FFA500', '#FFFF00', '#00FF00', 
+                '#008000', '#00FFFF', '#0000FF', '#4B0082', '#800080',
+                '#FF1493', '#FFC0CB', '#FFFFFF', '#808080', '#000000'
+            ];
+    
+            // Create and style the color picker container
+            const pickerContainer = document.createElement('div');
+            pickerContainer.style.cssText = `
+                position: fixed;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                background: white;
+                padding: 15px;
+                border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                display: grid;
+                grid-template-columns: repeat(5, 1fr);
+                gap: 8px;
+                z-index: 1000;
+            `;
+    
+            // Create color buttons
+            colors.forEach(color => {
+                const colorBtn = document.createElement('button');
+                colorBtn.style.cssText = `
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    border: 1px solid #ddd;
+                    background-color: ${color};
+                    cursor: pointer;
+                    padding: 0;
+                    margin: 0;
+                `;
+                
+                colorBtn.addEventListener('click', () => {
+                    this.drawingManager.setColor(color);
+                    document.body.removeChild(pickerContainer);
+                    document.body.removeChild(overlay);
+                });
+                
+                pickerContainer.appendChild(colorBtn);
+            });
+    
+            // Create overlay
+            const overlay = document.createElement('div');
+            overlay.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.5);
+                z-index: 999;
+            `;
+    
+            // Close picker when clicking outside
+            overlay.addEventListener('click', () => {
+                document.body.removeChild(pickerContainer);
+                document.body.removeChild(overlay);
+            });
+    
+            // Add to document
+            document.body.appendChild(overlay);
+            document.body.appendChild(pickerContainer);
+        }
     }
 
 
