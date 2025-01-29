@@ -44,7 +44,13 @@ class VideoManager {
     initializeMainPlayer() {
         const mediaType = localStorage.getItem('mediaType');
         const selectedMediaSrc = localStorage.getItem('selectedVideoSrc');
-    
+        
+        const urlParams = new URLSearchParams(window.location.search);
+        const userId = urlParams.get('userid');
+        const videoUrl = urlParams.get('videourl');
+        console.log('User ID:', userId);
+        console.log('Video URL:', videoUrl);
+
         // Check if the media is an image
         if (mediaType === 'image' && selectedMediaSrc) {
             console.log("Got an image");
@@ -67,6 +73,7 @@ class VideoManager {
             responsive: true,
             fill: true,
             enableSmoothSeeking: true,
+            nativeControlsForTouch:false,
             controlBar: {
                 remainingTimeDisplay: false,
                 autoHide: false,
@@ -84,6 +91,21 @@ class VideoManager {
     
             try {
                 if (selectedMediaSrc) {
+                    if (videoUrl){
+                        player.src({
+                            type: 'video/mp4', // Ensure this matches the actual type of the video file
+                            src: videoUrl
+                        });
+                        player.on('error', function () {
+                            console.error('Error loading video:', player.error());
+                            // Provide a fallback video
+                            player.src({
+                                type: 'video/mp4',
+                                src: 'https://andelwoodclub.tuneup.golf/storage/56/purchaseVideos/73Zp5B6G9TDlUYGAzcpJ0EMT8NRJljnNumaenQAH.mp4'
+                            });
+                        });
+                    }
+                    else if (selectedMediaSrc) {
                     player.src({
                         type: 'video/mp4', // Ensure this matches the actual type of the video file
                         src: selectedMediaSrc
@@ -106,7 +128,7 @@ class VideoManager {
                 }
     
                 player.dimensions(player.currentWidth(), player.currentHeight());
-            } catch (error) {
+            } }catch (error) {
                 console.error('Error initializing video player:', error);
             }
         });
