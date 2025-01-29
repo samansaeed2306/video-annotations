@@ -170,11 +170,13 @@ class VideoManager {
         if (secondWrapper.classList.contains('hidden')) {
             secondWrapper.classList.remove('hidden');
             this.initializeSecondPlayer();
+            this.addFloatingUploadButtons();
         } else {
             secondWrapper.classList.add('hidden');
             if (this.player2) {
                 this.player2.pause();
             }
+            this.removeFloatingUploadButtons(); 
         }
         return true; // To trigger canvas update
     }
@@ -193,6 +195,51 @@ class VideoManager {
             );
         }
     }
+   
+    
+    
+    addFloatingUploadButtons() {
+        // Remove existing buttons if any
+        this.removeFloatingUploadButtons();
+    
+        // Create upload button for Player 1
+        const uploadBtn1 = document.createElement('button');
+        uploadBtn1.innerText = "Change Video 1";
+        uploadBtn1.classList.add('floating-upload-btn', 'player1-upload');
+        uploadBtn1.onclick = () => this.uploadVideo(1);
+        document.body.appendChild(uploadBtn1);
+    
+        // Create upload button for Player 2
+        const uploadBtn2 = document.createElement('button');
+        uploadBtn2.innerText = "Change Video 2";
+        uploadBtn2.classList.add('floating-upload-btn', 'player2-upload');
+        uploadBtn2.onclick = () => this.uploadVideo(2);
+        document.body.appendChild(uploadBtn2);
+    }
+    
+    removeFloatingUploadButtons() {
+        document.querySelectorAll('.floating-upload-btn').forEach(btn => btn.remove());
+    }
+    uploadVideo(playerNumber) {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'video/*';
+        input.onchange = (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const url = URL.createObjectURL(file);
+                if (playerNumber === 1 && this.player1) {
+                    this.player1.src({ type: 'video/mp4', src: url });
+                    this.player1.play();
+                } else if (playerNumber === 2 && this.player2) {
+                    this.player2.src({ type: 'video/mp4', src: url });
+                    this.player2.play();
+                }
+            }
+        };
+        input.click();
+    }
+    
 }
 
 // Drawing tools and canvas management
