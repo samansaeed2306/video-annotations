@@ -208,29 +208,33 @@ body {
     justify-content: center;
     border-radius: 4px;
 }
-
-.floating-upload-btn {
-    position: fixed;
-    top: 10px;
-    right: 20px;
-    padding: 10px 15px;
-    background: #007bff;
-    color: white;
-    border: none;
+/* Floating Upload Icon */
+.floating-upload-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
     cursor: pointer;
-    border-radius: 5px;
+    transition: transform 0.2s ease-in-out;
     z-index: 1000;
+    background-color: none; /* Temporary to check visibility */
+    padding: 5px;
+    border-radius: 50%;
 }
 
-.player1-upload {
-    top: 10px;
-    right: 150px;
+/* Left of Video 1 */
+.video-wrapper:first-child .floating-upload-icon {
+    left: -0px;
 }
 
-.player2-upload {
-    top: 50px;
-    right: 150px;
+/* Right of Video 2 */
+#second-video-wrapper .floating-upload-icon {
+    right: -0px;
 }
+
+.floating-upload-icon:hover {
+    transform: translateY(-50%) scale(1.1);
+}
+
 
 
 /* Mobile Styles */

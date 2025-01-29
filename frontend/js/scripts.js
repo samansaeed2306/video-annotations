@@ -199,26 +199,41 @@ class VideoManager {
     
     
     addFloatingUploadButtons() {
-        // Remove existing buttons if any
         this.removeFloatingUploadButtons();
     
-        // Create upload button for Player 1
-        const uploadBtn1 = document.createElement('button');
-        uploadBtn1.innerText = "Change Video 1";
-        uploadBtn1.classList.add('floating-upload-btn', 'player1-upload');
-        uploadBtn1.onclick = () => this.uploadVideo(1);
-        document.body.appendChild(uploadBtn1);
+        const player1Wrapper = document.querySelector("#video-player-1").closest(".video-wrapper");
+        const player2Wrapper = document.querySelector("#video-player-2").closest(".video-wrapper");
     
-        // Create upload button for Player 2
-        const uploadBtn2 = document.createElement('button');
-        uploadBtn2.innerText = "Change Video 2";
-        uploadBtn2.classList.add('floating-upload-btn', 'player2-upload');
-        uploadBtn2.onclick = () => this.uploadVideo(2);
-        document.body.appendChild(uploadBtn2);
+        if (player1Wrapper) {
+            const uploadIcon1 = document.createElement("div");
+            uploadIcon1.innerHTML = this.getUploadSVG();
+            uploadIcon1.classList.add("floating-upload-icon", "player1-upload");
+            uploadIcon1.onclick = () => this.uploadVideo(1);
+            player1Wrapper.appendChild(uploadIcon1);
+        }
+    
+        if (player2Wrapper) {
+            const uploadIcon2 = document.createElement("div");
+            uploadIcon2.innerHTML = this.getUploadSVG();
+            uploadIcon2.classList.add("floating-upload-icon", "player2-upload");
+            uploadIcon2.onclick = () => this.uploadVideo(2);
+            player2Wrapper.appendChild(uploadIcon2);
+        }
+    
+        console.log("Upload icons added!"); // Debugging
     }
     
     removeFloatingUploadButtons() {
-        document.querySelectorAll('.floating-upload-btn').forEach(btn => btn.remove());
+        document.querySelectorAll(".floating-upload-icon").forEach(icon => icon.remove());
+    }
+    
+    getUploadSVG() {
+        return `
+            <svg width="25" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="10" fill="white"/>
+                <path d="M12 16V8M8 12L12 8L16 12" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        `;
     }
     uploadVideo(playerNumber) {
         const input = document.createElement('input');
@@ -240,7 +255,7 @@ class VideoManager {
         input.click();
     }
     
-}
+}    
 
 // Drawing tools and canvas management
 class DrawingManager {
