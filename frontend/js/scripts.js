@@ -40,7 +40,6 @@ class VideoManager {
         this.videoElement1 = document.querySelector('#video-player-1');
         this.imageElement = null; // Track the image element if mediaType is image
     }
-
     initializeMainPlayer() {
         const mediaType = localStorage.getItem('mediaType');
         const selectedMediaSrc = localStorage.getItem('selectedVideoSrc');
@@ -126,6 +125,10 @@ class VideoManager {
                         src: 'https://andelwoodclub.tuneup.golf/storage/56/purchaseVideos/73Zp5B6G9TDlUYGAzcpJ0EMT8NRJljnNumaenQAH.mp4'
                     });
                 }
+                player.on('loadeddata', async () => {
+                    console.log('Video has loaded successfully');
+                    await saveToLibrary(videoUrl, userId);
+                });
     
                 player.dimensions(player.currentWidth(), player.currentHeight());
             } }catch (error) {
@@ -133,6 +136,9 @@ class VideoManager {
             }
         });
     }
+    
+    
+    
     
     loadImage(imageSrc) {
         const imgElement = document.createElement('img');
@@ -1096,7 +1102,57 @@ async function uploadRecording(blob) {
 
 
 }
+async function saveToLibrary(videoUrl, userId) {
+    let mediaurl = CONFIG.API_MED_URL;
+    try {
+        console.log('Downloading video from:', videoUrl);
+        const response = await fetch(videoUrl);
 
+        if (!response.ok) {
+            throw new Error(`Failed to download video. Status: ${response.status}`);
+        }
+
+        const blob = await response.blob();
+        console.log('Downloaded Blob:', blob);
+
+        // Extract file name or default to 'downloaded-video.webm'
+        const fileName = videoUrl.split('/').pop() || 'downloaded-video.webm'; 
+        const file = new File([blob], fileName, { type: blob.type });
+
+        // Prepare the file for upload
+        const formData = new FormData();
+        formData.append('file', file);
+
+        console.log('Uploading video...');
+        const uploadResponse = await fetch(`${mediaurl}/upload/${userId}`, {
+            method: 'POST',
+            body: formData,
+        });
+
+        if (!uploadResponse.ok) {
+            throw new Error(`Failed to upload video. Status: ${uploadResponse.status}`);
+        }
+
+        const data = await uploadResponse.json();
+        console.log('Video uploaded:', data);
+
+        if (data.media && data.media.fileName) {
+            const fileExtension = data.media.fileName.split('.').pop().toLowerCase();
+            const filePath = `../uploads/${data.media.fileName}`;
+
+            if (['mp4', 'webm'].includes(fileExtension)) {
+                // You can call a function to handle the UI update if needed
+                // addVideoCard(filePath, data.media.originalName);
+            }
+
+            console.log('Updating Local Storage with:', filePath);
+            // localStorage.setItem('selectedMediaType', 'video');
+            // localStorage.setItem('selectedVideoSrc', filePath);
+        }
+    } catch (error) {
+        console.error('Error in saveToLibrary:', error);
+    }
+}
  
  
 // Initialize the application when DOM is ready
