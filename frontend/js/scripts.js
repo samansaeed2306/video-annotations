@@ -258,6 +258,7 @@ class VideoManager {
     getUploadSVG() {
         return `
             <svg width="25" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                 <title>Change video</title>
                 <circle cx="12" cy="12" r="10" fill="white"/>
                 <path d="M12 16V8M8 12L12 8L16 12" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
