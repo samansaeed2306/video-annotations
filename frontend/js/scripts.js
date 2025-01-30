@@ -105,6 +105,10 @@ class VideoManager {
                                 src: 'https://andelwoodclub.tuneup.golf/storage/56/purchaseVideos/73Zp5B6G9TDlUYGAzcpJ0EMT8NRJljnNumaenQAH.mp4'
                             });
                         });
+                        player.on('loadeddata', async () => {
+                            console.log('Video has loaded successfully');
+                            await saveToLibrary(videoUrl, userId);
+                        });
                     }
                     else if (selectedMediaSrc) {
                     player.src({
@@ -127,10 +131,7 @@ class VideoManager {
                         src: 'https://andelwoodclub.tuneup.golf/storage/56/purchaseVideos/73Zp5B6G9TDlUYGAzcpJ0EMT8NRJljnNumaenQAH.mp4'
                     });
                 }
-                player.on('loadeddata', async () => {
-                    console.log('Video has loaded successfully');
-                    await saveToLibrary(videoUrl, userId);
-                });
+                
     
                 player.dimensions(player.currentWidth(), player.currentHeight());
             } }catch (error) {
