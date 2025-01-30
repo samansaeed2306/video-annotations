@@ -281,8 +281,8 @@ function addVideoCard(videoSrc, title) {
     editButton.addEventListener('click', function() {
         
         
-
-        localStorage.setItem('selectedVideoSrc', videoSrc);
+        localStorage.removeItem('selectedMediaSrc');
+        localStorage.setItem('selectedMediaSrc', videoSrc);
         localStorage.setItem('mediaType', 'video'); 
         localStorage.setItem('editMode', 'true');
 
@@ -489,6 +489,7 @@ function addImageCard(imageSrc, title) {
 }
 document.getElementById("backtoindex").addEventListener("click", function() {
     window.location.href = "../index.html"; 
+    
 });
 // // Example calls
 

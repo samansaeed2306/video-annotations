@@ -42,13 +42,15 @@ class VideoManager {
     }
     initializeMainPlayer() {
         const mediaType = localStorage.getItem('mediaType');
-        const selectedMediaSrc = localStorage.getItem('selectedVideoSrc');
-        
+        const selectedMediaSrc = localStorage.getItem('selectedMediaSrc');
+        console.log("Media Type:", mediaType );
+        console.log("Selected Media Src:", selectedMediaSrc);
         const urlParams = new URLSearchParams(window.location.search);
         const userId = urlParams.get('userid');
         const videoUrl = urlParams.get('videourl');
         console.log('User ID:', userId);
         console.log('Video URL:', videoUrl);
+        console.log('Current url:',window.location.href);
 
         // Check if the media is an image
         if (mediaType === 'image' && selectedMediaSrc) {
@@ -154,6 +156,7 @@ class VideoManager {
         }
     
         console.log('Image loaded:', imageSrc);
+        
     }
    
 
@@ -741,8 +744,9 @@ class DrawingApp {
        
 
         document.addEventListener('DOMContentLoaded', function () {
-            const selectedMediaSrc = localStorage.getItem('selectedVideoSrc');
-            const mediaType = localStorage.getItem('mediaType'); // Get the type of media
+            const selectedMediaSrc = localStorage.getItem('selectedMediaSrc');
+            const mediaType = localStorage.getItem('mediaType');
+            console.log("Media type: ",mediaType); // Get the type of media
             const editMode = localStorage.getItem('editMode');
         
             if (editMode === 'true' && selectedMediaSrc && mediaType) {
