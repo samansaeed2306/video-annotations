@@ -488,7 +488,10 @@ function addImageCard(imageSrc, title) {
     imageGallery.appendChild(card);
 }
 document.getElementById("backtoindex").addEventListener("click", function() {
-    window.location.href = "../index.html"; 
+    const previousUrl = localStorage.getItem('currentUrl');
+    console.log("Previous url was:",previousUrl);
+    //window.location.href = "../index.html?prev=${encodeURIComponent(previousUrl)}`"; 
+    window.location.href = previousUrl; 
     
 });
 // // Example calls
