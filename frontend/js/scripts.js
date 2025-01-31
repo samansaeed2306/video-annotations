@@ -109,12 +109,12 @@ class VideoManager {
                             console.log('Video has loaded successfully');
                             await saveToLibrary(videoUrl, userId);
                         });
-                    // }
-                   if (selectedMediaSrc) {
-                    // player.src({
-                    //     type: 'video/mp4', // Ensure this matches the actual type of the video file
-                    //     src: selectedMediaSrc
-                   
+                    }
+                   else if (selectedMediaSrc) {
+                    player.src({
+                        type: 'video/mp4', // Ensure this matches the actual type of the video file
+                        src: selectedMediaSrc
+                    });
     
                     player.on('error', function () {
                         console.error('Error loading video:', player.error());
@@ -134,7 +134,7 @@ class VideoManager {
                 
     
                 player.dimensions(player.currentWidth(), player.currentHeight());
-            } }catch (error) {
+            }catch (error) {
                 console.error('Error initializing video player:', error);
             }
         });
