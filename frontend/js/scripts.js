@@ -438,8 +438,10 @@ class DrawingManager {
         this.canvas.renderAll();
     }
     Gotolibrary(){
-        console.log("Go to Library!")
-        window.location.href = 'pages/library.html'; 
+        console.log("Go to Library!");
+        localStorage.setItem('currentUrl', window.location.href); 
+        console.log("CURRENT URL:",localStorage.getItem('currentUrl', window.location.href)); 
+       // window.location.href = 'pages/library.html'; 
     }
     initializePolyline() {
         this.state.polylinePoints = [];
@@ -809,6 +811,8 @@ class DrawingApp {
         const libBtn = document.querySelector('.secondary-btn.library');
         if (libBtn) {
             libBtn.addEventListener('click', () => {
+            localStorage.setItem('currentUrl', window.location.href); 
+            console.log("CURRENT URL:",localStorage.getItem('currentUrl', window.location.href)); 
                 window.location.href = 'pages/library.html';  
             });
         }
