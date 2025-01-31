@@ -91,7 +91,7 @@ class VideoManager {
             const player = this;
     
             try {
-                if (selectedMediaSrc) {
+                // if (selectedMediaSrc) {
                     if (videoUrl){
                         player.src({
                             type: 'video/mp4', // Ensure this matches the actual type of the video file
@@ -109,12 +109,12 @@ class VideoManager {
                             console.log('Video has loaded successfully');
                             await saveToLibrary(videoUrl, userId);
                         });
-                    }
-                    else if (selectedMediaSrc) {
-                    player.src({
-                        type: 'video/mp4', // Ensure this matches the actual type of the video file
-                        src: selectedMediaSrc
-                    });
+                    // }
+                   if (selectedMediaSrc) {
+                    // player.src({
+                    //     type: 'video/mp4', // Ensure this matches the actual type of the video file
+                    //     src: selectedMediaSrc
+                   
     
                     player.on('error', function () {
                         console.error('Error loading video:', player.error());
