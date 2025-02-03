@@ -544,9 +544,9 @@ class DrawingManager {
     
         // Check if the button is active (i.e., it has the 'active' class)
         const isActive = fullscreenBtn && fullscreenBtn.classList.contains('active');
-    
+        console.log(isActive)  ;     //console.log(fullscreenBtn.classList.contains('active'));
         // If not in full-screen and button is not active, enter full-screen
-        if (!document.fullscreenElement && !isActive) {
+        if (!document.fullscreenElement) {
             console.log("Entering full screen mode.");
             if (document.documentElement.requestFullscreen) {
                 document.documentElement.requestFullscreen();
@@ -560,6 +560,7 @@ class DrawingManager {
             // Set the button as active
             //fullscreenBtn.classList.add('active');
         } 
+        
         // If already in full-screen or the button is active, exit full-screen
         // else if (document.fullscreenElement || isActive) {
         //     console.log("Exiting full screen mode.");
@@ -970,6 +971,7 @@ async function uploadRecording(blob) {
             canvasContainer.classList.remove('drawing-mode');
             upperCanvas.classList.remove('drawing-mode');
             upperCanvas.style.cursor = 'default';
+
         } else {
             tools.forEach(t => t.classList.remove('active'));
             toolElement.classList.add('active');
@@ -980,6 +982,9 @@ async function uploadRecording(blob) {
             
             const toolName = toolElement.classList[1];
             this.activateTool(toolName);
+        }
+        if (toolElement.classList.contains('fullscreen') && document.fullscreenElement) {
+            document.exitFullscreen();
         }
     }
 
