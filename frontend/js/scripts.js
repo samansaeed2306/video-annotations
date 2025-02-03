@@ -56,6 +56,7 @@ class VideoManager {
         if (mediaType === 'image' && selectedMediaSrc) {
             console.log("Got an image");
             this.loadImage(selectedMediaSrc); // Load the image
+            localStorage.removeItem('selectedMediaSrc');
             return; // Exit early; no need to initialize the video player
         }
     
@@ -115,6 +116,8 @@ class VideoManager {
                         type: 'video/mp4', // Ensure this matches the actual type of the video file
                         src: selectedMediaSrc
                     });
+
+                    localStorage.removeItem('selectedMediaSrc');
     
                     player.on('error', function () {
                         console.error('Error loading video:', player.error());
