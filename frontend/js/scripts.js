@@ -625,8 +625,9 @@ class DrawingManager {
             case 'text':
                 shape = new fabric.IText('Type here', {
                     ...finalOptions,
-                    fontFamily: 'Arial',
-                    fontSize: 20,
+                    fontFamily: 'cursive',
+                    fontSize: 12,
+                    fontWeight: 'lighter',
                     fill: this.state.currentColor
                 });
                 break;
