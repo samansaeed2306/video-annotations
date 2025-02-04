@@ -627,7 +627,7 @@ class DrawingManager {
                     ...finalOptions,
                     fontFamily: 'sans-serif',
                     fontWeight: '100',
-                    fontSize: 16,
+                    fontSize: 17,
                     fill: this.state.currentColor
                 });
                 break;
