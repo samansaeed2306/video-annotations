@@ -540,26 +540,44 @@ class DrawingManager {
         return angle;
     }
     toggleFullScreen() {
-        const fullscreenBtn = document.querySelector('.tool-btn .fullscreen');
+        // const fullscreenBtn = document.querySelector('.tool-btn .fullscreen');
     
-        // Check if the button is active (i.e., it has the 'active' class)
+        // // Check if the button is active (i.e., it has the 'active' class)
+        // const isActive = fullscreenBtn && fullscreenBtn.classList.contains('active');
+        // console.log(isActive)  ;     //console.log(fullscreenBtn.classList.contains('active'));
+        // // If not in full-screen and button is not active, enter full-screen
+        // if (!document.fullscreenElement) {
+        //     console.log("Entering full screen mode.");
+        //     if (document.documentElement.requestFullscreen) {
+        //         document.documentElement.requestFullscreen();
+        //     } else if (document.documentElement.mozRequestFullScreen) { // Firefox
+        //         document.documentElement.mozRequestFullScreen();
+        //     } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari, and Opera
+        //         document.documentElement.webkitRequestFullscreen();
+        //     } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
+        //         document.documentElement.msRequestFullscreen();
+        //     }
+        //     // Set the button as active
+        //     //fullscreenBtn.classList.add('active');
+        // } 
+
+        const fullscreenBtn = document.querySelector('.tool-btn .fullscreen');
         const isActive = fullscreenBtn && fullscreenBtn.classList.contains('active');
-        console.log(isActive)  ;     //console.log(fullscreenBtn.classList.contains('active'));
-        // If not in full-screen and button is not active, enter full-screen
-        if (!document.fullscreenElement) {
+        const elem = document.documentElement; // Use a specific element
+    
+        if (!document.fullscreenElement && !document.webkitFullscreenElement) {
             console.log("Entering full screen mode.");
-            if (document.documentElement.requestFullscreen) {
-                document.documentElement.requestFullscreen();
-            } else if (document.documentElement.mozRequestFullScreen) { // Firefox
-                document.documentElement.mozRequestFullScreen();
-            } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari, and Opera
-                document.documentElement.webkitRequestFullscreen();
-            } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
-                document.documentElement.msRequestFullscreen();
+            
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.mozRequestFullScreen) { // Firefox
+                elem.mozRequestFullScreen();
+            } else if (elem.webkitRequestFullscreen) { // Safari (iPhones/iPads)
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) { // IE/Edge
+                elem.msRequestFullscreen();
             }
-            // Set the button as active
-            //fullscreenBtn.classList.add('active');
-        } 
+        }
         
         // If already in full-screen or the button is active, exit full-screen
         // else if (document.fullscreenElement || isActive) {
