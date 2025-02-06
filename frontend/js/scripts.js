@@ -987,6 +987,13 @@ async function uploadRecording(blob) {
         if (toolElement.classList.contains('fullscreen') && document.fullscreenElement) {
             document.exitFullscreen();
         }
+        // Listen for Fullscreen Exit
+        document.addEventListener("fullscreenchange", () => {
+        const fullscreenBtn = document.querySelector('.tool-btn.fullscreen');
+        if (!document.fullscreenElement && fullscreenBtn) {
+            fullscreenBtn.classList.remove('active');
+        }
+});
     }
 
     activateTool(toolName) {
