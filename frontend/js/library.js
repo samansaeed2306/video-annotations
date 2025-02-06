@@ -1,7 +1,5 @@
 // Fetch media files from the server
 
-// const apiUrl = 'http://174.138.56.121:8080/api/media'; 
-// const apiUrl = 'http://192.168.100.191:8080/api/media'; 
 const apiUrl = CONFIG.API_MED_URL; 
 const api=CONFIG.API_URL;
 const urlParams = new URLSearchParams(window.location.search);
@@ -11,28 +9,27 @@ addRecording();
 fetch(`${apiUrl}/mediabyuser/${userId}`)
   .then(response => response.json())
   .then(files => {
-    // Loop through each file and call addImageCard or addVideoCard based on file extension
+    
     files.sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate));
     files.forEach(file => {
         console.log('File: ', file.fileName);
-      // Check the file extension to decide if it's an image or video
+     
       const fileExtension = file.fileName.split('.').pop().toLowerCase();
       const filePath = `../uploads`;
       console.log('File Path', filePath);
-    //   const testfile = 'test.mp4';
+   
       if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
 
         addImageCard(`${filePath}/${file.fileName}`, file.originalName);
-        // addImageCard('../../uploads/test.mp4', 'test');
+        
       } else if (['mp4', 'webm', 'mov', 'hevc','MOV'].includes(fileExtension)) {
-        // const videoURL = filePath;
-        // addVideoCard(videoURL, file);
+       
         addVideoCard(`${filePath}/${file.fileName}`, file.originalName);
         
-        // addVideoCard('../../uploads/test.mp4', 'test.mp4');
+       
       }
 
-      //addRecording();
+     
 
     });
   })
@@ -63,7 +60,7 @@ fileInput.addEventListener('change', function(e) {
     const file = e.target.files[0];
     if (file) {
         const videoURL = URL.createObjectURL(file);
-        // addVideoCard(videoURL, file.name);
+       
         console.log('File Name:',file.name);
 
         
@@ -77,9 +74,7 @@ fileInput.addEventListener('change', function(e) {
         .then(response => response.json())
         .then(data => {
             console.log('Video uploaded:', data);
-            //refreshVideoGallery();
-            // Optionally update the video src with the new path
-            // video.src = `/uploads/${data.media.fileName}`;
+          
             console.log('Video originalName:', data.media.originalName);
             if (data.media && data.media.fileUrl && data.media.originalName) {
                 
@@ -105,7 +100,7 @@ imageFileInput.addEventListener('change', function(e) {
     const file = e.target.files[0];
     if (file) {
         const imageURL = URL.createObjectURL(file);
-        // addImageCard(imageURL, file.name);
+      
 
         
         const formData = new FormData();
@@ -118,8 +113,7 @@ imageFileInput.addEventListener('change', function(e) {
         .then(response => response.json())
         .then(data => {
             console.log('Image uploaded:', data);
-            // Optionally update the image src with the new path
-            // img.src = `/uploads/${data.media.fileName}`;
+            
 
             console.log('Image originalName:', data.media.originalName);
             if (data.media && data.media.fileUrl && data.media.originalName) {
@@ -363,8 +357,8 @@ function addImageCard(imageSrc, title) {
     svgIcon.setAttribute('fill', 'none');
     svgIcon.setAttribute('stroke', 'currentColor');
     svgIcon.setAttribute('stroke-width', '2');
-    svgIcon.style.width = '20px'; // Adjust width as needed
-    svgIcon.style.height = '20px'; // Adjust height as needed
+    svgIcon.style.width = '20px'; 
+    svgIcon.style.height = '20px'; 
 
     // First path
     const path1 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
@@ -494,10 +488,7 @@ document.getElementById("backtoindex").addEventListener("click", function() {
     window.location.href = previousUrl; 
     
 });
-// // Example calls
 
-// addVideoCard('../sampleVideos/burning-planet.mp4', 'burning-planet.mp4');
-// addImageCard('../sampleVideos/dolphin.jfif', 'Dolphin');
 function deleteMedia(mediaId, videoCard) {
     if (!mediaId) {
       console.error('No media ID provided for deletion');
@@ -676,26 +667,4 @@ async function fetchRecordingsByUserId(userId) {
     }
 }
 
-
-
-// document.getElementById('hello').addEventListener('click', () => {
-//     const input = document.getElementById('userIdInput');
-//     input.style.display = 'block'; 
-//     input.focus(); 
-
-    
-//     input.onkeypress = async function(event) {
-//         if (event.key === 'Enter') {
-//             const userId = input.value.trim();
-//             if (userId) {
-//                 const recordings = await fetchRecordingsByUserId(userId); 
-//                 displayRecordings(recordings);
-//             } else {
-//                 alert("Please enter a valid User ID.");
-//             }
-//             input.value = '';
-//             input.style.display = 'none'; 
-//         }
-//     };
-// });
 
