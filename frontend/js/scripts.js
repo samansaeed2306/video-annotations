@@ -625,7 +625,7 @@ class DrawingManager {
             case 'text':
                 shape = new fabric.IText('Type here', {
                     ...finalOptions,
-                    fontFamily: 'sans-serif',
+                    fontFamily: 'Calibri',
                     fontWeight: '100',
                     fontSize: 17,
                     fill: this.state.currentColor
