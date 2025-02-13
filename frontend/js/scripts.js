@@ -583,6 +583,7 @@ class DrawingManager {
         let shape;
         const pointer = e ? this.canvas.getPointer(e.e) : { x: 100, y: 100 };
         const defaultOptions = {
+            fontFamily: 'Poppins',
             left: pointer.x,
             top: pointer.y,
             fill: 'transparent',
@@ -622,7 +623,7 @@ class DrawingManager {
                     }
                 );
                 break;
-            case 'text':
+            case 'text':   
                 shape = new fabric.IText('Type here', {
                     ...finalOptions,
                     fontFamily: 'Poppins',
@@ -630,6 +631,7 @@ class DrawingManager {
                     fontSize: 17,
                     fill: this.state.currentColor
                 });
+        
                 break;
             case 'image':
                     // Add image to the canvas
@@ -711,6 +713,9 @@ class DrawingManager {
             this.canvas.freeDrawingBrush.color = color;
         }
     }
+
+   
+    
 }
 
 // Main application class
@@ -1179,9 +1184,21 @@ async function saveToLibrary(videoUrl, userId) {
         console.error('Error in saveToLibrary:', error);
     }
 }
- 
+function loadFont(fontName) {
+    return new Promise((resolve) => {
+        const font = new FontFaceObserver(fontName);
+        font.load().then(() => {
+            console.log(fontName + " has loaded.");
+            resolve();
+        }).catch(() => {
+            console.warn("Font failed to load: " + fontName);
+            resolve();
+        });
+    });
+}
  
 // Initialize the application when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    await loadFont('Poppins');
     const app = new DrawingApp();
 });
