@@ -1047,19 +1047,45 @@ async function uploadRecording(blob) {
     }
 
     handleColorPicker() {
+        console.log("Inside handle picker.");
         // Check if running on iOS
         const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     
         if (!isIOS) {
-            // Use native color picker for non-iOS devices
-            const input = document.createElement('input');
-            input.type = 'color';
-            input.value = this.state.currentColor;
-            input.addEventListener('change', (e) => {
-                this.drawingManager.setColor(e.target.value);
-            });
+            console.log("Non-iOS condition");
+            let input = document.getElementById("colorPickerInput");
+            if (!input) {
+                // Create color input
+                input = document.createElement('input');
+                input.type = 'color';
+                input.id = "colorPickerInput";
+                input.value = this.state.currentColor;
+                input.style.position = "absolute";
+                input.style.opacity = "0";  // Hide it but keep it functional
+                input.style.width = "30px"; 
+                input.style.height = "30px"; 
+    
+                // Append next to the color picker button
+                const colorPickerBtn = document.querySelector(".tool-btn.color-picker");
+                colorPickerBtn.parentNode.insertBefore(input, colorPickerBtn.nextSibling);
+    
+                // Set position **relative to the button**
+                const btnRect = colorPickerBtn.getBoundingClientRect();
+                input.style.left = `${btnRect.left + window.scrollX + colorPickerBtn.offsetWidth - 790}px`;
+                input.style.top = `${btnRect.top + window.scrollY}px`;
+    
+                // Add event listener for color selection
+                input.addEventListener('input', (e) => {
+                    this.drawingManager.setColor(e.target.value);
+                    console.log("Selected color:", e.target.value);
+                });
+            }
+    
+            // Show the color picker
             input.click();
+        
         } else {
+            console.log("iOS condition");
             // Create iOS fallback color picker
             const colors = [
                 '#FF0000', '#FF4500', '#FFA500', '#FFFF00', '#00FF00', 
