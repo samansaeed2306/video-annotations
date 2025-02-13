@@ -1053,6 +1053,8 @@ async function uploadRecording(blob) {
     
         if (!isIOS) {
             console.log("Non-iOS condition");
+    
+            // Check if input already exists
             let input = document.getElementById("colorPickerInput");
             if (!input) {
                 // Create color input
@@ -1061,7 +1063,7 @@ async function uploadRecording(blob) {
                 input.id = "colorPickerInput";
                 input.value = this.state.currentColor;
                 input.style.position = "absolute";
-                input.style.opacity = "0";  // Hide it but keep it functional
+                input.style.opacity = "0";  // Hide but keep functional
                 input.style.width = "30px"; 
                 input.style.height = "30px"; 
     
@@ -1069,22 +1071,29 @@ async function uploadRecording(blob) {
                 const colorPickerBtn = document.querySelector(".tool-btn.color-picker");
                 colorPickerBtn.parentNode.insertBefore(input, colorPickerBtn.nextSibling);
     
-                // Set position **relative to the button**
-                const btnRect = colorPickerBtn.getBoundingClientRect();
-                input.style.left = `${btnRect.left + window.scrollX + colorPickerBtn.offsetWidth - 790}px`;
-                input.style.top = `${btnRect.top + window.scrollY}px`;
+                // Wait for the DOM to render before positioning it correctly
+                requestAnimationFrame(() => {
+                    const btnRect = colorPickerBtn.getBoundingClientRect();
+                    
+                    input.style.left = `${btnRect.left + window.scrollX - (btnRect.width * 0.5)}px`; 
+                    input.style.top = `${btnRect.top + window.scrollY + (btnRect.height * 0.2)}px`; 
+                    
+                    console.log("Color picker positioned:", input.style.left, input.style.top);
+    
+                    // Now trigger the color picker
+                    input.click();
+                });
     
                 // Add event listener for color selection
                 input.addEventListener('input', (e) => {
                     this.drawingManager.setColor(e.target.value);
                     console.log("Selected color:", e.target.value);
                 });
+            } else {
+                input.click();
             }
-    
-            // Show the color picker
-            input.click();
-        
-        } else {
+        }
+        else {
             console.log("iOS condition");
             // Create iOS fallback color picker
             const colors = [
