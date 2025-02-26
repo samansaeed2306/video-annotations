@@ -79,7 +79,7 @@ body {
 /* Place canvas between video and controls */
 #annotation-canvas,
 .upper-canvas {
-
+    will-change: transform;
     position: absolute;
     top: 0;
     left: 0;
