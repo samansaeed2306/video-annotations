@@ -22,8 +22,10 @@ export const uploadRecording = async (req, res) => {
             fs.mkdirSync(uploadFolder, { recursive: true });
         }
 
-      
-        const videoUrl = `${req.protocol}://${req.get('host')}/recordings/${videoFile.filename}`;
+        const serverUrl = process.env.SERVER_URL || `${req.protocol}://${req.get('host')}`;
+        const videoUrl = `${serverUrl}/recordings/${videoFile.filename}`;
+
+        // const videoUrl = `${req.protocol}://${req.get('host')}/recordings/${videoFile.filename}`;
         const lastRecording = await Recording.findOne().sort({ createdAt: -1 });
 
         
