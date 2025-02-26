@@ -22,7 +22,8 @@ export const uploadRecording = async (req, res) => {
             fs.mkdirSync(uploadFolder, { recursive: true });
         }
 
-        const serverUrl = process.env.SERVER_URL || `${req.protocol}://${req.get('host')}`;
+        // const serverUrl = process.env.SERVER_URL || `${req.protocol}://${req.get('host')}`;
+        const serverUrl = process.env.SERVER_URL;
         const videoUrl = `${serverUrl}/recordings/${videoFile.filename}`;
 
         // const videoUrl = `${req.protocol}://${req.get('host')}/recordings/${videoFile.filename}`;
