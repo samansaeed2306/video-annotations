@@ -354,22 +354,61 @@ class DrawingManager {
         this.canvas.freeDrawingBrush.color = this.state.currentColor;
     }
 
+    // initializeEraser() {
+    //     this.state.eraserMode = true;
+    //     this.canvas.isDrawingMode = false;
+    //     this.canvas.selection = false;
+    //     this.canvas.hoverCursor = 'crosshair';
+    //     this.canvas.defaultCursor = 'crosshair';
+
+    //     this.canvas.on('mouse:down', (options) => {
+    //         if (!this.state.eraserMode) return;
+
+    //         const pointer = this.canvas.getPointer(options.e);
+    //         const objects = this.canvas.getObjects();
+
+    //         for (let i = objects.length - 1; i >= 0; i--) {
+    //             const object = objects[i];
+    //             if (object.containsPoint(pointer)) {
+    //                 this.canvas.remove(object);
+    //                 this.canvas.renderAll();
+    //                 break;
+    //             }
+    //         }
+    //     });
+    // }
     initializeEraser() {
         this.state.eraserMode = true;
         this.canvas.isDrawingMode = false;
         this.canvas.selection = false;
         this.canvas.hoverCursor = 'crosshair';
         this.canvas.defaultCursor = 'crosshair';
-
+    
         this.canvas.on('mouse:down', (options) => {
             if (!this.state.eraserMode) return;
-
+    
             const pointer = this.canvas.getPointer(options.e);
             const objects = this.canvas.getObjects();
-
+    
             for (let i = objects.length - 1; i >= 0; i--) {
                 const object = objects[i];
+    
                 if (object.containsPoint(pointer)) {
+                    // Check if the object is a polyline
+                    const lineIndex = this.state.polylineLines.indexOf(object);
+                    if (lineIndex !== -1) {
+                        // Remove the line
+                        this.state.polylineLines.splice(lineIndex, 1);
+                        
+                        // If it was part of an angle, remove the corresponding angle text
+                        if (lineIndex < this.state.polylineAngles.length) {
+                            const angleText = this.state.polylineAngles[lineIndex];
+                            this.canvas.remove(angleText);
+                            this.state.polylineAngles.splice(lineIndex, 1);
+                        }
+                    }
+    
+                    // Remove the object from canvas
                     this.canvas.remove(object);
                     this.canvas.renderAll();
                     break;
@@ -377,7 +416,7 @@ class DrawingManager {
             }
         });
     }
-
+    
     initializeEditMode() {
         this.disableDrawing();
         const canvasContainer = this.canvas.wrapperEl;
