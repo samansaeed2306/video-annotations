@@ -860,10 +860,24 @@ class DrawingApp {
         const libBtn = document.querySelector('.secondary-btn.library');
         if (libBtn) {
             libBtn.addEventListener('click', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const userId = urlParams.get('userid');
+
+            // if (userId) {
+            //     console.log("Extracted User ID:", userId);
+            // }
             localStorage.setItem('currentUrl', window.location.href); 
             console.log("CURRENT URL:",localStorage.getItem('currentUrl', window.location.href)); 
-                window.location.href = 'pages/library.html';  
-            });
+            if (userId) {
+                // Navigate to library page with userid
+                window.location.href = `pages/library.html?userid=${userId}`;
+            } else {
+                // Navigate normally if userid is not found
+                window.location.href = 'pages/library.html';
+            }
+           
+            //     window.location.href = 'pages/library.html';  
+             });
         }
 
         let mediaRecorder;
