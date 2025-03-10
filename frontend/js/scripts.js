@@ -982,20 +982,20 @@ async function uploadRecording(blob) {
         console.error('Error during upload:', uploadError);
     }
 }
-        document.addEventListener("touchmove", function (event) {
-            event.preventDefault();
-        }, { passive: false });
+        // document.addEventListener("touchmove", function (event) {
+        //     event.preventDefault();
+        // }, { passive: false });
 
-        canvas.on('path:created', function (e) {
-            e.path.selectable = false; // Ensure strokes remain
-            canvas.renderAll(); // Force rendering after drawing
-        });
+        // canvas.on('path:created', function (e) {
+        //     e.path.selectable = false; // Ensure strokes remain
+        //     canvas.renderAll(); // Force rendering after drawing
+        // });
         
-        canvas.on('path:created', function (e) {
-            e.path.set({ selectable: false, evented: false });
-            canvas.add(e.path); // Ensure path is added properly
-            canvas.renderAll();
-        });
+        // canvas.on('path:created', function (e) {
+        //     e.path.set({ selectable: false, evented: false });
+        //     canvas.add(e.path); // Ensure path is added properly
+        //     canvas.renderAll();
+        // });
         
 
         // Other UI controls
