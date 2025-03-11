@@ -291,7 +291,7 @@ class VideoManager {
                     });
 
                     this.player1.play();
-                } else if (playerNumber === 2 && this.player2) {
+                }if (playerNumber === 2 && this.player2) {
                     this.player2.src({ type: 'video/mp4', src: url });
                     console.log("Url: ",url);
                     this.player2.on('loadeddata', async () => {
