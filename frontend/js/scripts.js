@@ -272,19 +272,34 @@ class VideoManager {
         `;
     }
     uploadVideo(playerNumber) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const userId = urlParams.get('userid');
+
         const input = document.createElement('input');
         input.type = 'file';
         input.accept = 'video/*';
-        input.onchange = (event) => {
+        input.onchange = async (event) => {
             const file = event.target.files[0];
             if (file) {
                 const url = URL.createObjectURL(file);
                 if (playerNumber === 1 && this.player1) {
                     this.player1.src({ type: 'video/mp4', src: url });
+
+                    this.player1.on('loadeddata', async () => {
+                        console.log('Player 1 video loaded via upload');
+                        await saveToLibrary(url, userId);
+                    });
+
                     this.player1.play();
                 } else if (playerNumber === 2 && this.player2) {
                     this.player2.src({ type: 'video/mp4', src: url });
+                    console.log("Url: ",url);
+                    this.player2.on('loadeddata', async () => {
+                        console.log('Player 2 video loaded via upload');
+                        await saveToLibrary(url, userId);
+                    });
                     this.player2.play();
+                    // await saveToLibrary(url, userId);
                 }
             }
         };
@@ -1236,6 +1251,57 @@ async function uploadRecording(blob) {
 
 
 }
+// async function saveToLibrary(videoUrl, userId) {
+//     let mediaurl = CONFIG.API_MED_URL;
+//     try {
+//         console.log('Downloading video from:', videoUrl);
+//         const response = await fetch(videoUrl);
+
+//         if (!response.ok) {
+//             throw new Error(`Failed to download video. Status: ${response.status}`);
+//         }
+
+//         const blob = await response.blob();
+//         console.log('Downloaded Blob:', blob);
+
+//         // Extract file name or default to 'downloaded-video.webm'
+//         const fileName = videoUrl.split('/').pop() || 'downloaded-video.webm'; 
+//         const file = new File([blob], fileName, { type: blob.type });
+
+//         // Prepare the file for upload
+//         const formData = new FormData();
+//         formData.append('file', file);
+
+//         console.log('Uploading video...');
+//         const uploadResponse = await fetch(`${mediaurl}/upload/${userId}`, {
+//             method: 'POST',
+//             body: formData,
+//         });
+
+//         if (!uploadResponse.ok) {
+//             throw new Error(`Failed to upload video. Status: ${uploadResponse.status}`);
+//         }
+
+//         const data = await uploadResponse.json();
+//         console.log('Video uploaded:', data);
+
+//         if (data.media && data.media.fileName) {
+//             const fileExtension = data.media.fileName.split('.').pop().toLowerCase();
+//             const filePath = `../uploads/${data.media.fileName}`;
+
+//             if (['mp4', 'webm'].includes(fileExtension)) {
+//                 // You can call a function to handle the UI update if needed
+//                 // addVideoCard(filePath, data.media.originalName);
+//             }
+
+//             console.log('Updating Local Storage with:', filePath);
+//             // localStorage.setItem('selectedMediaType', 'video');
+//             // localStorage.setItem('selectedVideoSrc', filePath);
+//         }
+//     } catch (error) {
+//         console.error('Error in saveToLibrary:', error);
+//     }
+// }
 async function saveToLibrary(videoUrl, userId) {
     let mediaurl = CONFIG.API_MED_URL;
     try {
@@ -1249,8 +1315,15 @@ async function saveToLibrary(videoUrl, userId) {
         const blob = await response.blob();
         console.log('Downloaded Blob:', blob);
 
-        // Extract file name or default to 'downloaded-video.webm'
-        const fileName = videoUrl.split('/').pop() || 'downloaded-video.webm'; 
+        // Extract filename and ensure proper extension
+        let fileName = videoUrl.split('/').pop();
+        if (!fileName.includes('.')) {
+            // Check Content-Type to determine correct extension
+            const contentType = response.headers.get('Content-Type');
+            const extension = contentType === 'video/mp4' ? '.mp4' : '.webm';
+            fileName += extension;
+        }
+
         const file = new File([blob], fileName, { type: blob.type });
 
         // Prepare the file for upload
@@ -1287,6 +1360,7 @@ async function saveToLibrary(videoUrl, userId) {
         console.error('Error in saveToLibrary:', error);
     }
 }
+
 function loadFont(fontName) {
     return new Promise((resolve) => {
         const font = new FontFaceObserver(fontName);
