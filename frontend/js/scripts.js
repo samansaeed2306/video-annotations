@@ -48,6 +48,9 @@ class VideoManager {
         const urlParams = new URLSearchParams(window.location.search);
         const userId = urlParams.get('userid');
         const videoUrl = urlParams.get('videourl');
+        if (userId) {     
+            localStorage.setItem('userId', userId);
+        }
         console.log('User ID:', userId);
         console.log('Video URL:', videoUrl);
         console.log('Current url:',window.location.href);
@@ -65,6 +68,7 @@ class VideoManager {
             console.warn('Video player 1 is not present in the DOM. Skipping video initialization.');
             return;
         }
+        const self = this;
     
         this.player1 = videojs('video-player-1', {
             controls: true,
@@ -101,17 +105,16 @@ class VideoManager {
                         player.on('error', function () {
                             console.error('Error loading video:', player.error());
                             // Provide a fallback video
-                            player.src({
-                                type: 'video/mp4',
-                                src: 'https://andelwoodclub.tuneup.golf/storage/56/purchaseVideos/73Zp5B6G9TDlUYGAzcpJ0EMT8NRJljnNumaenQAH.mp4'
-                            });
+                            self.showUploadMessage(player);
                         });
                         player.on('loadeddata', async () => {
                             console.log('Video has loaded successfully');
+                            self.removeUploadMessage(player);
                             await saveToLibrary(videoUrl, userId);
                         });
                     }
                    else if (selectedMediaSrc) {
+                    self.removeUploadMessage(player);
                     player.src({
                         type: 'video/mp4', // Ensure this matches the actual type of the video file
                         src: selectedMediaSrc
@@ -122,29 +125,21 @@ class VideoManager {
                     player.on('error', function () {
                         console.error('Error loading video:', player.error());
                         // Provide a fallback video
-                        player.src({
-                            type: 'video/mp4',
-                            src: 'https://andelwoodclub.tuneup.golf/storage/56/purchaseVideos/73Zp5B6G9TDlUYGAzcpJ0EMT8NRJljnNumaenQAH.mp4'
-                        });
+                        self.showUploadMessage(player);
                     });
                 } else {
                     // Default video source
-                    player.src({
-                        type: 'video/mp4',
-                        src: 'https://andelwoodclub.tuneup.golf/storage/56/purchaseVideos/73Zp5B6G9TDlUYGAzcpJ0EMT8NRJljnNumaenQAH.mp4'
-                    });
+                    self.showUploadMessage(player);
                 }
                 
     
                 player.dimensions(player.currentWidth(), player.currentHeight());
             }catch (error) {
                 console.error('Error initializing video player:', error);
+                self.showUploadMessage(player);
             }
         });
     }
-    
-    
-    
     
     loadImage(imageSrc) {
         const imgElement = document.createElement('img');
@@ -163,8 +158,8 @@ class VideoManager {
         
     }
    
-
     initializeSecondPlayer() {
+        const self = this;
         if (!this.player2) {
             this.player2 = videojs('video-player-2', {
                 controls: true,
@@ -189,10 +184,7 @@ class VideoManager {
                 }
             }, function onPlayerReady() {
                 const player = this;
-                player.src({
-                    type: 'video/mp4',
-                    src: 'https://andelwoodclub.tuneup.golf/storage/56/purchaseVideos/73Zp5B6G9TDlUYGAzcpJ0EMT8NRJljnNumaenQAH.mp4'
-                });
+                self.showUploadMessage(player);
                 player.dimensions(player.currentWidth(), player.currentHeight());
             });
 
@@ -230,9 +222,7 @@ class VideoManager {
             );
         }
     }
-   
-    
-    
+
     addFloatingUploadButtons() {
         this.removeFloatingUploadButtons();
     
@@ -284,6 +274,7 @@ class VideoManager {
                 const url = URL.createObjectURL(file);
                 if (playerNumber === 1 && this.player1) {
                     this.player1.src({ type: 'video/mp4', src: url });
+                    this.removeUploadMessage(this.player1);
 
                     this.player1.on('loadeddata', async () => {
                         console.log('Player 1 video loaded via upload');
@@ -292,6 +283,7 @@ class VideoManager {
 
                     this.player1.play();
                 }if (playerNumber === 2 && this.player2) {
+                    this.removeUploadMessage(this.player2);
                     this.player2.src({ type: 'video/mp4', src: url });
                     console.log("Url: ",url);
                     this.player2.on('loadeddata', async () => {
@@ -304,6 +296,60 @@ class VideoManager {
             }
         };
         input.click();
+    }
+    showUploadMessage(player) {
+        // Clear any existing source
+        player.src("");
+        
+        // Create a div with the upload message
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'vjs-upload-message';
+        messageDiv.innerHTML = `
+            <div style="
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                background-color: rgba(0, 0, 0, 0.7);
+                color: white;
+                text-align: center;
+                padding: 20px;
+                z-index: 2;
+            ">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="17 8 12 3 7 8"></polyline>
+                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+                <h3 style="margin-top: 15px; font-size: 18px;">Please upload a video in library to start analyzing</h3>
+                <p style="margin-top: 10px; font-size: 14px;">No video found. Upload your swing to begin the analysis.</p>
+            </div>
+        `;
+        
+        // Find the player container and append the message
+        const playerEl = player.el();
+        
+        // Remove any existing message first
+        this.removeUploadMessage(player);
+        
+        playerEl.appendChild(messageDiv);
+    }
+    removeUploadMessage(player) {
+        if (!player) return;
+        
+        const playerEl = player.el();
+        if (!playerEl) return;
+        
+        // Remove any existing message
+        const existingMessage = playerEl.querySelector('.vjs-upload-message');
+        if (existingMessage) {
+            existingMessage.remove();
+        }
     }
     
 }    
@@ -943,6 +989,22 @@ recordButton.addEventListener("click", async () => {
         // Stop event: Save the video file
         mediaRecorder.onstop = async () => {
             const blob = new Blob(recordedChunks, { type: "video/webm" });
+
+            // Create a URL for the blob
+            const url = URL.createObjectURL(blob);
+            
+            // Create and trigger download automatically
+            const downloadLink = document.createElement('a');
+            downloadLink.href = url;
+            downloadLink.download = "screen-recording.webm";
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            
+            // Clean up
+            setTimeout(() => {
+                document.body.removeChild(downloadLink);
+                URL.revokeObjectURL(url);
+            }, 100);
             
             recordedChunks = []; // Reset for future recordings
             await uploadRecording(blob); // Call the upload function
@@ -969,12 +1031,14 @@ recordButton.addEventListener("click", async () => {
 
 async function uploadRecording(blob) {
     const urlParams = new URLSearchParams(window.location.search);
-    const userId = urlParams.get('userid');
+    var userId = urlParams.get('userid');
+    let saved_userId = localStorage.getItem('userId');
 
-    if (!userId) {
+    if (!userId && !saved_userId) {
         console.error('User ID not found in URL.');
         return;
     }
+    userId = userId || saved_userId;
 
     console.log('Uploading recording...');
 
