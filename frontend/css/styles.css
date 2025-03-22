@@ -294,6 +294,9 @@ body {
         width: 28px;
         height: 28px;
     }
+    #record-button {
+        display: none;
+    }
 }
 
 .desktop-only {

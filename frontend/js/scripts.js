@@ -301,6 +301,9 @@ class VideoManager {
         // Clear any existing source
         player.src("");
         
+        // Determine which player this is (1 or 2)
+        const playerNumber = player === this.player1 ? 1 : 2;
+        
         // Create a div with the upload message
         const messageDiv = document.createElement('div');
         messageDiv.className = 'vjs-upload-message';
@@ -320,6 +323,7 @@ class VideoManager {
                 text-align: center;
                 padding: 20px;
                 z-index: 2;
+                cursor: pointer;
             ">
                 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
@@ -338,6 +342,11 @@ class VideoManager {
         this.removeUploadMessage(player);
         
         playerEl.appendChild(messageDiv);
+        
+        // Add click event listener to the message div
+        messageDiv.addEventListener('click', () => {
+            this.uploadVideo(playerNumber);
+        });
     }
     removeUploadMessage(player) {
         if (!player) return;
@@ -947,6 +956,7 @@ class DrawingApp {
         const displayMediaOptions = {
             video: {
                 displaySurface: "browser",
+                logicalSurface: true
             },
             audio: {
                 suppressLocalAudioPlayback: false,
@@ -970,14 +980,85 @@ recordButton.addEventListener("click", async () => {
     }
 
     try {
-        // Request screen capture
-        stream = await navigator.mediaDevices.getDisplayMedia(displayMediaOptions);
-        //     video: true,
-        //     audio: true // Optional: capture audio
-        // });
+        // Reset recorded chunks
+        recordedChunks = [];
+        
+        // Request microphone access FIRST
+        let micStream;
+        try {
+            console.log("Requesting microphone access...");
+            micStream = await navigator.mediaDevices.getUserMedia({
+                audio: {
+                    echoCancellation: true,
+                    noiseSuppression: true,
+                    autoGainControl: true
+                },
+                video: false
+            });
+            console.log("Microphone access granted");
+        } catch (micError) {
+            console.error("Could not access microphone:", micError);
+            alert("Microphone access was denied. Recording will continue without mic audio.");
+            micStream = null;
+        }
 
-        // Create MediaRecorder
-        mediaRecorder = new MediaRecorder(stream);
+        // THEN request screen capture using your original options
+        console.log("Requesting screen capture...");
+        const displayStream = await navigator.mediaDevices.getDisplayMedia(displayMediaOptions);
+        
+        console.log("Screen capture granted:", 
+            displayStream.getVideoTracks().length, "video tracks,",
+            displayStream.getAudioTracks().length, "audio tracks");
+        
+        // Combine the streams
+        let combinedStream;
+        const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+        
+        if (micStream) {
+            // For Chrome/Firefox - use WebAudio API for mixing
+            const ctx = new AudioContext();
+            
+            // Create a destination for our combined audio
+            const dest = ctx.createMediaStreamDestination();
+            
+            // Add display audio to the mix if it exists
+            if (displayStream.getAudioTracks().length > 0) {
+                const displaySource = ctx.createMediaStreamSource(new MediaStream([displayStream.getAudioTracks()[0]]));
+                displaySource.connect(dest);
+                console.log("Added system audio to the mix");
+            }
+            
+            // Add microphone audio to the mix
+            if (micStream.getAudioTracks().length > 0) {
+                const micSource = ctx.createMediaStreamSource(new MediaStream([micStream.getAudioTracks()[0]]));
+                micSource.connect(dest);
+                console.log("Added microphone audio to the mix");
+            }
+            
+            // Create a new stream with display video and our mixed audio
+            const videoTrack = displayStream.getVideoTracks()[0];
+            combinedStream = new MediaStream([
+                videoTrack,
+                ...dest.stream.getTracks()
+            ]);
+            
+            console.log("Created combined stream with mixed audio");
+        } else {
+            combinedStream = displayStream;
+            console.log("Using only display stream (no microphone)");
+        }
+
+        // Set up MediaRecorder with appropriate MIME type
+        const mimeType = 'video/webm';
+        
+        // Create MediaRecorder with the combined stream
+        const options = { 
+            mimeType,
+            audioBitsPerSecond: 128000,
+            videoBitsPerSecond: 2500000
+        };
+        
+        mediaRecorder = new MediaRecorder(combinedStream, options);
 
         // Listen for dataavailable event
         mediaRecorder.ondataavailable = (event) => {
@@ -989,7 +1070,7 @@ recordButton.addEventListener("click", async () => {
         // Stop event: Save the video file
         mediaRecorder.onstop = async () => {
             const blob = new Blob(recordedChunks, { type: "video/webm" });
-
+            
             // Create a URL for the blob
             const url = URL.createObjectURL(blob);
             
@@ -1008,26 +1089,31 @@ recordButton.addEventListener("click", async () => {
             
             recordedChunks = []; // Reset for future recordings
             await uploadRecording(blob); // Call the upload function
-            stream.getTracks().forEach(track => track.stop());
-            // downloadLink.href = url;
-            // downloadLink.download = "screen-recording.webm";
-            // downloadLink.style.display = "block";
-            // downloadLink.textContent = "Download Recording";
+            
+            // Stop all tracks from both streams
+            displayStream.getTracks().forEach(track => track.stop());
+            if (micStream) {
+                micStream.getTracks().forEach(track => track.stop());
+            }
         };
 
-        mediaRecorder.start();
+        // Start recording
+        mediaRecorder.start(1000); // Create a new chunk every second
         recordButton.title = "Stop Recording";
 
-        // Optional: Handle stopping stream after recording
-        stream.getVideoTracks()[0].onended = () => {
-            if (mediaRecorder.state === "recording") {
+        // Handle stopping stream after recording
+        displayStream.getVideoTracks()[0].onended = () => {
+            if (mediaRecorder && mediaRecorder.state === "recording") {
                 mediaRecorder.stop();
             }
         };
+        
     } catch (err) {
-        console.error("Error: " + err);
+        console.error("Error during recording setup:", err);
+        alert("Could not start recording: " + err.message);
     }
 });
+
 
 async function uploadRecording(blob) {
     const urlParams = new URLSearchParams(window.location.search);
@@ -1437,7 +1523,25 @@ function loadFont(fontName) {
         });
     });
 }
- 
+
+// Helper function to get supported MIME type
+function getSupportedMimeType() {
+    const possibleTypes = [
+        'video/webm;codecs=vp9,opus',
+        'video/webm;codecs=vp8,opus',
+        'video/webm',
+        'video/mp4',
+        ''  // Empty string is a fallback
+    ];
+    
+    for (const type of possibleTypes) {
+        if (type === '' || MediaRecorder.isTypeSupported(type)) {
+            return type;
+        }
+    }
+    
+    return '';
+}
 // Initialize the application when DOM is ready
 document.addEventListener('DOMContentLoaded', async () => {
     await loadFont('Poppins');
