@@ -24,7 +24,7 @@ export const uploadRecording = async (req, res) => {
         // Ensure file has a .webm extension
         if (!videoFilename.endsWith(fileExtension)) {
             const newFilename = `${videoFilename}${fileExtension}`;
-            const oldPath = videoFile.path; // ✅ Correct uploaded file path
+            const oldPath = path.join(uploadFolder, videoFile.filename);
             const newPath = path.join(uploadFolder, newFilename);
 
             fs.renameSync(oldPath, newPath);  // Rename the file
@@ -59,31 +59,6 @@ export const uploadRecording = async (req, res) => {
         res.status(500).json({ error: 'Error uploading recording' });
     }
 };
-
-export const getRecordingsByUserId = async (req, res) => {
-    try {
-        const { userId } = req.params;
-
-        if (!userId) {
-            return res.status(400).json({ error: 'userId is required' });
-        }
-
-        
-        const recordings = await Recording.find({ userId });
-
-       
-        if (!recordings.length) {
-            return res.status(200).json([]);
-        }
-
-       
-        res.status(200).json(recordings);
-    } catch (error) {
-        console.error('Error fetching recordings:', error);
-        res.status(500).json({ error: 'Error fetching recordings' });
-    }
-};
-
 
 export const getAllRecordings = async (req, res) => {
     try {
