@@ -22,9 +22,14 @@ export const uploadRecording = async (req, res) => {
             fs.mkdirSync(uploadFolder, { recursive: true });
         }
 
+        const fileExtension = '.webm';
+        const videoFilename = videoFile.filename.endsWith(fileExtension) 
+            ? videoFile.filename 
+            : `${videoFile.filename}${fileExtension}`;
+
         // const serverUrl = process.env.SERVER_URL || `${req.protocol}://${req.get('host')}`;
         const serverUrl = process.env.SERVER_URL;
-        const videoUrl = `https://api.tuneup.golf/recordings/${videoFile.filename}`;
+        const videoUrl = `https://api.tuneup.golf/recordings/${videoFilename}`;
 
         // const videoUrl = `${req.protocol}://${req.get('host')}/recordings/${videoFile.filename}`;
         const lastRecording = await Recording.findOne().sort({ createdAt: -1 });
@@ -33,7 +38,7 @@ export const uploadRecording = async (req, res) => {
         let title = 'Recording 1'; 
         if (lastRecording) {
             const lastTitleNumber = parseInt(lastRecording.title.split(' ')[1]); 
-            title = `Recording ${lastTitleNumber + 1}.webm`; 
+            title = `Recording ${lastTitleNumber + 1}`; 
         }
 
        
