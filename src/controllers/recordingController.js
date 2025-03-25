@@ -33,7 +33,7 @@ export const uploadRecording = async (req, res) => {
         let title = 'Recording 1'; 
         if (lastRecording) {
             const lastTitleNumber = parseInt(lastRecording.title.split(' ')[1]); 
-            title = `Recording ${lastTitleNumber + 1}`; 
+            title = `Recording ${lastTitleNumber + 1}.webm`; 
         }
 
        
