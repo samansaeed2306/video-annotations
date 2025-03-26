@@ -6,7 +6,7 @@ const uploadFolder = path.join(process.cwd(), 'recordings');
 
 export const uploadRecording = async (req, res) => {
     try {
-        console.log('--- Upload Recording API Called ---');
+        // console.log('--- Upload Recording API Called ---');
 
         const { videoId, lessonId } = req.body;  
         const { userId } = req.params;          
@@ -15,7 +15,7 @@ export const uploadRecording = async (req, res) => {
         console.log('Received Data:', { userId, videoId, lessonId });
 
         if (!userId || !videoFile) {
-            console.error('❌ Error: Missing userId or video file');
+            // console.error('❌ Error: Missing userId or video file');
             return res.status(400).json({ error: 'userId and video file are required' });
         }
 
@@ -23,18 +23,18 @@ export const uploadRecording = async (req, res) => {
 
         // Ensure upload directory exists
         if (!fs.existsSync(uploadFolder)) {
-            console.log('📂 Creating upload folder...');
+           // console.log('📂 Creating upload folder...');
             fs.mkdirSync(uploadFolder, { recursive: true });
         } else {
-            console.log('✅ Upload folder already exists');
+            // console.log('✅ Upload folder already exists');
         }
 
         // Extract original filename with extension
         const originalName = videoFile.originalname;  
         const fileExtension = path.extname(originalName); 
 
-        console.log('🎥 Original File Name:', originalName);
-        console.log('📝 File Extension:', fileExtension);
+        // console.log('🎥 Original File Name:', originalName);
+        // console.log('📝 File Extension:', fileExtension);
 
         // Store file with the original name and extension
         const finalFileName = `${videoFile.filename}${fileExtension}`;  
@@ -44,7 +44,7 @@ export const uploadRecording = async (req, res) => {
 
         // Rename the file to include the correct extension
         fs.renameSync(videoFile.path, filePath);
-        console.log('✅ File renamed successfully');
+        // console.log('✅ File renamed successfully');
 
         // Generate URL using the correctly named file
         const serverUrl = 'https://api.tuneup.golf/';
