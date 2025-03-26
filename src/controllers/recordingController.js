@@ -113,3 +113,26 @@ export const getAllRecordings = async (req, res) => {
         res.status(500).json({ error: 'Error fetching all recordings' });
     }
 };
+export const getRecordingsByUserId = async (req, res) => {
+    try {
+        const { userId } = req.params;
+
+        if (!userId) {
+            return res.status(400).json({ error: 'userId is required' });
+        }
+
+        
+        const recordings = await Recording.find({ userId });
+
+       
+        if (!recordings.length) {
+            return res.status(200).json([]);
+        }
+
+       
+        res.status(200).json(recordings);
+    } catch (error) {
+        console.error('Error fetching recordings:', error);
+        res.status(500).json({ error: 'Error fetching recordings' });
+    }
+};
