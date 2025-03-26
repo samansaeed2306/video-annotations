@@ -47,7 +47,7 @@ export const uploadRecording = async (req, res) => {
         console.log('✅ File renamed successfully');
 
         // Generate URL using the correctly named file
-        const serverUrl = process.env.SERVER_URL || `${req.protocol}://${req.get('host')}`;
+        const serverUrl = 'https://api.tuneup.golf/';
         const videoUrl = `${serverUrl}/recordings/${finalFileName}`;
 
         console.log('🌍 Video URL:', videoUrl);
