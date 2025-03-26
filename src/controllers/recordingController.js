@@ -6,59 +6,86 @@ const uploadFolder = path.join(process.cwd(), 'recordings');
 
 export const uploadRecording = async (req, res) => {
     try {
+        console.log('--- Upload Recording API Called ---');
+
         const { videoId, lessonId } = req.body;  
         const { userId } = req.params;          
         const videoFile = req.file;           
 
+        console.log('Received Data:', { userId, videoId, lessonId });
+
         if (!userId || !videoFile) {
+            console.error('❌ Error: Missing userId or video file');
             return res.status(400).json({ error: 'userId and video file are required' });
         }
 
+        console.log('📂 Upload folder path:', uploadFolder);
+
+        // Ensure upload directory exists
         if (!fs.existsSync(uploadFolder)) {
+            console.log('📂 Creating upload folder...');
             fs.mkdirSync(uploadFolder, { recursive: true });
+        } else {
+            console.log('✅ Upload folder already exists');
         }
 
-        const fileExtension = '.webm';
-        let videoFilename = videoFile.filename;
+        // Extract original filename with extension
+        const originalName = videoFile.originalname;  
+        const fileExtension = path.extname(originalName); 
 
-        // Ensure file has a .webm extension
-        if (!videoFilename.endsWith(fileExtension)) {
-            const newFilename = `${videoFilename}${fileExtension}`;
-            const oldPath = path.join(uploadFolder, videoFile.filename);
-            const newPath = path.join(uploadFolder, newFilename);
+        console.log('🎥 Original File Name:', originalName);
+        console.log('📝 File Extension:', fileExtension);
 
-            fs.renameSync(oldPath, newPath);  // Rename the file
-            videoFilename = newFilename;
-        }
+        // Store file with the original name and extension
+        const finalFileName = `${videoFile.filename}${fileExtension}`;  
+        const filePath = path.join(uploadFolder, finalFileName);
 
+        console.log('📁 Final File Path:', filePath);
+
+        // Rename the file to include the correct extension
+        fs.renameSync(videoFile.path, filePath);
+        console.log('✅ File renamed successfully');
+
+        // Generate URL using the correctly named file
         const serverUrl = process.env.SERVER_URL || `${req.protocol}://${req.get('host')}`;
-        const videoUrl = `${serverUrl}/recordings/${videoFilename}`;
+        const videoUrl = `${serverUrl}/recordings/${finalFileName}`;
 
+        console.log('🌍 Video URL:', videoUrl);
+
+        // Get last recording to determine numbering
         const lastRecording = await Recording.findOne().sort({ createdAt: -1 });
 
         let title = 'Recording 1'; 
         if (lastRecording) {
-            const lastTitleNumber = parseInt(lastRecording.title.split(' ')[1]) || 0;
-            title = `Recording ${lastTitleNumber + 1}`;
+            const lastTitleNumber = parseInt(lastRecording.title.split(' ')[1]); 
+            title = `Recording ${lastTitleNumber + 1}`; 
         }
 
+        console.log('📌 Recording Title:', title);
+
+        // Save recording details in DB
         const newRecording = new Recording({
             userId,             
             videoId,            
             lessonId,          
             videoUrl,
             title,         
-            videoMimeType: videoFile.mimetype
+            videoMimeType: videoFile.mimetype,
+            originalName,  
+            fileName: finalFileName 
         });
 
+        console.log('💾 Saving recording to database...', newRecording);
         await newRecording.save();
+        console.log('✅ Recording saved successfully');
 
         res.status(201).json({ message: 'Recording uploaded successfully', newRecording });
     } catch (error) {
-        console.error('Error uploading recording:', error);
+        console.error('❌ Error uploading recording:', error);
         res.status(500).json({ error: 'Error uploading recording' });
     }
 };
+
 
 export const getAllRecordings = async (req, res) => {
     try {
