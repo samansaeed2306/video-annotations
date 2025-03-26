@@ -7,6 +7,9 @@ services:
       - "3000:3000"
     volumes:
       - media-files-volume:/usr/src/app/frontend/uploads
+      - recordings-volume:/usr/src/app/recordings
 volumes:
   media-files-volume:
+    driver: local
+  recordings-volume:
     driver: local
