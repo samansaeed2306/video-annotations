@@ -28,6 +28,7 @@ jobs:
           cd video-annotations
 
           #Pull the latest changes 
+          git stash
           git pull origin main  # Pull the latest code from the main branch
 
           # Remove all docker images
@@ -36,7 +37,8 @@ jobs:
           # Find and replace URLs in files
           find ./ -type f -exec sed -i 's|http://localhost:8080|https://api.tuneup.golf|g' {} +
           find ./ -type f -exec sed -i 's|http://localhost:3000|https://annotation.tuneup.golf|g' {} +
-
+          
+          docker-compose down
           # Rebuild and restart containers
           docker-compose up --build --no-cache -d
         EOF
