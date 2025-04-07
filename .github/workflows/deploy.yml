@@ -1,0 +1,38 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3  
+
+    - name: Set up SSH key for server access
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: Deploy to Server
+      run: |
+        ssh -o StrictHostKeyChecking=no root@174.138.56.121 << 'EOF'
+          # Remove all docker images
+          docker rmi -f $(docker images -aq)
+
+          # Find and replace URLs in files
+          find ./ -type f -exec sed -i 's|http://localhost:8080|https://api.tuneup.golf|g' {} +
+          find ./ -type f -exec sed -i 's|http://localhost:3000|https://annotation.tuneup.golf|g' {} +
+
+          # Rebuild and restart containers
+          docker compose up --build
+        EOF
+
+    
