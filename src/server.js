@@ -10,6 +10,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 
 dotenv.config();
+connectToDb();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -35,7 +36,6 @@ app.use(express.static(path.join(__dirname, '../frontend'), {
 app.use(express.static(path.join(__dirname, '../frontend/uploads')));
 app.use('/recordings', express.static(recordingsFolder));
 
-connectToDb();
 
 app.use('/api', annotationRoutes);
 app.use('/api/media', mediaRoutes);

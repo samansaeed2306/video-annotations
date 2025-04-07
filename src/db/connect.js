@@ -2,7 +2,9 @@ import { MongoClient, ServerApiVersion } from 'mongodb';
 import mongoose from 'mongoose';
 // const uri = "mongodb+srv://samansaeed2306:saman@cluster0.wvdsiey.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 //const uri = "mongodb+srv://samansaeed2306:saman@cluster0.wvdsiey.mongodb.net/VideoAnnotations?retryWrites=true&w=majority&appName=Cluster0";
-const uri = "mongodb+srv://samansageteck:annotations@cluster0.fsljclx.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+//const uri = "mongodb+srv://samansageteck:annotations@cluster0.fsljclx.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const uri = "mongodb+srv://samansageteck:annotations@cluster0.fsljclx.mongodb.net/VideoAnnotations?retryWrites=true&w=majority&appName=Cluster0";
+
 const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,

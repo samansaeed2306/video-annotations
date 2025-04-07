@@ -29,7 +29,10 @@ const recordingSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     }
-});
+}
+, {
+    collection: 'recordings'
+  });
 
 const Recording = mongoose.model('Recording', recordingSchema);
 
