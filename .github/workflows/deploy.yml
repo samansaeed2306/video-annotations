@@ -32,7 +32,7 @@ jobs:
           git pull origin main  # Pull the latest code from the main branch
 
           # Remove all docker images
-          docker rmi -f $(docker images -aq)
+          # docker rmi -f $(docker images -aq)
 
           # Find and replace URLs in files
           find ./ -type f -exec sed -i 's|http://localhost:8080|https://api.tuneup.golf|g' {} +
