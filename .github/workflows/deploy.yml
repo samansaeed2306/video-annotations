@@ -38,7 +38,7 @@ jobs:
           find ./ -type f -exec sed -i 's|http://localhost:3000|https://annotation.tuneup.golf|g' {} +
 
           # Rebuild and restart containers
-          # docker compose up --build
+          docker compose up --build
         EOF
 
     
