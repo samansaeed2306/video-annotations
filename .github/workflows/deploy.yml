@@ -24,6 +24,8 @@ jobs:
     - name: Deploy to Server
       run: |
         ssh -o StrictHostKeyChecking=no root@174.138.56.121 << 'EOF'
+          # Navigate to the video-annotations directory
+          cd video-annotations
           # Remove all docker images
           docker rmi -f $(docker images -aq)
 
