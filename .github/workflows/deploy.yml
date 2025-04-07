@@ -26,6 +26,10 @@ jobs:
         ssh -o StrictHostKeyChecking=no root@174.138.56.121 << 'EOF'
           # Navigate to the video-annotations directory
           cd video-annotations
+
+          #Pull the latest changes 
+          git pull origin main  # Pull the latest code from the main branch
+
           # Remove all docker images
           docker rmi -f $(docker images -aq)
 
